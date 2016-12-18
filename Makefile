@@ -1,4 +1,4 @@
-#gfortran dslmpep_subroutines.f90 pzeros.f90 util.f90 test_driver.f90 -lscalapack-openmpi -llapack -lblas
+#gfortran  util.f90 dslmpep_subroutines.f90 pzeros.f90 test_driver.f90 -lscalapack-openmpi -llapack -lblas
 
 #Define variables
 f90comp = gfortran

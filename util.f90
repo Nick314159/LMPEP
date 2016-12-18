@@ -130,4 +130,40 @@ IF(s1 > (s2+tol)) OK = .true.
 RETURN
 END FUNCTION ctest
 
+SUBROUTINE sort(n, x, y, e)
+  USE poly_zeroes
+  IMPLICIT NONE
+  INTEGER, INTENT(IN)               :: n
+  COMPLEX (KIND=dp), INTENT(IN OUT) :: x(:)
+  REAL (KIND=dp), INTENT(IN OUT)    :: y(:)
+  LOGICAL, INTENT(IN OUT)           :: e(:)
+
+  ! Local variables
+  INTEGER           :: k, i, imax
+  COMPLEX (KIND=dp) :: temp
+  REAL (KIND=dp)    :: yt, amax, rxi
+  LOGICAL           :: et
+
+  DO k = 1, n-1
+     amax = REAL(x(k))
+     imax = k
+     DO i = k+1,n
+        rxi = REAL(x(i))
+        IF (amax < rxi) THEN
+           amax = rxi
+           imax = i
+        END IF
+     END DO
+     temp = x(k)
+     x(k) = x(imax)
+     x(imax) = temp
+     yt = y(k)
+     et = e(k)
+     y(k) = y(imax)
+     y(imax) = yt
+     e(k) = e(imax)
+     e(imax) = et
+  END DO
+  RETURN
+END SUBROUTINE sort
 END MODULE util

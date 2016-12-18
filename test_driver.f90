@@ -1,5 +1,5 @@
 PROGRAM driver
-        !USE poly_zeros
+        USE pzeros
         USE dslmpep_subroutines
         IMPLICIT NONE
         
@@ -10,7 +10,6 @@ PROGRAM driver
        	REAL (KIND=dp), DIMENSION(:), ALLOCATABLE  ::  testProblem
        	INTEGER :: clock, clock_rate, clock_start, clock_stop
        	REAL (KIND=dp), DIMENSION(2) :: timingStatistics
-       	INTEGER, DIMENSION(2) :: iterations
         INTEGER :: maxDegree, degree
         
         !DSLMPEP ----------
@@ -41,8 +40,8 @@ PROGRAM driver
         READ *, maxDegree
         
 	OPEN(UNIT=1,FILE=resultsDir//"output.csv")
-	WRITE(1, '(A)',  advance='no') 'DEGREE, DSLMPEP TIME, AVG. ITER, MAX BE, '
-	!WRITE(1, *) ', PZEROS TIME, ITERATIONS, MAX RADIUS' 
+	WRITE(1, '(A)',  advance='no') 'DEGREE, DSLMPEP TIME, AVG. ITER, MAX BE'
+	WRITE(1, '(A)', advance='no') ', PZEROS TIME, ITERATIONS, MAX RADIUS' 
 	WRITE(1, *)
         DO degree = 1, maxDegree
         	WRITE(1, '(i6)', advance='no') degree
@@ -63,19 +62,19 @@ PROGRAM driver
 		!------------------
 		
 		!PZEROS -----------
-		!ALLOCATE(radius(1:degree),root(1:degree),testProblem(0:degree),err(degree+1))
-		!CALL system_clock(count_rate=clock_rate)
-		!CALL system_clock(count=clock_start)
-		!CALL polzeros (degree, DCMPLX(testProblem), eps, big, small, nitmax, root, radius, err, iterations)
-		!CALL system_clock(count=clock_stop)
-		!timingStatistics(2) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+		ALLOCATE(radius(1:degree),root(1:degree),err(degree+1))
+		CALL system_clock(count_rate=clock_rate)
+		CALL system_clock(count=clock_start)
+		CALL polzeros (degree, DCMPLX(testProblem), eps, big, small, nitmax, root, radius, err, iterations_p)
+		CALL system_clock(count=clock_stop)
+		timingStatistics(2) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
 		!------------------
 		
 		DEALLOCATE(testProblem)
 		!=======SAVE RESULTS=======
 
 		!DSLMPEP ----------
-		WRITE(1,'(ES16.10)', advance='no') timingStatistics(1)
+		WRITE(1,'(20G15.4)', advance='no') timingStatistics(1)
 		WRITE(1, '(A)', advance='no') ', '
 		WRITE(1,'(ES16.5)', advance='no') DBLE(SUM(iterations_d))/(degree)
 		WRITE(1, '(A)', advance='no') ', '
@@ -92,15 +91,15 @@ PROGRAM driver
 		!------------------
 	
 		!PZEROS -----------
-		!WRITE(1, '(ES16.5)', advance='no') timingStatistics(2)
-		!WRITE(1, '(A)', advance='no') ', '
-		!CALL sort(n, root, radius, err)
-		!WRITE(1, '(ES16.5)', advance='no') iterations
-		!WRITE(1, '(A)', advance='no') ', '
-		!WRITE(1, '(ES16.5)', advance='no') maxval(radius)
+		WRITE(1, '(20G15.4)', advance='no') timingStatistics(2)
+		WRITE(1, '(A)', advance='no') ', '
+		CALL sort(degree, root, radius, err)
+		WRITE(1, '(ES16.5)', advance='no') DBLE(iterations_p)
+		WRITE(1, '(A)', advance='no') ', '
+		WRITE(1, '(ES16.5)', advance='no') maxval(radius)
 		!------------------
 		DEALLOCATE(backwardError,realRoots,imaginaryRoots,iterations_d)
-		!DEALLOCATE(radius,root,testProblem,err)
+		DEALLOCATE(radius,root,err)
 		WRITE(1, *)
 		        
         END DO

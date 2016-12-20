@@ -131,7 +131,7 @@ RETURN
 END FUNCTION ctest
 
 SUBROUTINE sort(n, x, y, e)
-  USE poly_zeroes
+  !USE poly_zeros
   IMPLICIT NONE
   INTEGER, INTENT(IN)               :: n
   COMPLEX (KIND=dp), INTENT(IN OUT) :: x(:)

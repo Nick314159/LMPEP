@@ -1,4 +1,4 @@
-MODULE pzeros
+MODULE poly_zeros
 USE util
 IMPLICIT NONE
 CONTAINS
@@ -730,4 +730,4 @@ END SUBROUTINE start
 !END FUNCTION ctest
 
 
-END MODULE pzeros
+END MODULE poly_zeros

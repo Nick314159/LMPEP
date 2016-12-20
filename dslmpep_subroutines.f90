@@ -1,6 +1,7 @@
 MODULE dslmpep_subroutines
 USE util
 IMPLICIT NONE
+
 CONTAINS
 
 !************************************************************************
@@ -11,17 +12,17 @@ CONTAINS
 ! the number of iterations per root is stored in iter, and the roots are* 
 ! stored in (er,ei).							*
 !************************************************************************
-SUBROUTINE dslm(p, er, ei, be, iter, d)
+SUBROUTINE dslm(p, er, ei, be, d)
 IMPLICIT NONE
 !scalar arguments
 INTEGER, INTENT(IN) :: d
 !array arguments
-INTEGER, INTENT(INOUT) :: iter(:)
-REAL(dp), INTENT(IN) :: p(:)
-REAL(dp), INTENT(INOUT) :: be(:), er(*), ei(*)
+REAL(dp), INTENT(IN) :: p(*)
+REAL(dp), INTENT(INOUT) :: be(*), er(*), ei(*)
 !local scalars
-INTEGER :: i, it, itmax, nzr, nir, td
-REAL(dp) :: tol, tr, ti
+LOGICAL :: check
+INTEGER :: i, it, nzr, nir, td
+REAL(dp) :: tol
 !local arrays
 REAL(dp), DIMENSION(d+1) :: alpha
 !intrinsic procedures
@@ -29,7 +30,7 @@ INTRINSIC :: DABS, DBLE, DSQRT, MAXVAL, SUM
 
 !infinite roots and true degree
 nir=0
-alpha=DABS(p)
+alpha(1:d+1)=DABS(p(1:d+1))
 tol=MAXVAL(alpha)
 DO i=d+1,2,-1
   IF(alpha(i)<eps*tol) THEN
@@ -42,7 +43,7 @@ ENDDO
 td=d-nir
 !degree 1 and 2
 IF(td==0) THEN
-  PRINT*, 'warning: zero polynomial'
+  PRINT*, 'warning: constant polynomial'
 ELSEIF(td==1) THEN
   er(1)=-p(1)/p(2)
   ei(1)=zero
@@ -71,24 +72,23 @@ ELSE
       EXIT
     ENDIF
   ENDDO
+  !backward error for zero and infinite roots
+  be(1:nzr)=zero; be(td+1:d)=zero
+  !stopping criteria alpha (similar to POLZEROS)
+  DO i=1,d+1
+    alpha(i)=alpha(i)*(1+3.8*(i-1))
+  ENDDO
   !Laguerre's method
-  tol=eps*DSQRT(er(td)**2+ei(td)**2)
-  itmax=60
-  iter=itmax
+  tol=eps*(DSQRT(er(td)**2+ei(td)**2)+1)
   DO i=nzr+1,td
+    check=.FALSE.
     DO it=1,itmax
-      tr=er(i);ti=ei(i)
-      IF(DABS(ti)<DSQRT(tr**2+ti**2)*eps) THEN
-        CALL dslcorr(p, alpha, er, ei, be(i), tr, ti, d, i-1)
-        er(i)=er(i)-tr
-        ei(i)=ei(i)-ti
+      IF(DABS(er(i))<DSQRT(er(i)**2+ei(i)**2)*eps) THEN
+        CALL dslcorr(p, alpha, er, ei, be(i), tol, check, d, i)
       ELSE
-        CALL zslcorr(p, alpha, er, ei, be(i), tr, ti, d, i-1)
-        er(i)=er(i)-tr
-        ei(i)=ei(i)-ti
+        CALL zslcorr(p, alpha, er, ei, be(i), tol, check, d, i)
       ENDIF
-      IF(DSQRT(tr**2+ti**2)<tol) THEN
-        iter(i)=it
+      IF(check) THEN
         EXIT
       ENDIF
     ENDDO
@@ -106,52 +106,63 @@ END SUBROUTINE dslm
 ! in (er,ei). Result is returned in complex number (tr,ti), and backward*
 ! error of current approximation is stored in be.			*
 !************************************************************************
-SUBROUTINE dslcorr(p, alpha, er, ei, be, tr, ti, d, n)
+SUBROUTINE dslcorr(p, alpha, er, ei, be, tol, check, d, i)
 IMPLICIT NONE
 !scalar arguments
-INTEGER, INTENT(IN) :: d, n
-REAL(dp), INTENT(INOUT) :: be, tr, ti
+LOGICAL, INTENT(INOUT) :: check
+INTEGER, INTENT(IN) :: d, i
+REAL(dp), INTENT(IN) :: tol
+REAL(dp), INTENT(INOUT) :: be
 !array arguments
-REAL(dp), INTENT(IN) :: p(:), alpha(:), er(*), ei(*)
+REAL(dp), INTENT(IN) :: p(*), alpha(*)
+REAL(dp), INTENT(INOUT) :: er(*), ei(*)
 !local scalars
 INTEGER :: td
-REAL(dp) :: a, b, c
+REAL(dp) :: a, b, c, t
 COMPLEX(dp) :: x1, x2, y1, y2
 !intrinsic procedures
 INTRINSIC :: DBLE, DCMPLX, DIMAG, DSQRT, SUM, ZABS, ZSQRT
 
 !initiate variables
-x1=SUM(DCMPLX(tr-er(1:n),-ei(1:n))**(-1))
-x2=SUM(DCMPLX(tr-er(1:n),-ei(1:n))**(-2))
+t=er(i)
+x1=czero; x2=czero
+DO td=1,i-1
+  y1=DCMPLX(t-er(td),-ei(td))**(-1)
+  x1=x1+y1
+  x2=x2+y1**2
+ENDDO
 !split into 2 cases
-IF(DABS(tr)>1) THEN
+IF(DABS(t)>1) THEN
   !compute a=revp, be
-  CALL drevseval(p, tr, a, d, 0)
-  CALL drevseval(alpha, DABS(tr), be, d, 0)
+  CALL drevseval(p, t, a, d, 0)
+  CALL drevseval(alpha, DABS(t), be, d, 0)
   be=DABS(a)/be
   IF(be<eps) THEN
-    tr=zero;ti=zero
+    check=.TRUE.
+    er(i)=zero
     RETURN
   ELSE
     !solve for b=revp', c=revp''
-    CALL drevseval(p, tr, b, d, 1)
-    CALL drevseval(p, tr, c, d, 2)
+    CALL drevseval(p, t, b, d, 1)
+    CALL drevseval(p, t, c, d, 2)
     !compute y1=p'/p and y2=(p'/p)'
-    y1=tr**(-1)*(d-tr**(-1)*(b/a))
-    y2=tr**(-2)*(d-2*tr**(-1)*(b/a)+tr**(-2)*((b/a)**2-c/a))
+    t=t**(-1)
+    y1=t*(d-t*(b/a))
+    y2=t**2*(d-2*t*(b/a)+t**2*((b/a)**2-c/a))
   ENDIF
 ELSE
   !compute a=p, be
-  CALL dseval(p, tr, a, d, 0)
-  CALL dseval(alpha, DABS(tr), be, d, 0)
+  CALL dseval(p, t, a, d, 0)
+  CALL dseval(alpha, DABS(t), be, d, 0)
   be=DABS(a)/be
   IF(be<eps) THEN
-    tr=zero;ti=zero
+    check=.TRUE.
+    er(i)=zero
     RETURN
   ELSE
     !solve for b=p', c=p''
-    CALL dseval(p, tr, b, d, 1)
-    CALL dseval(p, tr, c, d, 2)
+    CALL dseval(p, t, b, d, 1)
+    CALL dseval(p, t, c, d, 2)
     !compute y1=p'/p and y2=(p'/p)'
     y1=b/a
     y2=y1**2-c/a
@@ -160,16 +171,28 @@ ENDIF
 !remove previously found roots
 x1=y1-x1
 x2=y2-x2
-td=d-n
+td=d-(i-1)
 !denominator of Laguerre correction term
 y1=ZSQRT((td-1)*(td*x2-x1**2))
 y2=x1-y1;y1=x1+y1
 IF(ZABS(y1)>=ZABS(y2)) THEN
-  y1=td/y1
-  tr=DBLE(y1);ti=DIMAG(y1)
+  y1=td*y1**(-1)
+  IF(ZABS(y1)<tol) THEN
+    check=.TRUE.
+    ei(i)=zero
+  ELSE
+    er(i)=er(i)-DBLE(y1)
+    ei(i)=ei(i)-DIMAG(y1)
+  ENDIF
 ELSE
-  y2=td/y2
-  tr=DBLE(y2);ti=DIMAG(y2)
+  y2=td*y2**(-1)
+  IF(ZABS(y2)<tol) THEN
+    check=.TRUE.
+    ei(i)=zero
+  ELSE
+    er(i)=er(i)-DBLE(y2)
+    ei(i)=ei(i)-DIMAG(y2)
+  ENDIF
 ENDIF
 RETURN
 END SUBROUTINE dslcorr
@@ -183,13 +206,16 @@ END SUBROUTINE dslcorr
 ! in (er,ei). Result is return in complex number (tr,ti), and backward	*
 ! error of current approximation is stored in be.			*
 !************************************************************************
-SUBROUTINE zslcorr(p, alpha, er, ei, be, tr, ti, d, n)
+SUBROUTINE zslcorr(p, alpha, er, ei, be, tol, check, d, i)
 IMPLICIT NONE
 !scalar arguments
-INTEGER, INTENT(IN) :: d, n
-REAL(dp), INTENT(INOUT) :: be, tr, ti
+LOGICAL, INTENT(INOUT) :: check
+INTEGER, INTENT(IN) :: d, i
+REAL(dp), INTENT(INOUT) :: tol
+REAL(dp), INTENT(INOUT) :: be
 !array arguments
-REAL(dp), INTENT(IN) :: p(:), alpha(:), er(*), ei(*)
+REAL(dp), INTENT(IN) :: p(*), alpha(*)
+REAL(dp), INTENT(INOUT) :: er(*), ei(*)
 !local scalars
 INTEGER :: td
 COMPLEX(dp) :: a, b, c, t, x1, x2, y1, y2
@@ -197,9 +223,13 @@ COMPLEX(dp) :: a, b, c, t, x1, x2, y1, y2
 INTRINSIC :: DBLE, DCMPLX, DIMAG, DSQRT, SUM, ZABS, ZSQRT
 
 !initiate variables
-t=DCMPLX(tr,ti)
-x1=SUM(DCMPLX(tr-er(1:n),ti-ei(1:n))**(-1))
-x2=SUM(DCMPLX(tr-er(1:n),ti-ei(1:n))**(-2))
+t=DCMPLX(er(i),ei(i))
+x1=czero; x2=czero
+DO td=1,i-1
+  y1=(t-DCMPLX(er(td),ei(td)))**(-1)
+  x1=x1+y1
+  x2=x2+y1**2
+ENDDO
 !split into 2 cases
 IF(ZABS(t)>1) THEN
   !compute a=revp, be
@@ -207,15 +237,16 @@ IF(ZABS(t)>1) THEN
   CALL drevseval(alpha, ZABS(t), be, d, 0)
   be=ZABS(a)/be
   IF(be<eps) THEN
-    tr=zero;ti=zero
+    check=.TRUE.
     RETURN
   ELSE
     !solve for b=revp', c=revp''
     CALL zrevseval(p, t, b, d, 1)
     CALL zrevseval(p, t, c, d, 2)
     !compute y1=p'/p and y2=(p'/p)'
-    y1=t**(-1)*(d-t**(-1)*(b/a))
-    y2=t**(-2)*(d-2*t**(-1)*(b/a)+t**(-2)*((b/a)**2-(c/a)))
+    t=t**(-1)
+    y1=t*(d-t*(b/a))
+    y2=t**2*(d-2*t*(b/a)+t**2*((b/a)**2-c/a))
   ENDIF
 ELSE
   !compute a=p, be
@@ -223,7 +254,7 @@ ELSE
   CALL dseval(alpha, ZABS(t), be, d, 0)
   be=ZABS(a)/be
   IF(be<eps) THEN
-    tr=zero;ti=zero
+    check=.TRUE.
     RETURN
   ELSE
     !solve for b=p', c=p''
@@ -237,16 +268,26 @@ ENDIF
 !remove previously found roots
 x1=y1-x1
 x2=y2-x2
-td=d-n
+td=d-(i-1)
 !denominator of Laguerre correction term
 y1=ZSQRT((td-1)*(td*x2-x1**2))
 y2=x1-y1;y1=x1+y1
 IF(ZABS(y1)>=ZABS(y2)) THEN
-  y1=td/y1
-  tr=DBLE(y1);ti=DIMAG(y1)
+  y1=td*y1**(-1)
+  IF(ZABS(y1)<tol) THEN
+    check=.TRUE.
+  ELSE
+    er(i)=er(i)-DBLE(y1)
+    ei(i)=ei(i)-DIMAG(y1)
+  ENDIF
 ELSE
-  y2=td/y2
-  tr=DBLE(y2);ti=DIMAG(y2)
+  y2=td*y2**(-1)
+  IF(ZABS(y2)<tol) THEN
+    check=.TRUE.
+  ELSE
+    er(i)=er(i)-DBLE(y2)
+    ei(i)=ei(i)-DIMAG(y2)
+  ENDIF
 ENDIF
 RETURN
 END SUBROUTINE zslcorr
@@ -265,12 +306,12 @@ INTEGER, INTENT(IN) :: d, der
 REAL(dp), INTENT(IN) :: t
 REAL(dp), INTENT(INOUT) :: a
 !array arguments
-REAL(dp), INTENT(IN) :: p(:)
+REAL(dp), INTENT(IN) :: p(*)
 !local scalars
 INTEGER :: k
 REAL(dp) :: y
 
-y=1/t
+y=t**(-1)
 IF(der==0) THEN
   a=p(1)
   DO k=2,d+1
@@ -305,7 +346,7 @@ INTEGER, INTENT(IN) :: d, der
 REAL(dp), INTENT(IN) :: t
 REAL(dp), INTENT(INOUT) :: a
 !array arguments
-REAL(dp), INTENT(IN) :: p(:)
+REAL(dp), INTENT(IN) :: p(*)
 !local scalars
 INTEGER :: k
 
@@ -342,12 +383,12 @@ INTEGER, INTENT(IN) :: d, der
 COMPLEX(dp), INTENT(IN) :: t
 COMPLEX(dp), INTENT(INOUT) :: a
 !array arguments
-REAL(dp), INTENT(IN) :: p(:)
+REAL(dp), INTENT(IN) :: p(*)
 !local scalars
 INTEGER :: k
 COMPLEX(dp) :: y
 
-y=1/t
+y=t**(-1)
 IF(der==0) THEN
   a=p(1)
   DO k=2,d+1
@@ -381,7 +422,7 @@ INTEGER, INTENT(IN) :: d, der
 COMPLEX(dp), INTENT(IN) :: t
 COMPLEX(dp), INTENT(INOUT) :: a
 !array arguments
-REAL(dp), INTENT(IN) :: p(:)
+REAL(dp), INTENT(IN) :: p(*)
 !local scalars
 INTEGER :: k
 
@@ -418,7 +459,7 @@ IMPLICIT NONE
 !scalar arguments
 INTEGER, INTENT(IN) :: d
 !array arguments
-REAL(dp), INTENT(IN) :: alpha(:)
+REAL(dp), INTENT(IN) :: alpha(*)
 REAL(dp), INTENT(INOUT) :: er(*), ei(*)
 !parameters
 REAL(dp), PARAMETER :: pi2 = 6.2831853071795865_dp, sigma = 0.7_dp
@@ -458,212 +499,5 @@ DO i=2,d+1
 ENDDO
 RETURN
 END SUBROUTINE dsstart
-
-!************************************************************************
-!                             SUBROUTINE CNVEX                          *
-!************************************************************************
-! Compute  the upper convex hull of the set (i,a(i)), i.e., the set of  *
-! vertices (i_k,a(i_k)), k=1,2,...,m, such that the points (i,a(i)) lie *
-! below the straight lines passing through two consecutive vertices.    *
-! The abscissae of the vertices of the convex hull equal the indices of *
-! the TRUE  components of the logical output vector H.                  *
-! The used method requires O(nlog n) comparisons and is based on a      *
-! divide-and-conquer technique. Once the upper convex hull of two       *
-! contiguous sets  (say, {(1,a(1)),(2,a(2)),...,(k,a(k))} and           *
-! {(k,a(k)), (k+1,a(k+1)),...,(q,a(q))}) have been computed, then       *
-! the upper convex hull of their union is provided by the subroutine    *
-! CMERGE. The program starts with sets made up by two consecutive       *
-! points, which trivially constitute a convex hull, then obtains sets   *
-! of 3,5,9... points,  up to  arrive at the entire set.                 *
-! The program uses the subroutine  CMERGE; the subroutine CMERGE uses   *
-! the subroutines LEFT, RIGHT and CTEST. The latter tests the convexity *
-! of the angle formed by the points (i,a(i)), (j,a(j)), (k,a(k)) in the *
-! vertex (j,a(j)) up to within a given tolerance TOLER, where i<j<k.    *
-!************************************************************************
-!SUBROUTINE cnvex(n, a, h)
-!IMPLICIT NONE
-!INTEGER, INTENT(IN)        :: n
-!LOGICAL, INTENT(OUT)       :: h(:)
-!REAL(dp), INTENT(IN) :: a(:)
-
-! Local variables
-!INTEGER :: i, j, k, m, nj, jc
-
-!h(1:n) = .true.
-
-! compute K such that N-2 <= 2**K < N-1
-!k = INT(LOG(n-2.0_dp)/LOG(2.0_dp))
-!IF(2**(k+1) <= (n-2)) k = k+1
-
-! For each M=1,2,4,8,...,2**K, consider the NJ pairs of consecutive
-! sets made up by M+1 points having the common vertex
-! (JC,A(JC)), where JC=M*(2*J+1)+1 and J=0,...,NJ,
-! NJ = MAX(0, INT((N-2-M)/(M+M))).
-! Compute the upper convex hull of their union by means of subroutine CMERGE
-!m = 1
-!DO i = 0, k
-!  nj = MAX(0, INT((n-2-m)/(m+m)))
-!  DO j = 0, nj
-!    jc = (j+j+1)*m+1
-!    CALL cmerge(n, a, jc, m, h)
-!  ENDDO
-!  m = m+m
-!ENDDO
-!RETURN
-!END SUBROUTINE cnvex
-
-!************************************************************************
-!                             SUBROUTINE LEFT                           *
-!************************************************************************
-! Given as input the integer I and the vector H of logical, compute the *
-! the maximum integer IL such that IL<I and H(IL) is TRUE.              *
-!************************************************************************
-! Input variables:                                                      *
-!     H   : vector of logical                                           *
-!     I   : integer                                                     *
-!************************************************************************
-! Output variable:                                                      *
-!     IL  : maximum integer such that IL<I, H(IL)=.TRUE.                *
-!************************************************************************
-!SUBROUTINE left(h, i, il)
-!IMPLICIT NONE
-!INTEGER, INTENT(IN)  :: i
-!INTEGER, INTENT(OUT) :: il
-!LOGICAL, INTENT(IN)  :: h(:)
-
-!DO il = i-1, 0, -1
-!  IF (h(il)) RETURN
-!ENDDO
-!RETURN
-!END SUBROUTINE left
-
-!************************************************************************
-!                             SUBROUTINE RIGHT                          *
-!************************************************************************
-!************************************************************************
-! Given as input the integer I and the vector H of logical, compute the *
-! the minimum integer IR such that IR>I and H(IL) is TRUE.              *
-!************************************************************************
-!************************************************************************
-! Input variables:                                                      *
-!     N   : length of the vector H                                      *
-!     H   : vector of logical                                           *
-!     I   : integer                                                     *
-!************************************************************************
-! Output variable:                                                      *
-!     IR  : minimum integer such that IR>I, H(IR)=.TRUE.                *
-!************************************************************************
-!SUBROUTINE right(n, h, i, ir)
-!MPLICIT NONE
-!INTEGER, INTENT(IN)  :: n, i
-!INTEGER, INTENT(OUT) :: ir
-!LOGICAL, INTENT(IN)  :: h(:)
-
-!DO ir = i+n, 1
-!  IF (h(ir)) RETURN
-!ENDDO
-!RETURN
-!END SUBROUTINE right
-
-!************************************************************************
-!                             SUBROUTINE CMERGE                         *
-!************************************************************************
-! Given the upper convex hulls of two consecutive sets of pairs         *
-! (j,A(j)), compute the upper convex hull of their union                *
-!************************************************************************
-! Input variables:                                                      *
-!     N    : length of the vector A                                     *
-!     A    : vector defining the points (j,A(j))                        *
-!     I    : abscissa of the common vertex of the two sets              *
-!     M    : the number of elements of each set is M+1                  *
-!************************************************************************
-! Input/Output variable:                                                *
-!     H    : vector defining the vertices of the convex hull, i.e.,     *
-!            H(j) is .TRUE. if (j,A(j)) is a vertex of the convex hull  *
-!            This vector is used also as output.                        *
-!************************************************************************
-!SUBROUTINE cmerge(n, a, i, m, h)
-!IMPLICIT NONE
-!INTEGER, INTENT(IN) :: n, m, i
-!LOGICAL, INTENT(IN OUT) :: h(:)
-!REAL(dp), INTENT(IN) :: a(:)
-
-! Local variables
-!INTEGER :: ir, il, irr, ill
-!LOGICAL :: tstl, tstr
-
-! at the left and the right of the common vertex (I,A(I)) determine
-! the abscissae IL,IR, of the closest vertices of the upper convex
-! hull of the left and right sets, respectively
-!CALL left(h, i, il)
-!CALL right(n, h, i, ir)
-
-! check the convexity of the angle formed by IL,I,IR
-!IF (ctest(a, il, i, ir)) THEN
-!  RETURN
-!ELSE
-! continue the search of a pair of vertices in the left and right
-! sets which yield the upper convex hull
-!  h(i) = .false.
-!  DO
-!    IF (il == (i-m)) THEN
-!      tstl = .true.
-!    ELSE
-!      CALL left(h, il, ill)
-!      tstl = ctest(a, ill, il, ir)
-!    ENDIF
-!    IF (ir == MIN(n, i+m)) THEN
-!      tstr = .true.
-!    ELSE
-!      CALL right(n, h, ir, irr)
-!      tstr = ctest(a, il, ir, irr)
-!    ENDIF
-!    h(il) = tstl
-!    h(ir) = tstr
-!    IF (tstl.AND.tstr) RETURN
-!    IF(.NOT.tstl) il = ill
-!    IF(.NOT.tstr) ir = irr
-!  ENDDO
-!ENDIF
-!RETURN
-!END SUBROUTINE cmerge
-
-!************************************************************************
-!                             FUNCTION CTEST                            *
-!************************************************************************
-! Test the convexity of the angle formed by (IL,A(IL)), (I,A(I)),       *
-! (IR,A(IR)) at the vertex (I,A(I)), up to within the tolerance         *
-! TOLER. If convexity holds then the function is set to .TRUE.,         *
-! otherwise CTEST=.FALSE. The parameter TOLER is set to 0.4 by default. *
-!************************************************************************
-! Input variables:                                                      *
-!     A       : vector of double                                        *
-!     IL,I,IR : integers such that IL < I < IR                          *
-!************************************************************************
-! Output:                                                               *
-!     .TRUE. if the angle formed by (IL,A(IL)), (I,A(I)), (IR,A(IR)) at *
-!            the vertex (I,A(I)), is convex up to within the tolerance  *
-!            TOLER, i.e., if                                            *
-!            (A(I)-A(IL))*(IR-I)-(A(IR)-A(I))*(I-IL)>TOLER.             *
-!     .FALSE.,  otherwise.                                              *
-!************************************************************************
-!FUNCTION ctest(a, il, i, ir) RESULT(OK)
-!IMPLICIT NONE
-!INTEGER, INTENT(IN) :: i, il, ir
-!REAL(dp), INTENT(IN) :: a(:)
-!LOGICAL :: OK
-
-! Local variables
-!REAL(dp) :: s1, s2
-!REAL(dp), PARAMETER :: tol = 0.4_dp
-
-!s1 = a(i) - a(il)
-!s2 = a(ir) - a(i)
-!s1 = s1*(ir-i)
-!s2 = s2*(i-il)
-!OK = .false.
-!IF(s1 > (s2+tol)) OK = .true.
-!RETURN
-!END FUNCTION ctest
 
 END MODULE dslmpep_subroutines

@@ -1,5 +1,5 @@
 #!/bin/bash
-date && ./a.out 1 $1 2 && cat results/output.csv && date
+date && ./a.out $1 $2 $3 && cat results/output.csv && date
 
 
 

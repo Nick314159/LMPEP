@@ -26,7 +26,7 @@ REAL(dp) :: tol
 !local arrays
 REAL(dp), DIMENSION(d+1) :: alpha
 !intrinsic procedures
-INTRINSIC :: DABS, DBLE, DSQRT, MAXVAL, SUM
+INTRINSIC :: DABS, DBLE, DSQRT, MAX, MAXVAL
 
 !infinite roots and true degree
 nir=0
@@ -79,11 +79,11 @@ ELSE
     alpha(i)=alpha(i)*(1+3.8*(i-1))
   ENDDO
   !Laguerre's method
-  tol=eps*(DSQRT(er(td)**2+ei(td)**2)+1)
   DO i=nzr+1,td
     check=.FALSE.
     DO it=1,itmax
-      IF(DABS(er(i))<DSQRT(er(i)**2+ei(i)**2)*eps) THEN
+      tol=MAX(eps*DSQRT(er(i)**2+ei(i)**2), eps)
+      IF(DABS(ei(i))<tol) THEN
         CALL dslcorr(p, alpha, er, ei, be(i), tol, check, d, i)
       ELSE
         CALL zslcorr(p, alpha, er, ei, be(i), tol, check, d, i)
@@ -138,8 +138,8 @@ IF(DABS(t)>1) THEN
   CALL drevseval(alpha, DABS(t), be, d, 0)
   be=DABS(a)/be
   IF(be<eps) THEN
+    ei(i)=zero
     check=.TRUE.
-    er(i)=zero
     RETURN
   ELSE
     !solve for b=revp', c=revp''
@@ -156,8 +156,8 @@ ELSE
   CALL dseval(alpha, DABS(t), be, d, 0)
   be=DABS(a)/be
   IF(be<eps) THEN
+    ei(i)=zero
     check=.TRUE.
-    er(i)=zero
     RETURN
   ELSE
     !solve for b=p', c=p''
@@ -178,20 +178,20 @@ y2=x1-y1;y1=x1+y1
 IF(ZABS(y1)>=ZABS(y2)) THEN
   y1=td*y1**(-1)
   IF(ZABS(y1)<tol) THEN
-    check=.TRUE.
     ei(i)=zero
+    check=.TRUE.
   ELSE
     er(i)=er(i)-DBLE(y1)
-    ei(i)=ei(i)-DIMAG(y1)
+    ei(i)=-DIMAG(y1)
   ENDIF
 ELSE
   y2=td*y2**(-1)
   IF(ZABS(y2)<tol) THEN
-    check=.TRUE.
     ei(i)=zero
+    check=.TRUE.
   ELSE
     er(i)=er(i)-DBLE(y2)
-    ei(i)=ei(i)-DIMAG(y2)
+    ei(i)=-DIMAG(y2)
   ENDIF
 ENDIF
 RETURN

@@ -12,25 +12,25 @@ CONTAINS
 ! the number of iterations per root is stored in iter, and the roots are* 
 ! stored in (er,ei).							*
 !************************************************************************
-SUBROUTINE dslm(p, er, ei, be, d)
+SUBROUTINE dslm(p, er, ei, radius, d)
 IMPLICIT NONE
 !scalar arguments
 INTEGER, INTENT(IN) :: d
 !array arguments
-REAL(dp), INTENT(IN) :: p(*)
-REAL(dp), INTENT(INOUT) :: be(*), er(*), ei(*)
+REAL(dp), INTENT(IN) :: p(:)
+REAL(dp), INTENT(INOUT) :: radius(:), er(:), ei(:)
 !local scalars
-LOGICAL :: check
+LOGICAL :: check, conj
 INTEGER :: i, it, nzr, nir, td
 REAL(dp) :: tol
 !local arrays
 REAL(dp), DIMENSION(d+1) :: alpha
 !intrinsic procedures
-INTRINSIC :: DABS, DBLE, DSQRT, MAX, MAXVAL
+INTRINSIC :: DABS, DBLE, DSQRT, MAXVAL
 
 !infinite roots and true degree
 nir=0
-alpha(1:d+1)=DABS(p(1:d+1))
+alpha=DABS(p(1:d+1))
 tol=MAXVAL(alpha)
 DO i=d+1,2,-1
   IF(alpha(i)<eps*tol) THEN
@@ -72,27 +72,27 @@ ELSE
       EXIT
     ENDIF
   ENDDO
-  !backward error for zero and infinite roots
-  be(1:nzr)=zero; be(td+1:d)=zero
   !stopping criteria alpha (similar to POLZEROS)
   DO i=1,d+1
     alpha(i)=alpha(i)*(1+3.8*(i-1))
   ENDDO
   !Laguerre's method
-  DO i=nzr+1,td
-    check=.FALSE.
-    DO it=1,itmax
-      tol=MAX(eps*DSQRT(er(i)**2+ei(i)**2), eps)
-      IF(DABS(ei(i))<tol) THEN
-        CALL dslcorr(p, alpha, er, ei, be(i), tol, check, d, i)
-      ELSE
-        CALL zslcorr(p, alpha, er, ei, be(i), tol, check, d, i)
-      ENDIF
-      IF(check) THEN
-        EXIT
-      ENDIF
-    ENDDO
-  ENDDO
+  conj=.TRUE.
+loop1: DO i=nzr+1,td
+         check=.FALSE.
+loop2:   DO it=1,itmax
+           check=(it==itmax)
+           tol=MAX(eps*DCMOD(er(i),ei(i)), eps)
+           IF(DABS(ei(i))<tol) THEN
+             CALL dslcorr(p, alpha, er, ei, radius(i), tol, check, d, i)
+           ELSE
+             CALL zslcorr(p, alpha, er, ei, radius(i), tol, check, d, i)
+           ENDIF
+           IF(check) THEN
+             EXIT loop2
+           ENDIF
+         ENDDO loop2
+       ENDDO loop1
 ENDIF
 RETURN
 END SUBROUTINE dslm
@@ -106,62 +106,60 @@ END SUBROUTINE dslm
 ! in (er,ei). Result is returned in complex number (tr,ti), and backward*
 ! error of current approximation is stored in be.			*
 !************************************************************************
-SUBROUTINE dslcorr(p, alpha, er, ei, be, tol, check, d, i)
+SUBROUTINE dslcorr(p, alpha, er, ei, radius, tol, check, d, i)
 IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT) :: check
 INTEGER, INTENT(IN) :: d, i
 REAL(dp), INTENT(IN) :: tol
-REAL(dp), INTENT(INOUT) :: be
+REAL(dp), INTENT(INOUT) :: radius
 !array arguments
-REAL(dp), INTENT(IN) :: p(*), alpha(*)
-REAL(dp), INTENT(INOUT) :: er(*), ei(*)
+REAL(dp), INTENT(IN) :: p(:), alpha(:)
+REAL(dp), INTENT(INOUT) :: er(:), ei(:)
 !local scalars
 INTEGER :: td
-REAL(dp) :: a, b, c, t
-COMPLEX(dp) :: x1, x2, y1, y2
+REAL(dp) :: a, b, be, c, t
+DOUBLE COMPLEX :: x1, x2, y1, y2
 !intrinsic procedures
-INTRINSIC :: DBLE, DCMPLX, DIMAG, DSQRT, SUM, ZABS, ZSQRT
+INTRINSIC :: DABS, DBLE, DCMPLX, DIMAG, ZABS, ZSQRT
 
 !initiate variables
 t=er(i)
 x1=czero; x2=czero
 DO td=1,i-1
-  y1=DCMPLX(t-er(td),-ei(td))**(-1)
+  y1=1/DCMPLX(t-er(td),-ei(td))
   x1=x1+y1
   x2=x2+y1**2
 ENDDO
 !split into 2 cases
 IF(DABS(t)>1) THEN
-  !compute a=revp, be
+  !compute a=revp, b=revp, be
+  t=1/t
   CALL drevseval(p, t, a, d, 0)
+  CALL drevseval(p, t, b, d, 1)
   CALL drevseval(alpha, DABS(t), be, d, 0)
-  be=DABS(a)/be
-  IF(be<eps) THEN
+  IF(DABS(a)<be*eps) THEN
     ei(i)=zero
     check=.TRUE.
-    RETURN
+    GO TO 10
   ELSE
-    !solve for b=revp', c=revp''
-    CALL drevseval(p, t, b, d, 1)
+    !compute b=revp', c=revp''
     CALL drevseval(p, t, c, d, 2)
     !compute y1=p'/p and y2=(p'/p)'
-    t=t**(-1)
     y1=t*(d-t*(b/a))
     y2=t**2*(d-2*t*(b/a)+t**2*((b/a)**2-c/a))
   ENDIF
 ELSE
-  !compute a=p, be
+  !compute a=p, b=p', be
   CALL dseval(p, t, a, d, 0)
+  CALL dseval(p, t, b, d, 1)
   CALL dseval(alpha, DABS(t), be, d, 0)
-  be=DABS(a)/be
-  IF(be<eps) THEN
+  IF(DABS(a)<be*eps) THEN
     ei(i)=zero
     check=.TRUE.
-    RETURN
+    GO TO 10
   ELSE
-    !solve for b=p', c=p''
-    CALL dseval(p, t, b, d, 1)
+    !compute b=p', c=p''
     CALL dseval(p, t, c, d, 2)
     !compute y1=p'/p and y2=(p'/p)'
     y1=b/a
@@ -174,27 +172,37 @@ x2=y2-x2
 td=d-(i-1)
 !denominator of Laguerre correction term
 y1=ZSQRT((td-1)*(td*x2-x1**2))
-y2=x1-y1;y1=x1+y1
+y2=x1-y1; y1=x1+y1
 IF(ZABS(y1)>=ZABS(y2)) THEN
-  y1=td*y1**(-1)
+  y1=td/y1
   IF(ZABS(y1)<tol) THEN
     ei(i)=zero
     check=.TRUE.
+    GO TO 10
   ELSE
     er(i)=er(i)-DBLE(y1)
     ei(i)=-DIMAG(y1)
   ENDIF
 ELSE
-  y2=td*y2**(-1)
+  y2=td/y2
   IF(ZABS(y2)<tol) THEN
     ei(i)=zero
     check=.TRUE.
+    GO TO 10
   ELSE
     er(i)=er(i)-DBLE(y2)
     ei(i)=-DIMAG(y2)
   ENDIF
 ENDIF
-RETURN
+10 IF(check) THEN
+     t=er(i)
+     IF(DABS(t)>1) THEN
+       radius=DABS(a)/DABS(d*a-b/t)
+     ELSE
+       radius=DABS(a)/(DABS(t)*DABS(b))
+     ENDIF
+   ENDIF
+   RETURN
 END SUBROUTINE dslcorr
 
 !************************************************************************
@@ -206,63 +214,62 @@ END SUBROUTINE dslcorr
 ! in (er,ei). Result is return in complex number (tr,ti), and backward	*
 ! error of current approximation is stored in be.			*
 !************************************************************************
-SUBROUTINE zslcorr(p, alpha, er, ei, be, tol, check, d, i)
+SUBROUTINE zslcorr(p, alpha, er, ei, radius, tol, check, d, i)
 IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT) :: check
 INTEGER, INTENT(IN) :: d, i
-REAL(dp), INTENT(INOUT) :: tol
-REAL(dp), INTENT(INOUT) :: be
+REAL(dp), INTENT(IN) :: tol
+REAL(dp), INTENT(INOUT) :: radius
 !array arguments
-REAL(dp), INTENT(IN) :: p(*), alpha(*)
-REAL(dp), INTENT(INOUT) :: er(*), ei(*)
+REAL(dp), INTENT(IN) :: p(:), alpha(:)
+REAL(dp), INTENT(INOUT) :: er(:), ei(:)
 !local scalars
 INTEGER :: td
+REAL(dp) :: be
 COMPLEX(dp) :: a, b, c, t, x1, x2, y1, y2
 !intrinsic procedures
-INTRINSIC :: DBLE, DCMPLX, DIMAG, DSQRT, SUM, ZABS, ZSQRT
+INTRINSIC :: DBLE, DCMPLX, DIMAG, ZABS, ZSQRT
 
 !initiate variables
 t=DCMPLX(er(i),ei(i))
 x1=czero; x2=czero
 DO td=1,i-1
-  y1=(t-DCMPLX(er(td),ei(td)))**(-1)
+  y1=1/(t-DCMPLX(er(td),ei(td)))
   x1=x1+y1
   x2=x2+y1**2
 ENDDO
 !split into 2 cases
 IF(ZABS(t)>1) THEN
-  !compute a=revp, be
+  !compute a=revp, b=revp', be
+  t=1/t
   CALL zrevseval(p, t, a, d, 0)
+  CALL zrevseval(p, t, b, d, 1)
   CALL drevseval(alpha, ZABS(t), be, d, 0)
-  be=ZABS(a)/be
-  IF(be<eps) THEN
+  IF(ZABS(a)<be*eps) THEN
     check=.TRUE.
-    RETURN
+    GO TO 20
   ELSE
-    !solve for b=revp', c=revp''
-    CALL zrevseval(p, t, b, d, 1)
+    !compute c=revp''
     CALL zrevseval(p, t, c, d, 2)
     !compute y1=p'/p and y2=(p'/p)'
-    t=t**(-1)
     y1=t*(d-t*(b/a))
     y2=t**2*(d-2*t*(b/a)+t**2*((b/a)**2-c/a))
   ENDIF
 ELSE
-  !compute a=p, be
+  !compute a=p, b=p', be
   CALL zseval(p, t, a, d, 0)
+  CALL zseval(p, t, b, d, 1)
   CALL dseval(alpha, ZABS(t), be, d, 0)
-  be=ZABS(a)/be
-  IF(be<eps) THEN
+  IF(ZABS(a)<be*eps) THEN
     check=.TRUE.
-    RETURN
+    GO TO 20
   ELSE
     !solve for b=p', c=p''
-    CALL zseval(p, t, b, d, 1)
     CALL zseval(p, t, c, d, 2)
     !compute y1=p'/p and y2=(p'/p)'
     y1=b/a
-    y2=y1**2-(c/a)
+    y2=y1**2-c/a
   ENDIF
 ENDIF
 !remove previously found roots
@@ -271,25 +278,35 @@ x2=y2-x2
 td=d-(i-1)
 !denominator of Laguerre correction term
 y1=ZSQRT((td-1)*(td*x2-x1**2))
-y2=x1-y1;y1=x1+y1
+y2=x1-y1; y1=x1+y1
 IF(ZABS(y1)>=ZABS(y2)) THEN
-  y1=td*y1**(-1)
+  y1=td/y1
   IF(ZABS(y1)<tol) THEN
     check=.TRUE.
+    GO TO 20
   ELSE
     er(i)=er(i)-DBLE(y1)
     ei(i)=ei(i)-DIMAG(y1)
   ENDIF
 ELSE
-  y2=td*y2**(-1)
+  y2=td/y2
   IF(ZABS(y2)<tol) THEN
     check=.TRUE.
+    GO TO 20
   ELSE
     er(i)=er(i)-DBLE(y2)
     ei(i)=ei(i)-DIMAG(y2)
   ENDIF
 ENDIF
-RETURN
+20 IF(check) THEN
+     t=DCMPLX(er(i),ei(i))
+     IF(ZABS(t)>1) THEN
+       radius=ZABS(a)/ZABS(d*a-b/t)
+     ELSE
+       radius=ZABS(a)/(ZABS(t)*ZABS(b))
+     ENDIF
+   ENDIF
+   RETURN
 END SUBROUTINE zslcorr
 
 !************************************************************************
@@ -306,26 +323,24 @@ INTEGER, INTENT(IN) :: d, der
 REAL(dp), INTENT(IN) :: t
 REAL(dp), INTENT(INOUT) :: a
 !array arguments
-REAL(dp), INTENT(IN) :: p(*)
+REAL(dp), INTENT(IN) :: p(:)
 !local scalars
 INTEGER :: k
-REAL(dp) :: y
 
-y=t**(-1)
 IF(der==0) THEN
   a=p(1)
   DO k=2,d+1
-    a=y*a+p(k)
+    a=t*a+p(k)
   ENDDO
 ELSEIF(der==1) THEN
   a=d*p(1)
   DO k=2,d
-    a=y*a+(d-k+1)*p(k)
+    a=t*a+(d-k+1)*p(k)
   ENDDO
 ELSE
-  a=d*(d-1)*P(1)
+  a=d*(d-1)*p(1)
   DO k=2,d-1
-    a=y*a+(d-k+1)*(d-k)*p(k)
+    a=t*a+(d-k+1)*(d-k)*p(k)
   ENDDO
 ENDIF
 RETURN
@@ -346,7 +361,7 @@ INTEGER, INTENT(IN) :: d, der
 REAL(dp), INTENT(IN) :: t
 REAL(dp), INTENT(INOUT) :: a
 !array arguments
-REAL(dp), INTENT(IN) :: p(*)
+REAL(dp), INTENT(IN) :: p(:)
 !local scalars
 INTEGER :: k
 
@@ -383,26 +398,24 @@ INTEGER, INTENT(IN) :: d, der
 COMPLEX(dp), INTENT(IN) :: t
 COMPLEX(dp), INTENT(INOUT) :: a
 !array arguments
-REAL(dp), INTENT(IN) :: p(*)
+REAL(dp), INTENT(IN) :: p(:)
 !local scalars
 INTEGER :: k
-COMPLEX(dp) :: y
 
-y=t**(-1)
 IF(der==0) THEN
   a=p(1)
   DO k=2,d+1
-    a=y*a+p(k)
+    a=t*a+p(k)
   ENDDO
 ELSEIF(der==1) THEN
   a=d*p(1)
   DO k=2,d
-    a=y*a+(d-k+1)*p(k)
+    a=t*a+(d-k+1)*p(k)
   ENDDO
 ELSE
   a=d*(d-1)*P(1)
   DO k=2,d-1
-    a=y*a+(d-k+1)*(d-k)*p(k)
+    a=t*a+(d-k+1)*(d-k)*p(k)
   ENDDO
 ENDIF
 RETURN
@@ -422,7 +435,7 @@ INTEGER, INTENT(IN) :: d, der
 COMPLEX(dp), INTENT(IN) :: t
 COMPLEX(dp), INTENT(INOUT) :: a
 !array arguments
-REAL(dp), INTENT(IN) :: p(*)
+REAL(dp), INTENT(IN) :: p(:)
 !local scalars
 INTEGER :: k
 
@@ -459,8 +472,8 @@ IMPLICIT NONE
 !scalar arguments
 INTEGER, INTENT(IN) :: d
 !array arguments
-REAL(dp), INTENT(IN) :: alpha(*)
-REAL(dp), INTENT(INOUT) :: er(*), ei(*)
+REAL(dp), INTENT(IN) :: alpha(:)
+REAL(dp), INTENT(INOUT) :: er(:), ei(:)
 !parameters
 REAL(dp), PARAMETER :: pi2 = 6.2831853071795865_dp, sigma = 0.7_dp
 !local scalars
@@ -473,7 +486,7 @@ REAL(dp), DIMENSION(d+1) :: a
 INTRINSIC :: DCOS, DEXP, DLOG, DSIN
 
 !compute log(alpha)
-DO I=1,d+1
+DO i=1,d+1
   IF(alpha(i)>=eps) THEN
     a(i)=DLOG(alpha(i))
   ELSE
@@ -483,7 +496,7 @@ ENDDO
 !compute upper convex hull
 CALL cnvex(d+1,a,h)
 !compute initial estimates
-iold=1;c=0;th=pi2/d
+iold=1; c=0; th=pi2/d
 DO i=2,d+1
   IF(h(i)) THEN
     nzeros=i-iold
@@ -499,5 +512,22 @@ DO i=2,d+1
 ENDDO
 RETURN
 END SUBROUTINE dsstart
+
+!************************************************************************
+!			SUBROUTINE DCMOD				*
+!************************************************************************
+FUNCTION dcmod(a, b) RESULT(r)
+IMPLICIT NONE
+REAL(dp), INTENT(IN) :: a, b
+REAL(dp) :: r
+
+IF(DABS(a)<DABS(b)) THEN
+  r=DABS(b)*DSQRT(1+(a/b)**2)
+ELSE
+  r=DABS(a)*DSQRT(1+(b/a)**2)
+ENDIF
+
+RETURN
+END FUNCTION dcmod
 
 END MODULE dslmpep_subroutines

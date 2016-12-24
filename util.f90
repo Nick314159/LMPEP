@@ -3,8 +3,8 @@ MODULE util
 IMPLICIT NONE
 !parameters
 INTEGER, PARAMETER :: dp=kind(0.0D0), itmax=60
-REAL(dp), PARAMETER :: eps=EPSILON(0.0_dp), big=HUGE(0.0_dp), small=TINY(0.0_dp)
 REAL(dp), PARAMETER :: zero=0.0_dp, one=1.0_dp
+REAL(dp), PARAMETER :: eps=EPSILON(one), big=HUGE(one), small=TINY(one)
 COMPLEX(dp), PARAMETER :: czero=DCMPLx(zero), cone=DCMPLX(one)
 CONTAINS
 

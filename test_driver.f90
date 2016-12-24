@@ -6,7 +6,7 @@ PROGRAM driver
     !=======VARIABLES=======
     !Common
     !CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
-    CHARACTER(*), PARAMETER :: resultsDir="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/results/"
+    CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
     INTEGER, DIMENSION(4) :: iseed
     REAL (KIND=dp), DIMENSION(:), ALLOCATABLE  ::  testProblem
     INTEGER :: clock, clock_rate, clock_start, clock_stop
@@ -16,8 +16,9 @@ PROGRAM driver
     CHARACTER *100 BUFFER
 
     !DSLMPEP ----------
-    INTEGER :: i
+    INTEGER :: i, j
     REAL(dp), DIMENSION(:), ALLOCATABLE :: backwardError, realRoots, imaginaryRoots
+    COMPLEX(dp) :: a, b, t
     !------------------
 	
     !PZEROS -----------
@@ -69,7 +70,7 @@ PROGRAM driver
             CALL dslm(testProblem, realRoots, imaginaryRoots, radius, degree)
             CALL SYSTEM_CLOCK(count=clock_stop)
             timingStatistics(i,1) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
-            radStats(i,1)=MAXVAL(radius)
+            !radStats(i,1)=MAXVAL(radius)
             !------------------
 		
             !PZEROS -----------
@@ -78,8 +79,37 @@ PROGRAM driver
             CALL polzeros (degree, DCMPLX(testProblem), eps, big, small, itmax, root, radius, err, iterations_p)
             CALL system_clock(count=clock_stop)
             timingStatistics(i,2) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
-            radStats(i,2)=MAXVAL(radius)
+            !radStats(i,2)=MAXVAL(radius)
             !------------------
+
+            DO j=1,degree
+              !DSLMPEP
+              t=DCMPLX(realRoots(j),imaginaryRoots(j))
+              IF(ZABS(t)>1) THEN
+                CALL zrevseval(testProblem, 1/t, a, degree, 0)
+                CALL zrevseval(testProblem, 1/t, b, degree, 1)
+                radius(j)=ZABS(a)/ZABS(degree*a-b/t)
+              ELSE
+                CALL zseval(testProblem, t, a, degree, 0)
+                CALL zseval(testProblem, t, b, degree, 1)
+                radius(j)=ZABS(a)/(ZABS(t)*ZABS(b))
+              ENDIF
+            ENDDO
+            radStats(i,1)=MAXVAL(radius)
+            Do j=1,degree
+              !PZEROS
+              t=root(j)
+              IF(ZABS(t)>1) THEN
+                CALL zrevseval(testProblem, 1/t, a, degree, 0)
+                CALL zrevseval(testProblem, 1/t, b, degree, 1)
+                radius(j)=ZABS(a)/ZABS(degree*a-b/t)
+              ELSE
+                CALL zseval(testProblem, t, a, degree, 0)
+                CALL zseval(testPRoblem, t, b, degree, 1)
+                radius(j)=ZABS(a)/(ZABS(t)*ZABS(b))
+              ENDIF
+            ENDDO
+            radStats(i,2)=MAXVAL(radius)
 		
             DEALLOCATE(testProblem)
             DEALLOCATE(radius,realRoots,imaginaryRoots)

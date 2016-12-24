@@ -20,7 +20,7 @@ INTEGER, INTENT(IN) :: d
 REAL(dp), INTENT(IN) :: p(:)
 REAL(dp), INTENT(INOUT) :: radius(:), er(:), ei(:)
 !local scalars
-LOGICAL :: check, conj
+LOGICAL :: check
 INTEGER :: i, it, nzr, nir, td
 REAL(dp) :: tol
 !local arrays
@@ -73,11 +73,10 @@ ELSE
     ENDIF
   ENDDO
   !stopping criteria alpha (similar to POLZEROS)
-  DO i=1,d+1
-    alpha(i)=alpha(i)*(1+3.8*(i-1))
-  ENDDO
+  !DO i=1,d+1
+  !  alpha(i)=alpha(i)*(1+3.8*(i-1))
+  !ENDDO
   !Laguerre's method
-  conj=.TRUE.
 loop1: DO i=nzr+1,td
          check=.FALSE.
 loop2:   DO it=1,itmax
@@ -138,7 +137,8 @@ IF(DABS(t)>1) THEN
   CALL drevseval(p, t, a, d, 0)
   CALL drevseval(p, t, b, d, 1)
   CALL drevseval(alpha, DABS(t), be, d, 0)
-  IF(DABS(a)<be*eps) THEN
+  be=MIN(DABS(a)/be, DABS(a))
+  IF(be<eps) THEN
     ei(i)=zero
     check=.TRUE.
     GO TO 10
@@ -154,7 +154,8 @@ ELSE
   CALL dseval(p, t, a, d, 0)
   CALL dseval(p, t, b, d, 1)
   CALL dseval(alpha, DABS(t), be, d, 0)
-  IF(DABS(a)<be*eps) THEN
+  be=MIN(DABS(a)/be, DABS(a))
+  IF(be<eps) THEN
     ei(i)=zero
     check=.TRUE.
     GO TO 10
@@ -246,7 +247,8 @@ IF(ZABS(t)>1) THEN
   CALL zrevseval(p, t, a, d, 0)
   CALL zrevseval(p, t, b, d, 1)
   CALL drevseval(alpha, ZABS(t), be, d, 0)
-  IF(ZABS(a)<be*eps) THEN
+  be=MIN(ZABS(a)/be, ZABS(a))
+  IF(be<eps) THEN
     check=.TRUE.
     GO TO 20
   ELSE
@@ -261,7 +263,8 @@ ELSE
   CALL zseval(p, t, a, d, 0)
   CALL zseval(p, t, b, d, 1)
   CALL dseval(alpha, ZABS(t), be, d, 0)
-  IF(ZABS(a)<be*eps) THEN
+  be=MIN(ZABS(a)/be, ZABS(a))
+  IF(be<eps) THEN
     check=.TRUE.
     GO TO 20
   ELSE

@@ -5,11 +5,12 @@ PROGRAM driver
 
     !=======VARIABLES=======
     !Common
-    CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
+    !CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
+    CHARACTER(*), PARAMETER :: resultsDir="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/results/"
     INTEGER, DIMENSION(4) :: iseed
     REAL (KIND=dp), DIMENSION(:), ALLOCATABLE  ::  testProblem
     INTEGER :: clock, clock_rate, clock_start, clock_stop
-    REAL (KIND=dp), DIMENSION(10,2) :: timingStatistics
+    REAL (KIND=dp), DIMENSION(10,2) :: timingStatistics, radStats
     INTEGER :: degree
     INTEGER :: startDegree, maxDegree, jumpFactor
     CHARACTER *100 BUFFER
@@ -44,7 +45,11 @@ PROGRAM driver
     ENDIF
 
     OPEN(UNIT=1,FILE=resultsDir//"output.csv")
-    WRITE(1, '(A)',  advance='no') 'DEGREE, DSLMPEP TIME, PZEROS TIME' 
+    WRITE(1, '(A)',  advance='no') 'DEGREE,      '
+    WRITE(1, '(A)',  advance='no') 'DSLMPEP TIME,    '
+    WRITE(1, '(A)',  advance='no') 'DSLMPEP RAD,     '
+    WRITE(1, '(A)',  advance='no') 'PZEROS TIME,     '
+    WRITE(1, '(A)',  advance='no') 'PZEROS RAD' 
     WRITE(1, *)
     degree = startDegree
     DO WHILE (degree < maxDegree)
@@ -58,35 +63,41 @@ PROGRAM driver
 		
             !=======SOLVE=======
             !DSLMPEP ----------
-            ALLOCATE(backwardError(degree),realRoots(degree),imaginaryRoots(degree))
-
+            ALLOCATE(radius(degree),realRoots(degree),imaginaryRoots(degree))
+            radius=zero
             CALL SYSTEM_CLOCK(count=clock_start) 
-            CALL dslm(testProblem, realRoots, imaginaryRoots, backwardError, degree)
+            CALL dslm(testProblem, realRoots, imaginaryRoots, radius, degree)
             CALL SYSTEM_CLOCK(count=clock_stop)
             timingStatistics(i,1) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+            radStats(i,1)=MAXVAL(radius)
             !------------------
 		
             !PZEROS -----------
-            ALLOCATE(radius(1:degree),root(1:degree),err(degree+1))
+            ALLOCATE(root(1:degree),err(degree+1))
             CALL system_clock(count=clock_start)
             CALL polzeros (degree, DCMPLX(testProblem), eps, big, small, itmax, root, radius, err, iterations_p)
             CALL system_clock(count=clock_stop)
             timingStatistics(i,2) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+            radStats(i,2)=MAXVAL(radius)
             !------------------
 		
             DEALLOCATE(testProblem)
-            DEALLOCATE(backwardError,realRoots,imaginaryRoots)
-            DEALLOCATE(radius,root,err)
+            DEALLOCATE(radius,realRoots,imaginaryRoots)
+            DEALLOCATE(root,err)
         END DO
         !=======SAVE RESULTS=======
 
         !DSLMPEP ----------
         WRITE(1,'(20G15.4)', advance='no') SUM(timingStatistics(:,1))/10
+        WRITE(1, '(A)', advance='no') ', '	
+        WRITE(1,'(20G15.4)', advance='no') SUM(radStats(:,1))/10
         WRITE(1, '(A)', advance='no') ', '
         !------------------
 
         !PZEROS -----------
         WRITE(1, '(20G15.4)', advance='no') SUM(timingStatistics(:,2))/10
+        WRITE(1, '(A)', advance='no') ', '
+        WRITE(1, '(20G15.4)', advance='no') SUM(radStats(:,2))/10
         !------------------
         WRITE(1, *)
         degree = jumpFactor * degree

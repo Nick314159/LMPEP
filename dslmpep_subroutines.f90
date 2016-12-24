@@ -80,7 +80,6 @@ ELSE
 loop1: DO i=nzr+1,td
          check=.FALSE.
 loop2:   DO it=1,itmax
-           check=(it==itmax)
            tol=MAX(eps*DCMOD(er(i),ei(i)), eps)
            IF(DABS(ei(i))<tol) THEN
              CALL dslcorr(p, alpha, er, ei, berr(i), tol, check, d, i)

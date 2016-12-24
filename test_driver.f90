@@ -5,29 +5,30 @@ PROGRAM driver
 
     !=======VARIABLES=======
     !Common
-    !CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
     CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
+    INTEGER :: clock, clock_rate, clock_start, clock_stop, i, j, m
+    INTEGER :: degree, startDegree, maxDegree, jumpFactor
     INTEGER, DIMENSION(4) :: iseed
-    REAL (KIND=dp), DIMENSION(:), ALLOCATABLE  ::  testProblem
-    INTEGER :: clock, clock_rate, clock_start, clock_stop
-    REAL (KIND=dp), DIMENSION(10,2) :: timingStatistics, radStats
-    INTEGER :: degree
-    INTEGER :: startDegree, maxDegree, jumpFactor
-    CHARACTER *100 BUFFER
+    REAL(dp), DIMENSION(:), ALLOCATABLE :: poly, radius
+    REAL(dp), DIMENSION(:,:), ALLOCATABLE :: timeStats, radStats
+    COMPLEX(dp) :: a, b, t
+    CHARACTER(LEN=100) :: BUFFER
 
     !DSLMPEP ----------
-    INTEGER :: i, j
     REAL(dp), DIMENSION(:), ALLOCATABLE :: backwardError, realRoots, imaginaryRoots
-    COMPLEX(dp) :: a, b, t
     !------------------
 	
     !PZEROS -----------
-    INTEGER :: iterations_p
-    REAL (KIND=dp), DIMENSION(:), ALLOCATABLE :: radius
-    COMPLEX (KIND=dp), DIMENSION(:), ALLOCATABLE :: root
+    INTEGER :: iter
     LOGICAL, DIMENSION(:), ALLOCATABLE :: err
+    COMPLEX(dp), DIMENSION(:), ALLOCATABLE :: root
     !------------------
 
+    !stats info
+    m=10
+    ALLOCATE(timeStats(m,2), radStats(m,2))
+
+    !get information
     CALL GETARG(1,BUFFER)
     READ(BUFFER, *) startDegree
     CALL GETARG(2,BUFFER)
@@ -57,41 +58,39 @@ PROGRAM driver
         WRITE(1, '(i6)', advance='no') degree
         WRITE(1, '(A)', advance='no') ', '
         CALL SYSTEM_CLOCK(count_rate=clock_rate)
-        DO i=1,10
+        DO i=1,m
             !Generate random problem of degree i
-            ALLOCATE(testProblem(degree+1))
-            CALL dlarnv(2,iseed,degree+1,testProblem)
+            ALLOCATE(poly(degree+1))
+            CALL dlarnv(2,iseed,degree+1,poly)
 		
             !=======SOLVE=======
             !DSLMPEP ----------
-            ALLOCATE(radius(degree),realRoots(degree),imaginaryRoots(degree))
-            radius=zero
+            ALLOCATE(backwardError(degree),realRoots(degree),imaginaryRoots(degree))
+            backwardError=zero
             CALL SYSTEM_CLOCK(count=clock_start) 
-            CALL dslm(testProblem, realRoots, imaginaryRoots, radius, degree)
+            CALL dslm(poly, realRoots, imaginaryRoots, backwardError, degree)
             CALL SYSTEM_CLOCK(count=clock_stop)
-            timingStatistics(i,1) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
-            !radStats(i,1)=MAXVAL(radius)
+            timeStats(i,1) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
             !------------------
 		
             !PZEROS -----------
-            ALLOCATE(root(1:degree),err(degree+1))
+            ALLOCATE(root(1:degree),err(degree+1),radius(1:degree))
             CALL system_clock(count=clock_start)
-            CALL polzeros (degree, DCMPLX(testProblem), eps, big, small, itmax, root, radius, err, iterations_p)
+            CALL polzeros(degree, DCMPLX(poly), eps, big, small, itmax, root, radius, err, iter)
             CALL system_clock(count=clock_stop)
-            timingStatistics(i,2) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
-            !radStats(i,2)=MAXVAL(radius)
+            timeStats(i,2) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
             !------------------
 
             DO j=1,degree
               !DSLMPEP
               t=DCMPLX(realRoots(j),imaginaryRoots(j))
               IF(ZABS(t)>1) THEN
-                CALL zrevseval(testProblem, 1/t, a, degree, 0)
-                CALL zrevseval(testProblem, 1/t, b, degree, 1)
+                CALL zrevseval(poly, 1/t, a, degree, 0)
+                CALL zrevseval(poly, 1/t, b, degree, 1)
                 radius(j)=ZABS(a)/ZABS(degree*a-b/t)
               ELSE
-                CALL zseval(testProblem, t, a, degree, 0)
-                CALL zseval(testProblem, t, b, degree, 1)
+                CALL zseval(poly, t, a, degree, 0)
+                CALL zseval(poly, t, b, degree, 1)
                 radius(j)=ZABS(a)/(ZABS(t)*ZABS(b))
               ENDIF
             ENDDO
@@ -100,32 +99,32 @@ PROGRAM driver
               !PZEROS
               t=root(j)
               IF(ZABS(t)>1) THEN
-                CALL zrevseval(testProblem, 1/t, a, degree, 0)
-                CALL zrevseval(testProblem, 1/t, b, degree, 1)
+                CALL zrevseval(poly, 1/t, a, degree, 0)
+                CALL zrevseval(poly, 1/t, b, degree, 1)
                 radius(j)=ZABS(a)/ZABS(degree*a-b/t)
               ELSE
-                CALL zseval(testProblem, t, a, degree, 0)
-                CALL zseval(testPRoblem, t, b, degree, 1)
+                CALL zseval(poly, t, a, degree, 0)
+                CALL zseval(poly, t, b, degree, 1)
                 radius(j)=ZABS(a)/(ZABS(t)*ZABS(b))
               ENDIF
             ENDDO
             radStats(i,2)=MAXVAL(radius)
 		
-            DEALLOCATE(testProblem)
+            DEALLOCATE(poly, backwardError)
             DEALLOCATE(radius,realRoots,imaginaryRoots)
             DEALLOCATE(root,err)
         END DO
         !=======SAVE RESULTS=======
 
         !DSLMPEP ----------
-        WRITE(1,'(20G15.4)', advance='no') SUM(timingStatistics(:,1))/10
-        WRITE(1, '(A)', advance='no') ', '	
+        WRITE(1,'(20G15.4)', advance='no') SUM(timeStats(:,1))/10
+        WRITE(1, '(A)', advance='no') ', '
         WRITE(1,'(20G15.4)', advance='no') SUM(radStats(:,1))/10
         WRITE(1, '(A)', advance='no') ', '
         !------------------
 
         !PZEROS -----------
-        WRITE(1, '(20G15.4)', advance='no') SUM(timingStatistics(:,2))/10
+        WRITE(1, '(20G15.4)', advance='no') SUM(timeStats(:,2))/10
         WRITE(1, '(A)', advance='no') ', '
         WRITE(1, '(20G15.4)', advance='no') SUM(radStats(:,2))/10
         !------------------

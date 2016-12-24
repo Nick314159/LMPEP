@@ -12,13 +12,13 @@ CONTAINS
 ! the number of iterations per root is stored in iter, and the roots are* 
 ! stored in (er,ei).							*
 !************************************************************************
-SUBROUTINE dslm(p, er, ei, radius, d)
+SUBROUTINE dslm(p, er, ei, berr, d)
 IMPLICIT NONE
 !scalar arguments
 INTEGER, INTENT(IN) :: d
 !array arguments
 REAL(dp), INTENT(IN) :: p(:)
-REAL(dp), INTENT(INOUT) :: radius(:), er(:), ei(:)
+REAL(dp), INTENT(INOUT) :: berr(:), er(:), ei(:)
 !local scalars
 LOGICAL :: check
 INTEGER :: i, it, nzr, nir, td
@@ -83,9 +83,9 @@ loop2:   DO it=1,itmax
            check=(it==itmax)
            tol=MAX(eps*DCMOD(er(i),ei(i)), eps)
            IF(DABS(ei(i))<tol) THEN
-             CALL dslcorr(p, alpha, er, ei, radius(i), tol, check, d, i)
+             CALL dslcorr(p, alpha, er, ei, berr(i), tol, check, d, i)
            ELSE
-             CALL zslcorr(p, alpha, er, ei, radius(i), tol, check, d, i)
+             CALL zslcorr(p, alpha, er, ei, berr(i), tol, check, d, i)
            ENDIF
            IF(check) THEN
              EXIT loop2
@@ -105,19 +105,19 @@ END SUBROUTINE dslm
 ! in (er,ei). Result is returned in complex number (tr,ti), and backward*
 ! error of current approximation is stored in be.			*
 !************************************************************************
-SUBROUTINE dslcorr(p, alpha, er, ei, radius, tol, check, d, i)
+SUBROUTINE dslcorr(p, alpha, er, ei, berr, tol, check, d, i)
 IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT) :: check
 INTEGER, INTENT(IN) :: d, i
 REAL(dp), INTENT(IN) :: tol
-REAL(dp), INTENT(INOUT) :: radius
+REAL(dp), INTENT(INOUT) :: berr
 !array arguments
 REAL(dp), INTENT(IN) :: p(:), alpha(:)
 REAL(dp), INTENT(INOUT) :: er(:), ei(:)
 !local scalars
 INTEGER :: td
-REAL(dp) :: a, b, be, c, t
+REAL(dp) :: a, b, c, t
 DOUBLE COMPLEX :: x1, x2, y1, y2
 !intrinsic procedures
 INTRINSIC :: DABS, DBLE, DCMPLX, DIMAG, ZABS, ZSQRT
@@ -132,35 +132,35 @@ DO td=1,i-1
 ENDDO
 !split into 2 cases
 IF(DABS(t)>1) THEN
-  !compute a=revp, b=revp, be
+  !compute a=revp, berr
   t=1/t
   CALL drevseval(p, t, a, d, 0)
-  CALL drevseval(p, t, b, d, 1)
-  CALL drevseval(alpha, DABS(t), be, d, 0)
-  be=MIN(DABS(a)/be, DABS(a))
-  IF(be<eps) THEN
+  CALL drevseval(alpha, DABS(t), berr, d, 0)
+  berr=MIN(DABS(a)/berr, DABS(a))
+  IF(berr<eps) THEN
     ei(i)=zero
     check=.TRUE.
-    GO TO 10
+    RETURN
   ELSE
     !compute b=revp', c=revp''
+    CALL drevseval(p, t, b, d, 1)
     CALL drevseval(p, t, c, d, 2)
     !compute y1=p'/p and y2=(p'/p)'
     y1=t*(d-t*(b/a))
     y2=t**2*(d-2*t*(b/a)+t**2*((b/a)**2-c/a))
   ENDIF
 ELSE
-  !compute a=p, b=p', be
+  !compute a=p, berr
   CALL dseval(p, t, a, d, 0)
-  CALL dseval(p, t, b, d, 1)
-  CALL dseval(alpha, DABS(t), be, d, 0)
-  be=MIN(DABS(a)/be, DABS(a))
-  IF(be<eps) THEN
+  CALL dseval(alpha, DABS(t), berr, d, 0)
+  berr=MIN(DABS(a)/berr, DABS(a))
+  IF(berr<eps) THEN
     ei(i)=zero
     check=.TRUE.
-    GO TO 10
+    RETURN
   ELSE
     !compute b=p', c=p''
+    CALL dseval(p, t, b, d, 1)
     CALL dseval(p, t, c, d, 2)
     !compute y1=p'/p and y2=(p'/p)'
     y1=b/a
@@ -179,7 +179,6 @@ IF(ZABS(y1)>=ZABS(y2)) THEN
   IF(ZABS(y1)<tol) THEN
     ei(i)=zero
     check=.TRUE.
-    GO TO 10
   ELSE
     er(i)=er(i)-DBLE(y1)
     ei(i)=-DIMAG(y1)
@@ -189,21 +188,12 @@ ELSE
   IF(ZABS(y2)<tol) THEN
     ei(i)=zero
     check=.TRUE.
-    GO TO 10
   ELSE
     er(i)=er(i)-DBLE(y2)
     ei(i)=-DIMAG(y2)
   ENDIF
 ENDIF
-10 IF(check) THEN
-     t=er(i)
-     IF(DABS(t)>1) THEN
-       radius=DABS(a)/DABS(d*a-b/t)
-     ELSE
-       radius=DABS(a)/(DABS(t)*DABS(b))
-     ENDIF
-   ENDIF
-   RETURN
+RETURN
 END SUBROUTINE dslcorr
 
 !************************************************************************
@@ -215,19 +205,18 @@ END SUBROUTINE dslcorr
 ! in (er,ei). Result is return in complex number (tr,ti), and backward	*
 ! error of current approximation is stored in be.			*
 !************************************************************************
-SUBROUTINE zslcorr(p, alpha, er, ei, radius, tol, check, d, i)
+SUBROUTINE zslcorr(p, alpha, er, ei, berr, tol, check, d, i)
 IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT) :: check
 INTEGER, INTENT(IN) :: d, i
 REAL(dp), INTENT(IN) :: tol
-REAL(dp), INTENT(INOUT) :: radius
+REAL(dp), INTENT(INOUT) :: berr
 !array arguments
 REAL(dp), INTENT(IN) :: p(:), alpha(:)
 REAL(dp), INTENT(INOUT) :: er(:), ei(:)
 !local scalars
 INTEGER :: td
-REAL(dp) :: be
 COMPLEX(dp) :: a, b, c, t, x1, x2, y1, y2
 !intrinsic procedures
 INTRINSIC :: DBLE, DCMPLX, DIMAG, ZABS, ZSQRT
@@ -242,33 +231,33 @@ DO td=1,i-1
 ENDDO
 !split into 2 cases
 IF(ZABS(t)>1) THEN
-  !compute a=revp, b=revp', be
+  !compute a=revp, berr
   t=1/t
   CALL zrevseval(p, t, a, d, 0)
-  CALL zrevseval(p, t, b, d, 1)
-  CALL drevseval(alpha, ZABS(t), be, d, 0)
-  be=MIN(ZABS(a)/be, ZABS(a))
-  IF(be<eps) THEN
+  CALL drevseval(alpha, ZABS(t), berr, d, 0)
+  berr=MIN(ZABS(a)/berr, ZABS(a))
+  IF(berr<eps) THEN
     check=.TRUE.
-    GO TO 20
+    RETURN
   ELSE
-    !compute c=revp''
+    !compute b=revp', c=revp''
+    CALL zrevseval(p, t, b, d, 1)
     CALL zrevseval(p, t, c, d, 2)
     !compute y1=p'/p and y2=(p'/p)'
     y1=t*(d-t*(b/a))
     y2=t**2*(d-2*t*(b/a)+t**2*((b/a)**2-c/a))
   ENDIF
 ELSE
-  !compute a=p, b=p', be
+  !compute a=p, berr
   CALL zseval(p, t, a, d, 0)
-  CALL zseval(p, t, b, d, 1)
-  CALL dseval(alpha, ZABS(t), be, d, 0)
-  be=MIN(ZABS(a)/be, ZABS(a))
-  IF(be<eps) THEN
+  CALL dseval(alpha, ZABS(t), berr, d, 0)
+  berr=MIN(ZABS(a)/berr, ZABS(a))
+  IF(berr<eps) THEN
     check=.TRUE.
-    GO TO 20
+    RETURN
   ELSE
     !solve for b=p', c=p''
+    CALL zseval(p, t, b, d, 1)
     CALL zseval(p, t, c, d, 2)
     !compute y1=p'/p and y2=(p'/p)'
     y1=b/a
@@ -286,7 +275,6 @@ IF(ZABS(y1)>=ZABS(y2)) THEN
   y1=td/y1
   IF(ZABS(y1)<tol) THEN
     check=.TRUE.
-    GO TO 20
   ELSE
     er(i)=er(i)-DBLE(y1)
     ei(i)=ei(i)-DIMAG(y1)
@@ -295,21 +283,12 @@ ELSE
   y2=td/y2
   IF(ZABS(y2)<tol) THEN
     check=.TRUE.
-    GO TO 20
   ELSE
     er(i)=er(i)-DBLE(y2)
     ei(i)=ei(i)-DIMAG(y2)
   ENDIF
 ENDIF
-20 IF(check) THEN
-     t=DCMPLX(er(i),ei(i))
-     IF(ZABS(t)>1) THEN
-       radius=ZABS(a)/ZABS(d*a-b/t)
-     ELSE
-       radius=ZABS(a)/(ZABS(t)*ZABS(b))
-     ENDIF
-   ENDIF
-   RETURN
+RETURN
 END SUBROUTINE zslcorr
 
 !************************************************************************

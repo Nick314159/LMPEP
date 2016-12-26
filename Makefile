@@ -1,9 +1,9 @@
-#gfortran  util.f90 dslmpep_subroutines.f90 pzeros.f90 test_driver.f90 -lscalapack-openmpi -llapack -lblas
+#gfortran  util.f90 dslmpep_subroutines.f90 pzeros.f90 spoly_test_driver.f90 -lscalapack-openmpi -llapack -lblas
 
 #Define variables
 f90comp = gfortran
 switch = -O3
-objects =   util.f90 dslmpep_subroutines.f90 pzeros.f90 test_driver.f90
+objects =   util.f90 dslmpep_subroutines.f90 pzeros.f90 spoly_test_driver.f90
 dependencies = -lscalapack-openmpi -llapack -lblas
 #Makefile
 main.out: $(objects)
@@ -27,8 +27,8 @@ poly_zero.mod: poly_zero.o poly_zero.f90
 poly_zero.o: poly_zero.f90
 	$(f90comp) -c $(switch) poly_zero.f90 $(dependecies)
 	
-test_driver.o: test_driver.f90
-	$(f90comp) -c $(switch) test_driver.f90 $(dependecies)
+spoly_test_driver.o: spoly_test_driver.f90
+	$(f90comp) -c $(switch) spoly_test_driver.f90 $(dependecies)
 
 clean:
 	rm *.mod

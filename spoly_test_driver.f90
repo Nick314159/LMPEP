@@ -110,9 +110,9 @@ PROGRAM driver
             ENDDO
             radStats(i,2)=MAXVAL(radius)
 		
-            DEALLOCATE(poly, backwardError)
-            DEALLOCATE(radius,realRoots,imaginaryRoots)
-            DEALLOCATE(root,err)
+            DEALLOCATE(poly)
+            DEALLOCATE(realRoots,imaginaryRoots,backwardError)
+            DEALLOCATE(radius,root,err)
         END DO
         !=======SAVE RESULTS=======
 

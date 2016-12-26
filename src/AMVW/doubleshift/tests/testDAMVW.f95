@@ -38,14 +38,15 @@ program testDAMVW
   integer, allocatable :: ITS(:),  seed(:)
   
   ! compute variables
-  integer :: ii, noits, mri, mri1, mri2, mri3, kk, i, m
+  integer :: ii, noits, mri, mri1, mri2, mri3, kk, i, m, j
   integer :: clock_start, clock_end, clock_rate 
   real :: time
   double precision :: rpart, ipart, temp, mr, mr1, mr2, mr3
   character(len=32) :: arg
   REAL(dp), DIMENSION(:), ALLOCATABLE :: timeStats, radStats
-  
+  COMPLEX(dp) :: a, b, t
   CHARACTER(*), PARAMETER :: resultsDir="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/results/"
+  REAL(dp), DIMENSION(:), ALLOCATABLE :: radius
   
   FLAG = 1
   if (iargc()>0) then
@@ -111,7 +112,7 @@ program testDAMVW
   allocate(POLY(N),REIGS(N),IEIGS(N),ITS(N),COEFFS(1),ALLROOTS(N,NEWTNUM+1),RESIDUALS(N,3*(NEWTNUM+1)))
   allocate(WPOLY(N),ROOTS(N))
   
-  
+  ALLOCATE(radius(1:N))
   call DNORMALPOLY(N,POLY)
 
   ! roots of x^n - 1 = 0
@@ -152,14 +153,28 @@ program testDAMVW
   time = real(clock_end - clock_start)/real(clock_rate)
   timeStats(i) = DBLE(clock_end-clock_start)/DBLE(clock_rate)
   
-  do ii=1,N
-     ROOTS(ii) = complex(REIGS(ii),IEIGS(ii))
-     WPOLY(ii) = complex(poly(ii),0d0)
-  end do
+  !do ii=1,N
+  !   ROOTS(ii) = complex(REIGS(ii),IEIGS(ii))
+  !   WPOLY(ii) = complex(poly(ii),0d0)
+  !end do
   ! check roots
-  call RESCHECK(0,N,0,NEWTNUM,WPOLY,COEFFS,ROOTS,ALLROOTS,RESIDUALS)
+  !call RESCHECK(0,N,0,NEWTNUM,WPOLY,COEFFS,ROOTS,ALLROOTS,RESIDUALS)
   
-  
+           DO j=1,N
+              t=DCMPLX(REIGS(j),IEIGS(j))
+              IF(ZABS(t)>1) THEN
+                CALL zrevseval(POLY, 1/t, a, N, 0)
+                CALL zrevseval(POLY, 1/t, b, N, 1)
+                radius(j)=ZABS(a)/ZABS(N*a-b/t)
+              ELSE
+                CALL zseval(POLY, t, a, N, 0)
+                CALL zseval(POLY, t, b, N, 1)
+                radius(j)=ZABS(a)/(ZABS(t)*ZABS(b))
+              ENDIF
+
+            ENDDO
+            radStats(i)=MAXVAL(radius)
+
   !print*, "Residuals"
   temp = 0
   mr = 0.d0
@@ -220,6 +235,7 @@ program testDAMVW
   end if
 
   deallocate(POLY,REIGS,IEIGS,ITS,COEFFS,ALLROOTS,RESIDUALS,WPOLY,ROOTS);
+  deallocate(radius)
   end do 
   WRITE(1,'(20G15.4)', advance='no') SUM(timeStats(:))/10
   WRITE(1, '(A)', advance='no') ', '
@@ -229,3 +245,66 @@ program testDAMVW
   END do
   CLOSE(UNIT=1)
 end program
+
+SUBROUTINE zrevseval(p, t, a, d, der)
+IMPLICIT NONE
+  INTEGER, PARAMETER :: dp=kind(0.0D0), itmax=60
+!scalar arguments
+INTEGER, INTENT(IN) :: d, der
+COMPLEX(dp), INTENT(IN) :: t
+COMPLEX(dp), INTENT(INOUT) :: a
+!array arguments
+REAL(dp), INTENT(IN) :: p(*)
+!local scalars
+INTEGER :: k
+
+IF(der==0) THEN
+  a=p(1)
+  DO k=2,d+1
+    a=t*a+p(k)
+  ENDDO
+ELSEIF(der==1) THEN
+  a=d*p(1)
+  DO k=2,d
+    a=t*a+(d-k+1)*p(k)
+  ENDDO
+ELSE
+  a=d*(d-1)*P(1)
+  DO k=2,d-1
+    a=t*a+(d-k+1)*(d-k)*p(k)
+  ENDDO
+ENDIF
+RETURN
+END SUBROUTINE zrevseval
+
+
+SUBROUTINE zseval(p, t, a, d, der)
+IMPLICIT NONE
+!scalar arguments
+  INTEGER, PARAMETER :: dp=kind(0.0D0), itmax=60
+INTEGER, INTENT(IN) :: d, der
+COMPLEX(dp), INTENT(IN) :: t
+COMPLEX(dp), INTENT(INOUT) :: a
+!array arguments
+REAL(dp), INTENT(IN) :: p(*)
+!local scalars
+INTEGER :: k
+
+IF(der==0) THEN
+  a=p(d+1)
+  DO k=d,1,-1
+    a=t*a+p(k)
+  ENDDO
+ELSEIF(der==1) THEN
+  a=d*p(d+1)
+  DO k=d,2,-1
+    a=t*a+(k-1)*p(k)
+  ENDDO
+ELSE
+  a=d*(d-1)*p(d+1)
+  DO k=d,3,-1
+    a=t*a+(k-1)*(k-2)*p(k)
+  ENDDO
+ENDIF
+RETURN
+END SUBROUTINE zseval

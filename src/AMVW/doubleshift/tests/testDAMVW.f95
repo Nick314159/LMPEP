@@ -153,7 +153,6 @@ program testDAMVW
   time = real(clock_end - clock_start)/real(clock_rate)
   timeStats(i) = DBLE(clock_end-clock_start)/DBLE(clock_rate)
   
- 
   do ii=1,N
      ROOTS(ii) = complex(REIGS(ii),IEIGS(ii))
      WPOLY(ii) = complex(poly(ii),0d0)
@@ -162,7 +161,7 @@ program testDAMVW
   call RESCHECK(0,N,0,NEWTNUM,WPOLY,COEFFS,ROOTS,ALLROOTS,RESIDUALS)
   
   
-  print*, "Residuals"
+  !print*, "Residuals"
   temp = 0
   mr = 0.d0
   mr1 = 0.d0
@@ -217,7 +216,7 @@ program testDAMVW
 
   if (N<=20) then
      do ii=1,N
-	print*, REIGS(ii), IEIGS(ii)
+	!print*, REIGS(ii), IEIGS(ii)
      end do
   end if
 

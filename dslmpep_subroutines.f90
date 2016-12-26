@@ -17,8 +17,8 @@ IMPLICIT NONE
 !scalar arguments
 INTEGER, INTENT(IN) :: d
 !array arguments
-REAL(dp), INTENT(IN) :: p(:)
-REAL(dp), INTENT(INOUT) :: berr(:), er(:), ei(:)
+REAL(dp), INTENT(IN) :: p(*)
+REAL(dp), INTENT(INOUT) :: berr(*), er(*), ei(*)
 !local scalars
 LOGICAL :: check
 INTEGER :: i, it, nzr, nir, td
@@ -77,20 +77,20 @@ ELSE
   !  alpha(i)=alpha(i)*(1+3.8*(i-1))
   !ENDDO
   !Laguerre's method
-loop1: DO i=nzr+1,td
-         check=.FALSE.
-loop2:   DO it=1,itmax
-           tol=MAX(eps*DCMOD(er(i),ei(i)), eps)
-           IF(DABS(ei(i))<tol) THEN
-             CALL dslcorr(p, alpha, er, ei, berr(i), tol, check, d, i)
-           ELSE
-             CALL zslcorr(p, alpha, er, ei, berr(i), tol, check, d, i)
-           ENDIF
-           IF(check) THEN
-             EXIT loop2
-           ENDIF
-         ENDDO loop2
-       ENDDO loop1
+  DO i=nzr+1,td
+    check=.FALSE.
+    DO it=1,itmax
+      tol=MAX(eps*DCMOD(er(i),ei(i)), eps)
+      IF(DABS(ei(i))<tol) THEN
+        CALL dslcorr(p, alpha, er, ei, berr(i), tol, check, d, i)
+      ELSE
+        CALL zslcorr(p, alpha, er, ei, berr(i), tol, check, d, i)
+      ENDIF
+      IF(check) THEN
+        EXIT
+      ENDIF
+    ENDDO
+  ENDDO
 ENDIF
 RETURN
 END SUBROUTINE dslm
@@ -112,8 +112,8 @@ INTEGER, INTENT(IN) :: d, i
 REAL(dp), INTENT(IN) :: tol
 REAL(dp), INTENT(INOUT) :: berr
 !array arguments
-REAL(dp), INTENT(IN) :: p(:), alpha(:)
-REAL(dp), INTENT(INOUT) :: er(:), ei(:)
+REAL(dp), INTENT(IN) :: p(*), alpha(*)
+REAL(dp), INTENT(INOUT) :: er(*), ei(*)
 !local scalars
 INTEGER :: td
 REAL(dp) :: a, b, c, t
@@ -122,13 +122,13 @@ DOUBLE COMPLEX :: x1, x2, y1, y2
 INTRINSIC :: DABS, DBLE, DCMPLX, DIMAG, ZABS, ZSQRT
 
 !initiate variables
-t=er(i)
 x1=czero; x2=czero
 DO td=1,i-1
-  y1=1/DCMPLX(t-er(td),-ei(td))
+  y1=1/DCMPLX(er(i)-er(td),-ei(td))
   x1=x1+y1
   x2=x2+y1**2
 ENDDO
+t=er(i)
 !split into 2 cases
 IF(DABS(t)>1) THEN
   !compute a=revp, berr
@@ -212,8 +212,8 @@ INTEGER, INTENT(IN) :: d, i
 REAL(dp), INTENT(IN) :: tol
 REAL(dp), INTENT(INOUT) :: berr
 !array arguments
-REAL(dp), INTENT(IN) :: p(:), alpha(:)
-REAL(dp), INTENT(INOUT) :: er(:), ei(:)
+REAL(dp), INTENT(IN) :: p(*), alpha(*)
+REAL(dp), INTENT(INOUT) :: er(*), ei(*)
 !local scalars
 INTEGER :: td
 COMPLEX(dp) :: a, b, c, t, x1, x2, y1, y2
@@ -221,13 +221,13 @@ COMPLEX(dp) :: a, b, c, t, x1, x2, y1, y2
 INTRINSIC :: DBLE, DCMPLX, DIMAG, ZABS, ZSQRT
 
 !initiate variables
-t=DCMPLX(er(i),ei(i))
 x1=czero; x2=czero
 DO td=1,i-1
-  y1=1/(t-DCMPLX(er(td),ei(td)))
+  y1=1/DCMPLX(er(i)-er(td),ei(i)-ei(td))
   x1=x1+y1
   x2=x2+y1**2
 ENDDO
+t=DCMPLX(er(i),ei(i))
 !split into 2 cases
 IF(ZABS(t)>1) THEN
   !compute a=revp, berr
@@ -304,7 +304,7 @@ INTEGER, INTENT(IN) :: d, der
 REAL(dp), INTENT(IN) :: t
 REAL(dp), INTENT(INOUT) :: a
 !array arguments
-REAL(dp), INTENT(IN) :: p(:)
+REAL(dp), INTENT(IN) :: p(*)
 !local scalars
 INTEGER :: k
 
@@ -342,7 +342,7 @@ INTEGER, INTENT(IN) :: d, der
 REAL(dp), INTENT(IN) :: t
 REAL(dp), INTENT(INOUT) :: a
 !array arguments
-REAL(dp), INTENT(IN) :: p(:)
+REAL(dp), INTENT(IN) :: p(*)
 !local scalars
 INTEGER :: k
 
@@ -379,7 +379,7 @@ INTEGER, INTENT(IN) :: d, der
 COMPLEX(dp), INTENT(IN) :: t
 COMPLEX(dp), INTENT(INOUT) :: a
 !array arguments
-REAL(dp), INTENT(IN) :: p(:)
+REAL(dp), INTENT(IN) :: p(*)
 !local scalars
 INTEGER :: k
 
@@ -416,7 +416,7 @@ INTEGER, INTENT(IN) :: d, der
 COMPLEX(dp), INTENT(IN) :: t
 COMPLEX(dp), INTENT(INOUT) :: a
 !array arguments
-REAL(dp), INTENT(IN) :: p(:)
+REAL(dp), INTENT(IN) :: p(*)
 !local scalars
 INTEGER :: k
 
@@ -453,8 +453,8 @@ IMPLICIT NONE
 !scalar arguments
 INTEGER, INTENT(IN) :: d
 !array arguments
-REAL(dp), INTENT(IN) :: alpha(:)
-REAL(dp), INTENT(INOUT) :: er(:), ei(:)
+REAL(dp), INTENT(IN) :: alpha(*)
+REAL(dp), INTENT(INOUT) :: er(*), ei(*)
 !parameters
 REAL(dp), PARAMETER :: pi2 = 6.2831853071795865_dp, sigma = 0.7_dp
 !local scalars
@@ -497,9 +497,14 @@ END SUBROUTINE dsstart
 !************************************************************************
 !			SUBROUTINE DCMOD				*
 !************************************************************************
+! Compute the module of the complex number a+bi, while avoiding harmul  *
+! overflow and underflow.						*
+!************************************************************************
 FUNCTION dcmod(a, b) RESULT(r)
 IMPLICIT NONE
+!scalar arguments
 REAL(dp), INTENT(IN) :: a, b
+!local scalars
 REAL(dp) :: r
 
 IF(DABS(a)<DABS(b)) THEN

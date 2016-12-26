@@ -4,6 +4,7 @@
 # Set HOMEDIR, e.g.
 HOMEDIR := /home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/src/AMVW/doubleshift
 #HOMEDIR := /home/thomasm/work/paper/130801_Watkins_Companion/svn/AMVW/fortran/branches/doubleshift
+#HOMEDIR := $(shell pwd)
 
 ##################################################
 # Don't change anything!

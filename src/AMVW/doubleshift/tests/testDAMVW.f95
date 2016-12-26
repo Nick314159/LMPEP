@@ -86,7 +86,7 @@ program testDAMVW
   else
      kk = 4096
   end if
-
+ 
   maxDegree = kk
   N = 10
   m = 10
@@ -199,19 +199,19 @@ program testDAMVW
 	mri3 = ii
      end if
   end do
-  print*, ""
-  print*, "||Residual||_2 = ", dsqrt(temp)
-  print*, "max(Residual)  = ", mr, mr1, mr2, mr3
-  print*, "imax(Residual) = ", mri, mri1, mri2, mri3
+  !print*, ""
+  !print*, "||Residual||_2 = ", dsqrt(temp)
+  !print*, "max(Residual)  = ", mr, mr1, mr2, mr3
+  !print*, "imax(Residual) = ", mri, mri1, mri2, mri3
   
-  print*, "its",  its(n),its(n-1),its(n-2),its(n-3),its(n-4),its(n-5),its(n-6)
-  print*, "its",  its(n-7),its(n-8),its(n-9),its(n-10),its(n-11),its(n-12),its(n-13)
+  !print*, "its",  its(n),its(n-1),its(n-2),its(n-3),its(n-4),its(n-5),its(n-6)
+  !print*, "its",  its(n-7),its(n-8),its(n-9),its(n-10),its(n-11),its(n-12),its(n-13)
   
-  print*, "#IT   = ", noits
-  print*, "#IT/N = ", real(noits)/real(N)
+  !print*, "#IT   = ", noits
+  !print*, "#IT/N = ", real(noits)/real(N)
   
-  print*, "N =",N
-  print*,'Total time =', time, 'secs'
+  !print*, "N =",N
+  !print*,'Total time =', time, 'secs'
   
 
   if (N<=20) then

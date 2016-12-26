@@ -119,16 +119,16 @@ PROGRAM driver
         !=======SAVE RESULTS=======
 
         !DSLMPEP ----------
-        WRITE(1,'(20G15.4)', advance='no') SUM(timeStats(:,1))/10
+        WRITE(1,'(20G15.4)', advance='no') SUM(timeStats(:,1))/m
         WRITE(1, '(A)', advance='no') ', '
-        WRITE(1,'(20G15.4)', advance='no') SUM(radStats(:,1))/10
+        WRITE(1,'(20G15.4)', advance='no') SUM(radStats(:,1))/m
         WRITE(1, '(A)', advance='no') ', '
         !------------------
 
         !PZEROS -----------
-        WRITE(1, '(20G15.4)', advance='no') SUM(timeStats(:,2))/10
+        WRITE(1, '(20G15.4)', advance='no') SUM(timeStats(:,2))/m
         WRITE(1, '(A)', advance='no') ', '
-        WRITE(1, '(20G15.4)', advance='no') SUM(radStats(:,2))/10
+        WRITE(1, '(20G15.4)', advance='no') SUM(radStats(:,2))/m
         !------------------
         WRITE(1, *)
         degree = jumpFactor * degree

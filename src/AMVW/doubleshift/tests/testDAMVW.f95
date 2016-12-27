@@ -142,7 +142,7 @@ program testDAMVW
           radius(j)=ZABS(a)/(ZABS(t)*ZABS(b))
         ENDIF
       ENDDO
-      radStats(i)=MAXVAL(radius)
+      !radStats(i)=MAXVAL(radius)
       deallocate(POLY,REIGS,IEIGS,ITS,COEFFS,ALLROOTS,RESIDUALS,WPOLY,ROOTS);
       deallocate(radius)
     end do 

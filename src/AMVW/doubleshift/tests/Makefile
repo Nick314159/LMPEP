@@ -9,13 +9,13 @@ SRCS := $(wildcard $(SRCDIR)/*.f90)
 MPSRCS := $(wildcard $(MPDIR)/*.f)
 MPOBJS := $(MPDIR)/mpfun90.o $(MPDIR)/mpmod90.o $(MPDIR)/mpmodm90.o $(MPDIR)/mpmodx90.o
 
-all: test 
+all: spoly 
 #race raceunit racejt racesp racebs
 
-test: testDAMVW.f95 $(TOSRCS) $(SRCS)
+spoly: testDAMVW.f95 $(TOSRCS) $(SRCS)
 	make -C $(TODIR)
 	make -C $(SRCDIR)
-	$(FC) $(FFLAGS) -o test testDAMVW.f95 $(TOOBJS) $(OBJS) $(LIBS)
+	$(FC) $(FFLAGS) -o spoly testDAMVW.f95 $(TOOBJS) $(OBJS) $(LIBS)
 
 race: rootrace.f95 $(TOSRCS) $(SRCS) 
 	make -C $(TODIR)

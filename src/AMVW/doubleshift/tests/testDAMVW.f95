@@ -36,7 +36,6 @@ program testDAMVW
   complex(kind(1d0)), allocatable :: COEFFS(:), ALLROOTS(:,:), ROOTS(:), WPOLY(:)
   double precision, allocatable :: POLY(:), REIGS(:), IEIGS(:), RESIDUALS(:,:)
   integer, allocatable :: ITS(:),  seed(:)
-  
   ! compute variables
   integer :: ii, noits, mri, mri1, mri2, mri3, kk, i, m, j
   integer :: clock_start, clock_end, clock_rate 
@@ -45,8 +44,8 @@ program testDAMVW
   character(len=32) :: arg
   REAL(dp), DIMENSION(:), ALLOCATABLE :: timeStats, radStats
   
-  CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
-  !CHARACTER(*), PARAMETER :: resultsDir="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/results/"
+  !CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
+  CHARACTER(*), PARAMETER :: resultsDir="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/results/"
   COMPLEX(dp) :: a, b, t
   REAL(dp), DIMENSION(:), ALLOCATABLE :: radius
 
@@ -160,6 +159,7 @@ END PROGRAM
 !************************************************************************
 SUBROUTINE zrevseval(p, t, a, d, der)
 IMPLICIT NONE
+INTEGER, PARAMETER :: dp=kind(0.0D0), itmax=60
 !scalar arguments
 INTEGER, INTENT(IN) :: d, der
 COMPLEX(dp), INTENT(IN) :: t
@@ -198,6 +198,7 @@ END SUBROUTINE zrevseval
 SUBROUTINE zseval(p, t, a, d, der)
 IMPLICIT NONE
 !scalar arguments
+INTEGER, PARAMETER :: dp=kind(0.0D0), itmax=60
 INTEGER, INTENT(IN) :: d, der
 COMPLEX(dp), INTENT(IN) :: t
 COMPLEX(dp), INTENT(INOUT) :: a

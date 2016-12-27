@@ -44,16 +44,12 @@ program testDAMVW
   double precision :: rpart, ipart, temp, mr, mr1, mr2, mr3
   character(len=32) :: arg
   REAL(dp), DIMENSION(:), ALLOCATABLE :: timeStats, radStats
-<<<<<<< HEAD
   
   CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
   !CHARACTER(*), PARAMETER :: resultsDir="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/results/"
-=======
   COMPLEX(dp) :: a, b, t
-  CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
-  !CHARACTER(*), PARAMETER :: resultsDir="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/results/"
   REAL(dp), DIMENSION(:), ALLOCATABLE :: radius
->>>>>>> 88cb91edf1d05d0410007c86ed61fbe5475ccf00
+
   
   FLAG = 1
   if (iargc()>0) then

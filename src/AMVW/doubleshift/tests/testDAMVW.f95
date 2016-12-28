@@ -29,7 +29,7 @@
 program testDAMVW
 
   implicit none
-  INTEGER, PARAMETER :: dp=kind(0.0D0), itmax=60
+  INTEGER, PARAMETER :: dp=KIND(0.0D0)
 
   ! input variables
   integer :: N, FLAG, NEWTNUM, rsize, maxDegree
@@ -44,8 +44,8 @@ program testDAMVW
   character(len=32) :: arg
   REAL(dp), DIMENSION(:), ALLOCATABLE :: timeStats, radStats
   
-  !CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
-  CHARACTER(*), PARAMETER :: resultsDir="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/results/"
+  CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
+  !CHARACTER(*), PARAMETER :: resultsDir="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/results/"
   COMPLEX(dp) :: a, b, t
   REAL(dp), DIMENSION(:), ALLOCATABLE :: radius
 
@@ -137,7 +137,7 @@ program testDAMVW
           radius(j)=ZABS(a)/(ZABS(t)*ZABS(b))
         ENDIF
       ENDDO
-      !radStats(i)=MAXVAL(radius)
+      radStats(i)=MAXVAL(radius)
       deallocate(POLY,REIGS,IEIGS,ITS,COEFFS,ALLROOTS,RESIDUALS,WPOLY,ROOTS);
       deallocate(radius)
     end do 
@@ -148,8 +148,10 @@ program testDAMVW
     N = 2 * N
   ENDDO
   CLOSE(UNIT=1)
-END PROGRAM
 
+CONTAINS
+
+!************************************************************************
 !************************************************************************
 !			SUBROUTINE ZREVSEVAL				*
 !************************************************************************
@@ -159,7 +161,6 @@ END PROGRAM
 !************************************************************************
 SUBROUTINE zrevseval(p, t, a, d, der)
 IMPLICIT NONE
-INTEGER, PARAMETER :: dp=kind(0.0D0), itmax=60
 !scalar arguments
 INTEGER, INTENT(IN) :: d, der
 COMPLEX(dp), INTENT(IN) :: t
@@ -170,19 +171,20 @@ REAL(dp), INTENT(IN) :: p(*)
 INTEGER :: k
 
 IF(der==0) THEN
-  a=p(d+1)
-  DO k=d,1,-1
+  a=p(d)
+  DO k=d-1,1,-1
     a=t*a+p(k)
   ENDDO
+  a=t*a+1
 ELSEIF(der==1) THEN
-  a=d*p(d+1)
-  DO k=d,2,-1
-    a=t*a+(k-1)*p(k)
+  a=d*p(d)
+  DO k=d-1,1,-1
+    a=t*a+k*p(k)
   ENDDO
 ELSE
-  a=d*(d-1)*p(d+1)
-  DO k=d,3,-1
-    a=t*a+(k-1)*(k-2)*p(k)
+  a=d*(d-1)*p(d)
+  DO k=d-1,2,-1
+    a=t*a+k*(k-1)*p(k)
   ENDDO
 ENDIF
 RETURN
@@ -198,7 +200,6 @@ END SUBROUTINE zrevseval
 SUBROUTINE zseval(p, t, a, d, der)
 IMPLICIT NONE
 !scalar arguments
-INTEGER, PARAMETER :: dp=kind(0.0D0), itmax=60
 INTEGER, INTENT(IN) :: d, der
 COMPLEX(dp), INTENT(IN) :: t
 COMPLEX(dp), INTENT(INOUT) :: a
@@ -208,20 +209,22 @@ REAL(dp), INTENT(IN) :: p(*)
 INTEGER :: k
 
 IF(der==0) THEN
-  a=p(1)
-  DO k=2,d+1
+  a=1
+  DO k=1,d
     a=t*a+p(k)
   ENDDO
 ELSEIF(der==1) THEN
-  a=d*p(1)
-  DO k=2,d
-    a=t*a+(d-k+1)*p(k)
+  a=d
+  DO k=1,d-1
+    a=t*a+(d-k)*p(k)
   ENDDO
 ELSE
-  a=d*(d-1)*P(1)
-  DO k=2,d-1
-    a=t*a+(d-k+1)*(d-k)*p(k)
+  a=d*(d-1)
+  DO k=1,d-2
+    a=t*a+(d-k)*(d-k-1)*p(k)
   ENDDO
 ENDIF
 RETURN
 END SUBROUTINE zseval
+
+END PROGRAM

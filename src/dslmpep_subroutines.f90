@@ -507,12 +507,15 @@ REAL(dp), INTENT(IN) :: a, b
 !local scalars
 REAL(dp) :: r
 
+IF(DABS(a)<eps .AND. DABS(b)<eps) THEN
+  r=zero
+  RETURN
+ENDIF
 IF(DABS(a)<DABS(b)) THEN
   r=DABS(b)*DSQRT(1+(a/b)**2)
 ELSE
   r=DABS(a)*DSQRT(1+(b/a)**2)
 ENDIF
-
 RETURN
 END FUNCTION dcmod
 

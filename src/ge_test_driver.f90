@@ -42,14 +42,14 @@ CALL GETARG(4, arg)
 READ (arg,'(I10)') maxDegree
 
 OPEN(UNIT=1,FILE=fileplace2//"outputGepoly.csv")
-WRITE(1, '(A)',  advance='no') 'DEGREE,             '
-WRITE(1, '(A)',  advance='no') 'SIZE,               '
-WRITE(1, '(A)',  advance='no') 'Laguerre TIME,      '
-WRITE(1, '(A)',  advance='no') 'MAX BERR,           '
-WRITE(1, '(A)',  advance='no') 'MAX FERR,           '
-WRITE(1, '(A)',  advance='no') 'Ehrlich-Aberth TIME,'
-WRITE(1, '(A)',  advance='no') 'MAX BERR,           '
-WRITE(1, '(A)',  advance='no') 'MAX FERR            '
+WRITE(1, '(A)',  advance='no') 'DEGREE,     '
+WRITE(1, '(A)',  advance='no') 'SIZE,    '
+WRITE(1, '(A)',  advance='no') 'L TIME,          '
+WRITE(1, '(A)',  advance='no') 'MAX BERR,        '
+WRITE(1, '(A)',  advance='no') 'MAX FERR,        '
+WRITE(1, '(A)',  advance='no') 'EA TIME,         '
+WRITE(1, '(A)',  advance='no') 'MAX BERR,        '
+WRITE(1, '(A)',  advance='no') 'MAX FERR         '
 WRITE(1, *)
   
 n = startingSize
@@ -82,11 +82,11 @@ DO WHILE (d<maxDegree)
     !bacward error, condition number for Laguerre's Method
     CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
     !print results
-    WRITE(1,'(20G15.4)') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+    WRITE(1,'(20G15.4)', advance='no') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
     WRITE(1, '(A)', advance='no') ', '
-    WRITE(1,'(20G15.4)') MAXVAL(berr)
+    WRITE(1,'(20G15.4)', advance='no') MAXVAL(berr)
     WRITE(1, '(A)', advance='no') ', '
-    WRITE(1,'(20G15.4)') MAXVAL(ferr)
+    WRITE(1,'(20G15.4)', advance='no') MAXVAL(ferr)
     WRITE(1, '(A)', advance='no') ', '
     !solve problem using Ehrlich-Aberth method
     CALL SYSTEM_CLOCK(count_rate=clock_rate)
@@ -97,11 +97,11 @@ DO WHILE (d<maxDegree)
     !bacward error, condition number for Ehrlich-Aberth method
     CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
     !print results
-    WRITE(1,'(20G15.4)') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+    WRITE(1,'(20G15.4)', advance='no') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
     WRITE(1, '(A)', advance='no') ', '
-    WRITE(1,'(20G15.4)')  MAXVAL(berr)
+    WRITE(1,'(20G15.4)' , advance='no')  MAXVAL(berr)
     WRITE(1, '(A)', advance='no') ', '
-    WRITE(1,'(20G15.4)')  MAXVAL(ferr)
+    WRITE(1,'(20G15.4)', advance='no')  MAXVAL(ferr)
     WRITE(1, *) 
     
     DEALLOCATE(p, xr, xi, yr, yi, berr, er, ei, ncoeff, cond, ferr)

@@ -5,8 +5,8 @@ PROGRAM spoly_test_driver
 
     !=======VARIABLES=======
     !Common
-    CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
-    !CHARACTER(*), PARAMETER :: resultsDir="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/results/"
+    !CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
+    CHARACTER(*), PARAMETER :: resultsDir="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/results/"
 
     INTEGER :: clock, clock_rate, clock_start, clock_stop, i, j, m
     INTEGER :: degree, startDegree, maxDegree, jumpFactor

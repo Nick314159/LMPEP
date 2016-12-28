@@ -32,89 +32,56 @@ program testDAMVW
   INTEGER, PARAMETER :: dp=KIND(0.0D0)
 
   ! input variables
-  integer :: N, FLAG, NEWTNUM, rsize, maxDegree
+  integer :: N, FLAG, NEWTNUM, rsize, maxDegree, jumpSize
   complex(kind(1d0)), allocatable :: COEFFS(:), ALLROOTS(:,:), ROOTS(:), WPOLY(:)
   double precision, allocatable :: POLY(:), REIGS(:), IEIGS(:), RESIDUALS(:,:)
   integer, allocatable :: ITS(:),  seed(:)
   ! compute variables
-  integer :: ii, noits, mri, mri1, mri2, mri3, kk, i, m, j
+  integer :: i, m, j
   integer :: clock_start, clock_end, clock_rate 
-  real :: time
-  double precision :: rpart, ipart, temp, mr, mr1, mr2, mr3
   character(len=32) :: arg
   REAL(dp), DIMENSION(:), ALLOCATABLE :: timeStats, radStats
   
-  CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
-  !CHARACTER(*), PARAMETER :: resultsDir="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/results/"
+  !CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
+  CHARACTER(*), PARAMETER :: resultsDir="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/results/"
   COMPLEX(dp) :: a, b, t
   REAL(dp), DIMENSION(:), ALLOCATABLE :: radius
 
   
   FLAG = 1
-  if (iargc()>0) then
-     if (iargc()>2) then
-        FLAG=101
-     end if
-     call RANDOM_SEED(size = rsize)
-     allocate(seed(rsize))
-     call RANDOM_SEED(GET = seed)
 
-     !print*, iargc()
-     !print*, arg
-     if (iargc()>1) then
-        call getarg(2, arg)
-        print*, arg
+  CALL RANDOM_SEED(size = rsize)
+  ALLOCATE(seed(rsize))
+  CALL RANDOM_SEED(GET = seed)
+  CALL init_random_seed()
+  CALL GETARG(1, arg)
+  READ (arg,'(I10)') N
+  CALL GETARG(2, arg)
+  READ (arg,'(I10)') maxDegree
+  CALL GETARG(3, arg)
+  READ (arg,'(I10)') jumpSize 
 
-        read (arg,'(I10)') ii
-        !print*, seed
-        seed(1) = ii
-        seed(2) = ii+1000000
-        seed(3) = ii+2100000
-        seed(4) = ii+3210000
-        seed(5) = ii+43210000
-        seed(6) = ii+5432100
-        seed(7) = ii+6543210
-        seed(8) = ii+7654321
-        seed(9) = ii+8765432
-        seed(10) = ii+9876543
-        seed(11) = ii+10987654
-        seed(12) = ii+11109876
-        call RANDOM_SEED(PUT = seed)
-     else
-        call init_random_seed()
-     end if
-
-     call getarg(1, arg)
-     read (arg,'(I10)') kk
-  else
-     kk = 4096
-  end if
- 
-  maxDegree = kk
-  N = 10
   m = 10
   ALLOCATE(timeStats(m), radStats(m))
 
   NEWTNUM = 1
   
-   OPEN(UNIT=1,FILE=resultsDir//"outputAMVW.csv")
-    WRITE(1, '(A)',  advance='no') 'DEGREE,       '
-    WRITE(1, '(A)',  advance='no') 'AMVW TIME,    '
-    WRITE(1, '(A)',  advance='no') 'AMVW Radius,  '
-    WRITE(1, *)
-    
-    
+  OPEN(UNIT=1,FILE=resultsDir//"outputAMVW.csv")
+  WRITE(1, '(A)',  advance='no') 'DEGREE,       '
+  WRITE(1, '(A)',  advance='no') 'AMVW TIME,    '
+  WRITE(1, '(A)',  advance='no') 'AMVW Radius,  '
+  WRITE(1, *)
+      
   DO WHILE (N < maxDegree)
     WRITE(1, '(i6)', advance='no') N
     WRITE(1, '(A)', advance='no') ', '
     DO i=1,m
   
-      allocate(POLY(N),REIGS(N),IEIGS(N),ITS(N),COEFFS(1),ALLROOTS(N,NEWTNUM+1),RESIDUALS(N,3*(NEWTNUM+1)))
-      allocate(WPOLY(N),ROOTS(N))
+      ALLOCATE(POLY(N),REIGS(N),IEIGS(N),ITS(N),COEFFS(1),ALLROOTS(N,NEWTNUM+1),RESIDUALS(N,3*(NEWTNUM+1)))
+      ALLOCATE(WPOLY(N),ROOTS(N))
   
       ALLOCATE(radius(1:N))
-      call DNORMALPOLY(N,POLY)
- 
+      CALL DNORMALPOLY(N,POLY)
       ! start timer
       CALL SYSTEM_CLOCK(COUNT_RATE=clock_rate) 
       CALL SYSTEM_CLOCK(COUNT=clock_start)
@@ -138,17 +105,16 @@ program testDAMVW
         ENDIF
       ENDDO
       radStats(i)=MAXVAL(radius)
-      deallocate(POLY,REIGS,IEIGS,ITS,COEFFS,ALLROOTS,RESIDUALS,WPOLY,ROOTS);
-      deallocate(radius)
-    end do 
+      DEALLOCATE(POLY,REIGS,IEIGS,ITS,COEFFS,ALLROOTS,RESIDUALS,WPOLY,ROOTS);
+      DEALLOCATE(radius)
+    END DO 
     WRITE(1,'(20G15.4)', advance='no') SUM(timeStats)/10
     WRITE(1, '(A)', advance='no') ', '
     WRITE(1,'(20G15.4)', advance='no') SUM(radStats)/10
     WRITE(1, *)
-    N = 2 * N
+    N = jumpSize * N
   ENDDO
   CLOSE(UNIT=1)
-
 CONTAINS
 
 !************************************************************************

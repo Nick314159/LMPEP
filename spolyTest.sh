@@ -9,7 +9,7 @@ cd src/AMVW/doubleshift
 make > /dev/null 2>&1
 cd tests
 date 
-./spoly $2 > /dev/null 2>&1
+./spoly $1 $2 $3 > /dev/null 2>&1
 cd ../../../../
 cat results/outputAMVW.csv
 date

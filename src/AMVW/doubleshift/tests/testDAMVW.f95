@@ -152,7 +152,6 @@ program testDAMVW
 CONTAINS
 
 !************************************************************************
-!************************************************************************
 !			SUBROUTINE ZREVSEVAL				*
 !************************************************************************
 ! Evaluate reversal of scalar polynomial p with real coeffs of degree d,*
@@ -227,4 +226,4 @@ ENDIF
 RETURN
 END SUBROUTINE zseval
 
-END PROGRAM
+END PROGRAM testDAMVW

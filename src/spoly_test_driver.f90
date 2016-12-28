@@ -1,4 +1,4 @@
-PROGRAM driver
+PROGRAM spoly_test_driver
     USE poly_zeros
     USE dslmpep_subroutines
     IMPLICIT NONE
@@ -134,4 +134,4 @@ PROGRAM driver
         degree = jumpFactor * degree
     END DO
     CLOSE(UNIT=1)
-END PROGRAM driver
+END PROGRAM spoly_test_driver

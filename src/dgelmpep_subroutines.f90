@@ -1,5 +1,6 @@
 MODULE dgelmpep_subroutines
 USE dslmpep_subroutines
+USE util
 IMPLICIT NONE
 
 CONTAINS

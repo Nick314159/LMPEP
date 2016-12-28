@@ -1,6 +1,6 @@
 #!/bin/bash
 cd src
-./buildSpoly.sh
+./buildGepoly.sh
 sleep 3
 cp ./a.out ../
 cd ..

@@ -65,8 +65,11 @@ DO k=1,4
   WRITE(2,*) tests(k)
   WRITE(2,*) 'NR'
   WRITE(2,*) ier
+  WRITE(2,*)
   WRITE(2,*) iei
+  WRITE(2,*)
   WRITE(2,*) er
+  WRITE(2,*)
   WRITE(2,*) ei
   WRITE(2,*)
 
@@ -90,8 +93,11 @@ DO k=1,4
   WRITE(2,*) tests(k)
   WRITE(2,*) 'NP'
   WRITE(2,*) ier
+  WRITE(2,*)
   WRITE(2,*) iei
+  WRITE(2,*)
   WRITE(2,*) er
+  WRITE(2,*)
   WRITE(2,*) ei
   WRITE(2,*)
 

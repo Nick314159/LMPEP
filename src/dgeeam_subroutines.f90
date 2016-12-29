@@ -276,8 +276,9 @@ ENDDO
 !compute y1=p'/p
 y1=czero
 DO k=1,n
-  y1=y1+t*(d-t*b(k,k))
+  y1=y1+(d-t*b(k,k))
 ENDDO
+y1=t*y1
 !compute Laguerre iterate
 x1=y1-x1
 y1=1/x1
@@ -519,8 +520,9 @@ ENDDO
 !compute y1=p'/p
 y1=czero
 DO k=1,n
-  y1=y1+t*(d-t*b(k,k))
+  y1=y1+(d-t*b(k,k))
 ENDDO
+y1=t*y1
 !compute Laguerre iterate
 x1=y1-x1
 y1=1/x1

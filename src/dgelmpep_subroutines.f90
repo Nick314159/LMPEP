@@ -395,10 +395,12 @@ ENDDO
 !compute y1=p'/p and y2=-(p'/p)'
 y1=czero; y2=czero
 DO k=1,n
-  y1=y1+t*(d-t*b(k,k))
+  y1=y1+(d-t*b(k,k))
   CALL dgemv('N',1,n,one,b(k,1),n,b(1,k),1,zero,temp,1)
-  y2=y2+t**2*(d-2*t*b(k,k)+t**2*(temp-c(k,k)))
+  y2=y2+(d-2*t*b(k,k)+t**2*(temp-c(k,k)))
 ENDDO
+y1=t*y1
+y2=t**2*y2
 !compute Laguerre iterate
 x1=y1-x1
 x2=y2-x2
@@ -727,10 +729,12 @@ ENDDO
 !compute y1=p'/p and y2=-(p'/p)'
 y1=czero; y2=czero
 DO k=1,n
-  y1=y1+t*(d-t*b(k,k))
+  y1=y1+(d-t*b(k,k))
   CALL zgemv('N',1,n,cone,b(k,1),n,b(1,k),1,czero,temp,1)
-  y2=y2+t**2*(d-2*t*b(k,k)+t**2*(temp-c(k,k)))
+  y2=y2+(d-2*t*b(k,k)+t**2*(temp-c(k,k)))
 ENDDO
+y1=t*y1
+y2=t**2*y2
 !compute Laguerre iterate
 x1=y1-x1
 x2=y2-x2

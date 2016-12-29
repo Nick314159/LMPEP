@@ -1,4 +1,4 @@
-PROGRAM ge_test_driver
+PROGRAM ie_test_driver1
 USE dgeeam_subroutines
 IMPLICIT NONE
 
@@ -170,4 +170,4 @@ WRITE(1, *)
   CLOSE(UNIT=1) 
    
   
-END PROGRAM ge_test_driver
+END PROGRAM ie_test_driver1

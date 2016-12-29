@@ -148,6 +148,52 @@ ENDDO
 RETURN
 END SUBROUTINE dgelm
 
+
+
+
+SUBROUTINE dgelmt(p, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n, opt, ier, iei)
+IMPLICIT NONE
+!scalar arguments
+CHARACTER(LEN=2), INTENT(IN) :: opt
+INTEGER, INTENT(IN) :: d, n
+!array arguments
+INTEGER, INTENT(INOUT) :: iseed(*)
+REAL(dp), INTENT(IN) :: ncoeff(*), p(n,*)
+REAL(dp), INTENT(INOUT) :: berr(*), er(*), ei(*), ier(*), iei(*)
+REAL(dp), INTENT(INOUT) :: xr(n,*), xi(n,*), yr(n,*), yi(n,*)
+!local scalars
+LOGICAL :: check
+INTEGER :: die, dze, i, it, lwork
+REAL(dp) :: tol
+!intrinsic procedures
+INTRINSIC :: DABS, MAX
+
+!initial estimates
+CALL dgestart(p, xr, xi, yr, yi, er, ei, ncoeff, d, die, dze, lwork, n, opt)
+ier(1:n*d)=er(1:n*d)
+iei(1:n*d)=ei(1:n*d)
+!Laguerre's method
+DO i=dze+1,n*d-die
+  check=.FALSE.
+  DO it=1,itmax
+    check=(it==itmax)
+    tol=MAX(eps*DCMOD(er(i),ei(i)), eps)
+    IF(DABS(ei(i))<tol) THEN
+      !update real eigenpair approx
+      CALL dgeapprox(p, xr(1,i), xi(1,i), yr(1,i), yi(1,i), er, ei, ncoeff,&
+                     iseed, berr(i), tol, i, lwork, d, n, check)
+    ELSE
+      !update complex eigenpair approx
+      CALL zgeapprox(p, xr(1,i), xi(1,i), yr(1,i), yi(1,i), er, ei, ncoeff,&
+                     iseed, berr(i), tol, i, lwork, d, n, check)
+    ENDIF
+    IF(check) THEN
+      EXIT
+    ENDIF
+  ENDDO
+ENDDO
+RETURN
+END SUBROUTINE dgelmt
 !************************************************************************
 !			SUBROUTINE DGEAPPROX				*
 !************************************************************************

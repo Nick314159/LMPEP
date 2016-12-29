@@ -1,6 +1,6 @@
 #!/bin/bash
 cd src
-./buildIepoly.sh
+./buildIepoly1.sh
 sleep 3
 cp ./a.out ../
 cd ..

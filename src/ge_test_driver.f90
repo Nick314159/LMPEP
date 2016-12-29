@@ -17,11 +17,11 @@ INTRINSIC :: COUNT, DBLE, MAX, MAXVAL, MOD, NEW_LINE, SYSTEM_CLOCK
 REAL(dp) :: dlange
 EXTERNAL :: dlange
 !file location (where problem files are stored)
-!CHARACTER(*), PARAMETER :: fileplace1="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/PROBLEMS/REAL/"
-CHARACTER(*), PARAMETER :: fileplace1="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/PROBLEMS/REAL/"
+CHARACTER(*), PARAMETER :: fileplace1="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/PROBLEMS/REAL/"
+!CHARACTER(*), PARAMETER :: fileplace1="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/PROBLEMS/REAL/"
 !file location (where results are stored)
-!CHARACTER(*), PARAMETER :: fileplace2="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
-CHARACTER(*), PARAMETER :: fileplace2="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/results/"
+CHARACTER(*), PARAMETER :: fileplace2="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
+!CHARACTER(*), PARAMETER :: fileplace2="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/results/"
 !create iseed, used in dlarnv and dlagge
 CALL SYSTEM_CLOCK(COUNT=clock)
 CALL srand(clock)
@@ -51,10 +51,10 @@ WRITE(1, '(A)',  advance='no') 'EA TIME,         '
 WRITE(1, '(A)',  advance='no') 'MAX BERR,        '
 WRITE(1, '(A)',  advance='no') 'MAX FERR         '
 WRITE(1, *)
-  
-n = startingSize
+
 d = startingDegree
 DO WHILE (d<maxDegree)
+  n = startingSize
   DO WHILE (n<maxSize)
     WRITE(1, '(i6)', advance='no') d
     WRITE(1, '(A)', advance='no') ', '

@@ -6,7 +6,7 @@ import matplotlib.pyplot as pyplot
 degree, size, ltimeDegree, eatimeDegree, ltimeSize, eatimeSize = [], [], [], [], [], []
 #lberr, lferr, eaberr, eaferr =, [], [], [], []
 
-with open('results/outputGepolyDegree.csv') as f:
+with open('../results/outputGepolyDegree.csv') as f:
   reader = csv.reader(f)
   headers= next(reader)
   for row in reader:
@@ -18,7 +18,7 @@ with open('results/outputGepolyDegree.csv') as f:
     eatimeDegree.append(row[5].strip())
     #eaberr.append(row[6].strip())
     #eaferr.append(row[7].strip())
-with open('results/outputGepolySize.csv') as f:
+with open('../results/outputGepolySize.csv') as f:
   reader = csv.reader(f)
   headers= next(reader)
   for row in reader:
@@ -37,7 +37,7 @@ ax.semilogy(degree, eatimeDegree, 'b-^', label='Ehrlich-Aberth Time')
 ax.set_ylabel('Seconds')
 ax.set_xlabel('Degree')
 legend = ax.legend(loc=0, shadow=True)
-savefig("results/gepoly_times_degree.pdf")
+savefig("../results/gepoly_times_degree.pdf")
 
 fig, ax = plt.subplots()
 ax.semilogy(size, ltimeSize, 'r-*', label='Laguerre Time')
@@ -45,5 +45,5 @@ ax.semilogy(size, eatimeSize, 'b-^', label='Ehrlich-Aberth Time')
 ax.set_ylabel('Seconds')
 ax.set_xlabel('Size')
 legend = ax.legend(loc=0, shadow=True)
-savefig("results/gepoly_times_size.pdf")
+savefig("../results/gepoly_times_size.pdf")
 

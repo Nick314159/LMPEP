@@ -1,4 +1,5 @@
 PROGRAM ie_test_driver2
+USE environment
 USE dgeeam_subroutines
 IMPLICIT NONE
 
@@ -14,12 +15,6 @@ INTRINSIC :: COUNT, DBLE, MAX, MAXVAL, MOD, NEW_LINE, SYSTEM_CLOCK
 !external procedures
 REAL(dp) :: dlange
 EXTERNAL :: dlange
-!file location (where problem files are stored)
-CHARACTER(*), PARAMETER :: fileplace1="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/PROBLEMS/REAL/"
-!CHARACTER(*), PARAMETER :: fileplace1="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/PROBLEMS/REAL/"
-!file location (where results are stored)
-CHARACTER(*), PARAMETER :: fileplace2="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
-!CHARACTER(*), PARAMETER :: fileplace2="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/results/"
 CHARACTER (LEN=64), DIMENSION(4) :: tests
 
 !create iseed, used in dlarnv and dlagge
@@ -36,9 +31,9 @@ tests(2) = 'butterfly.txt'
 tests(3) = 'cd_player.txt'
 tests(4) = 'spring.txt'
 
-OPEN(UNIT=2, FILE=fileplace2//'outputIepoly2.txt')
+OPEN(UNIT=2, FILE=resultsDir//'outputIepoly2.txt')
 DO k=1,4
-  OPEN(UNIT=1,FILE=fileplace1//tests(k))
+  OPEN(UNIT=1,FILE=problemsDir//tests(k))
   !read in size and degree from file
   READ(1,*) n
   READ(1,*) d

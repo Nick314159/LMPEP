@@ -6,7 +6,7 @@ import matplotlib.pyplot as pyplot
 test, npRealEstimate, npImaginaryEstimate, nrRealEstimate, nrImaginaryEstimate, npReal, npImaginary, nrReal, nrImaginary = [], [], [], [], [], [], [], [], []
 
 
-with open('results/outputIepoly2.txt') as f:
+with open('../results/outputIepoly2.txt') as f:
   reader = csv.reader(f)
   headers= next(reader)
   for row in reader:
@@ -20,7 +20,7 @@ ax.semilogy(degree, nrtimeDegree, 'b-^', label='Numerical Range Time')
 ax.set_ylabel('Seconds')
 ax.set_xlabel('Degree')
 legend = ax.legend(loc=0, shadow=True)
-savefig("results/gepoly_times_degree.pdf")
+savefig("../results/gepoly_times_degree.pdf")
 
 fig, ax = plt.subplots()
 ax.semilogy(degree, nptimeDegree, 'r-*', label='Newtons Polygon Time')
@@ -28,5 +28,5 @@ ax.semilogy(degree, nrtimeDegree, 'b-^', label='Numerical Range Time')
 ax.set_ylabel('Seconds')
 ax.set_xlabel('Size')
 legend = ax.legend(loc=0, shadow=True)
-savefig("results/gepoly_times_size.pdf")
+savefig("../results/gepoly_times_size.pdf")
 

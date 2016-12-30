@@ -1,4 +1,5 @@
 PROGRAM ie_test_driver1
+USE environment
 USE dgeeam_subroutines
 IMPLICIT NONE
 
@@ -16,12 +17,6 @@ INTRINSIC :: COUNT, DBLE, MAX, MAXVAL, MOD, NEW_LINE, SYSTEM_CLOCK
 !external procedures
 REAL(dp) :: dlange
 EXTERNAL :: dlange
-!file location (where problem files are stored)
-CHARACTER(*), PARAMETER :: fileplace1="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/PROBLEMS/REAL/"
-!CHARACTER(*), PARAMETER :: fileplace1="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/PROBLEMS/REAL/"
-!file location (where results are stored)
-CHARACTER(*), PARAMETER :: fileplace2="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
-!CHARACTER(*), PARAMETER :: fileplace2="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/results/"
 !create iseed, used in dlarnv and dlagge
 CALL SYSTEM_CLOCK(COUNT=clock)
 CALL srand(clock)
@@ -41,7 +36,7 @@ READ (arg,'(I10)') startingDegree
 CALL GETARG(4, arg)
 READ (arg,'(I10)') maxDegree
 
-OPEN(UNIT=1,FILE=fileplace2//"outputIepolySize1.csv")
+OPEN(UNIT=1,FILE=resultsDir//"outputIepolySize1.csv")
 WRITE(1, '(A)',  advance='no') 'DEGREE,     '
 WRITE(1, '(A)',  advance='no') 'SIZE,    '
 WRITE(1, '(A)',  advance='no') 'NR TIME,          '
@@ -106,7 +101,7 @@ WRITE(1, *)
   
  
  
-OPEN(UNIT=1,FILE=fileplace2//"outputIepolyDegree1.csv")
+OPEN(UNIT=1,FILE=resultsDir//"outputIepolyDegree1.csv")
 WRITE(1, '(A)',  advance='no') 'DEGREE,     '
 WRITE(1, '(A)',  advance='no') 'SIZE,    '
 WRITE(1, '(A)',  advance='no') 'NR TIME,          '

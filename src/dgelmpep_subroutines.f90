@@ -118,15 +118,16 @@ REAL(dp), INTENT(INOUT) :: berr(*), er(*), ei(*)
 REAL(dp), INTENT(INOUT) :: xr(n,*), xi(n,*), yr(n,*), yi(n,*)
 !local scalars
 LOGICAL :: check
-INTEGER :: die, dze, i, it, lwork
+INTEGER :: die, dze, i, it, lwork, td
 REAL(dp) :: tol
 !intrinsic procedures
 INTRINSIC :: DABS, MAX
 
 !initial estimates
 CALL dgestart(p, xr, xi, yr, yi, er, ei, ncoeff, d, die, dze, lwork, n, opt)
+td=n*d-die
 !Laguerre's method
-DO i=dze+1,n*d-die
+DO i=dze+1,td
   check=.FALSE.
   DO it=1,itmax
     check=(it==itmax)
@@ -134,11 +135,11 @@ DO i=dze+1,n*d-die
     IF(DABS(ei(i))<tol) THEN
       !update real eigenpair approx
       CALL dgeapprox(p, xr(1,i), xi(1,i), yr(1,i), yi(1,i), er, ei, ncoeff,&
-                     iseed, berr(i), tol, i, lwork, d, n, check)
+                     iseed, berr(i), tol, i, lwork, d, n, td, check)
     ELSE
       !update complex eigenpair approx
       CALL zgeapprox(p, xr(1,i), xi(1,i), yr(1,i), yi(1,i), er, ei, ncoeff,&
-                     iseed, berr(i), tol, i, lwork, d, n, check)
+                     iseed, berr(i), tol, i, lwork, d, n, td, check)
     ENDIF
     IF(check) THEN
       EXIT
@@ -148,9 +149,9 @@ ENDDO
 RETURN
 END SUBROUTINE dgelm
 
-
-
-
+!************************************************************************
+!			SUBROUTINE DGELMT				*
+!************************************************************************
 SUBROUTINE dgelmt(p, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n, opt, ier, iei)
 IMPLICIT NONE
 !scalar arguments
@@ -163,17 +164,18 @@ REAL(dp), INTENT(INOUT) :: berr(*), er(*), ei(*), ier(*), iei(*)
 REAL(dp), INTENT(INOUT) :: xr(n,*), xi(n,*), yr(n,*), yi(n,*)
 !local scalars
 LOGICAL :: check
-INTEGER :: die, dze, i, it, lwork
+INTEGER :: die, dze, i, it, lwork, td
 REAL(dp) :: tol
 !intrinsic procedures
 INTRINSIC :: DABS, MAX
 
 !initial estimates
 CALL dgestart(p, xr, xi, yr, yi, er, ei, ncoeff, d, die, dze, lwork, n, opt)
+td=n*d-die
 ier(1:n*d)=er(1:n*d)
 iei(1:n*d)=ei(1:n*d)
 !Laguerre's method
-DO i=dze+1,n*d-die
+DO i=dze+1,td
   check=.FALSE.
   DO it=1,itmax
     check=(it==itmax)
@@ -181,11 +183,11 @@ DO i=dze+1,n*d-die
     IF(DABS(ei(i))<tol) THEN
       !update real eigenpair approx
       CALL dgeapprox(p, xr(1,i), xi(1,i), yr(1,i), yi(1,i), er, ei, ncoeff,&
-                     iseed, berr(i), tol, i, lwork, d, n, check)
+                     iseed, berr(i), tol, i, lwork, d, n, td, check)
     ELSE
       !update complex eigenpair approx
       CALL zgeapprox(p, xr(1,i), xi(1,i), yr(1,i), yi(1,i), er, ei, ncoeff,&
-                     iseed, berr(i), tol, i, lwork, d, n, check)
+                     iseed, berr(i), tol, i, lwork, d, n, td, check)
     ENDIF
     IF(check) THEN
       EXIT
@@ -201,11 +203,11 @@ END SUBROUTINE dgelmt
 ! enough, if so compute eigenvector, if not update eigenvalue		*
 ! approximation using Laguerre iterate. 				*
 !************************************************************************
-SUBROUTINE dgeapprox(p, xr, xi, yr, yi, er, ei, ncoeff, iseed, berr, tol, i, lwork, d, n, check)
+SUBROUTINE dgeapprox(p, xr, xi, yr, yi, er, ei, ncoeff, iseed, berr, tol, i, lwork, d, n, td, check)
 IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT) :: check
-INTEGER, INTENT(IN) :: d, i, lwork, n
+INTEGER, INTENT(IN) :: d, i, lwork, n, td
 REAL(dp), INTENT(IN) :: tol
 REAL(dp), INTENT(INOUT) :: berr
 !array arguments
@@ -254,7 +256,7 @@ IF(DABS(t)>1) THEN
     RETURN
   ENDIF
   !update eigenvalue approximation
-  CALL dgelcorr2(p, a, er, ei, tau, work, jpvt, alpha, t, tol, i, lwork, d, n, check)
+  CALL dgelcorr2(p, a, er, ei, tau, work, jpvt, alpha, t, tol, i, lwork, d, n, td, check)
   IF(check) THEN
     !3rd stopping criteria met
     CALL dker2(a, xr, yr, jpvt, tau, work, lwork, n)
@@ -286,7 +288,7 @@ ELSE
     RETURN
   ENDIF
   !update eigenvalue approximation
-  CALL dgelcorr1(p, a, er, ei, tau, work, jpvt, alpha, t, tol, i, lwork, d, n, check)
+  CALL dgelcorr1(p, a, er, ei, tau, work, jpvt, alpha, t, tol, i, lwork, d, n, td, check)
   IF(check) THEN
     !3rd stopping criteria met
     CALL dker2(a, xr, yr, jpvt, tau, work, lwork, n)
@@ -305,11 +307,11 @@ END SUBROUTINE dgeapprox
 ! previously found eigenvalues are stored in (er,ei). The ith eigenvalue*
 ! approximation is updated in er(i), ei(i).                             *
 !************************************************************************
-SUBROUTINE dgelcorr1(p, a, er, ei, tau, work, jpvt, alpha, t, tol, i, lwork, d, n, check)
+SUBROUTINE dgelcorr1(p, a, er, ei, tau, work, jpvt, alpha, t, tol, i, lwork, d, n, td, check)
 IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT) :: check
-INTEGER, INTENT(IN) :: d, i, lwork, n
+INTEGER, INTENT(IN) :: d, i, lwork, n, td
 REAL(dp), INTENT(IN) :: alpha, tol
 REAL(dp), INTENT(INOUT) :: t
 !array arguments
@@ -360,7 +362,7 @@ ENDDO
 !compute Laguerre iterate
 x1=y1-x1
 x2=y2-x2
-k=n*d-i+1
+k=td-i+1
 y1=ZSQRT((k-1)*(k*x2-x1**2))
 y2=x1-y1; y1=x1+y1
 IF(ZABS(y1)>=ZABS(y2)) THEN
@@ -393,11 +395,11 @@ END SUBROUTINE dgelcorr1
 ! previously found eigenvalues are stored in er, ei. The ith eigenvalue *
 ! approximation is updated in er(i), ei(i).                             *
 !************************************************************************
-SUBROUTINE dgelcorr2(p, a, er, ei, tau, work, jpvt, alpha, t, tol, i, lwork, d, n, check)
+SUBROUTINE dgelcorr2(p, a, er, ei, tau, work, jpvt, alpha, t, tol, i, lwork, d, n, td, check)
 IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT) :: check
-INTEGER, INTENT(IN) :: d, i, lwork, n
+INTEGER, INTENT(IN) :: d, i, lwork, n, td
 REAL(dp), INTENT(IN) :: alpha, tol
 REAL(dp), INTENT(INOUT) :: t
 !array arguments
@@ -450,7 +452,7 @@ y2=t**2*y2
 !compute Laguerre iterate
 x1=y1-x1
 x2=y2-x2
-k=n*d-i+1
+k=td-i+1
 y1=ZSQRT((k-1)*(k*x2-x1**2))
 y2=x1-y1; y1=x1+y1
 IF(ZABS(y1)>=ZABS(y2)) THEN
@@ -525,11 +527,11 @@ END SUBROUTINE dberrapprox
 ! enough, if so compute eigenvector, if not update eigenvalue		*
 ! approximation using Laguerre iterate. 				*
 !************************************************************************
-SUBROUTINE zgeapprox(p, xr, xi, yr, yi, er, ei, ncoeff, iseed, berr, tol, i, lwork, d, n, check)
+SUBROUTINE zgeapprox(p, xr, xi, yr, yi, er, ei, ncoeff, iseed, berr, tol, i, lwork, d, n, td, check)
 IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT) :: check
-INTEGER, INTENT(IN) :: d, i, lwork, n
+INTEGER, INTENT(IN) :: d, i, lwork, n, td
 REAL(dp), INTENT(IN) :: tol
 REAL(dp), INTENT(INOUT) :: berr
 !array arguments
@@ -582,7 +584,7 @@ IF(ZABS(t)>1) THEN
     RETURN
   ENDIF
   !update eigenvalue approximation
-  CALL zgelcorr2(p, a, er, ei, tau, work, jpvt, alpha, t, tol, i, lwork, d, n, check)
+  CALL zgelcorr2(p, a, er, ei, tau, work, jpvt, alpha, t, tol, i, lwork, d, n, td, check)
   IF(check) THEN
     !3rd stopping criteria met
     CALL zker2(a, x, y, jpvt, tau, work, lwork, n)
@@ -617,7 +619,7 @@ ELSE
     RETURN
   ENDIF
   !update eigenvalue approximation
-  CALL zgelcorr1(p, a, er, ei, tau, work, jpvt, alpha, t, tol, i, lwork, d, n, check)
+  CALL zgelcorr1(p, a, er, ei, tau, work, jpvt, alpha, t, tol, i, lwork, d, n, td, check)
   IF(check) THEN
     !3rd stopping criteria met
     CALL zker2(a, x, y, jpvt, tau, work, lwork, n)
@@ -637,11 +639,11 @@ END SUBROUTINE zgeapprox
 ! i-1 previously found eigenvalues are stored in (er,ei). The ith 	*
 ! eigenvalue approximation is updated in er(i), ei(i).                  *
 !************************************************************************
-SUBROUTINE zgelcorr1(p, a, er, ei, tau, work, jpvt, alpha, t, tol, i, lwork, d, n, check)
+SUBROUTINE zgelcorr1(p, a, er, ei, tau, work, jpvt, alpha, t, tol, i, lwork, d, n, td, check)
 IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT) :: check
-INTEGER, INTENT(IN) :: d, i, lwork, n
+INTEGER, INTENT(IN) :: d, i, lwork, n, td
 REAL(dp), INTENT(IN) :: alpha, tol
 COMPLEX(dp), INTENT(INOUT) :: t
 !array arguments
@@ -693,7 +695,7 @@ ENDDO
 !compute Laguerre iterate
 x1=y1-x1
 x2=y2-x2
-k=n*d-i+1
+k=td-i+1
 y1=ZSQRT((k-1)*(k*x2-x1**2))
 y2=x1-y1; y1=x1+y1
 IF(ZABS(y1)>=ZABS(y2)) THEN
@@ -726,11 +728,11 @@ END SUBROUTINE zgelcorr1
 ! i-1 previously found eigenvalues are stored in er, ei. The ith 	*
 ! eigenvalue approximation is updated in er(i), ei(i).              	*
 !************************************************************************
-SUBROUTINE zgelcorr2(p, a, er, ei, tau, work, jpvt, alpha, t, tol, i, lwork, d, n, check)
+SUBROUTINE zgelcorr2(p, a, er, ei, tau, work, jpvt, alpha, t, tol, i, lwork, d, n, td, check)
 IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT) :: check
-INTEGER, INTENT(IN) :: d, i, lwork, n
+INTEGER, INTENT(IN) :: d, i, lwork, n, td
 REAL(dp), INTENT(IN) :: alpha, tol
 COMPLEX(dp), INTENT(INOUT) :: t
 !array arguments
@@ -784,7 +786,7 @@ y2=t**2*y2
 !compute Laguerre iterate
 x1=y1-x1
 x2=y2-x2
-k=n*d-i+1
+k=td-i+1
 y1=ZSQRT((k-1)*(k*x2-x1**2))
 y2=x1-y1; y1=x1+y1
 IF(ZABS(y1)>=ZABS(y2)) THEN

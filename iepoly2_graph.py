@@ -3,7 +3,7 @@ from numpy import *
 from pylab import *
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as pyplot
-test, npRealEstimate, npImaginaryEstimate, nrRealEstimate, nrImaginaryEstimate npReal, npImaginary, nrReal, nrImaginary = [], [], [], [], [], [], [], [], []
+test, npRealEstimate, npImaginaryEstimate, nrRealEstimate, nrImaginaryEstimate, npReal, npImaginary, nrReal, nrImaginary = [], [], [], [], [], [], [], [], []
 
 
 with open('results/outputIepoly2.txt') as f:

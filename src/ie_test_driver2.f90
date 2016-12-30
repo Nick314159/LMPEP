@@ -15,11 +15,11 @@ INTRINSIC :: COUNT, DBLE, MAX, MAXVAL, MOD, NEW_LINE, SYSTEM_CLOCK
 REAL(dp) :: dlange
 EXTERNAL :: dlange
 !file location (where problem files are stored)
-!CHARACTER(*), PARAMETER :: fileplace1="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/PROBLEMS/REAL/"
-CHARACTER(*), PARAMETER :: fileplace1="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/PROBLEMS/REAL/"
+CHARACTER(*), PARAMETER :: fileplace1="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/PROBLEMS/REAL/"
+!CHARACTER(*), PARAMETER :: fileplace1="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/PROBLEMS/REAL/"
 !file location (where results are stored)
-!CHARACTER(*), PARAMETER :: fileplace2="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
-CHARACTER(*), PARAMETER :: fileplace2="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/results/"
+CHARACTER(*), PARAMETER :: fileplace2="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
+!CHARACTER(*), PARAMETER :: fileplace2="/home/nsteckley/Documents/Personal/Cameron/LMPEP/tests/results/"
 CHARACTER (LEN=64), DIMENSION(4) :: tests
 
 !create iseed, used in dlarnv and dlagge

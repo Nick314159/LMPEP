@@ -72,19 +72,15 @@ ELSE
       EXIT
     ENDIF
   ENDDO
-  !stopping criteria alpha (similar to POLZEROS)
-  !DO i=1,d+1
-  !  alpha(i)=alpha(i)*(1+3.8*(i-1))
-  !ENDDO
   !Laguerre's method
   DO i=nzr+1,td
     check=.FALSE.
     DO it=1,itmax
       tol=MAX(eps*DCMOD(er(i),ei(i)), eps)
       IF(DABS(ei(i))<tol) THEN
-        CALL dslcorr(p, alpha, er, ei, berr(i), tol, check, d, i)
+        CALL dslcorr(p, alpha, er, ei, berr(i), tol, check, td, i)
       ELSE
-        CALL zslcorr(p, alpha, er, ei, berr(i), tol, check, d, i)
+        CALL zslcorr(p, alpha, er, ei, berr(i), tol, check, td, i)
       ENDIF
       IF(check) THEN
         EXIT
@@ -115,7 +111,7 @@ REAL(dp), INTENT(INOUT) :: berr
 REAL(dp), INTENT(IN) :: p(*), alpha(*)
 REAL(dp), INTENT(INOUT) :: er(*), ei(*)
 !local scalars
-INTEGER :: td
+INTEGER :: k
 REAL(dp) :: a, b, c, t
 DOUBLE COMPLEX :: x1, x2, y1, y2
 !intrinsic procedures
@@ -123,8 +119,8 @@ INTRINSIC :: DABS, DBLE, DCMPLX, DIMAG, ZABS, ZSQRT
 
 !initiate variables
 x1=czero; x2=czero
-DO td=1,i-1
-  y1=1/DCMPLX(er(i)-er(td),-ei(td))
+DO k=1,i-1
+  y1=1/DCMPLX(er(i)-er(k),-ei(k))
   x1=x1+y1
   x2=x2+y1**2
 ENDDO
@@ -169,12 +165,12 @@ ENDIF
 !remove previously found roots
 x1=y1-x1
 x2=y2-x2
-td=d-i+1
+k=d-i+1
 !denominator of Laguerre correction term
-y1=ZSQRT((td-1)*(td*x2-x1**2))
+y1=ZSQRT((k-1)*(k*x2-x1**2))
 y2=x1-y1; y1=x1+y1
 IF(ZABS(y1)>=ZABS(y2)) THEN
-  y1=td/y1
+  y1=k/y1
   IF(ZABS(y1)<tol) THEN
     ei(i)=zero
     check=.TRUE.
@@ -183,7 +179,7 @@ IF(ZABS(y1)>=ZABS(y2)) THEN
     ei(i)=-DIMAG(y1)
   ENDIF
 ELSE
-  y2=td/y2
+  y2=k/y2
   IF(ZABS(y2)<tol) THEN
     ei(i)=zero
     check=.TRUE.
@@ -215,15 +211,15 @@ REAL(dp), INTENT(INOUT) :: berr
 REAL(dp), INTENT(IN) :: p(*), alpha(*)
 REAL(dp), INTENT(INOUT) :: er(*), ei(*)
 !local scalars
-INTEGER :: td
+INTEGER :: k
 COMPLEX(dp) :: a, b, c, t, x1, x2, y1, y2
 !intrinsic procedures
 INTRINSIC :: DBLE, DCMPLX, DIMAG, ZABS, ZSQRT
 
 !initiate variables
 x1=czero; x2=czero
-DO td=1,i-1
-  y1=1/DCMPLX(er(i)-er(td),ei(i)-ei(td))
+DO k=1,i-1
+  y1=1/DCMPLX(er(i)-er(k),ei(i)-ei(k))
   x1=x1+y1
   x2=x2+y1**2
 ENDDO
@@ -266,12 +262,12 @@ ENDIF
 !remove previously found roots
 x1=y1-x1
 x2=y2-x2
-td=d-i+1
+k=d-i+1
 !denominator of Laguerre correction term
-y1=ZSQRT((td-1)*(td*x2-x1**2))
+y1=ZSQRT((k-1)*(k*x2-x1**2))
 y2=x1-y1; y1=x1+y1
 IF(ZABS(y1)>=ZABS(y2)) THEN
-  y1=td/y1
+  y1=k/y1
   IF(ZABS(y1)<tol) THEN
     check=.TRUE.
   ELSE
@@ -279,7 +275,7 @@ IF(ZABS(y1)>=ZABS(y2)) THEN
     ei(i)=ei(i)-DIMAG(y1)
   ENDIF
 ELSE
-  y2=td/y2
+  y2=k/y2
   IF(ZABS(y2)<tol) THEN
     check=.TRUE.
   ELSE

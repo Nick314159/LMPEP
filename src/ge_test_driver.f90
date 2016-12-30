@@ -5,8 +5,7 @@ IMPLICIT NONE
 INTEGER :: maxSize, maxDegree, startingSize, startingDegree
 CHARACTER(len=32) :: arg
 !local scalars
-INTEGER :: c, clock, clock_rate, clock_start, clock_stop, d, i, info, j, n
-CHARACTER (LEN=32) f
+INTEGER :: clock, clock_rate, clock_start, clock_stop, d, i, info, n
 !local arrays
 INTEGER, DIMENSION(4) :: iseed
 REAL(dp), DIMENSION(:), ALLOCATABLE :: berr, cond, ferr, er, ei, ncoeff, work, x
@@ -119,7 +118,7 @@ WRITE(1, '(A)',  advance='no') 'MAX BERR,        '
 WRITE(1, '(A)',  advance='no') 'MAX FERR         '
 WRITE(1, *) 
   
-  n = 2
+  n = 10
   d = startingDegree
   DO WHILE (d<maxDegree)
     WRITE(1, '(i6)', advance='no') d
@@ -136,7 +135,7 @@ WRITE(1, *)
     
     !solve problem using Laguerre's Method
     ALLOCATE(xr(n,n*d), xi(n,n*d), yr(n,n*d), yi(n,n*d))
-    ALLOCATE(berr(n*d), er(n*d), ei(n*d), ncoeff(n*d), cond(n*d), ferr(n*d))
+    ALLOCATE(berr(n*d), er(n*d), ei(n*d), ncoeff(d+1), cond(n*d), ferr(n*d))
     DO i=1,d+1
       ncoeff(i)=dlange('F',n,n,p(1,n*(i-1)+1),n,x)
     ENDDO

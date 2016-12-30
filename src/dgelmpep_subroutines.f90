@@ -128,7 +128,6 @@ CALL dgestart(p, xr, xi, yr, yi, er, ei, ncoeff, d, die, dze, lwork, n, opt)
 td=n*d-die
 !Laguerre's method
 DO i=dze+1,td
-  check=.FALSE.
   DO it=1,itmax
     check=(it==itmax)
     tol=MAX(eps*DCMOD(er(i),ei(i)), eps)
@@ -146,6 +145,7 @@ DO i=dze+1,td
     ENDIF
   ENDDO
 ENDDO
+PRINT*, MAXVAL(berr(1:n*d))
 RETURN
 END SUBROUTINE dgelm
 
@@ -176,7 +176,6 @@ ier(1:n*d)=er(1:n*d)
 iei(1:n*d)=ei(1:n*d)
 !Laguerre's method
 DO i=dze+1,td
-  check=.FALSE.
   DO it=1,itmax
     check=(it==itmax)
     tol=MAX(eps*DCMOD(er(i),ei(i)), eps)
@@ -196,6 +195,7 @@ DO i=dze+1,td
 ENDDO
 RETURN
 END SUBROUTINE dgelmt
+
 !************************************************************************
 !			SUBROUTINE DGEAPPROX				*
 !************************************************************************
@@ -1251,6 +1251,7 @@ REAL(dp), INTENT(INOUT) :: x(*), y(*), work(*)
 !local scalars
 INTEGER :: i, info, k
 !local arrays
+INTEGER, DIMENSION(n) :: jpvt2
 REAL(dp), DIMENSION(n) :: temp
 !external procedures
 REAL(dp) :: dnrm2
@@ -1258,12 +1259,21 @@ EXTERNAL :: dnrm2
 
 !initial estimates
 CALL dker1(a, x, y, jpvt, tau, work, lwork, n, n, n)
+!jpvt transpose
+DO k=1,n
+  DO i=1,n
+    IF(i==jpvt(k)) THEN
+      EXIT
+    ENDIF
+  ENDDO
+  jpvt2(k)=i
+ENDDO
 !inverse iteration
 DO k=1,3
   !right eigenvector
   !apply E^{T}
   DO i=1,n
-    temp(i)=x(jpvt(i))
+    temp(jpvt2(i))=x(i)
   ENDDO
   !solve (R*R)x=x
   CALL dtrtrs('U','T','N',n,1,a,n,temp,n,info)
@@ -1379,6 +1389,7 @@ COMPLEX(dp), INTENT(INOUT) :: x(*), y(*), work(*)
 !local scalars
 INTEGER :: i, info, k
 !local arrays
+INTEGER, DIMENSION(n) :: jpvt2
 COMPLEX(dp), DIMENSION(n) :: temp
 !external procedures
 REAL(dp) :: dznrm2
@@ -1386,12 +1397,22 @@ EXTERNAL :: dznrm2
 
 !initial estimates
 CALL zker1(a, x, y, jpvt, tau, work, lwork, n, n, n)
+PRINT*, 'zker2'
+!jpvt transpose
+DO k=1,n
+  DO i=1,n
+    IF(i==jpvt(k)) THEN
+      EXIT
+    ENDIF
+  ENDDO
+  jpvt2(k)=i
+ENDDO
 !inverse iteration
 DO k=1,3
   !right eigenvector
   !apply E^{T}
   DO i=1,n
-    temp(i)=x(jpvt(i))
+    temp(jpvt2(i))=x(i)
   ENDDO
   !solve (R*R)x=x
   CALL ztrtrs('U','C','N',n,1,a,n,temp,n,info)

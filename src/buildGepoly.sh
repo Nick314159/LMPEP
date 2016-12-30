@@ -1,3 +1,3 @@
 #!/bin/bash
-gfortran util.f90 dslmpep_subroutines.f90 dgelmpep_subroutines.f90 dgeeam_subroutines.f90 ge_test_driver.f90 -lscalapack-openmpi -llapack -lblas && rm *.mod
+gfortran -g -Wall util.f90 dslmpep_subroutines.f90 dgelmpep_subroutines.f90 dgeeam_subroutines.f90 ge_test_driver.f90 -lscalapack-openmpi -llapack -lblas && rm *.mod
 

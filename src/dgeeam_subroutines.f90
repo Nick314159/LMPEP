@@ -175,7 +175,6 @@ REAL(dp), INTENT(IN) :: a(n,n), p(n,*), tau(*)
 REAL(dp), INTENT(INOUT) :: er(*), ei(*), work(*)
 !local scalars
 INTEGER :: info, j, k
-REAL(dp) :: temp
 COMPLEX(dp) :: x1, y1
 !local arrays
 REAL(dp), DIMENSION(n) :: v1
@@ -243,7 +242,6 @@ REAL(dp), INTENT(IN) :: a(n,n), p(n,*), tau(*)
 REAL(dp), INTENT(INOUT) :: er(*), ei(*), work(*)
 !local scalars
 INTEGER :: info, j, k
-REAL(dp) :: temp
 COMPLEX(dp) :: x1, y1
 !local arrays
 REAL(dp), DIMENSION(n) :: v1
@@ -419,7 +417,7 @@ COMPLEX(dp), INTENT(IN) :: a(n,n), tau(*)
 COMPLEX(dp), INTENT(INOUT) :: work(*)
 !local scalars
 INTEGER :: info, j, k
-COMPLEX(dp) :: temp, x1, y1
+COMPLEX(dp) :: x1, y1
 !local arrays
 COMPLEX(dp), DIMENSION(n) :: v1
 COMPLEX(dp), DIMENSION(n,n) :: b
@@ -488,7 +486,7 @@ COMPLEX(dp), INTENT(IN) :: a(n,n), tau(*)
 COMPLEX(dp), INTENT(INOUT) :: work(*)
 !local scalars
 INTEGER :: info, j, k
-COMPLEX(dp) :: temp, x1, y1
+COMPLEX(dp) :: x1, y1
 !local arrays
 COMPLEX(dp), DIMENSION(n) :: v1
 COMPLEX(dp), DIMENSION(n,n) :: b

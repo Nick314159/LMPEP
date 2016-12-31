@@ -11,6 +11,6 @@ date && ./a.out $1 $2 $3 $4 > /dev/null 2>&1 && cat results/outputGepolySize.csv
 
 #Generate graphs
 cd src
-/usr/bin/python3 gepoly_graph.py
+/usr/bin/python gepoly_graph.py
 
 

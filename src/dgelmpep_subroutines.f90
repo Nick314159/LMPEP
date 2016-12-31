@@ -1031,9 +1031,6 @@ REAL(dp), DIMENSION(:), ALLOCATABLE :: work
 REAL(dp), DIMENSION(n,n) :: a
 !intrinsic procedures
 INTRINSIC :: DABS, INT
-!external procedures
-REAL(dp) :: ddot
-EXTERNAL :: ddot
 
 !optimal lwork for dgeqp3 and dormqr
 ALLOCATE(work(1))
@@ -1196,6 +1193,8 @@ INTEGER, INTENT(IN) :: n
 REAL(dp), INTENT(IN) :: a(n,n)
 !local scalars
 INTEGER :: j
+!intrinsic procedures
+INTRINSIC :: DABS
 
 DO j=1,n
   IF(DABS(a(j,j))<eps) THEN
@@ -1270,12 +1269,12 @@ DO k=1,n
 ENDDO
 !inverse iteration
 DO k=1,3
-  !right eigenvector
+  !===right eigenvector===
   !apply E^{T}
   DO i=1,n
     temp(jpvt2(i))=x(i)
   ENDDO
-  !solve (R*R)x=x
+  !solve (R^{T}R)x=x
   CALL dtrtrs('U','T','N',n,1,a,n,temp,n,info)
   CALL dtrtrs('U','N','N',n,1,a,n,temp,n,info)
   !apply E
@@ -1285,10 +1284,10 @@ DO k=1,3
   !normalize
   x(1:n)=x(1:n)/dnrm2(n,x,1)
 
-  !left eigenvector
+  !===left eigenvector===
   !apply Q*
   CALL dormqr('L','T',n,1,n,a,n,tau,y,n,work,lwork,info)
-  !solve (RR*)y=y
+  !solve (RR^{T})y=y
   CALL dtrtrs('U','N','N',n,1,a,n,y,n,info)
   CALL dtrtrs('U','T','N',n,1,a,n,y,n,info)
   !apply Q
@@ -1322,16 +1321,19 @@ INTEGER :: i, info
 REAL(dp) :: dnrm2
 EXTERNAL :: dnrm2
 
-!right eigenvector
+!===right eigenvector===
 x(jlo:n)=zero; x(j)=one
 x(1:jlo-1)=-a(1:jlo-1,j)
+!solve system ax=x
 CALL dtrtrs('U','N','N',jlo-1,1,a,n,x,n,info)
+!apply E
 DO i=1,n
   y(jpvt(i))=x(i)
 ENDDO
 x(1:n)=y(1:n)/dnrm2(n,y,1)
-!left eigenvector
+!===left eigenvector===
 y(1:n)=zero; y(j)=one
+!jth column of Q
 CALL dormqr('L','N',n,1,n,a,n,tau,y,n,work,lwork,info)
 RETURN
 END SUBROUTINE dker1
@@ -1409,7 +1411,7 @@ DO k=1,n
 ENDDO
 !inverse iteration
 DO k=1,3
-  !right eigenvector
+  !===right eigenvector===
   !apply E^{T}
   DO i=1,n
     temp(jpvt2(i))=x(i)
@@ -1424,7 +1426,7 @@ DO k=1,3
   !normalize
   x(1:n)=x(1:n)/dznrm2(n,x,1)
 
-  !left eigenvector
+  !===left eigenvector===
   !apply Q*
   CALL zunmqr('L','C',n,1,n,a,n,tau,y,n,work,lwork,info)
   !solve (RR*)y=y
@@ -1461,16 +1463,19 @@ INTEGER :: i, info
 REAL(dp) :: dznrm2
 EXTERNAL :: dznrm2
 
-!right eigenvector
+!===right eigenvector===
 x(jlo:n)=czero; x(j)=cone
 x(1:jlo-1)=-a(1:jlo-1,j)
+!solve system ax=x
 CALL ztrtrs('U','N','N',jlo-1,1,a,n,x,n,info)
+!apply E
 DO i=1,n
   y(jpvt(i))=x(i)
 ENDDO
 x(1:n)=y(1:n)/dznrm2(n,y,1)
-!left eigenvector
+!===left eigenvector===
 y(1:n)=czero; y(j)=cone
+!jth column of Q
 CALL zunmqr('L','N',n,1,n,a,n,tau,y,n,work,lwork,info)
 RETURN
 END SUBROUTINE zker1

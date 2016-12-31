@@ -43,7 +43,7 @@ DO i=1,n*d
     ferr(i)=berr(i)*cond(i) 
   ELSEIF(DCMOD(er(i),ei(i))<=one) THEN
     !nonzero eigenvalues w/ moduli <=1
-    t=DCMPLX(er(i), ei(i))
+    t=DCMPLX(er(i),ei(i))
     CALL zgeeval(p, t, a, d, n, 0)
     CALL dseval(ncoeff, ZABS(t), alpha, d, 0)
     u=DCMPLX(xr(:,i),xi(:,i))
@@ -63,7 +63,7 @@ DO i=1,n*d
     cond(i)=cond(i)*alpha
   ELSEIF(DCMOD(er(i),ei(i))<big) THEN
     !nonzero eigenvalues w/ moduli >1 and <big
-    t=1/DCMPLX(er(i), ei(i))
+    t=1/DCMPLX(er(i),ei(i))
     CALL zrevgeeval(p, t, a, d, n, 0)
     CALL drevseval(ncoeff, ZABS(t), alpha, d, 0)
     u=DCMPLX(xr(:,i),xi(:,i))
@@ -78,7 +78,7 @@ DO i=1,n*d
     u=DCMPLX(xr(:,i),xi(:,i))
     CALL zgemv('N', n, n, cone, b, n, u, 1, czero, v, 1)
     u=DCMPLX(yr(:,i),yi(:,i))
-    cond(i)=1/ZABS(t*zdotc(n,u,1,v,1))
+    cond(i)=1/ZABS(zdotc(n,u,1,v,1))
     ferr(i)=berr(i)*cond(i)
     berr(i)=berr(i)/alpha
     cond(i)=cond(i)*alpha
@@ -145,7 +145,6 @@ DO i=dze+1,td
     ENDIF
   ENDDO
 ENDDO
-PRINT*, MAXVAL(berr(1:n*d))
 RETURN
 END SUBROUTINE dgelm
 
@@ -230,7 +229,7 @@ INTRINSIC :: DABS
 t=er(i)
 jpvt=0
 !split into 2 cases
-IF(DABS(t)>1) THEN
+IF(DABS(t)>one) THEN
   t=1/t
   CALL drevgeeval(p, t, a, d, n, 0)
   CALL drevseval(ncoeff, DABS(t), alpha, d, 0)
@@ -556,7 +555,7 @@ INTRINSIC :: DBLE, DCMPLX, DIMAG, ZABS
 t=DCMPLX(er(i), ei(i))
 jpvt=0
 !split into 2 cases
-IF(ZABS(t)>1) THEN
+IF(ZABS(t)>one) THEN
   t=1/t
   CALL zrevgeeval(p, t, a, d, n, 0)
   CALL drevseval(ncoeff, ZABS(t), alpha, d, 0)
@@ -589,7 +588,7 @@ IF(ZABS(t)>1) THEN
     !3rd stopping criteria met
     CALL zker2(a, x, y, jpvt, tau, work, lwork, n)
     xr(1:n)=DBLE(x); xi(1:n)=DIMAG(x)
-    yr(1:n)=DBLE(x); yi(1:n)=DIMAG(y)
+    yr(1:n)=DBLE(y); yi(1:n)=DIMAG(y)
     RETURN
   ENDIf
 ELSE
@@ -624,7 +623,7 @@ ELSE
     !3rd stopping criteria met
     CALL zker2(a, x, y, jpvt, tau, work, lwork, n)
     xr(1:n)=DBLE(x); xi(1:n)=DIMAG(x)
-    yr(1:n)=DBLE(x); yi(1:n)=DIMAG(y)
+    yr(1:n)=DBLE(y); yi(1:n)=DIMAG(y)
     RETURN
   ENDIf
 ENDIF
@@ -883,7 +882,7 @@ ELSEIF(der==1) THEN
     a=t*a+(d-k+1)*p(:,n*(k-1)+1:n*k)
   ENDDO
 ELSE
-  a=d*(d-1)*P(:,1:n)
+  a=d*(d-1)*p(:,1:n)
   DO k=2,d-1
     a=t*a+(d-k+1)*(d-k)*p(:,n*(k-1)+1:n*k)
   ENDDO
@@ -957,7 +956,7 @@ ELSEIF(der==1) THEN
     a=t*a+(d-k+1)*p(:,n*(k-1)+1:n*k)
   ENDDO
 ELSE
-  a=d*(d-1)*P(:,1:n)
+  a=d*(d-1)*p(:,1:n)
   DO k=2,d-1
     a=t*a+(d-k+1)*(d-k)*p(:,n*(k-1)+1:n*k)
   ENDDO
@@ -1177,7 +1176,7 @@ DO i=2,d+1
   ENDIF
 ENDDO
 RETURN
-END SUBROUTINE
+END SUBROUTINE dienp
 
 !************************************************************************
 !				FUNCTION DJLO				*
@@ -1399,7 +1398,6 @@ EXTERNAL :: dznrm2
 
 !initial estimates
 CALL zker1(a, x, y, jpvt, tau, work, lwork, n, n, n)
-PRINT*, 'zker2'
 !jpvt transpose
 DO k=1,n
   DO i=1,n
@@ -1410,7 +1408,7 @@ DO k=1,n
   jpvt2(k)=i
 ENDDO
 !inverse iteration
-DO k=1,3
+DO k=1,10
   !===right eigenvector===
   !apply E^{T}
   DO i=1,n

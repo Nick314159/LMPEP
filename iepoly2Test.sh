@@ -12,5 +12,5 @@ date && ./a.out && cat results/outputIepoly2.txt && date
 
 #Generate graphs
 cd src
-/usr/bin/python3 iepoly2_graph.py
+/usr/bin/python iepoly2_graph.py
 

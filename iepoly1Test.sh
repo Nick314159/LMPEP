@@ -11,4 +11,4 @@ date && ./a.out $1 $2 $3 $4 > /dev/null 2>&1 && cat results/outputIepolySize1.cs
 
 #Generate graphs
 cd src
-/usr/bin/python3 iepoly1_graph.py
+/usr/bin/python iepoly1_graph.py

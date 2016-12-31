@@ -109,7 +109,7 @@ IF(DABS(t)>1) THEN
   IF(berr<eps) THEN
     !2nd stopping criteria met
     CALL dker2(a, xr, yr, jpvt, tau, work, lwork, n)
-    xi(1:n)=zero; yi(1:n)=zero
+    xi(1:n)=zero; yi(1:n)=zero; ei(i)=zero
     check=.FALSE.
     RETURN
   ENDIF

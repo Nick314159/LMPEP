@@ -4,7 +4,7 @@ USE dgeeam_subroutines
 IMPLICIT NONE
 
 !local scalars
-INTEGER :: c, clock, clock_rate, clock_start, clock_stop, d, i, info, j, n, k
+INTEGER :: c, clock, clock_rate, clock_start, clock_stop, d, i, info, j, n, k, l
 CHARACTER (LEN=32) f
 !local arrays
 INTEGER, DIMENSION(4) :: iseed
@@ -31,8 +31,9 @@ tests(2) = 'butterfly.txt'
 tests(3) = 'cd_player.txt'
 tests(4) = 'spring.txt'
 
-OPEN(UNIT=2, FILE=resultsDir//'outputIepoly2.txt')
+
 DO k=1,4
+  OPEN(UNIT=2, FILE=resultsDir//'outputIepoly2-'//tests(k))
   OPEN(UNIT=1,FILE=problemsDir//tests(k))
   !read in size and degree from file
   READ(1,*) n
@@ -59,13 +60,13 @@ DO k=1,4
   
   WRITE(2,*) tests(k)
   WRITE(2,*) 'NR'
-  WRITE(2,*) ier
+  DO l=1,n*d
+    WRITE(2,*) ier(l),',', iei(l)
+  ENDDO
   WRITE(2,*)
-  WRITE(2,*) iei
-  WRITE(2,*)
-  WRITE(2,*) er
-  WRITE(2,*)
-  WRITE(2,*) ei
+  DO l=1,n*d
+    WRITE(2,*) er(l),',', ei(l)
+  ENDDO
   WRITE(2,*)
 
   DEALLOCATE(xr, xi, yr, yi, berr, er, ei, ncoeff, cond, ferr, ier, iei)
@@ -87,13 +88,13 @@ DO k=1,4
   
   WRITE(2,*) tests(k)
   WRITE(2,*) 'NP'
-  WRITE(2,*) ier
+  DO l=1,n*d
+    WRITE(2,*) ier(l),',', iei(l)
+  ENDDO
   WRITE(2,*)
-  WRITE(2,*) iei
-  WRITE(2,*)
-  WRITE(2,*) er
-  WRITE(2,*)
-  WRITE(2,*) ei
+  DO l=1,n*d
+    WRITE(2,*) er(l),',', ei(l)
+  ENDDO
   WRITE(2,*)
 
   DEALLOCATE(p, xr, xi, yr, yi, berr, er, ei, ncoeff, cond, ferr, ier, iei)

@@ -33,8 +33,9 @@ PROGRAM spoly_test_driver
     READ(BUFFER, *) startDegree
     CALL GETARG(2,BUFFER)
     READ(BUFFER, *) maxDegree
-    CALL GETARG(3,BUFFER)
-    READ(BUFFER, *) jumpFactor
+    !CALL GETARG(3,BUFFER)
+    !READ(BUFFER, *) jumpFactor
+    jumpFactor=2
 	
     !Create iseed
     CALL SYSTEM_CLOCK(COUNT=clock)

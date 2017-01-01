@@ -25,7 +25,8 @@ date && ./a.out $1 $2 $3 && cat results/output.csv && date
 
 #Generate graphs
 cd src
-/usr/bin/python spoly_graph.py
+py=`which python`
+$py spoly_graph.py
 
 
 

@@ -16,17 +16,21 @@ make > /dev/null 2>&1
 #Execute
 cd tests
 date 
-./spoly $1 $2 $3 > /dev/null 2>&1
+./spoly $1 $2 > /dev/null 2>&1
 cd ../../../../
 cat results/outputAMVW.csv
 date
 echo
-date && ./a.out $1 $2 $3 && cat results/output.csv && date
+date && ./a.out $1 $2 && cat results/output.csv && date
 
 #Generate graphs
 cd src
 py=`which python`
 $py spoly_graph.py
+
+#Open graphs
+cd ..
+gnome-open results/spoly_*.pdf
 
 
 

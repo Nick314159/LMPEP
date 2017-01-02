@@ -15,3 +15,6 @@ cd src
 py=`which python`
 $py iepoly2_graph.py
 
+#Open graphs
+cd ..
+gnome-open results/iepoly2*.pdf

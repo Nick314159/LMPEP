@@ -13,3 +13,7 @@ date && ./a.out $1 $2 $3 $4 > /dev/null 2>&1 && cat results/outputIepolySize1.cs
 cd src
 py=`which python`
 $py iepoly1_graph.py
+
+#Open graphs
+cd ..
+gnome-open results/iepoly_times_*.pdf

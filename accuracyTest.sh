@@ -15,3 +15,6 @@ cd src
 py=`which python`
 $py accuracy_table.py
 
+#Open graphs
+cd ..
+gnome-open results/accuracy_table.png

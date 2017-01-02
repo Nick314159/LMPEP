@@ -14,4 +14,7 @@ cd src
 py=`which python`
 $py gepoly_graph.py
 
+#Open graphs
+cd ..
+gnome-open results/gepoly_times_*.pdf
 

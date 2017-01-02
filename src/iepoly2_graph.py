@@ -1,4 +1,5 @@
 import csv
+import math
 from numpy import *
 from pylab import *
 from mpl_toolkits.mplot3d import Axes3D
@@ -40,15 +41,50 @@ for test in tests :
       npReal.append(float(row[0].strip()))
       npImaginary.append(float(row[1].strip()))
       
-      
-  fig, ax = plt.subplots()
-  
   maxReal = max(max(nrReal), max(nrRealEstimate), max(npReal), max(npRealEstimate))
   maxImaginary = max(max(nrImaginary), max(nrImaginaryEstimate), max(npImaginary), max(npImaginaryEstimate))
   minReal = min(min(nrReal), min(nrRealEstimate), min(npReal), min(npRealEstimate))
   minImaginary = min(max(nrImaginary), min(nrImaginaryEstimate), min(npImaginary), min(npImaginaryEstimate))
+ 
+  fig = plt.figure()
+  ax = fig.add_subplot(111, projection='3d')
+ 
   ax.set_xlim(minReal, maxReal)
   ax.set_ylim(minImaginary, maxImaginary)
+
+  print('NR Estimate');  print( nrRealEstimate, nrImaginaryEstimate)
+  for n in nrRealEstimate:
+    if math.isnan(n):
+      print('nan is nrRealEstimates[%d]: %s' % (n, nrRealEstimte[n]))
+  for n in nrImaginaryEstimate:
+    if math.isnan(n):
+      print('nan is nrImaginaryEstimate[%d]: %s' % (n, nrImaginaryEstimate[n])) 
+  
+  print('NR Actual');  print(nrReal, nrImaginary)
+  for n in nrReal:
+    if math.isnan(n):
+      print('nan is nrReal[%d]: %s' % (n, nrReal[n]))
+  for n in nrImaginary:
+    if math.isnan(n):
+      print('nan is nrImaginary[%d]: %s' % (n, nrImaginary[n]))
+           
+  print('NP Estimate');  print(npRealEstimate, npImaginaryEstimate)
+  for n in npRealEstimate:
+    if math.isnan(n):
+      print('nan is npRealEstimate[%d]: %s' % (n, npRealEstimate[n]))
+  for n in npImaginaryEstimate:
+    if math.isnan(n):
+      print('nan is npImaginaryEstimate[%d]: %s' % (n, npImaginaryEstimate[n]))
+      
+  print('NP Actual');  print(npReal,npImaginary)
+  for n in npReal:
+    if math.isnan(n):
+      print('nan is npReal[%d]: %s' % (n, npReal[n]))
+  for n in npImaginary:
+    if math.isnan(n):
+      print('nan is npImaginary[%d]: %s' % (n, npImaginary[n]))
+      
+      
   ax.scatter(nrRealEstimate, nrImaginaryEstimate, c='r', marker='o', label='NR Initial Estimate')
   ax.scatter(nrReal, nrImaginary, c='r', marker='.', label='NR Actual')
   ax.scatter(npRealEstimate, npImaginaryEstimate, c='b', marker='o', label='NP Initial Estimate')

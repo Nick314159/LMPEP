@@ -15,7 +15,7 @@ INTRINSIC :: COUNT, DBLE, MAX, MAXVAL, MOD, NEW_LINE, SYSTEM_CLOCK
 !external procedures
 REAL(dp) :: dlange
 EXTERNAL :: dlange
-CHARACTER (LEN=64), DIMENSION(4) :: tests
+CHARACTER (LEN=64), DIMENSION(3) :: tests
 
 !create iseed, used in dlarnv and dlagge
 CALL SYSTEM_CLOCK(COUNT=clock)
@@ -26,13 +26,12 @@ ENDDO
 IF(MOD(iseed(4),2)==0) THEN
   iseed(4)=iseed(4)+1
 ENDIF
-tests(1) = 'bilby.txt'
-tests(2) = 'butterfly.txt'
-tests(3) = 'cd_player.txt'
-tests(4) = 'spring.txt'
+tests(1) = 'butterfly.txt'
+tests(2) = 'cd_player.txt'
+tests(3) = 'spring.txt'
 
 
-DO k=1,4
+DO k=1,3
   OPEN(UNIT=2, FILE=resultsDir//'outputIepoly2-'//tests(k))
   OPEN(UNIT=1,FILE=problemsDir//tests(k))
   !read in size and degree from file

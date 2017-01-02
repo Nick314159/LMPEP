@@ -7,7 +7,7 @@ cp ./a.out ../
 cd ..
 
 #Execute
-date && ./a.out && cat results/outputIepoly2.txt && date
+date && ./a.out && cat results/outputIepoly2-*.txt && date
 
 
 #Generate graphs

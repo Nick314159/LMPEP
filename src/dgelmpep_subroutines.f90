@@ -1,9 +1,55 @@
 MODULE dgelmpep_subroutines
 USE dslmpep_subroutines
-USE util
 IMPLICIT NONE
 
 CONTAINS
+
+!************************************************************************
+!			SUBROUTINE DGELMT				*
+!************************************************************************
+SUBROUTINE dgelmt(p, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n, opt, ier, iei)
+IMPLICIT NONE
+!scalar arguments
+CHARACTER(LEN=2), INTENT(IN) :: opt
+INTEGER, INTENT(IN) :: d, n
+!array arguments
+INTEGER, INTENT(INOUT) :: iseed(*)
+REAL(dp), INTENT(IN) :: ncoeff(*), p(n,*)
+REAL(dp), INTENT(INOUT) :: berr(*), er(*), ei(*), ier(*), iei(*)
+REAL(dp), INTENT(INOUT) :: xr(n,*), xi(n,*), yr(n,*), yi(n,*)
+!local scalars
+LOGICAL :: check
+INTEGER :: die, dze, i, it, lwork, td
+REAL(dp) :: tol
+!intrinsic procedures
+INTRINSIC :: DABS, MAX
+
+!initial estimates
+CALL dgestart(p, xr, xi, yr, yi, er, ei, ncoeff, d, die, dze, lwork, n, opt)
+td=n*d-die
+ier(1:n*d)=er(1:n*d)
+iei(1:n*d)=ei(1:n*d)
+!Laguerre's method
+DO i=dze+1,td
+  DO it=1,itmax
+    check=(it==itmax)
+    tol=MAX(eps*DCMOD(er(i),ei(i)), eps)
+    IF(DABS(ei(i))<tol) THEN
+      !update real eigenpair approx
+      CALL dgeapprox(p, xr(1,i), xi(1,i), yr(1,i), yi(1,i), er, ei, ncoeff,&
+                     iseed, berr(i), tol, i, lwork, d, n, td, check)
+    ELSE
+      !update complex eigenpair approx
+      CALL zgeapprox(p, xr(1,i), xi(1,i), yr(1,i), yi(1,i), er, ei, ncoeff,&
+                     iseed, berr(i), tol, i, lwork, d, n, td, check)
+    ENDIF
+    IF(check) THEN
+      EXIT
+    ENDIF
+  ENDDO
+ENDDO
+RETURN
+END SUBROUTINE dgelmt
 
 !************************************************************************
 !			SUBROUTINE DPOSTERRCOND				*
@@ -43,7 +89,7 @@ DO i=1,n*d
     ferr(i)=berr(i)*cond(i) 
   ELSEIF(DCMOD(er(i),ei(i))<=one) THEN
     !nonzero eigenvalues w/ moduli <=1
-    t=DCMPLX(er(i),ei(i))
+    t=DCMPLX(er(i), ei(i))
     CALL zgeeval(p, t, a, d, n, 0)
     CALL dseval(ncoeff, ZABS(t), alpha, d, 0)
     u=DCMPLX(xr(:,i),xi(:,i))
@@ -63,7 +109,7 @@ DO i=1,n*d
     cond(i)=cond(i)*alpha
   ELSEIF(DCMOD(er(i),ei(i))<big) THEN
     !nonzero eigenvalues w/ moduli >1 and <big
-    t=1/DCMPLX(er(i),ei(i))
+    t=1/DCMPLX(er(i), ei(i))
     CALL zrevgeeval(p, t, a, d, n, 0)
     CALL drevseval(ncoeff, ZABS(t), alpha, d, 0)
     u=DCMPLX(xr(:,i),xi(:,i))
@@ -147,53 +193,6 @@ DO i=dze+1,td
 ENDDO
 RETURN
 END SUBROUTINE dgelm
-
-!************************************************************************
-!			SUBROUTINE DGELMT				*
-!************************************************************************
-SUBROUTINE dgelmt(p, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n, opt, ier, iei)
-IMPLICIT NONE
-!scalar arguments
-CHARACTER(LEN=2), INTENT(IN) :: opt
-INTEGER, INTENT(IN) :: d, n
-!array arguments
-INTEGER, INTENT(INOUT) :: iseed(*)
-REAL(dp), INTENT(IN) :: ncoeff(*), p(n,*)
-REAL(dp), INTENT(INOUT) :: berr(*), er(*), ei(*), ier(*), iei(*)
-REAL(dp), INTENT(INOUT) :: xr(n,*), xi(n,*), yr(n,*), yi(n,*)
-!local scalars
-LOGICAL :: check
-INTEGER :: die, dze, i, it, lwork, td
-REAL(dp) :: tol
-!intrinsic procedures
-INTRINSIC :: DABS, MAX
-
-!initial estimates
-CALL dgestart(p, xr, xi, yr, yi, er, ei, ncoeff, d, die, dze, lwork, n, opt)
-td=n*d-die
-ier(1:n*d)=er(1:n*d)
-iei(1:n*d)=ei(1:n*d)
-!Laguerre's method
-DO i=dze+1,td
-  DO it=1,itmax
-    check=(it==itmax)
-    tol=MAX(eps*DCMOD(er(i),ei(i)), eps)
-    IF(DABS(ei(i))<tol) THEN
-      !update real eigenpair approx
-      CALL dgeapprox(p, xr(1,i), xi(1,i), yr(1,i), yi(1,i), er, ei, ncoeff,&
-                     iseed, berr(i), tol, i, lwork, d, n, td, check)
-    ELSE
-      !update complex eigenpair approx
-      CALL zgeapprox(p, xr(1,i), xi(1,i), yr(1,i), yi(1,i), er, ei, ncoeff,&
-                     iseed, berr(i), tol, i, lwork, d, n, td, check)
-    ENDIF
-    IF(check) THEN
-      EXIT
-    ENDIF
-  ENDDO
-ENDDO
-RETURN
-END SUBROUTINE dgelmt
 
 !************************************************************************
 !			SUBROUTINE DGEAPPROX				*
@@ -334,7 +333,7 @@ DO k=1,i-1
   x1=x1+y1
   x2=x2+y1**2
 ENDDO
-!compute b=revp', c=revp''
+!compute b=p', c=p''
 CALL dgeeval(p, t, b, d, n, 1)
 CALL dgeeval(p, t, c, d, n, 2)
 b=b/alpha; c=c/alpha
@@ -882,7 +881,7 @@ ELSEIF(der==1) THEN
     a=t*a+(d-k+1)*p(:,n*(k-1)+1:n*k)
   ENDDO
 ELSE
-  a=d*(d-1)*p(:,1:n)
+  a=d*(d-1)*P(:,1:n)
   DO k=2,d-1
     a=t*a+(d-k+1)*(d-k)*p(:,n*(k-1)+1:n*k)
   ENDDO
@@ -956,7 +955,7 @@ ELSEIF(der==1) THEN
     a=t*a+(d-k+1)*p(:,n*(k-1)+1:n*k)
   ENDDO
 ELSE
-  a=d*(d-1)*p(:,1:n)
+  a=d*(d-1)*P(:,1:n)
   DO k=2,d-1
     a=t*a+(d-k+1)*(d-k)*p(:,n*(k-1)+1:n*k)
   ENDDO
@@ -1273,7 +1272,7 @@ DO k=1,3
   DO i=1,n
     temp(jpvt2(i))=x(i)
   ENDDO
-  !solve (R^{T}R)x=x
+  !solve (R^{T}R)temp=temp
   CALL dtrtrs('U','T','N',n,1,a,n,temp,n,info)
   CALL dtrtrs('U','N','N',n,1,a,n,temp,n,info)
   !apply E
@@ -1284,7 +1283,7 @@ DO k=1,3
   x(1:n)=x(1:n)/dnrm2(n,x,1)
 
   !===left eigenvector===
-  !apply Q*
+  !apply Q^{T}
   CALL dormqr('L','T',n,1,n,a,n,tau,y,n,work,lwork,info)
   !solve (RR^{T})y=y
   CALL dtrtrs('U','N','N',n,1,a,n,y,n,info)
@@ -1316,7 +1315,7 @@ REAL(dp), INTENT(IN) :: a(n,n), tau(*)
 REAL(dp), INTENT(INOUT) :: x(*), y(*), work(*)
 !local scalars
 INTEGER :: i, info
-!external
+!external procedures
 REAL(dp) :: dnrm2
 EXTERNAL :: dnrm2
 
@@ -1398,6 +1397,7 @@ EXTERNAL :: dznrm2
 
 !initial estimates
 CALL zker1(a, x, y, jpvt, tau, work, lwork, n, n, n)
+!PRINT*, 'zker2', ZABS(a(n,n))
 !jpvt transpose
 DO k=1,n
   DO i=1,n
@@ -1448,7 +1448,6 @@ END SUBROUTINE zker2
 ! and y.								*
 !************************************************************************
 SUBROUTINE zker1(a, x, y, jpvt, tau, work, lwork, j, jlo, n)
-IMPLICIT NONE
 !scalar arguments
 INTEGER, INTENT(IN) :: j, jlo, lwork, n
 !array arguments
@@ -1477,6 +1476,5 @@ y(1:n)=czero; y(j)=cone
 CALL zunmqr('L','N',n,1,n,a,n,tau,y,n,work,lwork,info)
 RETURN
 END SUBROUTINE zker1
-
 
 END MODULE dgelmpep_subroutines

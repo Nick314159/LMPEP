@@ -4,11 +4,10 @@ USE dgeeam_subroutines
 IMPLICIT NONE
 
 !local scalars
-INTEGER :: c, clock, clock_rate, clock_start, clock_stop, d, i, info, j, n, k, l
-CHARACTER (LEN=32) f
+INTEGER :: clock, clock_rate, clock_start, clock_stop, d, i, n, k, l
 !local arrays
 INTEGER, DIMENSION(4) :: iseed
-REAL(dp), DIMENSION(:), ALLOCATABLE :: berr, cond, ferr, er, ei, ncoeff, work, x, ier, iei
+REAL(dp), DIMENSION(:), ALLOCATABLE :: berr, cond, ferr, er, ei, ncoeff, x, ier, iei
 REAL(dp), DIMENSION(:,:), ALLOCATABLE :: p, xr, xi, yr, yi
 !intrinsic procedures
 INTRINSIC :: COUNT, DBLE, MAX, MAXVAL, MOD, NEW_LINE, SYSTEM_CLOCK

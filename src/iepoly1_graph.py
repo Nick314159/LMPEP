@@ -6,14 +6,14 @@ import matplotlib.pyplot as pyplot
 degree, size, nptimeDegree, nrtimeDegree, nptimeSize, nrtimeSize = [], [], [], [], [], []
 #lberr, lferr, eaberr, eaferr =, [], [], [], []
 
-with open('../results/outputIepolyDegree1.csv') as f:
+with open('../results/outputIepoly1Degree.csv') as f:
   reader = csv.reader(f)
   headers= next(reader)
   for row in reader:
     degree.append(row[0].strip())
     nrtimeDegree.append(row[2].strip())
     nptimeDegree.append(row[3].strip())
-with open('../results/outputIepolySize1.csv') as f:
+with open('../results/outputIepoly1Size.csv') as f:
   reader = csv.reader(f)
   headers= next(reader)
   for row in reader:

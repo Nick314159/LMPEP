@@ -4,7 +4,8 @@ from numpy import *
 from pylab import *
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as pyplot
-npRealEstimate, npImaginaryEstimate, nrRealEstimate, nrImaginaryEstimate, npReal, npImaginary, nrReal, nrImaginary = [], [], [], [], [], [], [], []
+npRealEstimate, npImaginaryEstimate, nrRealEstimate, nrImaginaryEstimate, nrReal, nrImaginary,  = [], [], [], [], [], [], 
+#npReal, npImaginary = [], []
 tests=['butterfly','cd_player','spring']
 
 def format(s):
@@ -39,18 +40,18 @@ for test in tests :
       if not row : break
       npRealEstimate.append(format(row[0]))
       npImaginaryEstimate.append(format(row[1]))
-    while True:
-      row = reader[row_index]
-      row_index = row_index + 1
-      if not row : break
-      npReal.append(format(row[0]))
-      npImaginary.append(format(row[1]))
+    #while True:
+     # row = reader[row_index]
+      #row_index = row_index + 1
+      #if not row : break
+      #npReal.append(format(row[0]))
+      #npImaginary.append(format(row[1]))
  
   fig = plt.figure()
-  ax = fig.add_subplot(111, projection='3d')
+  ax = fig.add_subplot(111)
   
   ax.plot(npRealEstimate, npImaginaryEstimate, 'bo', label='NP Initial Estimate')
-  ax.plot(npReal, npImaginary, 'b.', label='NP Actual')
+  #ax.plot(npReal, npImaginary, 'b.', label='NP Actual')
   ax.plot(nrRealEstimate, nrImaginaryEstimate, 'ro', label='NR Initial Estimate')
   ax.plot(nrReal, nrImaginary, 'r.', label='NR Actual')
   ax.set_ylabel('Real')

@@ -47,7 +47,7 @@ PROGRAM spoly_test_driver
         iseed(4)=iseed(4)+1
     ENDIF
 
-    OPEN(UNIT=1,FILE=resultsDir//"output.csv")
+    OPEN(UNIT=1,FILE=resultsDir//"outputSpoly.csv")
     WRITE(1, '(A)',  advance='no') 'DEGREE,      '
     WRITE(1, '(A)',  advance='no') 'DSLMPEP TIME,    '
     WRITE(1, '(A)',  advance='no') 'DSLMPEP RAD,     '

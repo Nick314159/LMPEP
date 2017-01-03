@@ -5,7 +5,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as pyplot
 degree1, dsTime, dsRad, pzTime, pzRad = [], [], [], [], []
 degree2, amTime, amRad = [], [], []
-with open('../results/output.csv') as f:
+with open('../results/outputSpoly.csv') as f:
   reader = csv.reader(f)
   headers= next(reader)
   for row in reader:

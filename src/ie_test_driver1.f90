@@ -6,8 +6,7 @@ IMPLICIT NONE
 INTEGER :: maxSize, maxDegree, startingSize, startingDegree
 CHARACTER(len=32) :: arg
 !local scalars
-INTEGER :: c, clock, clock_rate, clock_start, clock_stop, d, i, info, j, n
-CHARACTER (LEN=32) f
+INTEGER :: clock, clock_rate, clock_start, clock_stop, d, i, info, n
 !local arrays
 INTEGER, DIMENSION(4) :: iseed
 REAL(dp), DIMENSION(:), ALLOCATABLE :: berr, cond, ferr, er, ei, ncoeff, work, x
@@ -36,7 +35,7 @@ READ (arg,'(I10)') startingDegree
 CALL GETARG(4, arg)
 READ (arg,'(I10)') maxDegree
 
-OPEN(UNIT=1,FILE=resultsDir//"outputIepolySize1.csv")
+OPEN(UNIT=1,FILE=resultsDir//"outputIepoly1Size.csv")
 WRITE(1, '(A)',  advance='no') 'DEGREE,     '
 WRITE(1, '(A)',  advance='no') 'SIZE,    '
 WRITE(1, '(A)',  advance='no') 'NR TIME,          '
@@ -101,7 +100,7 @@ WRITE(1, *)
   
  
  
-OPEN(UNIT=1,FILE=resultsDir//"outputIepolyDegree1.csv")
+OPEN(UNIT=1,FILE=resultsDir//"outputIepoly1Degree.csv")
 WRITE(1, '(A)',  advance='no') 'DEGREE,     '
 WRITE(1, '(A)',  advance='no') 'SIZE,    '
 WRITE(1, '(A)',  advance='no') 'NR TIME,          '

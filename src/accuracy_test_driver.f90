@@ -4,11 +4,11 @@ USE dgeeam_subroutines
 IMPLICIT NONE
 
 !local scalars
-INTEGER :: c, clock, clock_rate, clock_start, clock_stop, d, i, info, j, n, k
+INTEGER ::  clock, clock_rate, clock_start, clock_stop, d, i, n, k
 !local arrays
 CHARACTER (LEN=64), DIMENSION(27) :: tests
 REAL(dp), DIMENSION(:,:), ALLOCATABLE :: p, xr, xi, yr, yi
-REAL(dp), DIMENSION(:), ALLOCATABLE :: berr, cond, ferr, er, ei, ncoeff, work, x
+REAL(dp), DIMENSION(:), ALLOCATABLE :: berr, cond, ferr, er, ei, ncoeff, x
 INTEGER, DIMENSION(4) :: iseed
 !intrinsic procedures
 INTRINSIC :: COUNT, DBLE, MAX, MAXVAL, MOD, NEW_LINE, SYSTEM_CLOCK
@@ -95,6 +95,7 @@ DO k=1,27
     WRITE(1,'(20G15.4)', advance='no') MAXVAL(berr)
     WRITE(1, '(A)', advance='no') ', '
     WRITE(1,'(20G15.4)', advance='no') MAXVAL(ferr)
+    WRITE(1, '(A)', advance='no') ', '
     WRITE(1,'(20G15.4)', advance='no') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
 
     WRITE(1,*)

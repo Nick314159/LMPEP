@@ -51,10 +51,10 @@ for test in tests :
   ax = fig.add_subplot(111)
   
   plt.title('Eigenvalue Estimates Vs. Actual')
-  ax.plot(npRealEstimate, npImaginaryEstimate, 'bo', label='NP Initial Estimate')
+  ax.plot(npRealEstimate, npImaginaryEstimate, 'wo', label='NP Initial Estimate')
   #ax.plot(npReal, npImaginary, 'b.', label='NP Actual')
-  ax.plot(nrRealEstimate, nrImaginaryEstimate, 'ro', label='NR Initial Estimate')
-  ax.plot(nrReal, nrImaginary, 'r.', label='NR Actual')
+  ax.plot(nrRealEstimate, nrImaginaryEstimate, 'ko', label='NR Initial Estimate')
+  ax.plot(nrReal, nrImaginary, 'k*', label='Eigenvalues')
   ax.set_ylabel('Real')
   ax.set_xlabel('Imaginary')
   legend = ax.legend(loc=0, shadow=True)

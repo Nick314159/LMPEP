@@ -21,6 +21,7 @@ with open('../results/outputGepolySize.csv') as f:
     eatimeSize.append(row[5].strip())
 
 fig, ax = plt.subplots()
+plt.title('Newton\'s Poylgon And Numerical Range, Degree Vs. Time, Size 2')
 ax.semilogy(degree, ltimeDegree, 'r-*', label='Laguerre Time')
 ax.semilogy(degree, eatimeDegree, 'b-^', label='Ehrlich-Aberth Time')
 ax.set_ylabel('Seconds')
@@ -29,6 +30,7 @@ legend = ax.legend(loc=0, shadow=True)
 savefig("../results/gepoly_times_degree.pdf")
 
 fig, ax = plt.subplots()
+plt.title('Newton\'s Poylgon And Numerical Range, Size Vs. Time, Degree 2')
 ax.semilogy(size, ltimeSize, 'r-*', label='Laguerre Time')
 ax.semilogy(size, eatimeSize, 'b-^', label='Ehrlich-Aberth Time')
 ax.set_ylabel('Seconds')

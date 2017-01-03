@@ -52,5 +52,8 @@ $py iepoly2_graph.py
 if $OPEN 
 then 
 cd ..
-gnome-open results/iepoly2*.pdf
+for file in `ls results/iepoly2*.pdf`
+do
+xdg-open $file
+done
 fi

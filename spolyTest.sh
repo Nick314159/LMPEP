@@ -69,7 +69,10 @@ $py spoly_graph.py
 if $OPEN 
 then 
 cd ..
-gnome-open results/spoly_*.pdf
+for file in `ls results/spoly_*.pdf`
+do
+xdg-open $file
+done
 fi
 
 

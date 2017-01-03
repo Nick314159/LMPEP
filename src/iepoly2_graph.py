@@ -50,6 +50,7 @@ for test in tests :
   fig = plt.figure()
   ax = fig.add_subplot(111)
   
+  plt.title('Eigenvalue Estimates Vs. Actual')
   ax.plot(npRealEstimate, npImaginaryEstimate, 'bo', label='NP Initial Estimate')
   #ax.plot(npReal, npImaginary, 'b.', label='NP Actual')
   ax.plot(nrRealEstimate, nrImaginaryEstimate, 'ro', label='NR Initial Estimate')

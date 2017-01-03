@@ -50,5 +50,5 @@ $py accuracy_table.py
 if $OPEN 
 then 
 cd ..
-gnome-open results/accuracy_table.png
+xdg-open results/accuracy_table.png
 fi

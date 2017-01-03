@@ -12,6 +12,7 @@ with open('../results/outputAccuracy.csv') as f:
     data.append([row[0].strip(), row[1].strip(), row[2].strip()])
     
 fig=plt.figure()
+plt.title('Accuracy error')
 ax = fig.add_subplot(111)
 ax.xaxis.set_visible(False)
 ax.yaxis.set_visible(False)

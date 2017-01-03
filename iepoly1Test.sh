@@ -50,5 +50,8 @@ $py iepoly1_graph.py
 if $OPEN 
 then 
 cd ..
-gnome-open results/iepoly_times_*.pdf
+for file in `ls results/iepoly_times_*.pdf`
+do
+xdg-open $file
+done
 fi

@@ -50,6 +50,9 @@ $py gepoly_graph.py
 if $OPEN 
 then 
 cd ..
-gnome-open results/gepoly_times_*.pdf
+for file in `ls results/gepoly_times_*.pdf`
+do
+xdg-open $file
+done
 fi
 

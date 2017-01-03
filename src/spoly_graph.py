@@ -24,6 +24,7 @@ with open('../results/outputAMVW.csv') as f:
     amRad.append(row[2].strip())
 
 fig, ax = plt.subplots()
+plt.title('Calculation Time Vs. Degree')
 ax.semilogy(degree1, dsTime, 'r-*', label='DSLMPEP Time')
 ax.semilogy(degree1, pzTime, 'b-^', label='PZEROS Time')
 ax.semilogy(degree2, amTime, 'g-p', label='AMVW Time')
@@ -33,6 +34,7 @@ legend = ax.legend(loc=0, shadow=True)
 savefig("../results/spoly_times.pdf")
 
 fig, ax = plt.subplots()
+plt.title('Forward Error Vs. Degree')
 ax.semilogy(degree1, dsRad, 'r-*', label='DSLMPEP Radius')
 ax.semilogy(degree1, pzRad, 'b-^', label='PZEROS Radius')
 ax.semilogy(degree2, amRad, 'g-p', label='AMVW Radius')

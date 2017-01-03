@@ -32,7 +32,7 @@ tests(16) = 'omnicam1.txt'
 tests(17) = 'omnicam2.txt'
 tests(18) = 'relative_pose_5pt.txt'
 tests(19) = 'relative_pose_6pt.txt'
-tests(20) = 'shaft.txt'
+tests(20) = 'SKIP'!shaft.txt'
 tests(21) = 'sleeper.txt'
 tests(22) = 'speaker_box.txt'
 tests(23) = 'spring_dashpot.txt'
@@ -53,42 +53,50 @@ ENDIF
 OPEN(UNIT=1,FILE=resultsDir//"outputAccuracy.csv")
 WRITE(1, '(A)',  advance='no') 'Problem,     '
 WRITE(1, '(A)',  advance='no') 'Max BERR,     '
-WRITE(1, '(A)',  advance='no') 'Max FERR     '
+WRITE(1, '(A)',  advance='no') 'Max FERR,    '
+WRITE(1, '(A)', advance='no') 'Time        '
 WRITE(1, *)
 
 DO k=1,27
-  OPEN(UNIT=2,FILE=problemsDir//tests(k))
-  PRINT*, 'Testing '//tests(k)//'...'
-  WRITE(1, '(A)', advance='no') tests(k)
-  WRITE(1, '(A)', advance='no') ', '
-  
-  !read in size and degree from file
-  READ(2,*) n
-  READ(2,*) d
-  !read in scalar polynomial
-  ALLOCATE(p(n,n*(d+1)))
-  READ(2,*) p
-  CLOSE(UNIT=2)
-  
-  !solve problem using Laguerre's Method
-  ALLOCATE(xr(n,n*d), xi(n,n*d), yr(n,n*d), yi(n,n*d))
-  ALLOCATE(berr(n*d), er(n*d), ei(n*d), cond(n*d), ferr(n*d))
-  ALLOCATE(ncoeff(d+1))
-  CALL SYSTEM_CLOCK(count_rate=clock_rate)
-  CALL SYSTEM_CLOCK(COUNT=clock_start)
-  CALL dgelm(p, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n, 'NR')
-  CALL SYSTEM_CLOCK(COUNT=clock_stop)
-  
-  !bacward error, condition number for Laguerre's Method
-  CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
-  
-  !Write results
-  WRITE(1,'(20G15.4)', advance='no') MAXVAL(berr)
-  WRITE(1, '(A)', advance='no') ', '
-  WRITE(1,'(20G15.4)', advance='no') MAXVAL(ferr)
-  WRITE(1,*)
+  IF(tests(k) .NE. 'SKIP') THEN
+    OPEN(UNIT=2,FILE=problemsDir//tests(k))
+    PRINT*, 'Testing '//tests(k)//'...'
+    WRITE(1, '(A)', advance='no') tests(k)
+    WRITE(1, '(A)', advance='no') ', '
 
-  DEALLOCATE(p, xr, xi, yr, yi, berr, er, ei, ncoeff, cond, ferr)
+  
+    !read in size and degree from file
+    READ(2,*) n
+    READ(2,*) d
+    !read in scalar polynomial
+    ALLOCATE(p(n,n*(d+1)))
+    READ(2,*) p
+    CLOSE(UNIT=2)
+  
+    !solve problem using Laguerre's Method
+    ALLOCATE(xr(n,n*d), xi(n,n*d), yr(n,n*d), yi(n,n*d))
+    ALLOCATE(berr(n*d), er(n*d), ei(n*d), cond(n*d), ferr(n*d))
+    ALLOCATE(ncoeff(d+1))
+    CALL SYSTEM_CLOCK(count_rate=clock_rate)
+    CALL SYSTEM_CLOCK(COUNT=clock_start)
+    CALL dgelm(p, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n, 'NR')
+    CALL SYSTEM_CLOCK(COUNT=clock_stop)
+  
+    !bacward error, condition number for Laguerre's Method
+    CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
+  
+    !Write results
+    WRITE(1,'(20G15.4)', advance='no') MAXVAL(berr)
+    WRITE(1, '(A)', advance='no') ', '
+    WRITE(1,'(20G15.4)', advance='no') MAXVAL(ferr)
+    WRITE(1,'(20G15.4)', advance='no') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+
+    WRITE(1,*)
+
+    DEALLOCATE(p, xr, xi, yr, yi, berr, er, ei, ncoeff, cond, ferr)
+  ELSE
+    WRITE(*, '(A, I2)') 'Skipping test ',k
+  END IF
 END DO
  CLOSE(UNIT=1)
 

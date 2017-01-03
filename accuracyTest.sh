@@ -7,7 +7,7 @@ cp ./a.out ../
 cd ..
 
 #Execute
-date && ./a.out && cat results/outputAccuracy.txt && date
+date && ./a.out && cat results/outputAccuracy.csv && date
 
 
 #Generate graphs

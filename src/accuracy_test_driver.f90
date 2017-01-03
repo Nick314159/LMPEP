@@ -12,6 +12,9 @@ REAL(dp), DIMENSION(:), ALLOCATABLE :: berr, cond, ferr, er, ei, ncoeff, work, x
 INTEGER, DIMENSION(4) :: iseed
 !intrinsic procedures
 INTRINSIC :: COUNT, DBLE, MAX, MAXVAL, MOD, NEW_LINE, SYSTEM_CLOCK
+!external procedures
+REAL(dp) :: dlange
+EXTERNAL :: dlange
 
 tests(1) = 'bicycle.txt'
 tests(2) = 'bilby.txt'
@@ -72,11 +75,14 @@ DO k=1,27
     ALLOCATE(p(n,n*(d+1)))
     READ(2,*) p
     CLOSE(UNIT=2)
-  
+    
     !solve problem using Laguerre's Method
     ALLOCATE(xr(n,n*d), xi(n,n*d), yr(n,n*d), yi(n,n*d))
     ALLOCATE(berr(n*d), er(n*d), ei(n*d), cond(n*d), ferr(n*d))
     ALLOCATE(ncoeff(d+1))
+    DO i=1,d+1
+      ncoeff(i)=dlange('F',n,n,p(1,n*(i-1)+1),n,x)
+    ENDDO
     CALL SYSTEM_CLOCK(count_rate=clock_rate)
     CALL SYSTEM_CLOCK(COUNT=clock_start)
     CALL dgelm(p, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n, 'NR')

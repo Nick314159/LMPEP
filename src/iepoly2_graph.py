@@ -4,7 +4,7 @@ from numpy import *
 from pylab import *
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as pyplot
-npRealEstimate, npImaginaryEstimate, nrRealEstimate, nrImaginaryEstimate, nrReal, nrImaginary,  = [], [], [], [], [], [], 
+npRealEstimate, npImaginaryEstimate, nrRealEstimate, nrImaginaryEstimate, nrReal, nrImaginary  = [], [], [], [], [], []
 #npReal, npImaginary = [], []
 tests=['butterfly','cd_player','spring']
 
@@ -43,7 +43,6 @@ for test in tests :
  
   fig = plt.figure()
   ax = fig.add_subplot(111)
-  
   ax.plot(npRealEstimate, npImaginaryEstimate, 'wo', label='NP Initial Estimate')
   ax.plot(nrRealEstimate, nrImaginaryEstimate, 'ko', label='NR Initial Estimate')
   ax.plot(nrReal, nrImaginary, 'k*', label='Eigenvalues')
@@ -51,5 +50,7 @@ for test in tests :
   ax.set_xlabel('Imaginary')
   legend = ax.legend(loc=0, shadow=True)
   savefig("../results/iepoly2"+test+".pdf")
+  
+  npRealEstimate, npImaginaryEstimate, nrRealEstimate, nrImaginaryEstimate, nrReal, nrImaginary  = [], [], [], [], [], []
 
 

@@ -92,11 +92,11 @@ DO k=1,27
     CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
   
     !Write results
-    WRITE(1,'(20G15.4)', advance='no') MAXVAL(berr)
+    WRITE(1,'(ES15.2)', advance='no') MAXVAL(berr)
     WRITE(1, '(A)', advance='no') ', '
-    WRITE(1,'(20G15.4)', advance='no') MAXVAL(ferr)
+    WRITE(1,'(ES15.2)', advance='no') MAXVAL(ferr)
     WRITE(1, '(A)', advance='no') ', '
-    WRITE(1,'(20G15.4)', advance='no') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+    WRITE(1,'(ES15.2)', advance='no') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
 
     WRITE(1,*)
 

@@ -22,7 +22,6 @@ with open('../results/outputIepoly1Size.csv') as f:
     nptimeSize.append(row[3].strip())
     
 fig, ax = plt.subplots()
-plt.title('Newton\'s Poylgon And Numerical Range, Degree Vs. Time Size 2')
 ax.semilogy(degree, nptimeDegree, 'r-*', label='Newton\'s Polygon Time')
 ax.semilogy(degree, nrtimeDegree, 'b-^', label='Numerical Range Time')
 ax.set_ylabel('Seconds')
@@ -31,7 +30,6 @@ legend = ax.legend(loc=0, shadow=True)
 savefig("../results/iepoly_times_degree.pdf")
 
 fig, ax = plt.subplots()
-plt.title('Newton\'s Poylgon And Numerical Range, Size Vs. Time Degree 2')
 ax.semilogy(degree, nptimeSize, 'r-*', label='Newton\'s Polygon Time')
 ax.semilogy(degree, nrtimeSize, 'b-^', label='Numerical Range Time')
 ax.set_ylabel('Seconds')

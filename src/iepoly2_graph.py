@@ -40,19 +40,11 @@ for test in tests :
       if not row : break
       npRealEstimate.append(format(row[0]))
       npImaginaryEstimate.append(format(row[1]))
-    #while True:
-     # row = reader[row_index]
-      #row_index = row_index + 1
-      #if not row : break
-      #npReal.append(format(row[0]))
-      #npImaginary.append(format(row[1]))
  
   fig = plt.figure()
   ax = fig.add_subplot(111)
   
-  plt.title('Eigenvalue Estimates Vs. Actual')
   ax.plot(npRealEstimate, npImaginaryEstimate, 'wo', label='NP Initial Estimate')
-  #ax.plot(npReal, npImaginary, 'b.', label='NP Actual')
   ax.plot(nrRealEstimate, nrImaginaryEstimate, 'ko', label='NR Initial Estimate')
   ax.plot(nrReal, nrImaginary, 'k*', label='Eigenvalues')
   ax.set_ylabel('Real')

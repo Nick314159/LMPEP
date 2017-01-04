@@ -310,8 +310,7 @@ IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT) :: check
 INTEGER, INTENT(IN) :: d, i, lwork, n, td
-REAL(dp), INTENT(IN) :: alpha, tol
-REAL(dp), INTENT(INOUT) :: t
+REAL(dp), INTENT(IN) :: alpha, t, tol
 !array arguments
 INTEGER, INTENT(IN) :: jpvt(*)
 REAL(dp), INTENT(IN) :: a(n,n), p(n,*), tau(*)
@@ -398,8 +397,7 @@ IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT) :: check
 INTEGER, INTENT(IN) :: d, i, lwork, n, td
-REAL(dp), INTENT(IN) :: alpha, tol
-REAL(dp), INTENT(INOUT) :: t
+REAL(dp), INTENT(IN) :: alpha, t, tol
 !array arguments
 INTEGER, INTENT(IN) :: jpvt(*)
 REAL(dp), INTENT(IN) :: a(n,n), p(n,*), tau(*)
@@ -643,7 +641,7 @@ IMPLICIT NONE
 LOGICAL, INTENT(INOUT) :: check
 INTEGER, INTENT(IN) :: d, i, lwork, n, td
 REAL(dp), INTENT(IN) :: alpha, tol
-COMPLEX(dp), INTENT(INOUT) :: t
+COMPLEX(dp), INTENT(IN) :: t
 !array arguments
 INTEGER, INTENT(IN) :: jpvt(*)
 REAL(dp), INTENT(IN) :: p(n,*)
@@ -732,7 +730,7 @@ IMPLICIT NONE
 LOGICAL, INTENT(INOUT) :: check
 INTEGER, INTENT(IN) :: d, i, lwork, n, td
 REAL(dp), INTENT(IN) :: alpha, tol
-COMPLEX(dp), INTENT(INOUT) :: t
+COMPLEX(dp), INTENT(IN) :: t
 !array arguments
 INTEGER, INTENT(IN) :: jpvt(*)
 REAL(dp), INTENT(IN) :: p(n,*)

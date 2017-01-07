@@ -152,10 +152,9 @@ END SUBROUTINE dposterrcond
 ! of each eigenpair. Eigenvalues are stored in (er,ei) and eigenvectors *
 ! in (xr,xi) and (yr,yi).						*
 !************************************************************************
-SUBROUTINE dgelm(p, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n, opt)
+SUBROUTINE dgelm(p, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n)
 IMPLICIT NONE
 !scalar arguments
-CHARACTER(LEN=2), INTENT(IN) :: opt
 INTEGER, INTENT(IN) :: d, n
 !array arguments
 INTEGER, INTENT(INOUT) :: iseed(*)
@@ -170,7 +169,7 @@ REAL(dp) :: tol
 INTRINSIC :: DABS, MAX
 
 !initial estimates
-CALL dgestart(p, xr, xi, yr, yi, er, ei, ncoeff, d, die, dze, lwork, n, opt)
+CALL dgestart(p, xr, xi, yr, yi, er, ei, ncoeff, d, die, dze, lwork, n)
 td=n*d-die
 !Laguerre's method
 DO i=dze+1,td
@@ -477,9 +476,8 @@ END SUBROUTINE dgelcorr2
 !			SUBROUTINE DBERRAPPROX				*
 !************************************************************************
 ! Compute an approximation to the backward error associated with the 	*
-! smallest eigenvalue of the real matrix a, which is stored in qr	*
-! factorization with column pivoting form (dgeqp3). Result is stored in *
-! berr.									*
+! smallest eigenvalue of the complex matrix a, which is stored in qr	*
+! form (dgeqp3, dgeqrf, dhsqr). Result is stored in berr.		*
 !************************************************************************
 SUBROUTINE dberrapprox(a, tau, work, iseed, berr, lwork, n)
 IMPLICIT NONE
@@ -812,8 +810,7 @@ END SUBROUTINE zgelcorr2
 !************************************************************************
 ! Compute an approximation to the backward error associated with the 	*
 ! smallest eigenvalue of the complex matrix a, which is stored in qr	*
-! factorization with column pivoting form (dgeqp3). Result is stored in *
-! berr.									*
+! form (zgeqp3, zgeqrf, zhsqr). Result is stored in berr.		*
 !************************************************************************
 SUBROUTINE zberrapprox(a, tau, work, iseed, berr, lwork, n)
 IMPLICIT NONE
@@ -1406,7 +1403,7 @@ DO k=1,n
   jpvt2(k)=i
 ENDDO
 !inverse iteration
-DO k=1,10
+DO k=1,3
   !===right eigenvector===
   !apply E^{T}
   DO i=1,n

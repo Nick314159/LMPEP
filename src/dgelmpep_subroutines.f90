@@ -152,9 +152,10 @@ END SUBROUTINE dposterrcond
 ! of each eigenpair. Eigenvalues are stored in (er,ei) and eigenvectors *
 ! in (xr,xi) and (yr,yi).						*
 !************************************************************************
-SUBROUTINE dgelm(p, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n)
+SUBROUTINE dgelm(p, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n, opt)
 IMPLICIT NONE
 !scalar arguments
+CHARACTER(LEN=2), INTENT(IN) :: opt
 INTEGER, INTENT(IN) :: d, n
 !array arguments
 INTEGER, INTENT(INOUT) :: iseed(*)
@@ -169,7 +170,7 @@ REAL(dp) :: tol
 INTRINSIC :: DABS, MAX
 
 !initial estimates
-CALL dgestart(p, xr, xi, yr, yi, er, ei, ncoeff, d, die, dze, lwork, n)
+CALL dgestart(p, xr, xi, yr, yi, er, ei, ncoeff, d, die, dze, lwork, n, opt)
 td=n*d-die
 !Laguerre's method
 DO i=dze+1,td

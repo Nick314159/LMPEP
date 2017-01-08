@@ -46,6 +46,7 @@ for test in tests :
   ax.plot(npRealEstimate, npImaginaryEstimate, 'wo', label='NP Initial Estimate')
   ax.plot(nrRealEstimate, nrImaginaryEstimate, 'ko', label='NR Initial Estimate')
   ax.plot(nrReal, nrImaginary, 'k*', label='Eigenvalues')
+  plt.subplots_adjust(bottom=.1, left=.16)
   ax.set_ylabel('Imaginary')
   ax.set_xlabel('Real')
   legend = ax.legend(loc=0, shadow=True)

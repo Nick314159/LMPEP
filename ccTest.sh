@@ -34,7 +34,8 @@ cd ..
 
 #Execute
 echo "Starting Complexity test at `date`" 
-bin/complexity.out $PARAMATERS > /dev/null 2>&1
+bin/complexity.out $PARAMATERS 
+#> /dev/null 2>&1
 if $PRINT 
 then 
 cat results/outputComplexityDegree.csv

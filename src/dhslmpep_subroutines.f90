@@ -32,7 +32,7 @@ REAL(dp) :: tol
 INTRINSIC :: DABS, MAX
 
 !initial estimates
-CALL dgestart(p, xr, xi, yr, yi, er, ei, ncoeff, d, die, dze, lwork, n)
+CALL dgestart(p, xr, xi, yr, yi, er, ei, ncoeff, d, die, dze, lwork, n, 'NR')
 td=n*d-die
 !Laguerre's method
 DO i=dze+1,td

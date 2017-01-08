@@ -1,6 +1,5 @@
-PROGRAM ge_test_driver
+PROGRAM cc_test_driver
 USE environment
-USE dgeeam_subroutines
 USE dhslmpep_subroutines
 IMPLICIT NONE
 
@@ -37,7 +36,7 @@ READ (arg,'(I10)') startingDegree
 CALL GETARG(4, arg)
 READ (arg,'(I10)') maxDegree
 
-m=10
+m=3
 ALLOCATE(timeStats(m,2))
 
 OPEN(UNIT=1,FILE=resultsDir//"outputComplexitySize.csv")
@@ -85,6 +84,7 @@ DO WHILE (n<maxSize)
     CALL SYSTEM_CLOCK(COUNT=clock_stop)
     
     timeStats(j,2) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+    WRITE(*,*) timeStats(j,2)
     
     DEALLOCATE(p, xr, xi, yr, yi, berr, er, ei, ncoeff, cond, ferr)
  
@@ -134,7 +134,7 @@ DO WHILE (d<maxDegree)
     
     timeStats(j,1) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
 
-    !solve problem using Hessenburg code
+    !solve problem using Hessenberg code
     CALL SYSTEM_CLOCK(count_rate=clock_rate)
     CALL SYSTEM_CLOCK(COUNT=clock_start)
     CALL dhslm(p, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n)
@@ -154,4 +154,4 @@ DO WHILE (d<maxDegree)
 END DO
   
  CLOSE(UNIT=1)
-END PROGRAM ge_test_driver
+END PROGRAM cc_test_driver

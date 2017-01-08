@@ -46,8 +46,8 @@ for test in tests :
   ax.plot(npRealEstimate, npImaginaryEstimate, 'wo', label='NP Initial Estimate')
   ax.plot(nrRealEstimate, nrImaginaryEstimate, 'ko', label='NR Initial Estimate')
   ax.plot(nrReal, nrImaginary, 'k*', label='Eigenvalues')
-  ax.set_ylabel('Real')
-  ax.set_xlabel('Imaginary')
+  ax.set_ylabel('Imaginary')
+  ax.set_xlabel('Real')
   legend = ax.legend(loc=0, shadow=True)
   savefig("../results/iepoly2"+test+".pdf")
   

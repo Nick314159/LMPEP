@@ -33,6 +33,9 @@ echo ' ------------------------------------------'
 echo 'Running gepoly...'
 ./gepolyTest.sh $FLAGS 10 100 10 100
 echo ' ------------------------------------------'
+echo 'Running cc...'
+./ccTest.sh $FLAGS 10 100 10 100
+echo ' ------------------------------------------'
 echo 'Running iepoly1...'
 ./iepoly1Test.sh $FLAGS 10 100 10 100
 echo ' ------------------------------------------'

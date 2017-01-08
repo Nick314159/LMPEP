@@ -39,12 +39,8 @@ READ (arg,'(I10)') maxDegree
 OPEN(UNIT=1,FILE=resultsDir//"outputComplexitySize.csv")
 WRITE(1, '(A)',  advance='no') 'DEGREE,     '
 WRITE(1, '(A)',  advance='no') 'SIZE,    '
-WRITE(1, '(A)',  advance='no') 'L TIME,          '
-WRITE(1, '(A)',  advance='no') 'MAX BERR,        '
-WRITE(1, '(A)',  advance='no') 'MAX FERR,        '
-WRITE(1, '(A)',  advance='no') 'EA TIME,         '
-WRITE(1, '(A)',  advance='no') 'MAX BERR,        '
-WRITE(1, '(A)',  advance='no') 'MAX FERR         '
+WRITE(1, '(A)',  advance='no') 'GE TIME,          '
+WRITE(1, '(A)',  advance='no') 'HS TIME         '
 WRITE(1, *)
 
   d = 2
@@ -65,7 +61,7 @@ WRITE(1, *)
     ENDDO
     DEALLOCATE(work, x)
     
-    !solve problem using Laguerre's Method
+    !solve problem using General code
     ALLOCATE(xr(n,n*d), xi(n,n*d), yr(n,n*d), yi(n,n*d))
     ALLOCATE(berr(n*d), er(n*d), ei(n*d), cond(n*d), ferr(n*d))
     CALL SYSTEM_CLOCK(count_rate=clock_rate)
@@ -74,30 +70,22 @@ WRITE(1, *)
     CALL SYSTEM_CLOCK(COUNT=clock_stop)
     
     !bacward error, condition number for Laguerre's Method
-    CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
+    !CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
     !print results
     WRITE(1,'(20G15.4)', advance='no') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
     WRITE(1, '(A)', advance='no') ', '
-    WRITE(1,'(20G15.4)', advance='no') MAXVAL(berr)
-    WRITE(1, '(A)', advance='no') ', '
-    WRITE(1,'(20G15.4)', advance='no') MAXVAL(ferr)
-    WRITE(1, '(A)', advance='no') ', '
 
-    !solve problem using Ehrlich-Aberth method
+    !solve problem using Hessenberg code
     CALL SYSTEM_CLOCK(count_rate=clock_rate)
     CALL SYSTEM_CLOCK(COUNT=clock_start)
-    CALL dgeeam(p, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n, 'NP')
+    CALL dhslm(p, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n)
     CALL SYSTEM_CLOCK(COUNT=clock_stop)
      
     !bacward error, condition number for Ehrlich-Aberth method
-    CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
+    !CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
 
     !print results
     WRITE(1,'(20G15.4)', advance='no') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
-    WRITE(1, '(A)', advance='no') ', '
-    WRITE(1,'(20G15.4)' , advance='no')  MAXVAL(berr)
-    WRITE(1, '(A)', advance='no') ', '
-    WRITE(1,'(20G15.4)', advance='no')  MAXVAL(ferr)
     WRITE(1, *) 
     
     DEALLOCATE(p, xr, xi, yr, yi, berr, er, ei, ncoeff, cond, ferr)
@@ -108,12 +96,8 @@ WRITE(1, *)
 OPEN(UNIT=1,FILE=resultsDir//"outputComplexityDegree.csv")
 WRITE(1, '(A)',  advance='no') 'DEGREE,     '
 WRITE(1, '(A)',  advance='no') 'SIZE,    '
-WRITE(1, '(A)',  advance='no') 'L TIME,          '
-WRITE(1, '(A)',  advance='no') 'MAX BERR,        '
-WRITE(1, '(A)',  advance='no') 'MAX FERR,        '
-WRITE(1, '(A)',  advance='no') 'EA TIME,         '
-WRITE(1, '(A)',  advance='no') 'MAX BERR,        '
-WRITE(1, '(A)',  advance='no') 'MAX FERR         '
+WRITE(1, '(A)',  advance='no') 'GE TIME,          '
+WRITE(1, '(A)',  advance='no') 'HS TIME,         '
 WRITE(1, *) 
   
   n = 2
@@ -143,30 +127,22 @@ WRITE(1, *)
     CALL SYSTEM_CLOCK(COUNT=clock_stop)
     
     !bacward error, condition number for Laguerre's Method
-    CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
+    !CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
     !print results
     WRITE(1,'(20G15.4)', advance='no') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
-    WRITE(1, '(A)', advance='no') ', '
-    WRITE(1,'(20G15.4)', advance='no') MAXVAL(berr)
-    WRITE(1, '(A)', advance='no') ', '
-    WRITE(1,'(20G15.4)', advance='no') MAXVAL(ferr)
     WRITE(1, '(A)', advance='no') ', '
 
     !solve problem using Ehrlich-Aberth method
     CALL SYSTEM_CLOCK(count_rate=clock_rate)
     CALL SYSTEM_CLOCK(COUNT=clock_start)
-    CALL dgeeam(p, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n, 'NP')
+    CALL dhslm(p, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n)
     CALL SYSTEM_CLOCK(COUNT=clock_stop)
      
     !bacward error, condition number for Ehrlich-Aberth method
-    CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
+    !CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
 
     !print results
     WRITE(1,'(20G15.4)', advance='no') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
-    WRITE(1, '(A)', advance='no') ', '
-    WRITE(1,'(20G15.4)' , advance='no')  MAXVAL(berr)
-    WRITE(1, '(A)', advance='no') ', '
-    WRITE(1,'(20G15.4)', advance='no')  MAXVAL(ferr)
     WRITE(1, *) 
     
     DEALLOCATE(p, xr, xi, yr, yi, berr, er, ei, ncoeff, cond, ferr)

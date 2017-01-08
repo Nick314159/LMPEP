@@ -46,13 +46,13 @@ echo "Finished Complexity test at `date`"
 #Generate graphs
 cd src
 py=`which python`
-$py gepoly_graph.py
+$py cc_graph.py
 
 #Open graphs
 if $OPEN 
 then 
 cd ..
-for file in `ls results/complexity_times_*.pdf`
+for file in `ls results/cc_times_*.pdf`
 do
 xdg-open $file
 done

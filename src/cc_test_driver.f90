@@ -56,7 +56,7 @@ DO WHILE (n<maxSize)
   WRITE(1, '(A)', advance='no') ', '
     
   DO j=1,m
-    !create problem
+    !create general problem
     ALLOCATE(work(n+n*(d+1)), x(n), p(n,n*(d+1)), ncoeff(d+1))
     DO i=1,d+1
       CALL dlarnv(2, iseed, n, x)
@@ -65,7 +65,6 @@ DO WHILE (n<maxSize)
     DO i=1,d+1
       ncoeff(i)=dlange('F',n,n,p(1,n*(i-1)+1),n,x)
     ENDDO
-    DEALLOCATE(work, x)
     
     !solve problem using General code
     ALLOCATE(xr(n,n*d), xi(n,n*d), yr(n,n*d), yi(n,n*d))
@@ -77,6 +76,16 @@ DO WHILE (n<maxSize)
     
     timeStats(j,1) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
 
+    !create Hessenberg problem
+    DO i=1,d+1
+      CALL dlarnv(2, iseed, n, x)
+      CALL dlagge(n, n, 1, n-1, x, p(1,n*(i-1)+1), n, iseed, work, info)
+    ENDDO
+    DO i=1,d+1
+      ncoeff(i)=dlange('F',n,n,p(1,n*(i-1)+1),n,x)
+    ENDDO
+    DEALLOCATE(work, x)
+
     !solve problem using Hessenberg code
     CALL SYSTEM_CLOCK(count_rate=clock_rate)
     CALL SYSTEM_CLOCK(COUNT=clock_start)
@@ -84,7 +93,6 @@ DO WHILE (n<maxSize)
     CALL SYSTEM_CLOCK(COUNT=clock_stop)
     
     timeStats(j,2) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
-    WRITE(*,*) timeStats(j,2)
     
     DEALLOCATE(p, xr, xi, yr, yi, berr, er, ei, ncoeff, cond, ferr)
  
@@ -113,7 +121,7 @@ DO WHILE (d<maxDegree)
   WRITE(1, '(i6)', advance='no') n
   WRITE(1, '(A)', advance='no') ', '
     DO j=1,m
-    !create problem
+    !create general problem
     ALLOCATE(work(n+n*(d+1)), x(n), p(n,n*(d+1)), ncoeff(d+1))
     DO i=1,d+1
       CALL dlarnv(2, iseed, n, x)
@@ -122,7 +130,6 @@ DO WHILE (d<maxDegree)
     DO i=1,d+1
       ncoeff(i)=dlange('F',n,n,p(1,n*(i-1)+1),n,x)
     ENDDO
-    DEALLOCATE(work, x)
     
     !solve problem using General code
     ALLOCATE(xr(n,n*d), xi(n,n*d), yr(n,n*d), yi(n,n*d))
@@ -133,6 +140,16 @@ DO WHILE (d<maxDegree)
     CALL SYSTEM_CLOCK(COUNT=clock_stop)
     
     timeStats(j,1) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+
+    !create Hessenberg problem
+    DO i=1,d+1
+      CALL dlarnv(2, iseed, n, x)
+      CALL dlagge(n, n, 1, n-1, x, p(1,n*(i-1)+1), n, iseed, work, info)
+    ENDDO
+    DO i=1,d+1
+      ncoeff(i)=dlange('F',n,n,p(1,n*(i-1)+1),n,x)
+    ENDDO
+    DEALLOCATE(work, x)
 
     !solve problem using Hessenberg code
     CALL SYSTEM_CLOCK(count_rate=clock_rate)

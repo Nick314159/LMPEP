@@ -52,7 +52,7 @@ $py cc_graph.py
 if $OPEN 
 then 
 cd ..
-for file in `ls results/cc_times_*.pdf`
+for file in `ls results/cc_*.pdf`
 do
 xdg-open $file
 done

@@ -21,18 +21,31 @@ with open('../results/outputComplexitySize.csv') as f:
     hstimeSize.append(row[3].strip())
 
 fig, ax = plt.subplots()
-ax.semilogy(degree, getimeDegree, 'k-*', label='General')
-ax.semilogy(degree, hstimeDegree, 'k--', label='Hessenburg')
+ax.semilogy(degree, getimeDegree, 'k-o', label='General')
 ax.set_ylabel('Seconds')
 ax.set_xlabel('Degree')
 legend = ax.legend(loc=0, shadow=True)
-savefig("../results/cc_times_degree.pdf")
+savefig("../results/cc_ge_times_degree.pdf")
 
 fig, ax = plt.subplots()
-ax.semilogy(size, getimeSize, 'k-*', label='General')
-ax.semilogy(size, hstimeSize, 'k--', label='Hessenburg')
+ax.semilogy(degree, hstimeDegree, 'k-o', label='Hessenburg')
+ax.set_ylabel('Seconds')
+ax.set_xlabel('Degree')
+legend = ax.legend(loc=0, shadow=True)
+savefig("../results/cc_hs_times_degree.pdf")
+
+fig, ax = plt.subplots()
+ax.semilogy(size, getimeSize, 'k-o', label='General')
 ax.set_ylabel('Seconds')
 ax.set_xlabel('Size')
 legend = ax.legend(loc=0, shadow=True)
-savefig("../results/cc_times_size.pdf")
+savefig("../results/cc_ge_times_size.pdf")
+
+fig, ax = plt.subplots()
+ax.semilogy(size, hstimeSize, 'k-o', label='Hessenburg')
+ax.set_ylabel('Seconds')
+ax.set_xlabel('Size')
+legend = ax.legend(loc=0, shadow=True)
+savefig("../results/cc_hs_times_size.pdf")
+
 

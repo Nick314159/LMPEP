@@ -3,18 +3,20 @@ USE environment
 USE dgelmpep_subroutines
 IMPLICIT NONE
 
-!local scalars
-INTEGER ::  clock, clock_rate, clock_start, clock_stop, d, i, n, k
-!local arrays
+INTEGER ::  clock, clock_rate, clock_start, clock_stop, d, i, n, k, info, iwarn
+REAL(dp) :: tol
 CHARACTER (LEN=64), DIMENSION(27) :: tests
 REAL(dp), DIMENSION(:,:), ALLOCATABLE :: p, xr, xi, yr, yi
 REAL(dp), DIMENSION(:), ALLOCATABLE :: berr, cond, ferr, er, ei, ncoeff, x
+REAL(dp), DIMENSION(:), ALLOCATABLE :: alphar, alphai, beta, s, beVl, beVR
 INTEGER, DIMENSION(4) :: iseed
+REAL(dp), DIMENSION(:,:), ALLOCATABLE :: A, B, C, VL, VR
 !intrinsic procedures
 INTRINSIC :: COUNT, DBLE, MAX, MAXVAL, MOD, NEW_LINE, SYSTEM_CLOCK
 !external procedures
-REAL(dp) :: dlange
-EXTERNAL :: dlange
+REAL(dp) :: dlange, dznrm2
+EXTERNAL :: dlange, dznrm2
+
 
 tests(1) = 'bicycle.txt'
 tests(2) = 'bilby.txt'
@@ -57,7 +59,10 @@ OPEN(UNIT=1,FILE=resultsDir//"outputAccuracy.csv")
 WRITE(1, '(A)',  advance='no') 'Problem,     '
 WRITE(1, '(A)',  advance='no') 'Max BERR,     '
 WRITE(1, '(A)',  advance='no') 'Max FERR,    '
-WRITE(1, '(A)', advance='no') 'Time        '
+WRITE(1, '(A)', advance='no') 'Time,        '
+WRITE(1, '(A)',  advance='no') 'Qaudeig Max BERR,     '
+WRITE(1, '(A)',  advance='no') 'Qaudeig Max FERR,    '
+WRITE(1, '(A)', advance='no') 'Qaudeig Time         '
 WRITE(1, *)
 
 DO k=1,27
@@ -66,8 +71,6 @@ DO k=1,27
     PRINT*, 'Testing '//tests(k)//'...'
     WRITE(1, '(A)', advance='no') tests(k)
     WRITE(1, '(A)', advance='no') ', '
-
-  
     !read in size and degree from file
     READ(2,*) n
     READ(2,*) d
@@ -75,6 +78,17 @@ DO k=1,27
     ALLOCATE(p(n,n*(d+1)))
     READ(2,*) p
     CLOSE(UNIT=2)
+    !Set up quadratic case
+    IF(d==2) THEN
+      OPEN(UNIT=2,FILE=problemsDir//tests(k))
+      READ(2,*) n
+      READ(2,*) d
+      ALLOCATE(A(n,n), B(n,n), C(n,n))
+      READ(2,*) C
+      READ(2,*) B
+      READ(2,*) A
+      CLOSE(UNIT=2)
+    END IF
     
     !solve problem using Laguerre's Method
     ALLOCATE(xr(n,n*d), xi(n,n*d), yr(n,n*d), yi(n,n*d))
@@ -90,17 +104,84 @@ DO k=1,27
   
     !bacward error, condition number for Laguerre's Method
     CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
-  
+    
     !Write results
     WRITE(1,'(ES15.2)', advance='no') MAXVAL(berr)
     WRITE(1, '(A)', advance='no') ', '
     WRITE(1,'(ES15.2)', advance='no') MAXVAL(ferr)
     WRITE(1, '(A)', advance='no') ', '
     WRITE(1,'(ES15.2)', advance='no') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
-
-    WRITE(1,*)
-
+    
+    !Deallocate
     DEALLOCATE(p, xr, xi, yr, yi, berr, er, ei, ncoeff, cond, ferr)
+
+    !If quadratic polynomail, solve using Tisseurs
+    IF(d == 2) THEN
+      ALLOCATE(alphar(2*n), alphai(2*n), beta(2*n))
+      ALLOCATE(VL(n,2*n),VR(n,2*n),s(2*n),beVL(2*n),beVR(2*n))
+      tol=n*eps
+      CALL SYSTEM_CLOCK(count_rate=clock_rate)
+      CALL SYSTEM_CLOCK(COUNT=clock_start)
+      CALL DG3EVX(1, 'V', 'V', 0, tol, n,                          &
+                   A, n, B, n, C, n,                                     &
+                   alphar, alphai, beta, VL, n, VR, n, s, beVL, beVR,    &
+                   iwarn, info)
+      CALL SYSTEM_CLOCK(COUNT=clock_stop)
+      
+      !compute backward error and condition number using posterrcond
+      ALLOCATE(er(2*n),ei(2*n),xr(n,2*n),xi(n,2*n),yr(n,2*n),yi(n,2*n))
+      i=1
+      DO WHILE(i<=2*n)
+        IF(DABS(alphai(i))<eps) THEN
+          er(i)=alphar(i)/beta(i); ei(i)=alphai(i)/beta(i)
+          xr(:,i)=VR(:,i); xi(:,i)=0
+          yr(:,i)=VL(:,i); yi(:,i)=0
+          tol=dznrm2(n,DCMPLX(xr(:,i)),1)
+          xr(:,i)=xr(:,i)/tol
+          tol=dznrm2(n,DCMPLX(yr(:,i)),1)
+          yr(:,i)=yr(:,i)/tol
+          i=i+1
+        ELSE 
+          er(i)=alphar(i)/beta(i); ei(i)=alphai(i)/beta(i)
+          er(i+1)=alphar(i)/beta(i); ei(i+1)=-alphai(i)/beta(i)
+          xr(:,i)=VR(:,i); xi(:,i)=VR(:,i+1)
+          xr(:,i+1)=VR(:,i); xi(:,i+1)=-VR(:,i+1)
+          yr(:,i)=VL(:,i); yi(:,i)=VL(:,i+1)
+          yr(:,i+1)=VL(:,i); yi(:,i+1)=-VL(:,i+1)
+          tol=dznrm2(n,DCMPLX(xr(:,i),xi(:,i)),1)
+          xr(:,i)=xr(:,i)/tol; xi(:,i)=xi(:,i)/tol
+          xr(:,i+1)=xr(:,i+1)/tol; xi(:,i+1)=xi(:,i+1)/tol
+          tol=dznrm2(n,DCMPLX(yr(:,i),yi(:,i)),1)
+          yr(:,i)=yr(:,i)/tol; yi(:,i)=yi(:,i)/tol
+          yr(:,i+1)=yr(:,i+1)/tol; yi(:,i+1)=yi(:,i+1)/tol
+          i=i+2
+        ENDIF
+      ENDDO
+      ALLOCATE(p(n,3*n),berr(2*n),cond(2*n),ferr(2*n),ncoeff(3))
+      p(1:n,1:n)=C
+      p(1:n,n+1:2*n)=B
+      p(1:n,2*n+1:3*n)=A
+      DO i=1,3
+        ncoeff(i)=dlange('F',n,n,p(1,n*(i-1)+1),n,x)
+      ENDDO
+      CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
+      
+      !Write results
+      WRITE(1,'(ES15.2)', advance='no') MAXVAL(berr)
+      WRITE(1, '(A)', advance='no') ', '
+      WRITE(1,'(ES15.2)', advance='no') MAXVAL(ferr)
+      WRITE(1, '(A)', advance='no') ', '
+      WRITE(1,'(ES15.2)', advance='no') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+      !Deallocate
+      DEALLOCATE(A, B, C)
+      DEALLOCATE(alphar, alphai, beta)
+      DEALLOCATE(VL, VR, s, beVL, beVR)
+      DEALLOCATE(er,ei,xr,xi,yr,yi)
+      DEALLOCATE(p,berr,cond,ferr,ncoeff)
+    ELSE
+      WRITE(1, '(A)', advance='no') 'NA, NA, NA '
+    END IF
+    WRITE(1,*)
   ELSE
     WRITE(*, '(A, I2)') 'Skipping test ',k
   END IF

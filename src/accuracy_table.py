@@ -9,13 +9,13 @@ with open('../results/outputAccuracy.csv') as f:
   reader = csv.reader(f)
   headers= next(reader)
   for row in reader:
-    data.append([row[0].strip(), row[1].strip(), row[2].strip()])
+    data.append([row[0].strip(), row[1].strip(), row[2].strip(), row[4].strip(), row[5].strip()])
     
 fig=plt.figure()
 ax = fig.add_subplot(111)
 ax.xaxis.set_visible(False)
 ax.yaxis.set_visible(False)
-colLabels=("Problem", "BERR", "FERR")
+colLabels=("Problem", "BERR", "FERR", "QuadEig BERR", "QuadEig FERR")
 the_table = ax.table(cellText=data, colLabels=colLabels, loc='center')
 plt.savefig("../results/accuracy_table.png")
 

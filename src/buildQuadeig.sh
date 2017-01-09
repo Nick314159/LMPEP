@@ -15,7 +15,7 @@ do
     shift
 done
 cd quadratic-eigensolver/
-gfortran $FLAGS ../environment.f90 ../util.f90 dlag3r.f90 dlaqp3.f90 izmaxa.f90 dg3evx.f90 dlag3v.f90 dlasge.f90 dlag3c.f90 dlanab.f90 dselct.f90 quadeig_test_driver.f90  -lscalapack-openmpi -llapack -lblas && rm *.mod
+gfortran $FLAGS ../environment.f90 ../util.f90 ../dslmpep_subroutines.f90 ../dgelmpep_subroutines.f90 ../dgeeam_subroutines.f90  dlag3r.f90 dlaqp3.f90 izmaxa.f90 dg3evx.f90 dlag3v.f90 dlasge.f90 dlag3c.f90 dlanab.f90 dselct.f90 quadeig_test_driver.f90  -lscalapack-openmpi -llapack -lblas && rm *.mod
 mv a.out ../../bin/quadeig.out
 
 

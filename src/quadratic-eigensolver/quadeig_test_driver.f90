@@ -1,9 +1,7 @@
-PROGRAM dgelmpep_driver
+PROGRAM quadeig_driver
+USE environment
+USE dgeeam_subroutines
 IMPLICIT NONE
-INTEGER, PARAMETER :: dp=KIND(0.0D0)
-REAL(dp), PARAMETER :: eps=EPSILON(0.0_dp), big=HUGE(0.0_dp)
-REAL(dp), PARAMETER :: zero=0.0_dp, one=1.0_dp
-COMPLEX(dp), PARAMETER :: czero=DCMPLX(zero), cone=DCMPLX(one)
 
 !solve problem using QUADEIG
 CHARACTER(LEN=1) :: jobVL, jobVR
@@ -23,10 +21,6 @@ INTRINSIC :: COUNT, DBLE, MAX, MAXVAL, MOD, NEW_LINE, SYSTEM_CLOCK
 !external procedures
 REAL(dp) :: dlange, dznrm2
 EXTERNAL :: dlange, dznrm2
-!file location (where problem files are stored)
-CHARACTER(*), PARAMETER :: fileplace1="/home/thomas/Documents/FORTRAN/LMPEP2/PROBLEMS/REAL/"
-!file location (where results are stored)
-CHARACTER(*), PARAMETER :: fileplace2="/home/thomas/Documents/FORTRAN/QUADEIG/quadratic-eigensolver/RESULTS/"
 
 !create iseed, used in dlarnv and dlagge
 CALL SYSTEM_CLOCK(COUNT=clock)
@@ -60,7 +54,7 @@ ELSEIF(opt==2) THEN
   !read in file name
   PRINT*, 'input file name'
   READ*, f
-  OPEN(UNIT=1,FILE=fileplace1//f)
+  OPEN(UNIT=1,FILE=problemsDir//f)
   !read in size and degree from file
   READ(1,*) n
   READ(1,*) d
@@ -126,17 +120,17 @@ CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
 WRITE(*,'(20G15.4)') 'QUADEIG TIME =', DBLE(clock_stop-clock_start)/DBLE(clock_rate)
 WRITE(*,'(20G15.4)') 'MAX BERR      =', MAXVAL(berr)
 WRITE(*,'(20G15.4)') 'MAX FERR      =', MAXVAL(ferr)
-OPEN(UNIT=1,FILE=fileplace2//"EIGVALUES")
+OPEN(UNIT=1,FILE=resultsDir//"EIGVALUES")
 DO i=1,n*d
   WRITE(1,*) er(i), ei(i)
 ENDDO
  CLOSE(UNIT=1)
-OPEN(UNIT=1,FILE=fileplace2//"BERR-COND-FERR")
+OPEN(UNIT=1,FILE=resultsDir//"BERR-COND-FERR")
 DO i=1,n*d
   WRITE(1,*) berr(i), cond(i), ferr(i)
 ENDDO
  CLOSE(UNIT=1)
-OPEN(UNIT=1,FILE=fileplace2//"R-EIGVECTORS")
+OPEN(UNIT=1,FILE=resultsDir//"R-EIGVECTORS")
 DO j=1,n*d
   DO i=1,n
     WRITE(1,*) xr(i,j), xi(i,j)
@@ -144,7 +138,7 @@ DO j=1,n*d
   WRITE(1,*) NEW_LINE('c')
 ENDDO
  CLOSE(UNIT=1)
-OPEN(UNIT=1,FILE=fileplace2//"L-EIGVECTORS")
+OPEN(UNIT=1,FILE=resultsDir//"L-EIGVECTORS")
 DO j=1,n*d
   DO i=1,n
     WRITE(1,*) yr(i,j), yi(i,j)
@@ -158,347 +152,5 @@ ENDDO
 !DEALLOCATE(er,ei,xr,xi,yr,yi)
 !DEALLOCATE(alphar, alphai, beta)
 !DEALLOCATE(VL,VR,s,beVL,beVR)
+END PROGRAM quadeig_driver
 
-CONTAINS
-
-!************************************************************************
-!			SUBROUTINE DPOSTERRCOND				*
-!************************************************************************
-! Compute a posteriori backward error, condition, and forward error of	*
-! each eigenpair associated with the matrix polynomial p.		*
-!************************************************************************
-SUBROUTINE dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
-IMPLICIT NONE
-!scalar arguments
-INTEGER, INTENT(IN) :: d, n
-!array arguments
-REAL(dp), INTENT(IN) :: er(*), ei(*), ncoeff(*), p(n,*), xr(n,*), xi(n,*), yr(n,*), yi(n,*)
-REAL(dp), INTENT(INOUT) :: berr(*), cond(*), ferr(*)
-!local scalars
-INTEGER :: i
-REAL(dp) :: alpha, bex, bey
-COMPLEX(dp) :: t
-!local arrays
-REAL(dp), DIMENSION(n) :: x
-COMPLEX(dp), DIMENSION(n) :: u, v
-COMPLEX(dp), DIMENSION(n,n) :: a, b
-!external procedures
-REAL(dp) :: ddot, dnrm2, dznrm2
-COMPLEX(dp) :: zdotc
-EXTERNAL :: ddot, dnrm2, dznrm2, zdotc
-
-DO i=1,n*d
-  IF(DCMOD(er(i),ei(i))<eps) THEN
-    !zero eigenvalues
-    CALL dgemv('N', n, n, one, p(1,1), n, xr(1,i), 1, zero, x, 1)
-    bex=dnrm2(n, x, 1)/ncoeff(1)
-    CALL dgemv('T', n, n, one, p(1,1), n, yr(1,i), 1, zero, x, 1)
-    bey=dnrm2(n, x, 1)/ncoeff(1)
-    berr(i)=MAX(bex,bey)
-    cond(i)=1/DABS(ddot(n, xr(1,i), 1, yr(1,i), 1))
-    ferr(i)=berr(i)*cond(i) 
-  ELSEIF(DCMOD(er(i),ei(i))<=one) THEN
-    !nonzero eigenvalues w/ moduli <=1
-    t=DCMPLX(er(i), ei(i))
-    CALL zgeeval(p, t, a, d, n, 0)
-    CALL dseval(ncoeff, ZABS(t), alpha, d, 0)
-    u=DCMPLX(xr(:,i),xi(:,i))
-    CALL zgemv('N', n, n, cone, a, n, u, 1, czero, v, 1)
-    bex=dznrm2(n, v, 1)
-    v=DCMPLX(yr(:,i),yi(:,i))
-    CALL zgemv('C', n, n, cone, a, n, v, 1, czero, u, 1)
-    bey=dznrm2(n, u, 1)
-    berr(i)=MAX(bex,bey)
-    CALL zgeeval(p, t, b, d, n, 1)
-    u=DCMPLX(xr(:,i),xi(:,i))
-    CALL zgemv('N', n, n, cone, b, n, u, 1, czero, v, 1)
-    u=DCMPLX(yr(:,i),yi(:,i))
-    cond(i)=1/ZABS(t*zdotc(n,u,1,v,1))
-    ferr(i)=berr(i)*cond(i)
-    berr(i)=berr(i)/alpha
-    cond(i)=cond(i)*alpha
-  ELSEIF(DCMOD(er(i),ei(i))<big) THEN
-    !nonzero eigenvalues w/ moduli >1 and <big
-    t=1/DCMPLX(er(i), ei(i))
-    CALL zrevgeeval(p, t, a, d, n, 0)
-    CALL drevseval(ncoeff, ZABS(t), alpha, d, 0)
-    u=DCMPLX(xr(:,i),xi(:,i))
-    CALL zgemv('N', n, n, cone, a, n, u, 1, czero, v, 1)
-    bex=dznrm2(n, v, 1)
-    v=DCMPLX(yr(:,i),yi(:,i))
-    CALL zgemv('C', n, n, cone, a, n, v, 1, czero, u, 1)
-    bey=dznrm2(n, u, 1)
-    berr(i)=MAX(bex,bey)
-    CALL zrevgeeval(p, t, b, d, n, 1)
-    b=d*a-t*b
-    u=DCMPLX(xr(:,i),xi(:,i))
-    CALL zgemv('N', n, n, cone, b, n, u, 1, czero, v, 1)
-    u=DCMPLX(yr(:,i),yi(:,i))
-    cond(i)=1/ZABS(zdotc(n,u,1,v,1))
-    ferr(i)=berr(i)*cond(i)
-    berr(i)=berr(i)/alpha
-    cond(i)=cond(i)*alpha
-  ELSE
-    !infinite eigenvalues
-    CALL dgemv('N', n, n, one, p(1,n*d+1), n, xr(1,i), 1, zero, x, 1)
-    bex=dnrm2(n, x, 1)/ncoeff(d+1)
-    CALL dgemv('T', n, n, one, p(1,n*d+1), n, yr(1,i), 1, zero, x, 1)
-    bey=dnrm2(n, x, 1)/ncoeff(d+1)
-    berr(i)=MAX(bex,bey)
-    cond(i)=1/DABS(ddot(n, xr(1,i), 1, yr(1,i), 1))
-    ferr(i)=berr(i)*cond(i)
-  ENDIF
-ENDDO
-RETURN
-END SUBROUTINE dposterrcond
-
-!************************************************************************
-!			SUBROUTINE DREVGEEVAL				*
-!************************************************************************
-! Evaluate reversal of scalar polynomial p with real coeffs of degree d,*
-! and its der=0,1,2 derivatives at real number 1/t, where |t|>1. 	*
-! Returns evaluation in a.						*
-!************************************************************************
-SUBROUTINE drevgeeval(p, t, a, d, n, der)
-IMPLICIT NONE
-!scalar arguments
-INTEGER, INTENT(IN) :: d, der, n
-REAL(dp), INTENT(IN) :: t
-!array arguments
-REAL(dp), INTENT(IN) :: p(n,*)
-REAL(dp), INTENT(INOUT) :: a(n,n)
-!local scalars
-INTEGER :: k
-
-IF(der==0) THEN
-  a=p(:,1:n)
-  DO k=2,d+1
-    a=t*a+p(:,n*(k-1)+1:n*k)
-  ENDDO
-ELSEIF(der==1) THEN
-  a=d*p(:,1:n)
-  DO k=2,d
-    a=t*a+(d-k+1)*p(:,n*(k-1)+1:n*k)
-  ENDDO
-ELSE
-  a=d*(d-1)*P(:,1:n)
-  DO k=2,d-1
-    a=t*a+(d-k+1)*(d-k)*p(:,n*(k-1)+1:n*k)
-  ENDDO
-ENDIF
-RETURN
-END SUBROUTINE drevgeeval
-
-!************************************************************************
-!			SUBROUTINE DGEEVAL				*
-!************************************************************************
-! Evaluate general matrix polynomial p of degree d with real coeffs 	*
-! of size n, and its der=0,1,2 derivatives at real number t, where	*
-! |t|<=1. Returns evaluation in a.					*
-!************************************************************************
-SUBROUTINE dgeeval(p, t, a, d, n, der)
-IMPLICIT NONE
-!scalar arguments
-INTEGER, INTENT(IN) :: d, der, n
-REAL(dp), INTENT(IN) :: t
-!array arguments
-REAL(dp), INTENT(IN) :: p(n,*)
-REAL(dp), INTENT(INOUT) :: a(n,n)
-!local scalars
-INTEGER :: k
-
-IF(der==0) THEN
-  a=p(:,n*d+1:n*(d+1))
-  DO k=d,1,-1
-    a=t*a+p(:,n*(k-1)+1:n*k)
-  ENDDO
-ELSEIF(der==1) THEN
-  a=d*p(:,n*d+1:n*(d+1))
-  DO k=d,2,-1
-    a=t*a+(k-1)*p(:,n*(k-1)+1:n*k)
-  ENDDO
-ELSE
-  a=d*(d-1)*p(:,n*d+1:n*(d+1))
-  DO k=d,3,-1
-    a=t*a+(k-1)*(k-2)*p(:,n*(k-1)+1:n*k)
-  ENDDO
-ENDIF
-RETURN
-END SUBROUTINE dgeeval
-
-!************************************************************************
-!			SUBROUTINE ZREVGEEVAL				*
-!************************************************************************
-! Evaluate reversal of scalar polynomial p with real coeffs of degree d,*
-! and its der=0,1,2 derivatives at complex number 1/t, where |t|>1. 	*
-! Returns evaluation in a.						*
-!************************************************************************
-SUBROUTINE zrevgeeval(p, t, a, d, n, der)
-IMPLICIT NONE
-!scalar arguments
-INTEGER, INTENT(IN) :: d, der, n
-COMPLEX(dp), INTENT(IN) :: t
-!array arguments
-REAL(dp), INTENT(IN) :: p(n,*)
-COMPLEX(dp), INTENT(INOUT) :: a(n,n)
-!local scalars
-INTEGER :: k
-
-IF(der==0) THEN
-  a=p(:,1:n)
-  DO k=2,d+1
-    a=t*a+p(:,n*(k-1)+1:n*k)
-  ENDDO
-ELSEIF(der==1) THEN
-  a=d*p(:,1:n)
-  DO k=2,d
-    a=t*a+(d-k+1)*p(:,n*(k-1)+1:n*k)
-  ENDDO
-ELSE
-  a=d*(d-1)*p(:,1:n)
-  DO k=2,d-1
-    a=t*a+(d-k+1)*(d-k)*p(:,n*(k-1)+1:n*k)
-  ENDDO
-ENDIF
-RETURN
-END SUBROUTINE zrevgeeval
-
-!************************************************************************
-!			SUBROUTINE ZGEEVAL				*
-!************************************************************************
-! Evaluate general matrix polynomial p of degree d with real coeffs 	*
-! of size n, and its der=0,1,2 derivatives at complex number t, where	*
-! |t|<=1. Return evaluation in a.					*
-!************************************************************************
-SUBROUTINE zgeeval(p, t, a, d, n, der)
-IMPLICIT NONE
-!scalar arguments
-INTEGER, INTENT(IN) :: d, der, n
-COMPLEX(dp), INTENT(IN) :: t
-!array arguments
-REAL(dp), INTENT(IN) :: p(n,*)
-COMPLEX(dp), INTENT(INOUT) :: a(n,n)
-!local scalars
-INTEGER :: k
-
-IF(der==0) THEN
-  a=p(:,n*d+1:n*(d+1))
-  DO k=d,1,-1
-    a=t*a+p(:,n*(k-1)+1:n*k)
-  ENDDO
-ELSEIF(der==1) THEN
-  a=d*p(:,n*d+1:n*(d+1))
-  DO k=d,2,-1
-    a=t*a+(k-1)*p(:,n*(k-1)+1:n*k)
-  ENDDO
-ELSE
-  a=d*(d-1)*p(:,n*d+1:n*(d+1))
-  DO k=d,3,-1
-    a=t*a+(k-1)*(k-2)*p(:,n*(k-1)+1:n*k)
-  ENDDO
-ENDIF
-RETURN
-END SUBROUTINE zgeeval
-
-!************************************************************************
-!			SUBROUTINE DREVSEVAL				*
-!************************************************************************
-! Evaluate reversal of scalar polynomial p with real coeffs of degree d,*
-! and its der=0,1,2 derivatives at real number 1/t, where |t|>1. 	*
-! Returns evaluation in a.						*
-!************************************************************************
-SUBROUTINE drevseval(p, t, a, d, der)
-IMPLICIT NONE
-!scalar arguments
-INTEGER, INTENT(IN) :: d, der
-REAL(dp), INTENT(IN) :: t
-REAL(dp), INTENT(INOUT) :: a
-!array arguments
-REAL(dp), INTENT(IN) :: p(*)
-!local scalars
-INTEGER :: k
-
-IF(der==0) THEN
-  a=p(1)
-  DO k=2,d+1
-    a=t*a+p(k)
-  ENDDO
-ELSEIF(der==1) THEN
-  a=d*p(1)
-  DO k=2,d
-    a=t*a+(d-k+1)*p(k)
-  ENDDO
-ELSE
-  a=d*(d-1)*p(1)
-  DO k=2,d-1
-    a=t*a+(d-k+1)*(d-k)*p(k)
-  ENDDO
-ENDIF
-RETURN
-END SUBROUTINE drevseval
-
-
-!************************************************************************
-!			SUBROUTINE DSEVAL				*
-!************************************************************************
-! Evaluate scalar polynomial p with real coeffs of degree d, and its	*
-! der=0,1,2 derivatives at real number t, where |t|<=1. Returns		*
-! evaluation in a.							*
-!************************************************************************
-SUBROUTINE dseval(p, t, a, d, der)
-IMPLICIT NONE
-!scalar arguments
-INTEGER, INTENT(IN) :: d, der
-REAL(dp), INTENT(IN) :: t
-REAL(dp), INTENT(INOUT) :: a
-!array arguments
-REAL(dp), INTENT(IN) :: p(*)
-!local scalars
-INTEGER :: k
-
-IF(der==0) THEN
-  a=p(d+1)
-  DO k=d,1,-1
-    a=t*a+p(k)
-  ENDDO
-ELSEIF(der==1) THEN
-  a=d*p(d+1)
-  DO k=d,2,-1
-    a=t*a+(k-1)*p(k)
-  ENDDO
-ELSE
-  a=d*(d-1)*p(d+1)
-  DO k=d,3,-1
-    a=t*a+(k-1)*(k-2)*p(k)
-  ENDDO
-ENDIF
-RETURN
-END SUBROUTINE dseval
-
-!************************************************************************
-!			SUBROUTINE DCMOD				*
-!************************************************************************
-! Compute the module of the complex number a+bi, while avoiding harmul  *
-! overflow and underflow.						*
-!************************************************************************
-FUNCTION dcmod(a, b) RESULT(r)
-IMPLICIT NONE
-!scalar arguments
-REAL(dp), INTENT(IN) :: a, b
-!local scalars
-REAL(dp) :: r
-
-IF(DABS(a)<eps .AND. DABS(b)<eps) THEN
-  r=zero
-  RETURN
-ENDIF
-
-IF(DABS(a)<DABS(b)) THEN
-  r=DABS(b)*DSQRT(1+(a/b)**2)
-ELSE
-  r=DABS(a)*DSQRT(1+(b/a)**2)
-ENDIF
-RETURN
-END FUNCTION dcmod
-
-END PROGRAM dgelmpep_driver

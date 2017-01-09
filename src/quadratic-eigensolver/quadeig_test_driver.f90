@@ -4,7 +4,7 @@ USE dgeeam_subroutines
 IMPLICIT NONE
 
 !solve problem using QUADEIG
-CHARACTER(LEN=1) :: jobVL, jobVR
+!CHARACTER(LEN=1) :: jobVL, jobVR
 INTEGER :: d, n, opt, info, iwarn
 REAL(dp) :: tol
 REAL(dp), DIMENSION(:), ALLOCATABLE :: x, work

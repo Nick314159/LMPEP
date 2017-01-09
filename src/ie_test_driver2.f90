@@ -1,6 +1,6 @@
 PROGRAM ie_test_driver2
 USE environment
-USE dgeeam_subroutines
+USE dgelmpep_subroutines
 IMPLICIT NONE
 
 !local scalars

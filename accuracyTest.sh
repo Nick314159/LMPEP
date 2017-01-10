@@ -37,7 +37,7 @@ echo "Starting Accuracy test at `date`"
 bin/accuracy.out $PARAMTERS
 if $PRINT 
 then 
-results/outputAccuracy.csv
+cat results/outputAccuracy.csv
 fi
 echo "Finished Accuracy test at `date`" 
 

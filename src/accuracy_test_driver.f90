@@ -60,14 +60,14 @@ WRITE(1, '(A)',  advance='no') 'Problem, '
 WRITE(1, '(A)',  advance='no') 'Max LM-BERR, '
 WRITE(1, '(A)',  advance='no') 'Max LM-FERR, '
 WRITE(1, '(A)',  advance='no') 'Max QM-BERR, '
-WRITE(1, '(A)',  advance='no') 'Max QM-FERR, '
+WRITE(1, '(A)',  advance='no') 'Max QM-FERR '
 WRITE(1, *)
 
 DO k=1,27
   !open problem
   IF(tests(k) .NE. 'SKIP') THEN
     OPEN(UNIT=2,FILE=problemsDir//tests(k))
-    PRINT*, 'Testing '//tests(k)//'...'
+    PRINT*, 'Testing '//tests(k)
     WRITE(1, '(A)', advance='no') tests(k)
     WRITE(1, '(A)', advance='no') ', '
     !read in size and degree from file
@@ -149,11 +149,11 @@ DO k=1,27
     WRITE(1,'(ES15.2)', advance='no') MAXVAL(berr)
     WRITE(1, '(A)', advance='no') ', '
     WRITE(1,'(ES15.2)', advance='no') MAXVAL(ferr)
-    WRITE(1, '(A)', advance='no') ', '
+
     !Deallocate
     DEALLOCATE(alphar,alphai,beta,VL,VR,s,beVL,beVR)
   ELSE
-    WRITE(1, '(A)', ADVANCE='no') 'NA, NA, '
+    WRITE(1, '(A)', ADVANCE='no') '       NA,              NA'
   ENDIF
   !Deallocate
   DEALLOCATE(p, xr, xi, yr, yi, berr, er, ei, ncoeff, cond, ferr)

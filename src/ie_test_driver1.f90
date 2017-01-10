@@ -11,7 +11,7 @@ INTEGER :: clock, clock_rate, clock_start, clock_stop, d, i, info, n, m, j
 INTEGER, DIMENSION(4) :: iseed
 REAL(dp), DIMENSION(:), ALLOCATABLE :: berr, cond, ferr, er, ei, ncoeff, work, x
 REAL(dp), DIMENSION(:,:), ALLOCATABLE :: p, xr, xi, yr, yi
-REAL(dp), DIMENSION(:,:), ALLOCATABLE :: timeStats, radStats
+REAL(dp), DIMENSION(:,:), ALLOCATABLE :: timeStats
 !intrinsic procedures
 INTRINSIC :: COUNT, DBLE, MAX, MAXVAL, MOD, NEW_LINE, SYSTEM_CLOCK
 !external procedures

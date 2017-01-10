@@ -25,8 +25,8 @@ PROGRAM spoly_test_driver
     !------------------
 
     !stats info
-    m=10
-    ALLOCATE(timeStats(m,2), radStats(m,2))
+
+
 
     !get information
     CALL GETARG(1,arg)
@@ -38,6 +38,8 @@ PROGRAM spoly_test_driver
     !CALL GETARG(3,BUFFER)
     !READ(BUFFER, *) jumpFactor
     jumpFactor=2
+    
+    ALLOCATE(timeStats(m,2), radStats(m,2))
 	
     !Create iseed
     CALL SYSTEM_CLOCK(COUNT=clock)

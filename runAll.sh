@@ -28,7 +28,7 @@ clear
 ./clean.sh
 echo ' ------------------------------------------'
 echo 'Running spoly...'
-./spolyTest.sh $FLAGS 10 1000 10
+./spolyTest.sh $FLAGS 10 1000 5
 echo ' ------------------------------------------'
 echo 'Running gepoly...'
 ./gepolyTest.sh $FLAGS 10 100 10 100 10

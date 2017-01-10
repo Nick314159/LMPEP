@@ -35,7 +35,9 @@ CALL GETARG(3, arg)
 READ (arg,'(I10)') startingDegree
 CALL GETARG(4, arg)
 READ (arg,'(I10)') maxDegree
-m =10
+CALL GETARG(5, arg)
+READ (arg,'(I10)') m
+
 ALLOCATE(timeStats(m,2),berrStats(m,2),ferrStats(m,2))
 
 OPEN(UNIT=1,FILE=resultsDir//"outputGepolySize.csv")

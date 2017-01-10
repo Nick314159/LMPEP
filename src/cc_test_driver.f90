@@ -35,8 +35,9 @@ CALL GETARG(3, arg)
 READ (arg,'(I10)') startingDegree
 CALL GETARG(4, arg)
 READ (arg,'(I10)') maxDegree
+CALL GETARG(5, arg)
+READ (arg,'(I10)') m
 
-m=3
 ALLOCATE(timeStats(m,2))
 
 OPEN(UNIT=1,FILE=resultsDir//"outputComplexitySize.csv")

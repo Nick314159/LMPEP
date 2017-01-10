@@ -57,11 +57,12 @@ CHARACTER(*), PARAMETER :: resultsDir="/home/nsteckley/Documents/Personal/Camero
   READ (arg,'(I10)') N
   CALL GETARG(2, arg)
   READ (arg,'(I10)') maxDegree
+  CALL GETARG(3, arg)
+  READ (arg,'(I10)') m
   !CALL GETARG(3, arg)
   !READ (arg,'(I10)') jumpSize 
   jumpSize = 2
 
-  m = 10
   ALLOCATE(timeStats(m), radStats(m))
 
   NEWTNUM = 1

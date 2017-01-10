@@ -42,7 +42,7 @@ program testDAMVW
   character(len=32) :: arg
   REAL(dp), DIMENSION(:), ALLOCATABLE :: timeStats, radStats
   
-CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
+CHARACTER(*), PARAMETER :: resultsDir="/home/nsteckley/Documents/Personal/Cameron/LMPEP/results/"
   COMPLEX(dp) :: a, b, t
   REAL(dp), DIMENSION(:), ALLOCATABLE :: radius
 
@@ -57,11 +57,12 @@ CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEP
   READ (arg,'(I10)') N
   CALL GETARG(2, arg)
   READ (arg,'(I10)') maxDegree
+  CALL GETARG(3, arg)
+  READ (arg,'(I10)') m
   !CALL GETARG(3, arg)
   !READ (arg,'(I10)') jumpSize 
   jumpSize = 2
 
-  m = 10
   ALLOCATE(timeStats(m), radStats(m))
 
   NEWTNUM = 1

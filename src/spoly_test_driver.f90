@@ -12,7 +12,7 @@ PROGRAM spoly_test_driver
     REAL(dp), DIMENSION(:), ALLOCATABLE :: poly, radius
     REAL(dp), DIMENSION(:,:), ALLOCATABLE :: timeStats, radStats
     COMPLEX(dp) :: a, b, t
-    CHARACTER(LEN=100) :: BUFFER
+    CHARACTER(LEN=100) :: arg
 
     !DSLMPEP ----------
     REAL(dp), DIMENSION(:), ALLOCATABLE :: backwardError, realRoots, imaginaryRoots
@@ -29,10 +29,12 @@ PROGRAM spoly_test_driver
     ALLOCATE(timeStats(m,2), radStats(m,2))
 
     !get information
-    CALL GETARG(1,BUFFER)
-    READ(BUFFER, *) startDegree
-    CALL GETARG(2,BUFFER)
-    READ(BUFFER, *) maxDegree
+    CALL GETARG(1,arg)
+    READ(arg, *) startDegree
+    CALL GETARG(2,arg)
+    READ(arg, *) maxDegree
+    CALL GETARG(3, arg)
+    READ (arg,'(I10)') m
     !CALL GETARG(3,BUFFER)
     !READ(BUFFER, *) jumpFactor
     jumpFactor=2

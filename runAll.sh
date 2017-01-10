@@ -28,16 +28,16 @@ clear
 ./clean.sh
 echo ' ------------------------------------------'
 echo 'Running spoly...'
-./spolyTest.sh $FLAGS 10 1000
+./spolyTest.sh $FLAGS 10 1000 10
 echo ' ------------------------------------------'
 echo 'Running gepoly...'
-./gepolyTest.sh $FLAGS 10 100 10 100
+./gepolyTest.sh $FLAGS 10 100 10 100 10
 echo ' ------------------------------------------'
 echo 'Running cc...'
-./ccTest.sh $FLAGS 10 100 10 100
+./ccTest.sh $FLAGS 10 100 10 100 10
 echo ' ------------------------------------------'
 echo 'Running iepoly1...'
-./iepoly1Test.sh $FLAGS 10 100 10 100
+./iepoly1Test.sh $FLAGS 10 100 10 100 10
 echo ' ------------------------------------------'
 echo 'Running iepoly2...'
 ./iepoly2Test.sh $FLAGS 

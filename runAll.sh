@@ -31,13 +31,13 @@ echo 'Running spoly...'
 ./spolyTest.sh $FLAGS 10 1000 5
 echo ' ------------------------------------------'
 echo 'Running gepoly...'
-./gepolyTest.sh $FLAGS 10 100 10 100 10
+./gepolyTest.sh $FLAGS 10 100 10 100 5
 echo ' ------------------------------------------'
 echo 'Running cc...'
-./ccTest.sh $FLAGS 10 100 10 100 10
+./ccTest.sh $FLAGS 10 100 10 100 5
 echo ' ------------------------------------------'
 echo 'Running iepoly1...'
-./iepoly1Test.sh $FLAGS 10 100 10 100 10
+./iepoly1Test.sh $FLAGS 10 100 10 100 5
 echo ' ------------------------------------------'
 echo 'Running iepoly2...'
 ./iepoly2Test.sh $FLAGS 

@@ -2,7 +2,7 @@
 # Enviroment file set some paths here
 ##################################################
 # Set HOMEDIR, e.g.
-HOMEDIR := /home/nsteckley/Documents/Personal/Cameron/LMPEP/src/AMVW/doubleshift
+HOMEDIR := /home/thomas/Documents/FORTRAN/Nick/LMPEPtests/src/AMVW/doubleshift
 
 ##################################################
 # Don't change anything!

@@ -42,7 +42,7 @@ program testDAMVW
   character(len=32) :: arg
   REAL(dp), DIMENSION(:), ALLOCATABLE :: timeStats, radStats
   
-CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEPtests/results/"
+CHARACTER(*), PARAMETER :: resultsDir="/home/nsteckley/Documents/Personal/Cameron/LMPEP/results/"
   COMPLEX(dp) :: a, b, t
   REAL(dp), DIMENSION(:), ALLOCATABLE :: radius
 
@@ -67,9 +67,9 @@ CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEP
   NEWTNUM = 1
   
   OPEN(UNIT=1,FILE=resultsDir//"outputAMVW.csv")
-  WRITE(1, '(A)',  advance='no') 'DEGREE,       '
-  WRITE(1, '(A)',  advance='no') 'AMVW TIME,    '
-  WRITE(1, '(A)',  advance='no') 'AMVW Radius,  '
+  WRITE(1, '(A)',  advance='no') 'DEGREE,      '
+  WRITE(1, '(A)',  advance='no') 'AMVW TIME,       '
+  WRITE(1, '(A)',  advance='no') 'AMVW Radius  '
   WRITE(1, *)
       
   DO WHILE (N < maxDegree)

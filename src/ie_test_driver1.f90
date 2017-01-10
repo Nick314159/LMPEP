@@ -38,7 +38,7 @@ READ (arg,'(I10)') maxDegree
 OPEN(UNIT=1,FILE=resultsDir//"outputIepoly1Size.csv")
 WRITE(1, '(A)',  advance='no') 'DEGREE,     '
 WRITE(1, '(A)',  advance='no') 'SIZE,    '
-WRITE(1, '(A)',  advance='no') 'NR TIME,          '
+WRITE(1, '(A)',  advance='no') 'NR TIME,         '
 WRITE(1, '(A)',  advance='no') 'NP TIME         '
 WRITE(1, *)
 
@@ -103,7 +103,7 @@ WRITE(1, *)
 OPEN(UNIT=1,FILE=resultsDir//"outputIepoly1Degree.csv")
 WRITE(1, '(A)',  advance='no') 'DEGREE,     '
 WRITE(1, '(A)',  advance='no') 'SIZE,    '
-WRITE(1, '(A)',  advance='no') 'NR TIME,          '
+WRITE(1, '(A)',  advance='no') 'NR TIME,         '
 WRITE(1, '(A)',  advance='no') 'NP TIME         '
 WRITE(1, *)
 

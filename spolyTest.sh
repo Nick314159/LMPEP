@@ -33,7 +33,7 @@ cd ..
 
 #Build
 cd src
-./buildSpoly.sh
+./buildSpoly.sh $FLAGS
 sleep 3
 cd AMVW/doubleshift
 ./configure.sh $resultsDir

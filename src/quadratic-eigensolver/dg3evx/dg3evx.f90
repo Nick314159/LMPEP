@@ -1936,22 +1936,22 @@ IF( sense > 0 )THEN
 END IF
 
 ! Backward error of right eigenpairs
-IF( (sense == 3).OR.(sense == 4).OR.(sense == 6).OR.(sense == 7) )THEN
+!IF( (sense == 3).OR.(sense == 4).OR.(sense == 6).OR.(sense == 7) )THEN
 
-   CALL DLAG3B( 'Right', n, rev, rankA, rankC, kr, indxr, kc, indxc,           &
-                alpharn, alphain, betan, p, A, ldA, B, ldB, C, ldC,            &
-                nA, nB, nC, VR, ldVR, beVR, INFO )
+!   CALL DLAG3B( 'Right', n, rev, rankA, rankC, kr, indxr, kc, indxc,           &
+!                alpharn, alphain, betan, p, A, ldA, B, ldB, C, ldC,            &
+!                nA, nB, nC, VR, ldVR, beVR, INFO )
 
-END IF
+!END IF
 
 ! Backward error of left eigenpairs
-IF( (sense == 2).OR.(sense == 4).OR.(sense == 5).OR.(sense == 7) )THEN
+!IF( (sense == 2).OR.(sense == 4).OR.(sense == 5).OR.(sense == 7) )THEN
 
-   CALL DLAG3B( 'Left', n, rev, rankA, rankC, kr, indxr, kc, indxc,            &
-                alpharn, alphain, betan, p, A, ldA, B, ldB, C, ldC,            &
-                nA, nB, nC, VL, ldVL, beVL, INFO )
+!   CALL DLAG3B( 'Left', n, rev, rankA, rankC, kr, indxr, kc, indxc,            &
+!                alpharn, alphain, betan, p, A, ldA, B, ldB, C, ldC,            &
+!                nA, nB, nC, VL, ldVL, beVL, INFO )
 
-END IF
+!END IF
 IF( scal > 1 )THEN
    DEALLOCATE( p, STAT = iwarn_STAT )
 END IF

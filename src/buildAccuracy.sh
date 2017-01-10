@@ -15,5 +15,5 @@ do
     shift
 done
 
-gfortran $FLAGS environment.f90 util.f90 dslmpep_subroutines.f90 dgelmpep_subroutines.f90 quadratic-eigensolver/dlag3r.f90 quadratic-eigensolver/dlaqp3.f90 quadratic-eigensolver/izmaxa.f90 quadratic-eigensolver/dg3evx.f90 quadratic-eigensolver/dlag3v.f90 quadratic-eigensolver/dlasge.f90 quadratic-eigensolver/dlag3c.f90 quadratic-eigensolver/dlanab.f90 quadratic-eigensolver/dselct.f90 accuracy_test_driver.f90 -lscalapack-openmpi -llapack -lblas && rm *.mod
+gfortran $FLAGS environment.f90 util.f90 dslmpep_subroutines.f90 dgelmpep_subroutines.f90 quadratic-eigensolver/dg3evx/izmaxa.f90 quadratic-eigensolver/dg3evx/dselct.f90 quadratic-eigensolver/dg3evx/dlasge.f90 quadratic-eigensolver/dg3evx/dlaqp3.f90 quadratic-eigensolver/dg3evx/dlanab.f90 quadratic-eigensolver/dg3evx/dlag3v.f90 quadratic-eigensolver/dg3evx/dlag3r.f90 quadratic-eigensolver/dg3evx/dlag3c.f90 quadratic-eigensolver/dg3evx/dg3evx.f90 accuracy_test_driver.f90 -lscalapack-openmpi -llapack -lblas && rm *.mod
 mv a.out ../bin/accuracy.out

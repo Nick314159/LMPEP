@@ -109,9 +109,9 @@ CHARACTER(*), PARAMETER :: resultsDir="/home/thomas/Documents/FORTRAN/Nick/LMPEP
       DEALLOCATE(POLY,REIGS,IEIGS,ITS,COEFFS,ALLROOTS,RESIDUALS,WPOLY,ROOTS);
       DEALLOCATE(radius)
     END DO 
-    WRITE(1,'(20G15.4)', advance='no') SUM(timeStats)/10
+    WRITE(1,'(20G15.4)', advance='no') SUM(timeStats)/m
     WRITE(1, '(A)', advance='no') ', '
-    WRITE(1,'(20G15.4)', advance='no') SUM(radStats)/10
+    WRITE(1,'(20G15.4)', advance='no') SUM(radStats)/m
     WRITE(1, *)
     N = jumpSize * N
   ENDDO

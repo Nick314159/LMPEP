@@ -50,7 +50,7 @@ for test in tests :
   ax.set_ylabel('Imaginary')
   ax.set_xlabel('Real')
   legend = ax.legend(loc=0, shadow=True)
-  savefig("../results/iepoly2"+test+".pdf")
+  savefig("../results/iepoly2"+test+".pdf", format='pdf')
   
   npRealEstimate, npImaginaryEstimate, nrRealEstimate, nrImaginaryEstimate, nrReal, nrImaginary  = [], [], [], [], [], []
 

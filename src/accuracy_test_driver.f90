@@ -59,8 +59,8 @@ OPEN(UNIT=1,FILE=resultsDir//"outputAccuracy.csv")
 WRITE(1, '(A)',  advance='no') 'Problem, '
 WRITE(1, '(A)',  advance='no') 'Max LM-BERR, '
 WRITE(1, '(A)',  advance='no') 'Max LM-FERR, '
-WRITE(1, '(A)',  advance='no') 'Max QM-BERR, '
-WRITE(1, '(A)',  advance='no') 'Max QM-FERR '
+WRITE(1, '(A)',  advance='no') 'Max QZ-BERR, '
+WRITE(1, '(A)',  advance='no') 'Max QZ-FERR '
 WRITE(1, *)
 
 DO k=1,27
@@ -105,11 +105,13 @@ DO k=1,27
     ALLOCATE(VL(n,2*n),VR(n,2*n),s(2*n),beVL(2*n),beVR(2*n))
     CALL SYSTEM_CLOCK(count_rate=clock_rate)
     CALL SYSTEM_CLOCK(COUNT=clock_start)
-    CALL DG3EVX(1, 'V', 'V', 0, 0,                                    &
+    CALL DG3EVX(1, 'V', 'V', 7, 0,                                    &
                    n, p(1,2*n+1), n, p(1,n+1), n, p(1,1), n,          &
                    alphar, alphai, beta, VL, n, VR, n, s, beVL, beVR, &
                    iwarn, info)
     CALL SYSTEM_CLOCK(COUNT=clock_stop)
+    !PRINT*, 'berr =', MAX(MAXVAL(beVL),MAXVAL(beVR))
+    !PRINT*, 'ferr =', MAXVAL(s)*MAX(MAXVAL(beVL),MAXVAL(beVR))
     !backward error, condition number for QUADEIG
     i=1
     DO WHILE(i<=2*n)

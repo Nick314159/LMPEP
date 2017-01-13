@@ -17,5 +17,6 @@ ax.xaxis.set_visible(False)
 ax.yaxis.set_visible(False)
 colLabels=("Problem", "Max LM-BERR", "Max LM-FERR", "Max QM-BERR", "Max QM-FERR")
 the_table = ax.table(cellText=data, colLabels=colLabels, loc='center')
-plt.savefig("../results/accuracy_table.png")
+plt.tight_layout()
+plt.savefig("../results/accuracy_table.pdf", format='pdf')
 

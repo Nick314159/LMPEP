@@ -74,7 +74,7 @@ savefig("../results/cc_hs_times_size.pdf", format='pdf')
 
 fig, ax = plt.subplots()
 ax.loglog(size, tdtimeSize, 'k-o', label='Tridiagonal')
-ax.loglog(size, tdtimeSize[0]*(size/size[0])**3, 'k--', label='Cubic Complexity')
+ax.loglog(size, tdtimeSize[0]*(size/size[0])**2, 'k--', label='Cubic Complexity')
 ax.set_ylabel('Seconds')
 ax.set_xlabel('Size')
 legend = ax.legend(loc=0, shadow=True)

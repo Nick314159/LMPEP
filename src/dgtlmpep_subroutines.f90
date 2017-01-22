@@ -618,7 +618,7 @@ INTEGER, INTENT(INOUT) :: die, dze
 REAL(dp), INTENT(IN) :: ncoeff(*), pdl(n-1,*), pd(n,*), pdu(n-1,*)
 REAL(dp), INTENT(INOUT) :: er(*), ei(*), xr(n,*), xi(n,*), yr(n,*), yi(n,*)
 !local scalars
-INTEGER :: info, jmin, jmax, k
+INTEGER :: k
 !local arrays
 LOGICAL, DIMENSION(n) :: pivot
 REAL(dp), DIMENSION(n-1) :: adl, adu, c, s
@@ -724,7 +724,7 @@ LOGICAL, INTENT(IN) :: pivot(*)
 REAL(dp), INTENT(IN) :: adl(*), ad(*), adu(*), c(*), s(*)
 REAL(dp), INTENT(INOUT) :: xr(n,*), xi(n,*), yr(n,*), yi(n,*)
 !local scalars
-INTEGER :: i, j, m
+INTEGER :: i, m
 !local arrays
 LOGICAL, DIMENSION(n) :: pivot2
 REAL(dp), DIMENSION(n) :: diag

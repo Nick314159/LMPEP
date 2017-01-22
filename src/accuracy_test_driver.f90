@@ -91,7 +91,7 @@ DO k=1,27
   CALL SYSTEM_CLOCK(count_rate=clock_rate)
   CALL SYSTEM_CLOCK(COUNT=clock_start)
   CALL dgelm(p, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n, 'NR')
-  CALL SYSTEM_CLOCK(COUNT=clock_stop) 
+  CALL SYSTEM_CLOCK(COUNT=clock_stop)
   !bacward error, condition number for Laguerre's Method
   CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
   !Write results

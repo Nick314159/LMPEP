@@ -45,7 +45,8 @@ OPEN(UNIT=1,FILE=resultsDir//"outputComplexitySize.csv")
 WRITE(1, '(A)',  advance='no') 'DEGREE,     '
 WRITE(1, '(A)',  advance='no') 'SIZE,    '
 WRITE(1, '(A)',  advance='no') 'GE TIME,         '
-WRITE(1, '(A)',  advance='no') 'HS TIME'
+WRITE(1, '(A)',  advance='no') 'HS TIME,         '
+WRITE(1, '(A)',  advance='no') 'TD TIME'
 WRITE(1, *)
 
 
@@ -158,7 +159,8 @@ OPEN(UNIT=1,FILE=resultsDir//"outputComplexityDegree.csv")
 WRITE(1, '(A)',  advance='no') 'DEGREE,     '
 WRITE(1, '(A)',  advance='no') 'SIZE,    '
 WRITE(1, '(A)',  advance='no') 'GE TIME,         '
-WRITE(1, '(A)',  advance='no') 'HS TIME'
+WRITE(1, '(A)',  advance='no') 'HS TIME,         '
+WRITE(1, '(A)',  advance='no') 'TD TIME'
 WRITE(1, *) 
   
 n = 2

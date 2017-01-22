@@ -989,9 +989,10 @@ REAL(dp), DIMENSION(3) :: temp
 LOGICAL :: lsame
 EXTERNAL :: lsame
 
-!initiate y
+!initiate y, temp
 y=beta*y
-
+temp=zero
+!compute product
 IF(lsame(trans,'N')) THEN
   temp(1)=ad(1)
   temp(2)=adl(1)
@@ -1811,9 +1812,10 @@ INTRINSIC :: DCONJG
 LOGICAL :: lsame
 EXTERNAL :: lsame
 
-!initiate y
+!initiate y, temp
 y=beta*y
-
+temp=czero
+!compute product
 IF(lsame(trans,'N')) THEN
   temp(1)=ad(1)
   temp(2)=adl(1)

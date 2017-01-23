@@ -50,9 +50,9 @@ WRITE(1, *)
   d = 2
   n = startingSize
   DO WHILE (n<maxSize)
-    WRITE(1, '(i6)', advance='no') d
+    WRITE(1, '(i10)', advance='no') d
     WRITE(1, '(A)', advance='no') ', '
-    WRITE(1, '(i6)', advance='no') n
+    WRITE(1, '(i10)', advance='no') n
     WRITE(1, '(A)', advance='no') ', '
     DO j=1,m
       !create problem

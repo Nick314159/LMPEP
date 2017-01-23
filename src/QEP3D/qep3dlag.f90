@@ -20,7 +20,7 @@
 
 MODULE qep3dlag
 
-USE qepinit
+USE util
 
 IMPLICIT NONE
 

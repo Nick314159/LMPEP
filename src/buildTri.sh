@@ -15,5 +15,5 @@ do
     shift
 done
 
-gfortran $FLAGS environment.f90 util.f90 dslmpep_subroutines.f90 dgtlmpep_subroutines.f90 QEP3D/qep3dlag.f90 tri_test_driver.f90 -lscalapack-openmpi -llapack -lblas && rm *.mod
+gfortran $FLAGS environment.f90 util.f90 dslmpep_subroutines.f90 dgtlmpep_subroutines.f90 QEP3D/qep3deacx.f90 tri_test_driver.f90 -lscalapack-openmpi -llapack -lblas && rm *.mod
 mv a.out ../bin/tri.out

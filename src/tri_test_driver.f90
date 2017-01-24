@@ -1,7 +1,7 @@
 PROGRAM tri_test_driver
 USE environment
 USE dgtlmpep_subroutines
-USE qep3dlag
+USE qep3deacx
 IMPLICIT NONE
 
 !=======VARIABLES=======
@@ -23,12 +23,11 @@ EXTERNAL :: dlangt
 !QEP3D
 INTEGER	:: mode, neg, detsgn
 INTEGER, PARAMETER :: ATTEMPTS = 200
-REAL(dp), ALLOCATABLE, DIMENSION(:)	:: a, b, c, au, bu, cu
-REAL(dp), ALLOCATABLE, DIMENSION(:) :: z
+REAL(dp), ALLOCATABLE, DIMENSION(:)	:: a, b, c, au, bu, cu, al, bl, cl
+COMPLEX(dp), ALLOCATABLE, DIMENSION(:) :: z
 COMPLEX(dp), ALLOCATABLE, DIMENSION(:)	:: zcx
 REAL(4)	 :: T1
-INTEGER	:: mxit, iter, itermx, imax
-
+INTEGER	:: mxit, iter, iterlast, itermax
 !get information
 CALL GETARG(1,arg)
 READ(arg, *) startSize
@@ -92,34 +91,40 @@ DO WHILE (n < maxSize)
     ENDDO
     DEALLOCATE(p)
     
-    ALLOCATE(a(n), b(n), c(n), au(n), bu(n), cu(n))
+    ALLOCATE(a(n), b(n), c(n), au(n), bu(n), cu(n), al(n), bl(n), cl(n))
     !a
     a = pd(:, 1)
     !au
-    au = pdl(:, 1)
+    au = pdu(:, 1)
+    !al
+    al = pdl(:, 1)
     !b
     b = pd(:, 2)
     !bu
-    bu = pdl(:, 2)
+    bu = pdu(:, 2)
+    !bl
+    bl = pdl(:, 2)
     !c
     c = pd(:, 3)
     !cu
-    cu = pdl(:, 3)
+    cu = pdu(:, 3)
+    !al
+    cl = pdl(:, 3)
 
     !maximal number of iteration
     mxit = 400	
     iter = 0
-    itermx = 500
+    iterlast = 500
     !solve QEP3D
     ALLOCATE(z(2*n), zcx(2*n))
     CALL SYSTEM_CLOCK(count_rate=clock_rate)
     CALL SYSTEM_CLOCK(COUNT=clock_start)
-    CALL reigenl(a,au,b,bu,c,cu,n,z,mxit,iter,itermx,imax)
+    CALL reigencx(a,au,al,b,bu,bl,c,cu,cl,n,z,mxit,iter,iterlast,itermax,mode-4)
     CALL SYSTEM_CLOCK(COUNT=clock_stop)
     DEALLOCATE(z,zcx)
     
     timeStats(j,2) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
-    DEALLOCATE(a, b, c, au, bu, cu)
+    DEALLOCATE(a, b, c, au, bu, cu, al, bl, cl)
     
     !solve dgtlmpep
     ALLOCATE(xr(n,n*d), xi(n,n*d), yr(n,n*d), yi(n,n*d))

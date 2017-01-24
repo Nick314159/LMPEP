@@ -3,6 +3,7 @@
 results
 *.csv
 fort.1
+fort.11
 *.pdf
 src/AMVW/doubleshift/tests/spoly
 Papers/

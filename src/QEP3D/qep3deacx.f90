@@ -19,7 +19,7 @@
 
 MODULE qep3deacx
 
-USE qepinit
+USE util
 
 IMPLICIT NONE
 

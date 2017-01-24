@@ -74,7 +74,7 @@ IF(MOD(iseed(4),2)==0) THEN
 iseed(4)=iseed(4)+1
 ENDIF
 
-OPEN(UNIT=1,FILE=resultsDir//"outputTri.csv")
+OPEN(UNIT=1,FILE=resultsDir//"outputSampleTri.csv")
 WRITE(1, '(A)',  advance='no') 'Problem,        '
 WRITE(1, '(A)',  advance='no') 'DGTLMPEP TIME,   '
 WRITE(1, '(A)',  advance='no') 'QEP3D TIME'
@@ -83,6 +83,7 @@ d =3
 DO k=1,19
   OPEN(UNIT=2,FILE=sampleProblemsDir//tests(k))
   WRITE(1, '(A)', advance='no') tests(k)
+  !WRITE(*,*) 'Testing '//tests(k)
   WRITE(1, '(A)', advance='no') ','
   READ(2,'(I2)') mode
   READ(2, '(I10)') n

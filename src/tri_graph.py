@@ -4,7 +4,7 @@ from pylab import *
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as pyplot
 size, triTime, qepTime = [], [], []
-with open('../results/outputSpoly.csv') as f:
+with open('../results/outputTri.csv') as f:
   reader = csv.reader(f)
   headers= next(reader)
   for row in reader:

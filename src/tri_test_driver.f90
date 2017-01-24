@@ -11,7 +11,7 @@ INTEGER :: d, startSize, maxSize, jumpFactor
 INTEGER, DIMENSION(4) :: iseed
 REAL(dp), DIMENSION(:,:), ALLOCATABLE :: timeStats
 CHARACTER(LEN=100) :: arg
-REAL(dp), DIMENSION(:), ALLOCATABLE :: berr, cond, ferr, er, ei, ncoeff, work, x
+REAL(dp), DIMENSION(:), ALLOCATABLE :: berr1, berr2, cond, ferr, er, ei, ncoeff, work, x
 REAL(dp), DIMENSION(:,:), ALLOCATABLE :: p, pdl, pd, pdu, xr, xi, yr, yi
 !intrinsic procedures
 INTRINSIC :: COUNT, DBLE, MAX, MAXVAL, MOD, NEW_LINE, SYSTEM_CLOCK
@@ -21,13 +21,12 @@ EXTERNAL :: dlangt
 !------------------
 
 !QEP3D
-INTEGER	:: mode, neg, detsgn
-INTEGER, PARAMETER :: ATTEMPTS = 200
+INTEGER	:: mode, neg, detsgn, jmax, jmin
+INTEGER, PARAMETER :: ATTEMPTS=200
+REAL(dp) :: alpha
 REAL(dp), ALLOCATABLE, DIMENSION(:)	:: a, b, c, au, bu, cu, al, bl, cl
-COMPLEX(dp), ALLOCATABLE, DIMENSION(:) :: z
-COMPLEX(dp), ALLOCATABLE, DIMENSION(:)	:: zcx
-REAL(4)	 :: T1
-INTEGER	:: mxit, iter, iterlast, itermax
+COMPLEX(dp), ALLOCATABLE, DIMENSION(:) :: z, ad, adl, adu, co, si
+INTEGER	:: mxit, iter, itermx, imax
 !get information
 CALL GETARG(1,arg)
 READ(arg, *) startSize
@@ -77,27 +76,41 @@ DO WHILE (n < maxSize)
       !pdl
       DO i=1,n-1
         pdl(i,k)=p(i+1,(k-1)*n+i)
-        pdl(i,k)=p(i+1,(k-1)*n+i)
       ENDDO
       !pd
       DO i=1,n
         pd(i,k)=p(i,(k-1)*n+i)
       ENDDO
       !pdu
-      !DO i=2,n
-       ! pdu(i-1,k)=p(i-1,(k-1)*n+i)
-       pdu=pdl
-      !ENDDO
+      DO i=2,n
+       pdu(i-1,k)=p(i-1,(k-1)*n+i)
+      ENDDO
     ENDDO
     DEALLOCATE(p)
+
+    !solve dgtlmpep
+    ALLOCATE(xr(n,n*d), xi(n,n*d), yr(n,n*d), yi(n,n*d))
+    ALLOCATE(berr1(n*d), berr2(n*d), er(n*d), ei(n*d), ncoeff(d+1))
+    DO i=1,d+1
+      ncoeff(i)=dlangt('F',n,pdl(1,i),pd(1,i),pdu(1,i))
+    ENDDO
+    CALL SYSTEM_CLOCK(count_rate=clock_rate)
+    CALL SYSTEM_CLOCK(COUNT=clock_start)
+    CALL dgtlm(pdl, pd, pdu, xr, xi, yr, yi, er, ei, berr1, ncoeff, iseed, d, n)
+    CALL SYSTEM_CLOCK(COUNT=clock_stop)
+    timeStats(j,1) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+    !deallocate
+    DEALLOCATE(xr, xi, yr, yi, er, ei)
+    !print berr for dgtlmpep
+    PRINT*, 'max berr dgtlm =', MAXVAL(berr1)
     
     ALLOCATE(a(n), b(n), c(n), au(n), bu(n), cu(n), al(n), bl(n), cl(n))
     !a
-    a = pd(:, 1)
+    a = pd(:, 3)
     !au
-    au = pdu(:, 1)
+    au = pdu(:, 3)
     !al
-    al = pdl(:, 1)
+    al = pdl(:, 3)
     !b
     b = pd(:, 2)
     !bu
@@ -105,49 +118,60 @@ DO WHILE (n < maxSize)
     !bl
     bl = pdl(:, 2)
     !c
-    c = pd(:, 3)
+    c = pd(:, 1)
     !cu
-    cu = pdu(:, 3)
+    cu = pdu(:, 1)
     !cl
-    cl = pdl(:, 3)
+    cl = pdl(:, 1)
 
     !maximal number of iteration
-    mxit = 400	
+    mxit = 400
     iter = 0
-    iterlast = 500
+    itermx = 500
     !solve QEP3D
-    ALLOCATE(z(2*n), zcx(2*n))
+    ALLOCATE(z(2*n))
     CALL SYSTEM_CLOCK(count_rate=clock_rate)
     CALL SYSTEM_CLOCK(COUNT=clock_start)
-    CALL reigencx(a,au,al,b,bu,bl,c,cu,cl,n,z,mxit,iter,iterlast,itermax,mode-4)
+    CALL reigencx(a,au,al,b,bu,bl,c,cu,cl,n,z,mxit,iter,itermx,imax,2)
     CALL SYSTEM_CLOCK(COUNT=clock_stop)
-    DEALLOCATE(z,zcx)
     
     timeStats(j,2) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
     DEALLOCATE(a, b, c, au, bu, cu, al, bl, cl)
-    
-    !solve dgtlmpep
-    ALLOCATE(xr(n,n*d), xi(n,n*d), yr(n,n*d), yi(n,n*d))
-    ALLOCATE(berr(n*d), er(n*d), ei(n*d), ncoeff(d+1), cond(n*d), ferr(n*d))
-    DO i=1,d+1
-      ncoeff(i)=dlangt('F',n,pdl(1,i),pd(1,i),pdu(1,i))
-    ENDDO
-    CALL SYSTEM_CLOCK(count_rate=clock_rate)
-    CALL SYSTEM_CLOCK(COUNT=clock_start)
-    CALL dgtlm(pdl, pd, pdu, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n)
-    CALL SYSTEM_CLOCK(COUNT=clock_stop)
 
-    timeStats(j,1) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
- 
-   
-    !compute backward error and condition number
-    CALL dposterrcond(pdl, pd, pdu, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
-    
+    !backward error estimates for QEP3D
+    ALLOCATE(ad(n), adu(n-1), adl(n-1), co(n-1), si(n-1))
+    DO i=1,d*n
+      IF(ZABS(z(i))>one) THEN
+        CALL zrevgteval(pdl, pd, pdu, z(i), adl, ad, adu, d, n, 0)
+        CALL drevseval(ncoeff, ZABS(z(i)), alpha, d, 0)
+        adl=adl/alpha; ad=ad/alpha; adu=adu/alpha
+        CALL zgtqr(adl, ad, adu, co, si, n)
+        jmax=ZGTJMAX(ad,n)
+        jmin=ZGTJMIN(ad,n)
+        IF(ZABS(ad(jmin))<eps) THEN
+          berr2(i)=ZABS(ad(jmin))
+        ELSE
+          CALL zberrapprox(adl, ad, adu, co, si, iseed, berr2(i), n)
+        ENDIF
+      ELSE
+        CALL zgteval(pdl, pd, pdu, z(i), adl, ad, adu, d, n, 0)
+        CALL dseval(ncoeff, ZABS(z(i)), alpha, d, 0)
+        adl=adl/alpha; ad=ad/alpha; adu=adu/alpha
+        CALL zgtqr(adl, ad, adu, co, si, n)
+        jmax=ZGTJMAX(ad,n)
+        jmin=ZGTJMIN(ad,n)
+        IF(ZABS(ad(jmin))<eps) THEN
+          berr2(i)=ZABS(ad(jmin))
+        ELSE
+          CALL zberrapprox(adl, ad, adu, co, si, iseed, berr2(i), n)
+        ENDIF
+      ENDIF
+    ENDDO
+    DEALLOCATE(adl, ad, adu, co, si, z)
+    PRINT*, 'max berr qep3d =', MAXVAL(berr2)
     !deallocate
-    DEALLOCATE(xr, xi, yr, yi)
-    DEALLOCATE(berr, cond, ferr, er, ei, ncoeff, pdl, pd, pdu)
-  
-  END DO
+    DEALLOCATE(berr1, berr2, ncoeff, pdl, pd, pdu)
+  ENDDO
 
   !=======SAVE RESULTS=======
 
@@ -161,6 +185,6 @@ DO WHILE (n < maxSize)
   !------------------
   WRITE(1, *)
   n = jumpFactor * n
-END DO
+ENDDO
 CLOSE(UNIT=1)
 END PROGRAM tri_test_driver

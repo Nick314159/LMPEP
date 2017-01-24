@@ -98,12 +98,12 @@ DO k=1,19
     READ(2,*) ( c(i), i=1,n)
     READ(2,*) ( cu(i), i=1,n-1)
  
-    pd(:, 1) = a
-    pdu(:, 1) = au
+    pd(:, 3) = a
+    pdu(:, 3) = au
     pd(:, 2) = b
     pdu(:, 2) = bu
-    pd(:, 3) = c
-    pdu(:, 3) = cu
+    pd(:, 1) = c
+    pdu(:, 1) = cu
     
   ELSE
     READ(2,*) ( a(i), i=1,n)
@@ -116,15 +116,15 @@ DO k=1,19
     READ(2,*) ( cu(i), i=1,n-1)
     READ(2,*) ( cl(i), i=1,n-1)
     
-    pd(:, 1) = a
-    pdu(:, 1) = au
-    pdl(:, 1) = al
+    pd(:, 3) = a
+    pdu(:, 3) = au
+    pdl(:, 3) = al
     pd(:, 2) = b
     pdu(:, 2) = bu
     pdl(:, 2) = bl
-    pd(:, 3) = c
-    pdu(:, 3) = cu
-    pdl(:, 3) = cl
+    pd(:, 1) = c
+    pdu(:, 1) = cu
+    pdl(:, 1) = cl
 
   END IF
   CLOSE(UNIT=2)

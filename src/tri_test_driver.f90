@@ -108,7 +108,7 @@ DO WHILE (n < maxSize)
     c = pd(:, 3)
     !cu
     cu = pdu(:, 3)
-    !al
+    !cl
     cl = pdl(:, 3)
 
     !maximal number of iteration

@@ -22,19 +22,26 @@ USE qep3dlag
 
 IMPLICIT NONE
 
-INTEGER:: mode, n, i, neg, detsgn, k, m, iseed
+INTEGER:: mode, n, i, neg, detsgn, k, m, d
 INTEGER, PARAMETER:: ATTEMPTS = 200
-REAL(dp), ALLOCATABLE, DIMENSION(:):: a, b, c, au, bu, cu, al, bl, cl, d
+REAL(dp), ALLOCATABLE, DIMENSION(:):: a, b, c, au, bu, cu, al, bl, cl
 REAL(dp), ALLOCATABLE, DIMENSION(:):: z
 COMPLEX(dp), ALLOCATABLE, DIMENSION(:):: zcx
 REAL(4):: T1
 INTEGER:: mxit, iter, itermx, imax
 
+INTEGER, DIMENSION(4) :: iseed
 REAL(dp), DIMENSION(:), ALLOCATABLE :: berr, cond, ferr, er, ei, ncoeff, work, x
 INTEGER :: clock, clock_rate, clock_start, clock_stop
 REAL(dp), DIMENSION(:,:), ALLOCATABLE :: pdl, pd, pdu, xr, xi, yr, yi
 CHARACTER (LEN=64), DIMENSION(19) :: tests
 REAL(dp), DIMENSION(:), ALLOCATABLE :: timeStats
+!intrinsic procedures
+INTRINSIC :: COUNT, DBLE, MAX, MAXVAL, MOD, NEW_LINE, SYSTEM_CLOCK
+!external procedures
+REAL(dp) :: dlangt
+EXTERNAL :: dlangt
+
 ALLOCATE(timeStats(2))
 
 tests(1) = 'data_Ex102_100_EAC.dat'
@@ -66,7 +73,6 @@ ENDDO
 IF(MOD(iseed(4),2)==0) THEN
 iseed(4)=iseed(4)+1
 ENDIF
-
 
 OPEN(UNIT=1,FILE=resultsDir//"outputTri.csv")
 WRITE(1, '(A)',  advance='no') 'Problem,        '

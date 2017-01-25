@@ -132,9 +132,9 @@ DO k=1,19
   z = zero
   zcx = zero
 
-  mxit = 400! maximal number of iteration
+  mxit = 800! maximal number of iteration
   iter = 0
-  itermx = 500
+  itermx = 1000
   T1 = SECNDS(0.0)
   ! Real Ehrlich-Aberth
   IF (mode>=1 .AND. mode<=3) THEN

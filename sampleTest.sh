@@ -50,7 +50,7 @@ echo "Finished Tridiagonal test at `date`"
 #Generate graphs
 cd src
 py=`which python`
-$py sample_tri_table.py
+$py sample_tri_graph.py
 
 #Open graphs
 if $OPEN 

@@ -49,20 +49,20 @@ tests(2) = 'data_Ex102_100_EAR.dat'
 tests(3) = 'data_Ex102_100_LAG.dat'
 tests(4) = 'data_Ex102_200_EAC.dat'
 tests(5) = 'data_Ex102_200_EAR.dat'
-tests(6) = 'data_Ex102_200_LAG.dat'
-tests(7) = 'data_Ex102_400_EAC.dat'
-tests(8) = 'data_Ex102_400_EAR.dat'
-tests(9) = 'data_Ex102_400_LAG.dat'
-tests(10) = 'data_Ex102_800_EAC.dat'
-tests(11) = 'data_Ex102_800_EAR.dat'
-tests(12) = 'data_Ex102_800_LAG.dat'
-tests(13) = 'data_Ex103A_100_EAC.dat'
-tests(14) = 'data_Ex103A_200_EAC.dat'
-tests(15) = 'data_Ex103A_400_EAC.dat'
-tests(16) = 'data_Ex103B_100_EAC.dat'
-tests(17) = 'data_Ex103B_200_EAC.dat'
-tests(18) = 'data_Ex103B_400_EAC.dat'
-tests(19) = 'data_Ex104_EAC.dat'
+!tests(6) = 'data_Ex102_200_LAG.dat'
+!tests(7) = 'data_Ex102_400_EAC.dat'
+!tests(8) = 'data_Ex102_400_EAR.dat'
+!tests(9) = 'data_Ex102_400_LAG.dat'
+!tests(10) = 'data_Ex102_800_EAC.dat'
+!tests(11) = 'data_Ex102_800_EAR.dat'
+!tests(12) = 'data_Ex102_800_LAG.dat'
+tests(6) = 'data_Ex103A_100_EAC.dat'
+tests(7) = 'data_Ex103A_200_EAC.dat'
+tests(8) = 'data_Ex103A_400_EAC.dat'
+tests(9) = 'data_Ex103B_100_EAC.dat'
+tests(10) = 'data_Ex103B_200_EAC.dat'
+!tests(11) = 'data_Ex103B_400_EAC.dat'
+!tests(12) = 'data_Ex104_EAC.dat'
 
 !Create iseed
 CALL SYSTEM_CLOCK(COUNT=clock)
@@ -80,7 +80,7 @@ WRITE(1, '(A)',  advance='no') 'DGTLMPEP TIME,   '
 WRITE(1, '(A)',  advance='no') 'QEP3D TIME'
 WRITE(1, *)
 d =3 
-DO k=1,19
+DO k=1,10
   OPEN(UNIT=2,FILE=sampleProblemsDir//tests(k))
   WRITE(1, '(A)', advance='no') tests(k)
   !WRITE(*,*) 'Testing '//tests(k)

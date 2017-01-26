@@ -1,100 +1,9 @@
-MODULE dgtlmpep_subroutines
+MODULE dgtlmpep_subroutines2
 USE dslmpep_subroutines
 IMPLICIT NONE
 REAL(dp), PARAMETER :: two=2.0_dp
 COMPLEX(dp), PARAMETER :: ctwo=DCMPLX(two)
 CONTAINS
-
-!************************************************************************
-!			SUBROUTINE DPOSTERRCOND				*
-!************************************************************************
-! Compute a posteriori backward error, condition, and forward error of	*
-! each eigenpair associated with the matrix polynomial (pdl,pd,pdu).	*
-!************************************************************************
-SUBROUTINE dposterrcond(pdl, pd, pdu, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
-IMPLICIT NONE
-!scalar arguments
-INTEGER, INTENT(IN) :: d, n
-!array arguments
-REAL(dp), INTENT(IN) :: er(*), ei(*), ncoeff(*), xr(n,*), xi(n,*), yr(n,*), yi(n,*), pdl(n-1,*), pd(n,*), pdu(n-1,*)
-REAL(dp), INTENT(INOUT) :: berr(*), cond(*), ferr(*)
-!local scalars
-INTEGER :: i
-REAL(dp) :: alpha, bex, bey
-COMPLEX(dp) :: t
-!local arrays
-REAL(dp), DIMENSION(n) :: x
-COMPLEX(dp), DIMENSION(n-1) :: adl, adu, bdl, bdu
-COMPLEX(dp), DIMENSION(n) :: ad, bd, u, v
-!external procedures
-REAL(dp) :: ddot, dnrm2, dznrm2
-COMPLEX(dp) :: zdotc
-EXTERNAL :: ddot, dnrm2, dznrm2, zdotc
-
-DO i=1,n*d
-  IF(DCMOD(er(i),ei(i))<eps) THEN
-    !zero eigenvalues
-    CALL dgtmv('N', pdl(1,1), pd(1,1), pdu(1,1), xr(1,i), x, one, zero, n)
-    bex=dnrm2(n,x,1)/ncoeff(1)
-    CALL dgtmv('T', pdl(1,1), pd(1,1), pdu(1,1), yr(1,i), x, one, zero, n)
-    bey=dnrm2(n,x,1)/ncoeff(1)
-    berr(i)=MAX(bex,bey)
-    cond(i)=1/DABS(ddot(n,xr(1,i),1,yr(1,i),1))
-    ferr(i)=berr(i)*cond(i)
-  ELSEIF(DCMOD(er(i),ei(i))<=one) THEN
-    !nonzero eigenvalues w/ moduli <=1
-    t=DCMPLx(er(i),ei(i))
-    CALL zgteval(pdl,pd,pdu,t,adl,ad,adu,d,n,0)
-    CALL dseval(ncoeff, ZABS(t), alpha, d, 0)
-    u=DCMPLX(xr(:,i),xi(:,i))
-    CALL zgtmv('N', adl, ad, adu, u, v, cone, czero, n)
-    bex=dznrm2(n,v,1)
-    v=DCMPLx(yr(:,i),yi(:,i))
-    CALL zgtmv('C', adl, ad, adu, v, u, cone, czero, n)
-    bey=dznrm2(n,u,1)
-    berr(i)=MAX(bex,bey)
-    CALL zgteval(pdl,pd,pdu,t,bdl,bd,bdu,d,n,1)
-    u=DCMPLX(xr(:,i),xi(:,i))
-    CALL zgtmv('N', bdl, bd, bdu, u, v, cone, czero, n)
-    u=DCMPLX(yr(:,i),yi(:,i))
-    cond(i)=1/ZABS(t*zdotc(n,u,1,v,1))
-    ferr(i)=berr(i)*cond(i)
-    berr(i)=berr(i)/alpha
-    cond(i)=cond(i)*alpha
-  ELSEIF(DCMOD(er(i),ei(i))<big) THEN
-    !nonzero eigenvalues w/ moduli >1 and <big
-    t=1/DCMPLX(er(i),ei(i))
-    CALL zrevgteval(pdl,pd,pdu,t,adl,ad,adu,d,n,0)
-    CALL drevseval(ncoeff, ZABS(t), alpha, d, 0) 
-    u=DCMPLX(xr(:,i),xi(:,i))
-    CALL zgtmv('N', adl, ad, adu, u, v, cone, czero, n)
-    bex=dznrm2(n,v,1)
-    v=DCMPLx(yr(:,i),yi(:,i))
-    CALL zgtmv('C', adl, ad, adu, v, u, cone, czero, n)
-    bey=dznrm2(n,u,1)
-    berr(i)=MAX(bex,bey)
-    CALL zrevgteval(pdl,pd,pdu,t,bdl,bd,bdu,d,n,1)
-    bdl=d*adl-t*bdl; bd=d*ad-t*bd; bdu=d*adu-t*bdu
-    u=DCMPLX(xr(:,i),xi(:,i))
-    CALL zgtmv('N', bdl, bd, bdu, u, v, cone, czero, n)
-    u=DCMPLX(yr(:,i),yi(:,i))
-    cond(i)=1/ZABS(zdotc(n,u,1,v,1))
-    ferr(i)=berr(i)*cond(i)
-    berr(i)=berr(i)/alpha
-    cond(i)=cond(i)*alpha
-  ELSE
-    !infinite eigenvalues
-    CALL dgtmv('N',pdl(1,d+1),pd(1,d+1),pdu(1,d+1),xr(1,i),x,one,zero,n)
-    bex=dnrm2(n,x,1)/ncoeff(d+1)
-    CALL dgtmv('T',pdl(1,d+1),pd(1,d+1),pdu(1,d+1),yr(1,i),x,one,zero,n)
-    bey=dnrm2(n,x,1)/ncoeff(d+1)
-    berr(i)=MAX(bex,bey)
-    cond(i)=1/DABS(ddot(n,xr(1,i),1,yr(1,i),1))
-    ferr(i)=berr(i)*cond(i)
-  ENDIF
-ENDDO
-RETURN
-END SUBROUTINE dposterrcond
 
 !************************************************************************
 !			SUBROUTINE DGTLM				*
@@ -106,7 +15,7 @@ END SUBROUTINE dposterrcond
 ! error, stored in berr of each eigenpair. Eigenvalues are stored in 	*
 ! (er,ei) and eigenvectors in (xr,xi) and (yr,yi).			*
 !************************************************************************
-SUBROUTINE dgtlm(pdl, pd, pdu, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n)
+SUBROUTINE dgtlm(pdl, pd, pdu, er, ei, berr, ncoeff, iseed, d, n)
 IMPLICIT NONE
 !scalar arguments
 INTEGER, INTENT(IN) :: d, n
@@ -114,7 +23,6 @@ INTEGER, INTENT(IN) :: d, n
 INTEGER, INTENT(INOUT) :: iseed(*)
 REAL(dp), INTENT(IN) :: ncoeff(*), pdl(n-1,*), pd(n,*), pdu(n-1,*)
 REAL(dp), INTENT(INOUT) :: berr(*), er(*), ei(*)
-REAL(dp), INTENT(INOUT) :: xr(n,*), xi(n,*), yr(n,*), yi(n,*)
 !local scalars
 LOGICAL :: check
 INTEGER :: die, dze, i, it, td
@@ -123,7 +31,7 @@ REAL(dp) :: tol
 INTRINSIC :: DABS, MAX
 
 !initial estimates
-CALL dgtstart(pdl, pd, pdu, xr, xi, yr, yi, er, ei, ncoeff, d, die, dze, n)
+CALL dgtstart(pdl, pd, pdu, er, ei, ncoeff, d, die, dze, n)
 td=n*d-die
 !Laguerre's method
 DO i=dze+1,td
@@ -132,15 +40,15 @@ DO i=dze+1,td
     tol=MAX(eps*DCMOD(er(i),ei(i)), eps)
     IF(DABS(ei(i))<tol) THEN
       !update real eigenpair approx
-      CALL dgtapprox(pdl, pd, pdu, xr(1,i), xi(1,i), yr(1,i), yi(1,i), &
-           er, ei, ncoeff, iseed, berr(i), tol, i, d, n, td, check)
+      CALL dgtapprox(pdl, pd, pdu, er, ei, ncoeff, iseed, berr(i), tol, &
+                     i, d, n, td, check)
     ELSE
       !update complex eigenpair approx
-      CALL zgtapprox(pdl, pd, pdu, xr(1,i), xi(1,i), yr(1,i), yi(1,i), &
-           er, ei, ncoeff, iseed, berr(i), tol, i, d, n, td, check)
+      CALL zgtapprox(pdl, pd, pdu, er, ei, ncoeff, iseed, berr(i), tol, &
+                     i, d, n, td, check)
     ENDIF
     IF(check) THEN
-      IF(it==itmax) PRINT*, i, er(i), ei(i), berr(i)
+      IF(it==itmax) PRINT*, i, berr(i)
       EXIT
     ENDIF
   ENDDO
@@ -155,7 +63,7 @@ END SUBROUTINE dgtlm
 ! enough, if so compute eigenvector, if not update eigenvalue		*
 ! approximation using Laguerre iterate. 				*
 !************************************************************************
-SUBROUTINE dgtapprox(pdl, pd, pdu, xr, xi, yr, yi, er, ei, ncoeff, iseed, berr, tol, i, d, n, td, check)
+SUBROUTINE dgtapprox(pdl, pd, pdu, er, ei, ncoeff, iseed, berr, tol, i, d, n, td, check)
 IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT) :: check
@@ -166,7 +74,6 @@ REAL(dp), INTENT(INOUT) :: berr
 INTEGER, INTENT(INOUT) :: iseed(*)
 REAL(dp), INTENT(IN) :: ncoeff(*), pdl(n-1,*), pd(n,*), pdu(n-1,*)
 REAL(dp), INTENT(INOUT) :: er(*), ei(*)
-REAL(dp), INTENT(INOUT) :: xr(*), xi(*), yr(*), yi(*)
 !local scalars
 INTEGER :: j, jmax, jmin
 REAL(dp) :: alpha, t
@@ -195,8 +102,6 @@ IF(DABS(t)>one) THEN
   jmin=DGTJMIN(ad,n)
   IF(DABS(ad(jmin))<eps) THEN
     !1st stopping criterion met
-    CALL dgtker1(adl, ad, adu, xr, yr, c, s, jmin, jmax, n)
-    xi(1:n)=zero; yi(1:n)=zero; ei(i)=zero
     berr=DABS(ad(jmin))
     check=.TRUE.
     RETURN
@@ -208,8 +113,6 @@ IF(DABS(t)>one) THEN
   ENDIF
   IF(check) THEN
     !2nd stopping criterion met, or it==itmax
-    CALL dgtker2(adl, ad, adu, xr, yr, c, s, jmin, jmax, n)
-    xi(1:n)=zero; yi(1:n)=zero; ei(i)=zero
     RETURN
   ENDIF
   !update eigenvalue approximation
@@ -217,8 +120,6 @@ IF(DABS(t)>one) THEN
                  tol, i, d, n, td, check)
   IF(check) THEN
     !3rd stopping criterion met
-    CALL dgtker2(adl, ad, adu, xr, yr, c, s, jmin, jmax, n)
-    xi(1:n)=zero; yi(1:n)=zero; ei(i)=zero
     RETURN
   ENDIF
 ELSE
@@ -236,8 +137,6 @@ ELSE
   jmin=DGTJMIN(ad,n)
   IF(DABS(ad(jmin))<eps) THEN
     !1st stopping criterion met
-    CALL dgtker1(adl, ad, adu, xr, yr, c, s, jmin, jmax, n)
-    xi(1:n)=zero; yi(1:n)=zero; ei(i)=zero
     berr=DABS(ad(jmin))
     check=.TRUE.
     RETURN
@@ -249,8 +148,6 @@ ELSE
   ENDIF
   IF(check) THEN
     !2nd stopping criterion met, or it==itmax
-    CALL dgtker2(adl, ad, adu, xr, yr, c, s, jmin, jmax, n)
-    xi(1:n)=zero; yi(1:n)=zero; ei(i)=zero
     RETURN
   ENDIF
   !update eigenvalue approximation
@@ -258,8 +155,6 @@ ELSE
                  tol, i, d, n, td, check)
   IF(check) THEN
     !3rd stopping criterion met
-    CALL dgtker2(adl, ad, adu, xr, yr, c, s, jmin, jmax, n)
-    xi(1:n)=zero; yi(1:n)=zero; ei(i)=zero
     RETURN
   ENDIF
 ENDIF
@@ -610,14 +505,14 @@ END SUBROUTINE dgteval
 ! polynomial of degree d with real general-trdiagonal coeffs of	*
 ! size n. 							*
 !****************************************************************
-SUBROUTINE dgtstart(pdl, pd, pdu, xr, xi, yr, yi, er, ei, ncoeff, d, die, dze, n)
+SUBROUTINE dgtstart(pdl, pd, pdu, er, ei, ncoeff, d, die, dze, n)
 IMPLICIT NONE
 !scalar arguments
 INTEGER, INTENT(IN) :: d, n
 INTEGER, INTENT(INOUT) :: die, dze
 !array arguments
 REAL(dp), INTENT(IN) :: ncoeff(*), pdl(n-1,*), pd(n,*), pdu(n-1,*)
-REAL(dp), INTENT(INOUT) :: er(*), ei(*), xr(n,*), xi(n,*), yr(n,*), yi(n,*)
+REAL(dp), INTENT(INOUT) :: er(*), ei(*)
 !local scalars
 INTEGER :: k
 !local arrays
@@ -638,8 +533,6 @@ die=0
 DO k=1,n
   IF(.NOT.pivot(k)) die=die+1
 ENDDO
-!compute kernal
-IF(die>0) CALL dgtker(adl, ad, adu, xr, xi, yr, yi, c, s, pivot, n, n*d-die)
 !zero eigenspace
 adl=pdl(:,1)/ncoeff(1)
 ad=pd(:,1)/ncoeff(1)
@@ -651,8 +544,6 @@ dze=0
 DO k=1,n
   IF(.NOT.pivot(k)) dze=dze+1
 ENDDO
-!compute kernal
-IF(dze>0) CALL dgtker(adl, ad, adu, xr, xi, yr, yi, c, s, pivot, n, 0)
 !initial estiamtes
 CALL dienr(pdl, pd, pdu, er, ei, c, s, d, n)
 !store zero and inf eigenvalues
@@ -709,96 +600,6 @@ DO i=2,n*d
 ENDDO
 RETURN
 END SUBROUTINE dienr
-
-!************************************************************************
-!				SUBROUTINE DGTKER			*
-!************************************************************************
-! Compute kernal of real tridiagonal matrix in qr form (dgtqr).	Use 	*
-! pivot to detect free variables, then solves for kernel vectors.	*
-!************************************************************************
-SUBROUTINE dgtker(adl, ad, adu, xr, xi, yr, yi, c, s, pivot, n, k)
-IMPLICIT NONE
-!scalar arguments
-INTEGER, INTENT(IN) :: n, k
-!array arguments
-LOGICAL, INTENT(IN) :: pivot(*)
-REAL(dp), INTENT(IN) :: adl(*), ad(*), adu(*), c(*), s(*)
-REAL(dp), INTENT(INOUT) :: xr(n,*), xi(n,*), yr(n,*), yi(n,*)
-!local scalars
-INTEGER :: i, m
-!local arrays
-LOGICAL, DIMENSION(n) :: pivot2
-REAL(dp), DIMENSION(n) :: diag
-!external functions
-REAL(dp) :: dnrm2
-EXTERNAL :: dnrm2
-
-!initialize diagonal for dgtrs
-DO i=1,n
-  IF(DABS(ad(i))<eps) THEN
-    diag(i)=eps
-  ELSE
-    diag(i)=ad(i)
-  ENDIF
-ENDDO
-
-!right eigenvector
-m=k
-DO i=1,n
-  IF(.NOT.pivot(i)) THEN
-    m=m+1
-    IF(i==1) THEN
-      xr(1,m)=one; xr(2:n,m)=zero
-    ELSEIF(i==2) THEN
-      xr(3:n,m)=zero; xr(2,m)=one
-      IF(.NOT.pivot(1)) THEN
-        xr(1,m)=zero
-      ELSE
-        xr(1,m)=-adu(1)/ad(1)
-      ENDIF
-    ELSE
-      xr(:,m)=zero; xr(i,m)=one
-      xr(i-1,m)=-adu(i-1)
-      xr(i-2,m)=-adl(i-2)
-      WHERE(.NOT.pivot(1:i-1)) xr(1:i-1,m)=zero
-      CALL dgtrs('N', diag, adu, adl, xr(1,m), i-1)
-    ENDIF
-    !normalize, set imaginary part to zero
-    xr(:,m)=xr(:,m)/dnrm2(n,xr(:,m),1)
-    xi(:,m)=zero
-  ENDIF
-ENDDO
-!left eigenvector
-CALL diepivot('T', adl, ad, adu, pivot2, n)
-m=k
-DO i=n,1,-1
-  IF(.NOT.pivot2(i)) THEN
-    m=m+1
-    IF(i==n) THEN
-      yr(n,m)=one; yr(1:n-1,m)=zero
-    ELSEIF(i==n-1) THEN
-      yr(1:n-2,m)=zero; yr(n-1,m)=one
-      IF(.NOT.pivot2(n)) THEN
-        yr(n,m)=zero
-      ELSE
-        yr(n,m)=-adu(n-1)/ad(n)
-      ENDIF
-    ELSE
-      yr(:,m)=zero; yr(i,m)=one
-      yr(i+1,m)=-adu(i)
-      yr(i+2,m)=-adl(i)
-      WHERE(.NOT.pivot2(i+1:n)) yr(i+1:n,m)=zero
-      CALL dgtrs('T', diag(i+1), adu(i+1), adl(i+1), yr(i+1,m), n-i)
-    ENDIF
-    !apply Q
-    CALL dgtqm('N', c, s, yr(1,m), n)
-    !normalize, set imaginary part to zero
-    yr(:,m)=yr(:,m)/dnrm2(n,yr(:,m),1)
-    yi(:,m)=zero
-  ENDIF
-ENDDO
-RETURN
-END SUBROUTINE dgtker
 
 !************************************************************************
 !				SUBROUTINE DIEPIVOT			*
@@ -865,106 +666,6 @@ ELSE
 ENDIF
 RETURN
 END SUBROUTINE diepivot
-
-!****************************************************************
-!			SUBROUTINE DGTKER2			*
-!****************************************************************
-! Compute the kernel vector associated with real general-tridiag*
-! matrix of size n. The matrix (adl, ad, adu) comes in qr form	*
-! (dgtqr), with c and s. jmin denotes index returned by DGTJMIN	*
-! jmax denotes index returned by DGTJMAX.			*
-!****************************************************************
-SUBROUTINE dgtker2(adl, ad, adu, x, y, c, s, jmin, jmax, n)
-IMPLICIT NONE
-!scalar arguments
-INTEGER, INTENT(IN) :: jmax, jmin, n
-!array arguments
-REAL(dp), INTENT(IN) :: adl(*), ad(*), adu(*), c(*), s(*)
-REAL(dp), INTENT(INOUt) :: x(*), y(*)
-!local scalars
-INTEGER :: k
-!external procedures
-REAL(dp) :: dnrm2
-EXTERNAL :: dnrm2
-
-!initial estiamtes
-CALL dgtker1(adl, ad, adu, x, y, c, s, jmin, jmax, n)
-!inverse iteration
-DO k=1,3
-  !===right eigenvector===
-  !solve (R^{T}R)x=x
-  CALL dgtrs('T', ad, adu, adl, x, n)
-  CALL dgtrs('N', ad, adu, adl, x, n)
-  !normalize
-  x(1:n)=x(1:n)/dnrm2(n,x,1)
-
-  !===left eigenvector===
-  !apply Q^{T}
-  CALL dgtqm('T', c, s, y, n)
-  !solve (RR^{T})y=y
-  CALL dgtrs('N', ad, adu, adl, y, n)
-  CALL dgtrs('T', ad, adu, adl, y, n)
-  !apply Q
-  CALL dgtqm('N', c, s, y, n)
-  !normalize
-  y(1:n)=y(1:n)/dnrm2(n,y,1)
-ENDDO
-RETURN
-END SUBROUTINE dgtker2
-
-!****************************************************************
-!			SUBROUTINE DGTKER1			*
-!****************************************************************
-! Compute the kernal vector associated with real general-trid	*
-! matrix of size n. The matrix (adl, ad, adu) comex in qr form	*
-! (dgtqr), with c and s. jmin dentoes index returned by DGTJMIN	*
-! jmax denotes index returned by DGTJMAX.			*
-!****************************************************************
-SUBROUTINE dgtker1(adl, ad, adu, x, y, c, s, jmin, jmax, n)
-IMPLICIT NONE
-!scalar arguments
-INTEGER, INTENT(IN) :: jmax, jmin, n
-!array arguments
-REAL(dp), INTENT(IN) :: adl(*), ad(*), adu(*), c(*), s(*)
-REAL(dp), INTENT(INOUt) :: x(*), y(*)
-!external procedures
-REAL(dp) :: dnrm2
-EXTERNAL :: dnrm2
-
-!===right eigenvector===
-IF(jmin==1) THEN
-  x(1)=one; x(2:n)=zero
-ELSEIF(jmin==2) THEN
-  x(1)=-adu(1)/ad(1)
-  x(2)=one; x(3:n)=zero
-ELSE
-  x(1:n)=zero; x(jmin)=one
-  x(jmin-1)=-adu(jmin-1)
-  x(jmin-2)=-adl(jmin-2)
-  !solve system ax=x
-  CALL dgtrs('N', ad, adu, adl, x, jmin-1)
-  x(1:n)=x(1:n)/dnrm2(n,x,1)
-ENDIF
-!===left eigenvector===
-IF(jmax==n) THEN
-  y(1:n)=zero; y(n)=one
-  CALL dgtqm('N', c, s, y, n)
-ELSEIF(jmax==n-1) THEN
-  y(n)=-adu(n-1)/ad(n)
-  y(n-1)=one; y(1:n-2)=zero
-  CALL dgtqm('N', c, s, y, n)
-ELSE
-  y(1:n)=zero; y(jmax)=one
-  y(jmax+1)=-adu(jmax)
-  y(jmax+2)=-adl(jmax)
-  !solve system R^{T}y=y
-  CALL dgtrs('T', ad(jmax+1), adu(jmax+1), adl(jmax+1), y(jmax+1), n-jmax)
-  !apply Q
-  CALL dgtqm('N', c, s, y, n)
-  y(1:n)=y(1:n)/dnrm2(n,y,1)
-ENDIF
-RETURN
-END SUBROUTINE dgtker1
 
 !****************************************************************
 !			SUBROUTINE DGTMV			*
@@ -1149,7 +850,7 @@ DO j=1,n-1
   r=DCMOD(ad(j),adl(j))
   IF(r<eps) THEN
     c(j)=one; s(j)=zero
-    ad(j)=zero
+    ad(j)=zero; adl(j)=zero
   ELSE
     c(j)=ad(j)/r; s(j)=adl(j)/r
     !apply transformation
@@ -1231,7 +932,7 @@ END FUNCTION dgtjmax
 ! enough, if so compute eigenvector, if not update eigenvalue		*
 ! approximation using Laguerre iterate. 				*
 !************************************************************************
-SUBROUTINE zgtapprox(pdl, pd, pdu, xr, xi, yr, yi, er, ei, ncoeff, iseed, berr, tol, i, d, n, td, check)
+SUBROUTINE zgtapprox(pdl, pd, pdu, er, ei, ncoeff, iseed, berr, tol, i, d, n, td, check)
 IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT) :: check
@@ -1242,14 +943,13 @@ REAL(dp), INTENT(INOUT) :: berr
 INTEGER, INTENT(INOUT) :: iseed(*)
 REAL(dp), INTENT(IN) :: ncoeff(*), pdl(n-1,*), pd(n,*), pdu(n-1,*)
 REAL(dp), INTENT(INOUT) :: er(*), ei(*)
-REAL(dp), INTENT(INOUT) :: xr(*), xi(*), yr(*), yi(*)
 !local scalars
 INTEGER :: j, jmax, jmin
 REAL(dp) :: alpha
 COMPLEX(dp) :: t
 !local arrays
 COMPLEX(dp), DIMENSION(n-1) :: adl, adu, c, s, lda
-COMPLEX(dp), DIMENSION(n) :: ad, x, y
+COMPLEX(dp), DIMENSION(n) :: ad
 !intrinsic procedures
 INTRINSIC :: DBLE, DCMPLX, DIMAG, ZABS
 
@@ -1272,9 +972,6 @@ IF(ZABS(t)>one) THEN
   jmin=ZGTJMIN(ad,n)
   IF(ZABS(ad(jmin))<eps) THEN
     !1st stopping criterion met
-    CALL zgtker1(adl, ad, adu, x, y, c, s, jmin, jmax, n)
-    xr(1:n)=DBLE(x); xi(1:n)=DIMAG(x)
-    yr(1:n)=DBLE(y); yi(1:n)=DIMAG(y)
     berr=ZABS(ad(jmin))
     check=.TRUE.
     RETURN
@@ -1286,9 +983,6 @@ IF(ZABS(t)>one) THEN
   ENDIF
   IF(check) THEN
     !2nd stopping criterion met, or it==itmax
-    CALL zgtker2(adl, ad, adu, x, y, c, s, jmin, jmax, n)
-    xr(1:n)=DBLE(x); xi(1:n)=DIMAG(x)
-    yr(1:n)=DBLE(y); yi(1:n)=DIMAG(y)
     RETURN
   ENDIF
   !update eigenvalue approximation
@@ -1296,9 +990,6 @@ IF(ZABS(t)>one) THEN
                  tol, i, d, n, td, check)
   IF(check) THEN
     !3rd stopping criterion met
-    CALL zgtker2(adl, ad, adu, x, y, c, s, jmin, jmax, n)
-    xr(1:n)=DBLE(x); xi(1:n)=DIMAG(x)
-    yr(1:n)=DBLE(y); yi(1:n)=DIMAG(y)
     RETURN
   ENDIF
 ELSE
@@ -1316,9 +1007,6 @@ ELSE
   jmin=ZGTJMIN(ad,n)
   IF(ZABS(ad(jmin))<eps) THEN
     !1st stopping criterion met
-    CALL zgtker1(adl, ad, adu, x, y, c, s, jmin, jmax, n)
-    xr(1:n)=DBLE(x); xi(1:n)=DIMAG(x)
-    yr(1:n)=DBLE(y); yi(1:n)=DIMAG(y)
     berr=ZABS(ad(jmin))
     check=.TRUE.
     RETURN
@@ -1330,9 +1018,6 @@ ELSE
   ENDIF
   IF(check) THEN
     !2nd stopping criterion met, or it==itmax
-    CALL zgtker2(adl, ad, adu, x, y, c, s, jmin, jmax, n)
-    xr(1:n)=DBLE(x); xi(1:n)=DIMAG(x)
-    yr(1:n)=DBLE(y); yi(1:n)=DIMAG(y)
     RETURN
   ENDIF
   !update eigenvalue approximation
@@ -1340,9 +1025,6 @@ ELSE
                  tol, i, d, n, td, check)
   IF(check) THEN
     !3rd stopping criterion met
-    CALL zgtker2(adl, ad, adu, x, y, c, s, jmin, jmax, n)
-    xr(1:n)=DBLE(x); xi(1:n)=DIMAG(x)
-    yr(1:n)=DBLE(y); yi(1:n)=DIMAG(y)
     RETURN
   ENDIF
 ENDIF
@@ -1687,106 +1369,6 @@ RETURN
 END SUBROUTINE zgteval
 
 !****************************************************************
-!			SUBROUTINE ZGTKER2			*
-!****************************************************************
-! Compute the kernel vector associated with complex general-tri *
-! matrix of size n. The matrix (adl, ad, adu) comes in qr form	*
-! (zgtqr), with c and s. jmin denotes index returned by ZGTJMIN	*
-! jmax denotes index returned by ZGTJMAX.			*
-!****************************************************************
-SUBROUTINE zgtker2(adl, ad, adu, x, y, c, s, jmin, jmax, n)
-IMPLICIT NONE
-!scalar arguments
-INTEGER, INTENT(IN) :: jmax, jmin, n
-!array arguments
-COMPLEX(dp), INTENT(IN) :: adl(*), ad(*), adu(*), c(*), s(*)
-COMPLEX(dp), INTENT(INOUT) :: x(*), y(*)
-!local scalars
-INTEGER :: k
-!external procedures
-REAL(dp) :: dznrm2
-EXTERNAL :: dznrm2
-
-!initial estiamtes
-CALL zgtker1(adl, ad, adu, x, y, c, s, jmin, jmax, n)
-!inverse iteration
-DO k=1,3
-  !===right eigenvector===
-  !solve (R^{H}R)x=x
-  CALL zgtrs('C', ad, adu, adl, x, n)
-  CALL zgtrs('N', ad, adu, adl, x, n)
-  !normalize
-  x(1:n)=x(1:n)/dznrm2(n,x,1)
-
-  !===left eigenvector===
-  !apply Q^{H}
-  CALL zgtqm('C', c, s, y, n)
-  !solve (RR^{H})y=y
-  CALL zgtrs('N', ad, adu, adl, y, n)
-  CALL zgtrs('C', ad, adu, adl, y, n)
-  !apply Q
-  CALL zgtqm('N', c, s, y, n)
-  !normalize
-  y(1:n)=y(1:n)/dznrm2(n,y,1)
-ENDDO
-RETURN
-END SUBROUTINE zgtker2
-
-!****************************************************************
-!			SUBROUTINE ZGTKER1			*
-!****************************************************************
-! Compute the kernal vector associated with complex general-tri *
-! matrix of size n. The matrix (adl, ad, adu) comex in qr form	*
-! (zgtqr), with c and s. jmin dentoes index returned by ZGTJMIN	*
-! jmax denotes index returned by ZGTJMAX.			*
-!****************************************************************
-SUBROUTINE zgtker1(adl, ad, adu, x, y, c, s, jmin, jmax, n)
-IMPLICIT NONE
-!scalar arguments
-INTEGER, INTENT(IN) :: jmax, jmin, n
-!array arguments
-COMPLEX(dp), INTENT(IN) :: adl(*), ad(*), adu(*), c(*), s(*)
-COMPLEX(dp), INTENT(INOUT) :: x(*), y(*)
-!external procedures
-REAL(dp) :: dznrm2
-EXTERNAL :: dznrm2
-
-!===right eigenvector===
-IF(jmin==1) THEN
-  x(1)=cone; x(2:n)=czero
-ELSEIF(jmin==2) THEN
-  x(1)=-adu(1)/ad(1)
-  x(2)=cone; x(3:n)=czero
-ELSE
-  x(1:n)=czero; x(jmin)=cone
-  x(jmin-1)=-adu(jmin-1)
-  x(jmin-2)=-adl(jmin-2)
-  !solve system ax=x
-  CALL zgtrs('N', ad, adu, adl, x, jmin-1)
-  x(1:n)=x(1:n)/dznrm2(n,x,1)
-ENDIF
-!===left eigenvector===
-IF(jmax==n) THEN
-  y(1:n-1)=czero; y(n)=cone
-  CALL zgtqm('N', c, s, y, n)
-ELSEIF(jmax==n-1) THEN
-  y(n)=-DCONJG(adu(n-1)/ad(n))
-  y(n-1)=cone; y(1:n-2)=czero
-  CALL zgtqm('N', c, s, y, n)
-ELSE
-  y(1:n)=czero; y(jmax)=cone
-  y(jmax+1)=-DCONJG(adu(jmax))
-  y(jmax+2)=-DCONJG(adl(jmax))
-  !solve system R^{H}y=y
-  CALL zgtrs('C', ad(jmax+1), adu(jmax+1), adl(jmax+1), y(jmax+1), n-jmax)
-  !apply Q
-  CALL zgtqm('N', c, s, y, n)
-  y(1:n)=y(1:n)/dznrm2(n,y,1)
-ENDIF
-RETURN
-END SUBROUTINE zgtker1
-
-!****************************************************************
 !			SUBROUTINE ZGTMV			*
 !****************************************************************
 ! Compute the matrix-vector product y=alpha*a*x+beta*y, where a	*
@@ -1982,7 +1564,7 @@ DO j=1,n-1
   r=DCMOD(ZABS(ad(j)),ZABS(adl(j)))
   IF(r<eps) THEN
     c(j)=cone; s(j)=czero
-    ad(j)=czero
+    ad(j)=czero; adl(j)=czero
   ELSE
     c(j)=ad(j)/r; s(j)=adl(j)/r
     !apply transformation
@@ -2057,4 +1639,4 @@ ENDDO
 RETURN
 END FUNCTION zgtjmax
 
-END MODULE dgtlmpep_subroutines
+END MODULE dgtlmpep_subroutines2

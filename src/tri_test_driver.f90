@@ -1,5 +1,4 @@
 PROGRAM tri_test_driver
-USE environment
 USE dgtlmpep_subroutines
 USE eigensolve
 IMPLICIT NONE
@@ -11,11 +10,10 @@ INTEGER, DIMENSION(4) :: iseed
 REAL(dp), DIMENSION(:), ALLOCATABLE :: er, ei, ncoeff, berr, ferr
 REAL(dp), DIMENSION(:,:), ALLOCATABLE :: pd, pdl, pdu, xr, xi, yr, yi
 !EIGENSOLVE
-INTEGER                              :: n,i,j,m, jmax, jmin
-REAL(dp),DIMENSION(:),ALLOCATABLE    :: a,s,rad,ss,tt,cond
+INTEGER                              :: n,i,j, jmax, jmin
+REAL(dp),DIMENSION(:),ALLOCATABLE    :: a,b,c,s,cond
 COMPLEX(dp),DIMENSION(:),ALLOCATABLE :: z, co, si, ad, adl, adu, x, y
-REAL(dp)                             :: iter,aaa,bbb,theta,h, alpha
-REAL                                 :: ru	
+REAL(dp)                             :: alpha
 !external procedures
 REAL(dp) :: dlangt
 EXTERNAL :: dlangt
@@ -32,7 +30,7 @@ ENDIF
 
 !===DGTLMPEP Accuracy Tests===
 PRINT*, 'DGTLMPEP Accuracy Tests'
-n=100
+n=20
 d=1
 DO j=1,9
   PRINT*, 'test ', j
@@ -278,23 +276,27 @@ PRINT*,
 PRINT*, 'Cost Complexity Tests'
 n=10
 d=1
-DO WHILE(n<400)
+DO WHILE(n<200)
 PRINT*, 'size ', n
 !!! Allocate
-  ALLOCATE(a(n), s(n), z(n))
+  ALLOCATE(a(n), b(n-1), c(n-1), s(n), z(n))
   ALLOCATE(pdl(n-1,d+1), pd(n,d+1), pdu(n-1,d+1))
   ALLOCATE(ncoeff(d+1))
   ALLOCATE(xr(n,n*d), xi(n,n*d), yr(n,n*d), yi(n,n*d))
   ALLOCATE(berr(n*d), cond(n*d), er(n*d), ei(n*d))
 !!! Create random problem
-  DO i=1,n
-    CALL RANDOM_NUMBER(ru)
-    a(i)=0.5-ru
-    CALL RANDOM_NUMBER(ru)
-    s(i)=0.5-ru
-  ENDDO
+  !DO i=1,n
+  !  CALL RANDOM_NUMBER(ru)
+  !  a(i)=0.5-ru
+  !  CALL RANDOM_NUMBER(ru)
+  !  s(i)=0.5-ru
+  !ENDDO
+  CALL dlarnv(2, iseed, n, a)
+  CALL dlarnv(2, iseed, n-1, b)
+  CALL dlarnv(2, iseed, n-1, c)
+  CALL dlarnv(2, iseed, n, s)
 !!! Compute eigenvalues using DGTLMPEP
-  pdl(:,1)=one; pd(:,1)=a; pdu(:,1)=one
+  pdl(:,1)=c; pd(:,1)=a; pdu(:,1)=b
   pdl(:,2)=zero; pd(:,2)=-s; pdu(:,2)=zero
   !coefficient norm
   DO i=1,d+1
@@ -310,12 +312,13 @@ PRINT*, 'size ', n
 !!! Compute eigenvalues using EIGEN
   CALL SYSTEM_CLOCK(count_rate=clock_rate)
   CALL SYSTEM_CLOCK(COUNT=clock_start)
+  CALL normalize(n,a,b,c,s)
   CALL eigen(n,a,s,z,cond)
   CALL SYSTEM_CLOCK(COUNT=clock_stop)
   PRINT*, 'EIGEN time =', DBLE(clock_stop-clock_start)/DBLE(clock_rate)
 
 !!! Deallocate
-  DEALLOCATE(a, s, z)
+  DEALLOCATE(a, b, c, s, z)
   DEALLOCATE(pdl, pd, pdu)
   DEALLOCATE(ncoeff)
   DEALLOCATE(xr, xi, yr, yi)

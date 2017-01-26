@@ -58,13 +58,14 @@
 !---------------------------------------------------------------------------
 
 MODULE eigensolve
+Use util
 IMPLICIT NONE
 
-INTEGER,  PARAMETER    :: dp = SELECTED_REAL_KIND(15, 60)
+!INTEGER,  PARAMETER    :: dp = SELECTED_REAL_KIND(15, 60)
 INTEGER,  PARAMETER    :: qp = SELECTED_REAL_KIND(30, 60)
 
 INTEGER,  PARAMETER    :: maxit = 500,  maxit_int=20
-REAL(DP), PARAMETER    :: eps=EPSILON(1.d0)
+!REAL(DP), PARAMETER    :: eps=EPSILON(1.d0)
 COMPLEX(DP), PARAMETER :: correct=(0,1.d0)*eps*10
 LOGICAL, PARAMETER     :: debug=.false. 
 PRIVATE                :: maxit, maxit_int, correct, eps, debug
@@ -197,8 +198,8 @@ CONTAINS
     INTEGER                    :: itermx
     itermx=0
     CALL reigen(n,a,s,z,cond,maxit,iter,itermx)
-    WRITE(*,*)"average number of iterations per eigenvalue ", iter/n
-    WRITE(*,*)"max number of iterations per eigenvalue     ",itermx
+    !WRITE(*,*)"average number of iterations per eigenvalue ", iter/n
+    !WRITE(*,*)"max number of iterations per eigenvalue     ",itermx
   END SUBROUTINE eigen
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

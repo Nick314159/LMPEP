@@ -45,7 +45,7 @@ WRITE(1, '(A)',  advance='no') 'DGTLMPEP AVG. FERR,   '
 WRITE(1, '(A)',  advance='no') 'EIGEN TIME,      '
 WRITE(1, '(A)',  advance='no') 'EIGEN AVG. FERR,   '
 WRITE(1, *)
-DO j=1,9
+DO j=1,8
   WRITE(1, '(A,I1)',  advance='no')  'test ',j
   WRITE(1, '(A)', advance='no') ', '
 !!! Allocate
@@ -83,36 +83,36 @@ DO j=1,9
       s(i)=20.d0*(-1)**(i/5)
     ENDDO
   ENDIF
-  IF(j==5)THEN
+!  IF(j==5)THEN
 !!! TEST 5. 
-    DO i=1,n
-      a(i)=(-1)**(i/4)*10.d0**(5*(-1)**i)
-      s(i)=(-1)**(i/3)
-    ENDDO
-  ENDIF
-  IF(j==6)THEN
-!!! TEST 6
+!    DO i=1,n
+!      a(i)=(-1)**(i/4)*10.d0**(5*(-1)**i)
+!      s(i)=(-1)**(i/3)
+!    ENDDO
+!  ENDIF
+  IF(j==5)THEN
+!!! TEST 5
     DO i=1,n
       a(i)=2
       s(i)=1
     ENDDO
   ENDIF
-  IF(j==7)THEN
-!!! TEST 7
+  IF(j==6)THEN
+!!! TEST 6
     DO i=1,n
       a(i)=1.d0/i+1.d0/(n-i+1)
       s(i)=(1.d0/i)*(-1)**(i/9)
     ENDDO
   ENDIF
-  IF(j==8)THEN
-!!! TEST 8
+  IF(j==7)THEN
+!!! TEST 7
     DO i=1,n
       a(i)=i*(-1)**(i/13)*(-1)**(i/5)
       s(i)=(-1)**(i/11)*(n-i+1)**2.d0
     ENDDO
   ENDIF
-  IF(j==9)THEN
-!!! * TEST 9 The matrix {{-x,1,0},{1,x,1},{0,1,x}} is such that det =-x^3
+  IF(j==8)THEN
+!!! * TEST 8 The matrix {{-x,1,0},{1,x,1},{0,1,x}} is such that det =-x^3
 !!!  the matrix obtained by concatenating two blocks equal to the previous
 !!!  matrix has nonzero eigenvalues 
     DO i=1,n

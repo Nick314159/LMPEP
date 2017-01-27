@@ -37,7 +37,13 @@ n=20
 d=1
 
 !===DGTLMPEP/EIGEN Accuracy/Time Tests===
-PRINT*, 'DGTLMPEP Accuracy Tests'
+OPEN(UNIT=1,FILE=resultsDir//"outputTri.csv")
+WRITE(1, '(A)',  advance='no') 'Problem,        '
+WRITE(1, '(A)',  advance='no') 'DGTLMPEP TIME,   '
+WRITE(1, '(A)',  advance='no') 'DGTLMPEP MAX FERR,   '
+WRITE(1, '(A)',  advance='no') 'EIGEN TIME,      '
+WRITE(1, '(A)',  advance='no') 'EIGEN MAX FERR,   '
+WRITE(1, *)
 DO j=1,9
   PRINT*, 'test ', j
 !!! Allocate
@@ -126,17 +132,20 @@ DO j=1,9
   CALL SYSTEM_CLOCK(COUNT=clock_start)
   CALL dgtlm(pdl,pd,pdu,xr,xi,yr,yi,er,ei,berr,ncoeff,iseed,d,n)
   CALL SYSTEM_CLOCK(COUNT=clock_stop)
-  PRINT*, 'DGTLMPEP time =', DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+  WRITE(1,'(20G15.4)', advance='no')  DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+  WRITE(1, '(A)', advance='no') ', '
   !error estimates for dgtlmpep
   CALL dposterrcond(pdl,pd,pdu,xr,xi,yr,yi,er,ei,ncoeff,berr,cond,ferr,d,n)
-  PRINT*, 'MAX FERR =', MAXVAL(ferr)
+  WRITE(1,'(20G15.4)', advance='no')  MAXVAL(ferr)
+  WRITE(1, '(A)', advance='no') ', '
 
 !!! Compute eigenvalues using EIGEN
   CALL SYSTEM_CLOCK(count_rate=clock_rate)
   CALL SYSTEM_CLOCK(COUNT=clock_start)
   CALL eigen(n,a,s,z,cond)
   CALL SYSTEM_CLOCK(COUNT=clock_stop)
-  PRINT*, 'EIGEN time =', DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+  WRITE(1,'(20G15.4)', advance='no') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+  WRITE(1, '(A)', advance='no') ', '
   !error estimates for eigen
   pdl(:,1)=one; pd(:,1)=a; pdu(:,1)=one
   pdl(:,2)=zero; pd(:,2)=-s; pdu(:,2)=zero
@@ -184,7 +193,8 @@ DO j=1,9
   ENDDO
   !error estimates for eigen
   CALL dposterrcond(pdl,pd,pdu,xr,xi,yr,yi,er,ei,ncoeff,berr,cond,ferr,d,n)
-  PRINT*, 'MAX FERR =', MAXVAL(ferr)
+  WRITE(1,'(20G15.4)', advance='no') MAXVAL(ferr)
+  WRITE(1, *)
 
 !!! Deallocate
   DEALLOCATE(a, s, z)

@@ -44,3 +44,9 @@ echo 'Running iepoly2...'
 echo ' ------------------------------------------'
 echo 'Running accuracy...'
 ./accuracyTest.sh $FLAGS 
+echo ' ------------------------------------------'
+echo 'Running Tridiagonal...'
+./triTest.sh $FLAGS 
+echo ' ------------------------------------------'
+echo 'Running Sample Tridiagonal...'
+./sampleTest.sh $FLAGS 

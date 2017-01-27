@@ -1,4 +1,5 @@
 PROGRAM tri_test_driver
+USE environment
 USE dgtlmpep_subroutines
 USE eigensolve
 IMPLICIT NONE

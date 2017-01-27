@@ -14,7 +14,6 @@ REAL(dp), DIMENSION(:), ALLOCATABLE :: cond, er, ei, ncoeff, berr, ferr
 REAL(dp), DIMENSION(:,:), ALLOCATABLE :: pd, pdl, pdu, xr, xi, yr, yi
 !QEP3D
 INTEGER :: mode, n, i, neg, detsgn, mxit, iter, itermx, imax, jmax, jmin
-INTEGER, PARAMETER :: ATTEMPTS=200
 REAL(dp) :: alpha
 REAL(dp), ALLOCATABLE, DIMENSION(:) :: a, b, c, au, bu, cu, al, bl, cl, z
 COMPLEX(dp), ALLOCATABLE, DIMENSION(:) :: zcx, co, si, ad, adl, adu, x, y
@@ -126,7 +125,7 @@ DO k=1,7
   WRITE(1, '(A)', advance='no') ', '
   !error estimates for dgtlmpep
   CALL dposterrcond(pdl,pd,pdu,xr,xi,yr,yi,er,ei,ncoeff,berr,cond,ferr,d,n)
-  WRITE(1,'(20G15.4)', advance='no')  MAXVAL(ferr)
+  WRITE(1,'(20G15.4)', advance='no')  SUM(ferr)/(n*d)
   WRITE(1, '(A)', advance='no') ', '
 
 !!! Compute eigenvalues using QEP3D
@@ -154,12 +153,12 @@ DO k=1,7
   WRITE(1, '(A)', advance='no') ', '
   !eigenvectors
   IF(mode<5) zcx=DCMPLX(z)
-  DO i=1,n
+  DO i=1,n*d
     er(i)=DBLE(zcx(i)); ei(i)=DIMAG(zcx(i))
     IF(ZABS(zcx(i))>one) THEN
       zcx(i)=1/zcx(i)
-      CALL zrevgteval(pdl, pd, pdu, zcx(i), adl, ad, adu, 1, n, 0)
-      CALL drevseval(ncoeff, ZABS(zcx(i)), alpha, 1, 0)
+      CALL zrevgteval(pdl, pd, pdu, zcx(i), adl, ad, adu, d, n, 0)
+      CALL drevseval(ncoeff, ZABS(zcx(i)), alpha, d, 0)
       adl=adl/alpha; ad=ad/alpha; adu=adu/alpha
       CALL zgtqr(adl, ad, adu, co, si, n)
       jmax=ZGTJMAX(ad,n)
@@ -174,8 +173,8 @@ DO k=1,7
         yr(1:n,i)=DBLE(y); yi(1:n,i)=DIMAG(y)
       ENDIF
     ELSE
-      CALL zgteval(pdl, pd, pdu, zcx(i), adl, ad, adu, 1, n, 0)
-      CALL dseval(ncoeff, ZABS(zcx(i)), alpha, 1, 0)
+      CALL zgteval(pdl, pd, pdu, zcx(i), adl, ad, adu, d, n, 0)
+      CALL dseval(ncoeff, ZABS(zcx(i)), alpha, d, 0)
       adl=adl/alpha; ad=ad/alpha; adu=adu/alpha
       CALL zgtqr(adl, ad, adu, co, si, n)
       jmax=ZGTJMAX(ad,n)
@@ -193,7 +192,7 @@ DO k=1,7
   ENDDO
   !error estimates for QEP3D
   CALL dposterrcond(pdl,pd,pdu,xr,xi,yr,yi,er,ei,ncoeff,berr,cond,ferr,d,n)
-  WRITE(1,'(20G15.4)', advance='no')  MAXVAL(ferr)
+  WRITE(1,'(20G15.4)', advance='no')  SUM(ferr)/(n*d)
   WRITE(1, *)
 
 !!! Deallocate

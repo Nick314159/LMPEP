@@ -140,7 +140,7 @@ DO i=dze+1,td
            er, ei, ncoeff, iseed, berr(i), tol, i, d, n, td, check)
     ENDIF
     IF(check) THEN
-      IF(it==itmax) PRINT*, i, er(i), ei(i), berr(i)
+      !IF(it==itmax) PRINT*, i, er(i), ei(i), berr(i)
       EXIT
     ENDIF
   ENDDO
@@ -317,12 +317,14 @@ IF(n>2) v0(n-2)=v0(n-2)-adl(n-2)
 v0(n)=one
 CALL dgtrs('N', ad, adu, adl, v0, n-1)
 !compute v1 and b1 for Hyman's method
+v1=zero
 CALL dgtmv('N', bdl, bd, bdu, v0, v1, one, zero, n)
 CALL dgtqm('T', c, s, v1, n)
 b1=v1(n)/q(n)
 v1(1:n-1)=b1*q(1:n-1)-v1(1:n-1); v1(n)=zero
 CALL dgtrs('N', ad, adu, adl, v1, n-1)
 !compute b2 for Hyman's method
+v2=zero
 CALL dgtmv('N', cdl, cd, cdu, v0, v2, one, zero, n)
 CALL dgtmv('N', bdl, bd, bdu, v1, v2, two, one, n)
 CALL dgtqm('T', c, s, v2, n)
@@ -420,12 +422,14 @@ IF(n>2) v0(n-2)=v0(n-2)-adl(n-2)
 v0(n)=one
 CALL dgtrs('N', ad, adu, adl, v0, n-1)
 !compute v1 and b1 for Hyman's method
+v1=zero
 CALL dgtmv('N', bdl, bd, bdu, v0, v1, one, zero, n)
 CALL dgtqm('T', c, s, v1, n)
 b1=v1(n)/q(n)
 v1(1:n-1)=b1*q(1:n-1)-v1(1:n-1); v1(n)=zero
 CALL dgtrs('N', ad, adu, adl, v1, n-1)
 !compute b2 for Hyman's method
+v2=zero
 CALL dgtmv('N', cdl, cd, cdu, v0, v2, one, zero, n)
 CALL dgtmv('N', bdl, bd, bdu, v1, v2, two, one, n)
 CALL dgtqm('T', c, s, v2, n)
@@ -1400,12 +1404,14 @@ IF(n>2) v0(n-2)=v0(n-2)-adl(n-2)
 v0(n)=cone
 CALL zgtrs('N', ad, adu, adl, v0, n-1)
 !compute v1 and b1 for Hyman's method
+v1=czero
 CALL zgtmv('N', bdl, bd, bdu, v0, v1, cone, czero, n)
 CALL zgtqm('C', c, s, v1, n)
 b1=v1(n)/q(n)
 v1(1:n-1)=b1*q(1:n-1)-v1(1:n-1); v1(n)=czero
 CALL zgtrs('N', ad, adu, adl, v1, n-1)
 !compute b2 for Hyman's method
+v2=czero
 CALL zgtmv('N', cdl, cd, cdu, v0, v2, cone, czero, n)
 CALL zgtmv('N', bdl, bd, bdu, v1, v2, ctwo, cone, n)
 CALL zgtqm('C', c, s, v2, n)
@@ -1503,12 +1509,14 @@ IF(n>2) v0(n-2)=v0(n-2)-adl(n-2)
 v0(n)=cone
 CALL zgtrs('N', ad, adu, adl, v0, n-1)
 !compute v1 and b1 for Hyman's method
+v1=czero
 CALL zgtmv('N', bdl, bd, bdu, v0, v1, cone, czero, n)
 CALL zgtqm('C', c, s, v1, n)
 b1=v1(n)/q(n)
 v1(1:n-1)=b1*q(1:n-1)-v1(1:n-1); v1(n)=czero
 CALL zgtrs('N', ad, adu, adl, v1, n-1)
 !compute b2 for Hyman's method
+v2=czero
 CALL zgtmv('N', cdl, cd, cdu, v0, v2, cone, czero, n)
 CALL zgtmv('N', bdl, bd, bdu, v1, v2, ctwo, cone, n)
 CALL zgtqm('C', c, s, v2, n)

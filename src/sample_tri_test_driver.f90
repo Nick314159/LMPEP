@@ -47,8 +47,8 @@ ALLOCATE(timeStats(2))
 tests(1) = 'data_Ex102_100_EAC.dat'
 tests(2) = 'data_Ex102_100_EAR.dat'
 tests(3) = 'data_Ex102_100_LAG.dat'
-tests(4) = 'data_Ex102_200_EAC.dat'
-tests(5) = 'data_Ex102_200_EAR.dat'
+!tests(4) = 'data_Ex102_200_EAC.dat'
+!tests(5) = 'data_Ex102_200_EAR.dat'
 !tests(6) = 'data_Ex102_200_LAG.dat'
 !tests(7) = 'data_Ex102_400_EAC.dat'
 !tests(8) = 'data_Ex102_400_EAR.dat'
@@ -56,11 +56,11 @@ tests(5) = 'data_Ex102_200_EAR.dat'
 !tests(10) = 'data_Ex102_800_EAC.dat'
 !tests(11) = 'data_Ex102_800_EAR.dat'
 !tests(12) = 'data_Ex102_800_LAG.dat'
-tests(6) = 'data_Ex103A_100_EAC.dat'
-tests(7) = 'data_Ex103A_200_EAC.dat'
-tests(8) = 'data_Ex103A_400_EAC.dat'
-tests(9) = 'data_Ex103B_100_EAC.dat'
-tests(10) = 'data_Ex103B_200_EAC.dat'
+tests(4) = 'data_Ex103A_100_EAC.dat'
+tests(5) = 'data_Ex103A_200_EAC.dat'
+!tests(8) = 'data_Ex103A_400_EAC.dat'
+tests(6) = 'data_Ex103B_100_EAC.dat'
+tests(7) = 'data_Ex103B_200_EAC.dat'
 !tests(11) = 'data_Ex103B_400_EAC.dat'
 !tests(12) = 'data_Ex104_EAC.dat'
 
@@ -79,15 +79,15 @@ WRITE(1, '(A)',  advance='no') 'Problem,        '
 WRITE(1, '(A)',  advance='no') 'DGTLMPEP TIME,   '
 WRITE(1, '(A)',  advance='no') 'QEP3D TIME'
 WRITE(1, *)
-d =3 
-DO k=1,10
+d=2
+DO k=1,7
   OPEN(UNIT=2,FILE=sampleProblemsDir//tests(k))
   WRITE(1, '(A)', advance='no') tests(k)
-  !WRITE(*,*) 'Testing '//tests(k)
+  WRITE(*,*) 'Testing '//tests(k)
   WRITE(1, '(A)', advance='no') ','
   READ(2,'(I2)') mode
   READ(2, '(I10)') n
-  ALLOCATE(a(n), b(n), c(n), au(n), al(n), bu(n), bl(n), cu(n), cl(n))
+  ALLOCATE(a(n),b(n),c(n),au(n-1),al(n-1),bu(n-1),bl(n-1),cu(n-1),cl(n-1))
   ALLOCATE(pdl(n-1,d+1), pd(n,d+1), pdu(n-1,d+1))
   ALLOCATE(z(2*n), zcx(2*n))
   IF (mode<5) THEN
@@ -100,10 +100,13 @@ DO k=1,10
  
     pd(:, 3) = a
     pdu(:, 3) = au
+    pdl(:, 3) = au
     pd(:, 2) = b
     pdu(:, 2) = bu
+    pdl(:, 2) = bu
     pd(:, 1) = c
     pdu(:, 1) = cu
+    pdl(:, 1) = cu
     
   ELSE
     READ(2,*) ( a(i), i=1,n)

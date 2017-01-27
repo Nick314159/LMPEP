@@ -13,15 +13,17 @@ INTEGER, DIMENSION(4) :: iseed
 REAL(dp), DIMENSION(:), ALLOCATABLE :: cond, er, ei, ncoeff, berr, ferr
 REAL(dp), DIMENSION(:,:), ALLOCATABLE :: pd, pdl, pdu, xr, xi, yr, yi
 !QEP3D
-INTEGER :: mode, n, i, mxit, iter, itermx, imax, jmax, jmin
+INTEGER :: mode, n, i, neg, detsgn, mxit, iter, itermx, imax, jmax, jmin
+INTEGER, PARAMETER :: ATTEMPTS=200
 REAL(dp) :: alpha
 REAL(dp), ALLOCATABLE, DIMENSION(:) :: a, b, c, au, bu, cu, al, bl, cl, z
 COMPLEX(dp), ALLOCATABLE, DIMENSION(:) :: zcx, co, si, ad, adl, adu, x, y
 !testing
-INTEGER :: clock, clock_rate, clock_start, clock_stop, k
-CHARACTER(LEN=64), DIMENSION(8) :: tests
+INTEGER :: clock, clock_rate, clock_start, clock_stop, k, ppos
+CHARACTER(LEN=64), DIMENSION(7) :: tests
+REAL(dp), DIMENSION(2) :: timeStats
 !intrinsic procedures
-INTRINSIC :: COUNT, DBLE, MOD, SUM, SYSTEM_CLOCK
+INTRINSIC :: COUNT, DBLE, MAXVAL, MOD, SYSTEM_CLOCK
 !external procedures
 REAL(dp) :: dlangt
 EXTERNAL :: dlangt
@@ -42,9 +44,7 @@ tests(3) = 'data_Ex102_100_LAG.dat'
 tests(4) = 'data_Ex103A_100_EAC.dat'
 tests(5) = 'data_Ex103A_200_EAC.dat'
 tests(6) = 'data_Ex103B_100_EAC.dat'
-tests(7) = 'spring.dat'
-tests(8) = 'tridiag1.dat'
-
+tests(7) = 'data_Ex103B_200_EAC.dat'
 
 !degree parameter
 d=2
@@ -53,15 +53,16 @@ d=2
 OPEN(UNIT=1,FILE=resultsDir//"outputSampleTri.csv")
 WRITE(1, '(A)',  advance='no') 'Problem,        '
 WRITE(1, '(A)',  advance='no') 'DGTLMPEP TIME,   '
-WRITE(1, '(A)',  advance='no') 'DGTLMPEP AVG. FERR,   '
+WRITE(1, '(A)',  advance='no') 'DGTLMPEP MAX FERR,   '
 WRITE(1, '(A)',  advance='no') 'QEP3D TIME,      '
-WRITE(1, '(A)',  advance='no') 'QEP3D AVG. FERR,   '
+WRITE(1, '(A)',  advance='no') 'QEP3D MAX FERR,   '
 WRITE(1, *)
-DO k=1,8
+DO k=1,7
 !!! Open file
   OPEN(UNIT=2,FILE=sampleProblemsDir//tests(k))
-  WRITE(1, '(A)', advance='no') tests(k)
-  WRITE(*,*) 'Testing '//tests(k)
+  ppos = scan(trim(tests(k)),".", BACK= .true.) - 1
+  WRITE(1, '(A)', advance='no') tests(k)(1:ppos)
+  WRITE(*,*) 'Testing '//tests(k)(1:ppos)
   WRITE(1, '(A)', advance='no') ','
   READ(2,'(I2)') mode
   READ(2, '(I10)') n
@@ -126,17 +127,17 @@ DO k=1,8
   WRITE(1, '(A)', advance='no') ', '
   !error estimates for dgtlmpep
   CALL dposterrcond(pdl,pd,pdu,xr,xi,yr,yi,er,ei,ncoeff,berr,cond,ferr,d,n)
-  WRITE(1,'(20G15.4)', advance='no')  SUM(ferr)/(n*d)
+  WRITE(1,'(20G15.4)', advance='no')  MAXVAL(ferr)
   WRITE(1, '(A)', advance='no') ', '
 
 !!! Compute eigenvalues using QEP3D
-  z=zero
-  zcx=zero
-  mxit=400 !maximal number of iteration
-  iter=0
-  itermx=500
+  z = zero
+  zcx = zero	
+  mxit = 400 ! maximal number of iteration
+  iter = 0
+  itermx = 500
   CALL SYSTEM_CLOCK(count_rate=clock_rate)
-  CALL SYSTEM_CLOCK(COUNT=clock_start)
+  CALL SYSTEM_CLOCK(COUNT=clock_start)	
   ! Real Ehrlich-Aberth
   IF (mode>=1 .AND. mode<=3) THEN
     CALL reigen(a,au,b,bu,c,cu,n,z,mxit,iter,itermx,imax,mode)
@@ -154,12 +155,12 @@ DO k=1,8
   WRITE(1, '(A)', advance='no') ', '
   !eigenvectors
   IF(mode<5) zcx=DCMPLX(z)
-  DO i=1,n*d
+  DO i=1,n
     er(i)=DBLE(zcx(i)); ei(i)=DIMAG(zcx(i))
     IF(ZABS(zcx(i))>one) THEN
       zcx(i)=1/zcx(i)
-      CALL zrevgteval(pdl, pd, pdu, zcx(i), adl, ad, adu, d, n, 0)
-      CALL drevseval(ncoeff, ZABS(zcx(i)), alpha, d, 0)
+      CALL zrevgteval(pdl, pd, pdu, zcx(i), adl, ad, adu, 1, n, 0)
+      CALL drevseval(ncoeff, ZABS(zcx(i)), alpha, 1, 0)
       adl=adl/alpha; ad=ad/alpha; adu=adu/alpha
       CALL zgtqr(adl, ad, adu, co, si, n)
       jmax=ZGTJMAX(ad,n)
@@ -174,8 +175,8 @@ DO k=1,8
         yr(1:n,i)=DBLE(y); yi(1:n,i)=DIMAG(y)
       ENDIF
     ELSE
-      CALL zgteval(pdl, pd, pdu, zcx(i), adl, ad, adu, d, n, 0)
-      CALL dseval(ncoeff, ZABS(zcx(i)), alpha, d, 0)
+      CALL zgteval(pdl, pd, pdu, zcx(i), adl, ad, adu, 1, n, 0)
+      CALL dseval(ncoeff, ZABS(zcx(i)), alpha, 1, 0)
       adl=adl/alpha; ad=ad/alpha; adu=adu/alpha
       CALL zgtqr(adl, ad, adu, co, si, n)
       jmax=ZGTJMAX(ad,n)
@@ -193,7 +194,7 @@ DO k=1,8
   ENDDO
   !error estimates for QEP3D
   CALL dposterrcond(pdl,pd,pdu,xr,xi,yr,yi,er,ei,ncoeff,berr,cond,ferr,d,n)
-  WRITE(1,'(20G15.4)', advance='no')  SUM(ferr)/(n*d)
+  WRITE(1,'(20G15.4)', advance='no')  MAXVAL(ferr)
   WRITE(1, *)
 
 !!! Deallocate

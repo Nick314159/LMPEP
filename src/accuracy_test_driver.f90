@@ -3,7 +3,7 @@ USE environment
 USE dgelmpep_subroutines
 IMPLICIT NONE
 
-INTEGER ::  clock, clock_rate, clock_start, clock_stop, d, i, n, k, info, iwarn
+INTEGER ::  clock, clock_rate, clock_start, clock_stop, d, i, n, k, info, iwarn, ppos
 REAL(dp) :: norm
 CHARACTER (LEN=64), DIMENSION(27) :: tests
 REAL(dp), DIMENSION(:,:), ALLOCATABLE :: p, xr, xi, yr, yi
@@ -67,8 +67,9 @@ DO k=1,27
   !open problem
   IF(tests(k) .NE. 'SKIP') THEN
     OPEN(UNIT=2,FILE=problemsDir//tests(k))
-    PRINT*, 'Testing '//tests(k)
-    WRITE(1, '(A)', advance='no') tests(k)
+    ppos = scan(trim(tests(k)),".", BACK= .true.) - 1
+    WRITE(1, '(A)', advance='no') tests(k)(1:ppos)
+    WRITE(*,*) 'Testing '//tests(k)(1:ppos)
     WRITE(1, '(A)', advance='no') ', '
     !read in size and degree from file
     READ(2,*) n

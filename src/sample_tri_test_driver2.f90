@@ -53,7 +53,9 @@ d=2
 OPEN(UNIT=1,FILE=resultsDir//"outputSampleTri.csv")
 WRITE(1, '(A)',  advance='no') 'Problem,        '
 WRITE(1, '(A)',  advance='no') 'DGTLMPEP TIME,   '
-WRITE(1, '(A)',  advance='no') 'QEP3D TIME'
+WRITE(1, '(A)',  advance='no') 'DGTLMPEP MAX FERR,   '
+WRITE(1, '(A)',  advance='no') 'QEP3D TIME,      '
+WRITE(1, '(A)',  advance='no') 'QEP3D MAX FERR,   '
 WRITE(1, *)
 DO k=1,7
 !!! Open file
@@ -120,10 +122,12 @@ DO k=1,7
   CALL SYSTEM_CLOCK(COUNT=clock_start)
   CALL dgtlm(pdl, pd, pdu, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n)
   CALL SYSTEM_CLOCK(COUNT=clock_stop)
-  PRINT*, 'DGTLMPEP time =', DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+  WRITE(1,'(20G15.4)', advance='no')  DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+  WRITE(1, '(A)', advance='no') ', '
   !error estimates for dgtlmpep
   CALL dposterrcond(pdl,pd,pdu,xr,xi,yr,yi,er,ei,ncoeff,berr,cond,ferr,d,n)
-  PRINT*, 'MAX FERR =', MAXVAL(ferr)
+  WRITE(1,'(20G15.4)', advance='no')  MAXVAL(ferr)
+  WRITE(1, '(A)', advance='no') ', '
 
 !!! Compute eigenvalues using QEP3D
   z = zero
@@ -146,7 +150,8 @@ DO k=1,7
     CALL reigencx(a,au,al,b,bu,bl,c,cu,cl,n,zcx,mxit,iter,itermx,imax,mode-4)
   ENDIF
   CALL SYSTEM_CLOCK(COUNT=clock_stop)
-  PRINT*, 'QEP3D time =', DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+  WRITE(1,'(20G15.4)', advance='no') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+  WRITE(1, '(A)', advance='no') ', '
   !eigenvectors
   IF(mode<5) zcx=DCMPLX(z)
   DO i=1,n
@@ -188,7 +193,8 @@ DO k=1,7
   ENDDO
   !error estimates for QEP3D
   CALL dposterrcond(pdl,pd,pdu,xr,xi,yr,yi,er,ei,ncoeff,berr,cond,ferr,d,n)
-  PRINT*, 'MAX FERR =', MAXVAL(ferr)
+  WRITE(1,'(20G15.4)', advance='no')  MAXVAL(ferr)
+  WRITE(1, *)
 
 !!! Deallocate
   DEALLOCATE(a,b,c,au,al,bu,bl,cu,cl)

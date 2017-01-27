@@ -13,16 +13,15 @@ INTEGER, DIMENSION(4) :: iseed
 REAL(dp), DIMENSION(:), ALLOCATABLE :: cond, er, ei, ncoeff, berr, ferr
 REAL(dp), DIMENSION(:,:), ALLOCATABLE :: pd, pdl, pdu, xr, xi, yr, yi
 !QEP3D
-INTEGER :: mode, n, i, neg, detsgn, mxit, iter, itermx, imax, jmax, jmin
+INTEGER :: mode, n, i, mxit, iter, itermx, imax, jmax, jmin
 REAL(dp) :: alpha
 REAL(dp), ALLOCATABLE, DIMENSION(:) :: a, b, c, au, bu, cu, al, bl, cl, z
 COMPLEX(dp), ALLOCATABLE, DIMENSION(:) :: zcx, co, si, ad, adl, adu, x, y
 !testing
 INTEGER :: clock, clock_rate, clock_start, clock_stop, k
-CHARACTER(LEN=64), DIMENSION(7) :: tests
-REAL(dp), DIMENSION(2) :: timeStats
+CHARACTER(LEN=64), DIMENSION(8) :: tests
 !intrinsic procedures
-INTRINSIC :: COUNT, DBLE, MAXVAL, MOD, SYSTEM_CLOCK
+INTRINSIC :: COUNT, DBLE, MOD, SUM, SYSTEM_CLOCK
 !external procedures
 REAL(dp) :: dlangt
 EXTERNAL :: dlangt
@@ -43,7 +42,9 @@ tests(3) = 'data_Ex102_100_LAG.dat'
 tests(4) = 'data_Ex103A_100_EAC.dat'
 tests(5) = 'data_Ex103A_200_EAC.dat'
 tests(6) = 'data_Ex103B_100_EAC.dat'
-tests(7) = 'data_Ex103B_200_EAC.dat'
+tests(7) = 'spring.dat'
+tests(8) = 'tridiag1.dat'
+
 
 !degree parameter
 d=2
@@ -52,11 +53,11 @@ d=2
 OPEN(UNIT=1,FILE=resultsDir//"outputSampleTri.csv")
 WRITE(1, '(A)',  advance='no') 'Problem,        '
 WRITE(1, '(A)',  advance='no') 'DGTLMPEP TIME,   '
-WRITE(1, '(A)',  advance='no') 'DGTLMPEP MAX FERR,   '
+WRITE(1, '(A)',  advance='no') 'DGTLMPEP AVG. FERR,   '
 WRITE(1, '(A)',  advance='no') 'QEP3D TIME,      '
-WRITE(1, '(A)',  advance='no') 'QEP3D MAX FERR,   '
+WRITE(1, '(A)',  advance='no') 'QEP3D AVG. FERR,   '
 WRITE(1, *)
-DO k=1,7
+DO k=1,8
 !!! Open file
   OPEN(UNIT=2,FILE=sampleProblemsDir//tests(k))
   WRITE(1, '(A)', advance='no') tests(k)
@@ -129,13 +130,13 @@ DO k=1,7
   WRITE(1, '(A)', advance='no') ', '
 
 !!! Compute eigenvalues using QEP3D
-  z = zero
-  zcx = zero	
-  mxit = 400 ! maximal number of iteration
-  iter = 0
-  itermx = 500
+  z=zero
+  zcx=zero
+  mxit=400 !maximal number of iteration
+  iter=0
+  itermx=500
   CALL SYSTEM_CLOCK(count_rate=clock_rate)
-  CALL SYSTEM_CLOCK(COUNT=clock_start)	
+  CALL SYSTEM_CLOCK(COUNT=clock_start)
   ! Real Ehrlich-Aberth
   IF (mode>=1 .AND. mode<=3) THEN
     CALL reigen(a,au,b,bu,c,cu,n,z,mxit,iter,itermx,imax,mode)

@@ -140,7 +140,6 @@ DO i=dze+1,td
            er, ei, ncoeff, iseed, berr(i), tol, i, d, n, td, check)
     ENDIF
     IF(check) THEN
-      !IF(it==itmax) PRINT*, i, er(i), ei(i), berr(i)
       EXIT
     ENDIF
   ENDDO
@@ -201,11 +200,7 @@ IF(DABS(t)>one) THEN
     check=.TRUE.
     RETURN
   ENDIF
-  CALL dberrapprox(adl, ad, adu, c, s, iseed, berr, n)
-  IF(berr<eps) THEN
-    !2nd stopping criterion met
-    check=.TRUE.
-  ENDIF
+  CALL dberrapprox(adl, ad, adu, c, s, iseed, berr, n, check)
   IF(check) THEN
     !2nd stopping criterion met, or it==itmax
     CALL dgtker2(adl, ad, adu, xr, yr, c, s, jmin, jmax, n)
@@ -242,11 +237,7 @@ ELSE
     check=.TRUE.
     RETURN
   ENDIF
-  CALL dberrapprox(adl, ad, adu, c, s, iseed, berr, n)
-  IF(berr<eps) THEN
-    !2nd stopping criterion met
-    check=.TRUE.
-  ENDIF
+  CALL dberrapprox(adl, ad, adu, c, s, iseed, berr, n, check)
   IF(check) THEN
     !2nd stopping criterion met, or it==itmax
     CALL dgtker2(adl, ad, adu, xr, yr, c, s, jmin, jmax, n)
@@ -487,9 +478,10 @@ END SUBROUTINE dgtlcorr2
 ! smallest eigenvalue of the real matrix a, which is stored in qr	*
 ! form (dgtqr). Result is stored in berr.				*
 !************************************************************************
-SUBROUTINE dberrapprox(adl, ad, adu, c, s, iseed, berr, n)
+SUBROUTINE dberrapprox(adl, ad, adu, c, s, iseed, berr, n, check)
 IMPLICIT NONE
 !scalar arguments
+LOGICAL, INTENT(INOUT) :: check
 INTEGER, INTENT(IN) :: n
 REAL(dp), INTENT(INOUT) :: berr
 !array arguments
@@ -518,6 +510,7 @@ DO k=1,3
   temp(k)=bnorm/xnorm
 ENDDO
 berr=MINVAL(temp)
+IF(berr<eps) check=.TRUE.
 RETURN
 END SUBROUTINE dberrapprox
 
@@ -1283,11 +1276,7 @@ IF(ZABS(t)>one) THEN
     check=.TRUE.
     RETURN
   ENDIF
-  CALL zberrapprox(adl, ad, adu, c, s, iseed, berr, n)
-  IF(berr<eps) THEN
-    !2nd stopping criterion met
-    check=.TRUE.
-  ENDIF
+  CALL zberrapprox(adl, ad, adu, c, s, iseed, berr, n, check)
   IF(check) THEN
     !2nd stopping criterion met, or it==itmax
     CALL zgtker2(adl, ad, adu, x, y, c, s, jmin, jmax, n)
@@ -1327,11 +1316,7 @@ ELSE
     check=.TRUE.
     RETURN
   ENDIF
-  CALL zberrapprox(adl, ad, adu, c, s, iseed, berr, n)
-  IF(berr<eps) THEN
-    !2nd stopping criterion met
-    check=.TRUE.
-  ENDIF
+  CALL zberrapprox(adl, ad, adu, c, s, iseed, berr, n, check)
   IF(check) THEN
     !2nd stopping criterion met, or it==itmax
     CALL zgtker2(adl, ad, adu, x, y, c, s, jmin, jmax, n)
@@ -1574,9 +1559,10 @@ END SUBROUTINE zgtlcorr2
 ! smallest eigenvalue of the complex matrix a, which is stored in qr	*
 ! form (zgtqr). Result is stored in berr.				*
 !************************************************************************
-SUBROUTINE zberrapprox(adl, ad, adu, c, s, iseed, berr, n)
+SUBROUTINE zberrapprox(adl, ad, adu, c, s, iseed, berr, n, check)
 IMPLICIT NONE
 !scalar arguments
+LOGICAL, INTENT(INOUT) :: check
 INTEGER, INTENT(IN) :: n
 REAL(dp), INTENT(INOUT) :: berr
 !array arguments
@@ -1605,6 +1591,7 @@ DO k=1,3
   temp(k)=bnorm/xnorm
 ENDDO
 berr=MINVAL(temp)
+IF(berr<eps) check=.TRUE.
 RETURN
 END SUBROUTINE zberrapprox
 

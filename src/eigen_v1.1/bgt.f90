@@ -68,7 +68,7 @@ INTEGER,  PARAMETER    :: maxit = 500,  maxit_int=20
 !REAL(DP), PARAMETER    :: eps=EPSILON(1.d0)
 COMPLEX(DP), PARAMETER :: correct=(0,1.d0)*eps*10
 LOGICAL, PARAMETER     :: debug=.false. 
-PRIVATE                :: maxit, maxit_int, correct, eps, debug
+!PRIVATE                :: maxit, maxit_int, correct, eps, debug
 ! dp:  kind double precision
 ! maxit: maximum number of Aberth's iterations in the final step
 ! maxit_int: maximum number of Aberth's iters. in the intermediate stages

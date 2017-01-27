@@ -13,12 +13,12 @@ REAL(dp), ALLOCATABLE, DIMENSION(:,:) :: pd, pdl, pdu, xr, xi, yr, yi
 !EIGENSOLVE
 INTEGER                              :: n,i,j, jmax, jmin
 REAL(dp)                             :: alpha
-REAL(dp),ALLOCATABLE,DIMENSION(:)    :: a,b,c,s,cond
+REAL(dp),ALLOCATABLE,DIMENSION(:)    :: a,s,cond
 COMPLEX(dp),ALLOCATABLE,DIMENSION(:) :: z, co, si, ad, adl, adu, x, y
 !testing
 INTEGER :: clock, clock_rate, clock_start, clock_stop
 !intrinsic procedures
-INTRINSIC :: COUNT, DBLE, MAXVAL, MOD, SYSTEM_CLOCK
+INTRINSIC :: COUNT, DBLE, MOD, SUM, SYSTEM_CLOCK
 !external procedures
 REAL(dp) :: dlangt
 EXTERNAL :: dlangt
@@ -41,9 +41,9 @@ d=1
 OPEN(UNIT=1,FILE=resultsDir//"outputTri.csv")
 WRITE(1, '(A)',  advance='no') 'Problem,        '
 WRITE(1, '(A)',  advance='no') 'DGTLMPEP TIME,   '
-WRITE(1, '(A)',  advance='no') 'DGTLMPEP MAX FERR,   '
+WRITE(1, '(A)',  advance='no') 'DGTLMPEP AVG. FERR,   '
 WRITE(1, '(A)',  advance='no') 'EIGEN TIME,      '
-WRITE(1, '(A)',  advance='no') 'EIGEN MAX FERR,   '
+WRITE(1, '(A)',  advance='no') 'EIGEN AVG. FERR,   '
 WRITE(1, *)
 DO j=1,9
   WRITE(1, '(A,I1)',  advance='no')  'test ',j
@@ -138,7 +138,7 @@ DO j=1,9
   WRITE(1, '(A)', advance='no') ', '
   !error estimates for dgtlmpep
   CALL dposterrcond(pdl,pd,pdu,xr,xi,yr,yi,er,ei,ncoeff,berr,cond,ferr,d,n)
-  WRITE(1,'(20G15.4)', advance='no')  MAXVAL(ferr)
+  WRITE(1,'(20G15.4)', advance='no')  SUM(ferr)/(n*d)
   WRITE(1, '(A)', advance='no') ', '
 
 !!! Compute eigenvalues using EIGEN
@@ -156,12 +156,12 @@ DO j=1,9
     ncoeff(i)=dlangt('F',n,pdl(1,i),pd(1,i),pdu(1,i))
   ENDDO
   !eigenvectors
-  DO i=1,n
+  DO i=1,n*d
     er(i)=DBLE(z(i)); ei(i)=DIMAG(z(i))
     IF(ZABS(z(i))>one) THEN
       z(i)=1/z(i)
-      CALL zrevgteval(pdl, pd, pdu, z(i), adl, ad, adu, 1, n, 0)
-      CALL drevseval(ncoeff, ZABS(z(i)), alpha, 1, 0)
+      CALL zrevgteval(pdl, pd, pdu, z(i), adl, ad, adu, d, n, 0)
+      CALL drevseval(ncoeff, ZABS(z(i)), alpha, d, 0)
       adl=adl/alpha; ad=ad/alpha; adu=adu/alpha
       CALL zgtqr(adl, ad, adu, co, si, n)
       jmax=ZGTJMAX(ad,n)
@@ -176,8 +176,8 @@ DO j=1,9
         yr(1:n,i)=DBLE(y); yi(1:n,i)=DIMAG(y)
       ENDIF
     ELSE
-      CALL zgteval(pdl, pd, pdu, z(i), adl, ad, adu, 1, n, 0)
-      CALL dseval(ncoeff, ZABS(z(i)), alpha, 1, 0)
+      CALL zgteval(pdl, pd, pdu, z(i), adl, ad, adu, d, n, 0)
+      CALL dseval(ncoeff, ZABS(z(i)), alpha, d, 0)
       adl=adl/alpha; ad=ad/alpha; adu=adu/alpha
       CALL zgtqr(adl, ad, adu, co, si, n)
       jmax=ZGTJMAX(ad,n)
@@ -195,7 +195,7 @@ DO j=1,9
   ENDDO
   !error estimates for eigen
   CALL dposterrcond(pdl,pd,pdu,xr,xi,yr,yi,er,ei,ncoeff,berr,cond,ferr,d,n)
-  WRITE(1,'(20G15.4)', advance='no') MAXVAL(ferr)
+  WRITE(1,'(20G15.4)', advance='no') SUM(ferr)/(n*d)
   WRITE(1, *)
 
 !!! Deallocate

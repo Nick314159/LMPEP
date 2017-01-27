@@ -45,7 +45,7 @@ WRITE(1, '(A)',  advance='no') 'EIGEN TIME,      '
 WRITE(1, '(A)',  advance='no') 'EIGEN MAX FERR,   '
 WRITE(1, *)
 DO j=1,9
-  PRINT*, 'test ', j
+  WRITE(1, '(A)',  advance='no')  'test ', j
 !!! Allocate
   ALLOCATE(a(n), s(n), z(n))
   ALLOCATE(pdl(n-1,d+1), pd(n,d+1), pdu(n-1,d+1))

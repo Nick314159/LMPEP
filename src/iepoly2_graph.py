@@ -44,7 +44,7 @@ for test in tests :
   fig = plt.figure()
   ax = fig.add_subplot(111)
   ax.plot(npRealEstimate, npImaginaryEstimate, 'wo', label='NP Initial Estimate')
-  ax.plot(nrRealEstimate, nrImaginaryEstimate, 'ko', label='NR Initial Estimate')
+  ax.plot(nrRealEstimate, nrImaginaryEstimate, 'o', color='grey', label='NR Initial Estimate')
   ax.plot(nrReal, nrImaginary, 'k*', label='Eigenvalues')
   plt.subplots_adjust(bottom=.1, left=.16)
   ax.set_ylabel('Imaginary')

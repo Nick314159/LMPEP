@@ -12,7 +12,7 @@ REAL(dp), DIMENSION(:), ALLOCATABLE :: alphar, alphai, beta, s, beVl, beVR
 INTEGER, DIMENSION(4) :: iseed
 REAL(dp), DIMENSION(:,:), ALLOCATABLE :: VL, VR
 !intrinsic procedures
-INTRINSIC :: COUNT, DBLE, MAX, MAXVAL, MOD, NEW_LINE, SYSTEM_CLOCK
+INTRINSIC :: COUNT, DBLE, MAX, MAXVAL, MOD, NEW_LINE, SYSTEM_CLOCK, SIZE
 !external procedures
 REAL(dp) :: dlange, dznrm2
 EXTERNAL :: dlange, dznrm2
@@ -58,8 +58,10 @@ ENDIF
 OPEN(UNIT=1,FILE=resultsDir//"outputAccuracy.csv")
 WRITE(1, '(A)',  advance='no') 'Problem, '
 WRITE(1, '(A)',  advance='no') 'Max LM-BERR, '
+WRITE(1, '(A)',  advance='no') 'Avg LM-BERR, '
 WRITE(1, '(A)',  advance='no') 'Max LM-FERR, '
 WRITE(1, '(A)',  advance='no') 'Max QZ-BERR, '
+WRITE(1, '(A)',  advance='no') 'Avg QZ-BERR, '
 WRITE(1, '(A)',  advance='no') 'Max QZ-FERR '
 WRITE(1, *)
 
@@ -97,6 +99,8 @@ DO k=1,27
   CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr, d, n)
   !Write results
   WRITE(1,'(ES15.2)', advance='no') MAXVAL(berr)
+  WRITE(1, '(A)', advance='no') ', '
+  WRITE(1,'(ES15.2)', advance='no') SUM(berr)/SIZE(berr)
   WRITE(1, '(A)', advance='no') ', '
   WRITE(1,'(ES15.2)', advance='no') MAXVAL(ferr)
   WRITE(1, '(A)', advance='no') ', '
@@ -150,6 +154,8 @@ DO k=1,27
     CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr,d,n)
     !Write results
     WRITE(1,'(ES15.2)', advance='no') MAXVAL(berr)
+    WRITE(1, '(A)', advance='no') ', '
+    WRITE(1,'(ES15.2)', advance='no') SUM(berr)/SIZE(berr)
     WRITE(1, '(A)', advance='no') ', '
     WRITE(1,'(ES15.2)', advance='no') MAXVAL(ferr)
 

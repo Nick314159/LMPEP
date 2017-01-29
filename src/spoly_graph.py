@@ -9,24 +9,37 @@ with open('../results/outputSpoly.csv') as f:
   reader = csv.reader(f)
   headers= next(reader)
   for row in reader:
-    degree1.append(row[0].strip())
-    dsTime.append(row[1].strip())
-    dsRad.append(row[2].strip())
-    pzTime.append(row[3].strip())
-    pzRad.append(row[4].strip())
+    degree1.append(float(row[0].strip()))
+    dsTime.append(float(row[1].strip()))
+    dsRad.append(float(row[2].strip()))
+    pzTime.append(float(row[3].strip()))
+    pzRad.append(float(row[4].strip()))
 
 with open('../results/outputAMVW.csv') as f:
   reader = csv.reader(f)
   headers= next(reader)
   for row in reader:
-    degree2.append(row[0].strip())
-    amTime.append(row[1].strip())
-    amRad.append(row[2].strip())
+    degree2.append(float(row[0].strip()))
+    amTime.append(float(row[1].strip()))
+    amRad.append(float(row[2].strip()))
+
+degree1 = np.array(degree1)
+degree2 = np.array(degree2)
+dsTime = np.array(dsTime)
+pzTime = np.array(pzTime)
+amTime = np.array(amTime)
+dsRad = np.array(dsRad)
+pzRad = np.array(pzRad)
+amRad = np.array(amRad)
+
+avg = (dsTime[0]+pzTime[0]+amTime[0])/3
 
 fig, ax = plt.subplots()
 ax.loglog(degree1, dsTime, 'k-*', label='DSLMPEP')
 ax.loglog(degree1, pzTime, 'k-.', label='PZEROS')
 ax.loglog(degree2, amTime, 'k--', label='AMVW')
+ax.loglog(degree1, avg*(degree1/degree1[1])**2, ':', color='grey',
+label='Quadratic Complexity')
 ax.set_ylabel('Seconds')
 ax.set_xlabel('Degree')
 legend = ax.legend(loc=0, shadow=True)

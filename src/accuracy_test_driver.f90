@@ -3,11 +3,12 @@ USE environment
 USE dgelmpep_subroutines
 IMPLICIT NONE
 
-INTEGER ::  clock, clock_rate, clock_start, clock_stop, d, i, n, k, info, iwarn, ppos
+INTEGER ::  clock, clock_rate, clock_start, clock_stop, d, i, n, k, l, info, iwarn, ppos
 REAL(dp) :: norm
 CHARACTER (LEN=64), DIMENSION(27) :: tests
 REAL(dp), DIMENSION(:,:), ALLOCATABLE :: p, xr, xi, yr, yi
 REAL(dp), DIMENSION(:), ALLOCATABLE :: berr, cond, ferr, er, ei, ncoeff, x
+REAL(dp), DIMENSION(:, :), ALLOCATABLE :: ferrd
 REAL(dp), DIMENSION(:), ALLOCATABLE :: alphar, alphai, beta, s, beVl, beVR
 INTEGER, DIMENSION(4) :: iseed
 REAL(dp), DIMENSION(:,:), ALLOCATABLE :: VL, VR
@@ -59,12 +60,11 @@ OPEN(UNIT=1,FILE=resultsDir//"outputAccuracy.csv")
 WRITE(1, '(A)',  advance='no') 'Problem, '
 WRITE(1, '(A)',  advance='no') 'Max LM-BERR, '
 WRITE(1, '(A)',  advance='no') 'Avg LM-BERR, '
-WRITE(1, '(A)',  advance='no') 'Max LM-FERR, '
 WRITE(1, '(A)',  advance='no') 'Max QZ-BERR, '
 WRITE(1, '(A)',  advance='no') 'Avg QZ-BERR, '
-WRITE(1, '(A)',  advance='no') 'Max QZ-FERR '
 WRITE(1, *)
 
+OPEN(UNIT=3, FILE=resultsDir//"outputAccuracyFerr.txt")
 DO k=1,27
   !open problem
   IF(tests(k) .NE. 'SKIP') THEN
@@ -84,6 +84,9 @@ DO k=1,27
     WRITE(*, '(A, I2)') 'Skipping test ',k
     GOTO 10
   ENDIF
+  IF((k==6) .OR. (k==7) .OR. (k==22) .OR. (k==27)) THEN
+    ALLOCATE(ferrd(n*d,2))
+  ENDIF
   !solve problem using Laguerre's Method
   ALLOCATE(xr(n,n*d), xi(n,n*d), yr(n,n*d), yi(n,n*d))
   ALLOCATE(berr(n*d), er(n*d), ei(n*d), cond(n*d), ferr(n*d))
@@ -102,8 +105,10 @@ DO k=1,27
   WRITE(1, '(A)', advance='no') ', '
   WRITE(1,'(ES15.2)', advance='no') SUM(berr)/SIZE(berr)
   WRITE(1, '(A)', advance='no') ', '
-  WRITE(1,'(ES15.2)', advance='no') MAXVAL(ferr)
-  WRITE(1, '(A)', advance='no') ', '
+  
+  IF((k==6) .OR. (k==7) .OR. (k==22) .OR. (k==27)) THEN
+    ferrd(:,1)=ferr
+  ENDIF
   !solve problem using QUADEIG
   IF(d==2) THEN
     ALLOCATE(alphar(2*n),alphai(2*n),beta(2*n))
@@ -152,13 +157,22 @@ DO k=1,27
       ENDIF
     ENDDO
     CALL dposterrcond(p, xr, xi, yr, yi, er, ei, ncoeff, berr, cond, ferr,d,n)
+    IF((k==6) .OR. (k==7) .OR. (k==22) .OR. (k==27)) THEN
+      ferrd(:,2)=ferr
+    ENDIF
     !Write results
     WRITE(1,'(ES15.2)', advance='no') MAXVAL(berr)
     WRITE(1, '(A)', advance='no') ', '
     WRITE(1,'(ES15.2)', advance='no') SUM(berr)/SIZE(berr)
-    WRITE(1, '(A)', advance='no') ', '
-    WRITE(1,'(ES15.2)', advance='no') MAXVAL(ferr)
 
+    IF((k==6) .OR. (k==7) .OR. (k==22) .OR. (k==27)) THEN
+      DO l=1,n*d
+        WRITE(3,'(ES15.2)', advance='no') ferrd(l,1)
+        WRITE(3, '(A)', advance='no') ', '
+        WRITE(3,'(ES15.2)', advance='no') ferrd(l,2)
+        WRITE(3,*)
+      ENDDO
+    ENDIF
     !Deallocate
     DEALLOCATE(alphar,alphai,beta,VL,VR,s,beVL,beVR)
   ELSE
@@ -166,8 +180,13 @@ DO k=1,27
   ENDIF
   !Deallocate
   DEALLOCATE(p, xr, xi, yr, yi, berr, er, ei, ncoeff, cond, ferr)
+  IF((k==6) .OR. (k==7) .OR. (k==22) .OR. (k==27)) THEN
+    DEALLOCATE(ferrd)
+    WRITE(3,*)
+  ENDIF
   WRITE(1,*)
   10 CONTINUE
 ENDDO
-
+ CLOSE(UNIT=1)
+ CLOSE(UNIT=3)
 END PROGRAM accuracy_driver

@@ -1,9 +1,9 @@
 *.mod
 *.out
-results
 *.csv
 fort.1
 fort.11
 *.pdf
+*.txt
 src/AMVW/doubleshift/tests/spoly
 Papers/

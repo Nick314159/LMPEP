@@ -34,7 +34,7 @@ IF(MOD(iseed(4),2)==0) THEN
 ENDIF
 
 !size and degree parameters
-n=50
+n=25
 d=1
 
 !===DGTLMPEP/EIGEN Accuracy/Time Tests===

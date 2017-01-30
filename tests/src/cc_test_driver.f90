@@ -265,6 +265,8 @@ DO WHILE (d<maxDegree)
   WRITE(1,'(20G15.4)', advance='no') SUM(timeStats(:,3))/m
   WRITE(1, *) 
 END DO
+
+DEALLOCATE(timeStats)
   
  CLOSE(UNIT=1)
 END PROGRAM cc_test_driver

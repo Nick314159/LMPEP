@@ -30,9 +30,9 @@ echo ' ------------------------------------------'
 echo 'Running spoly...'
 ./spolyTest.sh $FLAGS 50 10000 5
 echo ' ------------------------------------------'
-echo 'Running gepoly...'
-./gepolyTest.sh $FLAGS 20 400 50 2000 5
-echo ' ------------------------------------------'
+#echo 'Running gepoly...'
+#./gepolyTest.sh $FLAGS 20 400 50 2000 5
+#echo ' ------------------------------------------'
 echo 'Running cc...'
 ./ccTest.sh $FLAGS 20 400 50 2000 5
 echo ' ------------------------------------------'

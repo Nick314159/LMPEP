@@ -42,7 +42,7 @@ tests(3) = 'data_Ex102_100_LAG.dat'
 tests(4) = 'data_Ex103A_100_EAC.dat'
 tests(5) = 'data_Ex103A_200_EAC.dat'
 tests(6) = 'data_Ex103B_100_EAC.dat'
-tests(7) = 'data_Ex103B_200_EAC.dat'
+tests(7) = 'spring.dat'
 
 !degree parameter
 d=2

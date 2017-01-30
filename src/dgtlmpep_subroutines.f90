@@ -167,7 +167,7 @@ REAL(dp), INTENT(IN) :: ncoeff(*), pdl(n-1,*), pd(n,*), pdu(n-1,*)
 REAL(dp), INTENT(INOUT) :: er(*), ei(*)
 REAL(dp), INTENT(INOUT) :: xr(*), xi(*), yr(*), yi(*)
 !local scalars
-INTEGER :: j, jmax, jmin
+INTEGER :: jmax, jmin
 REAL(dp) :: alpha, t
 !local arrays
 REAL(dp), DIMENSION(n-1) :: adl, adl2, adu, adu2, c, s
@@ -276,7 +276,7 @@ REAL(dp) :: b0, b1, b2
 COMPLEX(dp) :: temp1, temp2, x1, x2, y1, y2
 !local arrays
 REAL(dp), DIMENSION(n-1) :: bdl, bdu, cdl, cdu
-REAL(dp), DIMENSION(n) :: bd, cd, q, v0, v1, v2
+REAL(dp), DIMENSION(n) :: bd, cd, v0, v1, v2
 !intrinsic procedures
 INTRINSIC :: DBLE, DCMPLX, DIMAG, ZABS, ZSQRT
 
@@ -383,7 +383,7 @@ REAL(dp) :: b0, b1, b2
 COMPLEX(dp) :: temp1, temp2, x1, x2, y1, y2
 !local arrays
 REAL(dp), DIMENSION(n-1) :: bdl, bdu, cdl, cdu
-REAL(dp), DIMENSION(n) :: bd, cd, q, v0, v1, v2
+REAL(dp), DIMENSION(n) :: bd, cd, v0, v1, v2
 !intrinsic procedures
 INTRINSIC :: DBLE, DCMPLX, DIMAG, ZABS, ZSQRT
 
@@ -976,7 +976,7 @@ INTEGER, INTENT(IN) :: n
 REAL(dp), INTENT(IN) :: alpha, beta
 !array arguments
 REAL(dp), INTENT(IN) :: adl(*), ad(*), adu(*), x(*)
-REAL(dp), INTENT(INOUT) :: y(n)
+REAL(dp), INTENT(INOUT) :: y(*)
 !local scalars
 INTEGER :: j
 !local arrays
@@ -986,7 +986,7 @@ LOGICAL :: lsame
 EXTERNAL :: lsame
 
 !initiate y, temp
-y=beta*y
+y(1:n)=beta*y(1:n)
 temp=zero
 !compute product
 IF(lsame(trans,'N')) THEN
@@ -1239,7 +1239,7 @@ REAL(dp), INTENT(IN) :: ncoeff(*), pdl(n-1,*), pd(n,*), pdu(n-1,*)
 REAL(dp), INTENT(INOUT) :: er(*), ei(*)
 REAL(dp), INTENT(INOUT) :: xr(*), xi(*), yr(*), yi(*)
 !local scalars
-INTEGER :: j, jmax, jmin
+INTEGER :: jmax, jmin
 REAL(dp) :: alpha
 COMPLEX(dp) :: t
 !local arrays
@@ -1355,7 +1355,7 @@ INTEGER :: k
 COMPLEX(dp) :: b0, b1, b2, temp1, temp2, x1, x2, y1, y2
 !local arrays
 COMPLEX(dp), DIMENSION(n-1) :: bdl, bdu, cdl, cdu
-COMPLEX(dp), DIMENSION(n) :: bd, cd, q, v0, v1, v2
+COMPLEX(dp), DIMENSION(n) :: bd, cd, v0, v1, v2
 !intrinsic procedures
 INTRINSIC :: DBLE, DCMPLX, DIMAG, ZABS, ZSQRT
 
@@ -1463,7 +1463,7 @@ INTEGER :: k
 COMPLEX(dp) :: b0, b1, b2, temp1, temp2, x1, x2, y1, y2
 !local arrays
 COMPLEX(dp), DIMENSION(n-1) :: bdl, bdu, cdl, cdu
-COMPLEX(dp), DIMENSION(n) :: bd, cd, q, v0, v1, v2
+COMPLEX(dp), DIMENSION(n) :: bd, cd, v0, v1, v2
 !intrinsic procedures
 INTRINSIC :: DBLE, DCMPLX, DIMAG, ZABS, ZSQRT
 
@@ -1795,7 +1795,7 @@ INTEGER, INTENT(IN) :: n
 COMPLEX(dp), INTENT(IN) :: alpha, beta
 !array arguments
 COMPLEX(dp), INTENT(IN) :: adl(*), ad(*), adu(*), x(*)
-COMPLEX(dp), INTENT(INOUT) :: y(n)
+COMPLEX(dp), INTENT(INOUT) :: y(*)
 !local scalars
 INTEGER :: j
 !local arrays
@@ -1807,7 +1807,7 @@ LOGICAL :: lsame
 EXTERNAL :: lsame
 
 !initiate y, temp
-y=beta*y
+y(1:n)=beta*y(1:n)
 temp=czero
 !compute product
 IF(lsame(trans,'N')) THEN

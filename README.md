@@ -3,15 +3,14 @@ This package is a collection of Fortran 90 subroutines for accurately
 and efficiently solving matrix eigenvalue problems using a variety of methods specfialized for distinct problem types.
 
 ## Authors ##
-- [Thomas R. Cameron](https://www.maths.ox.ac.uk/people/jared.aurentz), 
-University of Oxford, United Kingdom
+- [Thomas R. Cameron](http://thomasrcameron.com/), 
+The College of Idaho, USA
 - [Nikolas I. Steckley](http://www.nsteckley.com), 
 Washington State University Vancouver, USA
 
 
-## The eiscor guide ##
-To get started with __eiscor__ please checkout the [guide]
-(https://github.com/eiscor/eiscor/blob/master/docs/GUIDE.md).
+## Getting started ##
+To get started with __lmpep__ tests, update the enviroment file in tests/src/environment.f90 with the path to the tests directory.
 
 ## Related articles ##
 This software is based on the following articles:

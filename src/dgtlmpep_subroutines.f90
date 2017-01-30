@@ -301,6 +301,7 @@ ENDIF
 CALL dgtrs('N', adl(1), ad(2), adu(2), v0(1), n-1)
 b0=ad(1)*v0(1)+adu(1)*v0(2)
 !compute v1 and b1 (Hyman's method)
+v1=zero
 CALL dgtmv('N', bdl, bd, bdu, v0, v1, one, zero, n)
 b1=v1(1)
 v1(1:n-1)=-v1(2:n)
@@ -308,6 +309,7 @@ v1(n)=zero
 CALL dgtrs('N', adl(1), ad(2), adu(2), v1(1), n-1)
 b1=b1+ad(1)*v1(1)+adu(1)*v1(2)
 !compute v2 and b2 (Hyman's method)
+v2=zero
 CALL dgtmv('N', cdl, cd, cdu, v0, v2, one, zero, n)
 CALL dgtmv('N', bdl, bd, bdu, v1, v2, two, one, n)
 b2=v2(1)
@@ -406,6 +408,7 @@ ENDIF
 CALL dgtrs('N', adl(1), ad(2), adu(2), v0(1), n-1)
 b0=ad(1)*v0(1)+adu(1)*v0(2)
 !compute v1 and b1 (Hyman's method)
+v1=zero
 CALL dgtmv('N', bdl, bd, bdu, v0, v1, one, zero, n)
 b1=v1(1)
 v1(1:n-1)=-v1(2:n)
@@ -413,6 +416,7 @@ v1(n)=zero
 CALL dgtrs('N', adl(1), ad(2), adu(2), v1(1), n-1)
 b1=b1+ad(1)*v1(1)+adu(1)*v1(2)
 !compute v2 and b2 (Hyman's method)
+v2=zero
 CALL dgtmv('N', cdl, cd, cdu, v0, v2, one, zero, n)
 CALL dgtmv('N', bdl, bd, bdu, v1, v2, two, one, n)
 b2=v2(1)
@@ -1376,6 +1380,7 @@ ENDIF
 CALL zgtrs('N', adl(1), ad(2), adu(2), v0(1), n-1)
 b0=ad(1)*v0(1)+adu(1)*v0(2)
 !compute v1 and b1 (Hyman's method)
+v1=czero
 CALL zgtmv('N', bdl, bd, bdu, v0, v1, cone, czero, n)
 b1=v1(1)
 v1(1:n-1)=-v1(2:n)
@@ -1383,6 +1388,7 @@ v1(n)=czero
 CALL zgtrs('N', adl(1), ad(2), adu(2), v1(1), n-1)
 b1=b1+ad(1)*v1(1)+adu(1)*v1(2)
 !compute v2 and b2 (Hyman's method)
+v2=czero
 CALL zgtmv('N', cdl, cd, cdu, v0, v2, cone, czero, n)
 CALL zgtmv('N', bdl, bd, bdu, v1, v2, ctwo, cone, n)
 b2=v2(1)
@@ -1482,6 +1488,7 @@ ENDIF
 CALL zgtrs('N', adl(1), ad(2), adu(2), v0(1), n-1)
 b0=ad(1)*v0(1)+adu(1)*v0(2)
 !compute v1 and b1 (Hyman's method)
+v1=czero
 CALL zgtmv('N', bdl, bd, bdu, v0, v1, cone, czero, n)
 b1=v1(1)
 v1(1:n-1)=-v1(2:n)
@@ -1489,6 +1496,7 @@ v1(n)=czero
 CALL zgtrs('N', adl(1), ad(2), adu(2), v1(1), n-1)
 b1=b1+ad(1)*v1(1)+adu(1)*v1(2)
 !compute v2 and b2 (Hyman's method)
+v2=czero
 CALL zgtmv('N', cdl, cd, cdu, v0, v2, cone, czero, n)
 CALL zgtmv('N', bdl, bd, bdu, v1, v2, ctwo, cone, n)
 b2=v2(1)

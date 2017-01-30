@@ -34,7 +34,7 @@ IF(MOD(iseed(4),2)==0) THEN
 ENDIF
 
 !size and degree parameters
-n=20
+n=50
 d=1
 
 !===DGTLMPEP/EIGEN Accuracy/Time Tests===
@@ -83,18 +83,11 @@ DO j=1,8
       s(i)=20.d0*(-1)**(i/5)
     ENDDO
   ENDIF
-!  IF(j==5)THEN
-!!! TEST 5. 
-!    DO i=1,n
-!      a(i)=(-1)**(i/4)*10.d0**(5*(-1)**i)
-!      s(i)=(-1)**(i/3)
-!    ENDDO
-!  ENDIF
   IF(j==5)THEN
-!!! TEST 5
+!!! TEST 5. 
     DO i=1,n
-      a(i)=2
-      s(i)=1
+      a(i)=(-1)**(i/4)*10.d0**(5*(-1)**i)
+      s(i)=(-1)**(i/3)
     ENDDO
   ENDIF
   IF(j==6)THEN

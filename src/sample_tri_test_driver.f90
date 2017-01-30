@@ -155,12 +155,12 @@ DO k=1,7
   WRITE(1, '(A)', advance='no') ', '
   !eigenvectors
   IF(mode<5) zcx=DCMPLX(z)
-  DO i=1,n
+  DO i=1,n*d
     er(i)=DBLE(zcx(i)); ei(i)=DIMAG(zcx(i))
     IF(ZABS(zcx(i))>one) THEN
       zcx(i)=1/zcx(i)
-      CALL zrevgteval(pdl, pd, pdu, zcx(i), adl, ad, adu, 1, n, 0)
-      CALL drevseval(ncoeff, ZABS(zcx(i)), alpha, 1, 0)
+      CALL zrevgteval(pdl, pd, pdu, zcx(i), adl, ad, adu, d, n, 0)
+      CALL drevseval(ncoeff, ZABS(zcx(i)), alpha, d, 0)
       adl=adl/alpha; ad=ad/alpha; adu=adu/alpha
       CALL zgtqr(adl, ad, adu, co, si, n)
       jmax=ZGTJMAX(ad,n)
@@ -175,8 +175,8 @@ DO k=1,7
         yr(1:n,i)=DBLE(y); yi(1:n,i)=DIMAG(y)
       ENDIF
     ELSE
-      CALL zgteval(pdl, pd, pdu, zcx(i), adl, ad, adu, 1, n, 0)
-      CALL dseval(ncoeff, ZABS(zcx(i)), alpha, 1, 0)
+      CALL zgteval(pdl, pd, pdu, zcx(i), adl, ad, adu, d, n, 0)
+      CALL dseval(ncoeff, ZABS(zcx(i)), alpha, d, 0)
       adl=adl/alpha; ad=ad/alpha; adu=adu/alpha
       CALL zgtqr(adl, ad, adu, co, si, n)
       jmax=ZGTJMAX(ad,n)

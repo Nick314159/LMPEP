@@ -50,5 +50,8 @@ $py accuracy_table.py
 if $OPEN 
 then 
 cd ..
-xdg-open results/accuracy_*.pdf
+for file in `ls results/accuracy_*`
+do
+xdg-open $file
+done
 fi

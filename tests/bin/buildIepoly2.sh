@@ -14,6 +14,6 @@ do
     esac
     shift
 done
-
-gfortran $FLAGS environment.f90 util.f90 dslmpep_subroutines.f90 dgelmpep_subroutines.f90 ie_test_driver2.f90 -lscalapack-openmpi -llapack -lblas && rm *.mod
+cd ../src
+gfortran $FLAGS environment.f90 util.f90 ../../src/dslmpep_subroutines.f90 ../../src/dgelmpep_subroutines.f90 ie_test_driver2.f90 -lscalapack-openmpi -llapack -lblas && rm *.mod
 mv a.out ../bin/iepoly2.out

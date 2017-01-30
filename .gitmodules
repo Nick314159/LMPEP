@@ -1,6 +1,3 @@
 [submodule "src/quadratic-eigensolver"]
 	path = src/quadratic-eigensolver
 	url = https://github.com/ftisseur/quadratic-eigensolver.git
-[submodule "src/eiscor"]
-	path = src/eiscor
-	url = https://github.com/eiscor/eiscor.git

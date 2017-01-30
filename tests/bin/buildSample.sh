@@ -14,6 +14,6 @@ do
     esac
     shift
 done
-
-gfortran $FLAGS environment.f90 util.f90 dslmpep_subroutines.f90 dgtlmpep_subroutines.f90 QEP3D/qep3deacx.f90 QEP3D/qep3dea.f90 QEP3D/qep3dlag.f90 sample_tri_test_driver.f90 -lscalapack-openmpi -llapack -lblas && rm *.mod
+cd ../src
+gfortran $FLAGS environment.f90 util.f90 ../../src/dslmpep_subroutines.f90 ../../src/dgtlmpep_subroutines.f90 QEP3D/qep3deacx.f90 QEP3D/qep3dea.f90 QEP3D/qep3dlag.f90 sample_tri_test_driver.f90 -lscalapack-openmpi -llapack -lblas && rm *.mod
 mv a.out ../bin/sampleTri.out

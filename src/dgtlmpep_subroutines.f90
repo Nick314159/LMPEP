@@ -170,8 +170,8 @@ REAL(dp), INTENT(INOUT) :: xr(*), xi(*), yr(*), yi(*)
 INTEGER :: j, jmax, jmin
 REAL(dp) :: alpha, t
 !local arrays
-REAL(dp), DIMENSION(n-1) :: adl, adu, c, s, lda
-REAL(dp), DIMENSION(n) :: ad
+REAL(dp), DIMENSION(n-1) :: adl, adl2, adu, adu2, c, s
+REAL(dp), DIMENSION(n) :: ad, ad2
 !intrinsic procedures
 INTRINSIC :: DABS
 
@@ -183,12 +183,9 @@ IF(DABS(t)>one) THEN
   CALL drevgteval(pdl, pd, pdu, t, adl, ad, adu, d, n, 0)
   CALL drevseval(ncoeff, DABS(t), alpha, d, 0)
   adl=adl/alpha; ad=ad/alpha; adu=adu/alpha
-  DO j=1,n-1
-    lda(j)=adl(j)
-    IF(DABS(lda(j))<eps) THEN
-      lda(j)=eps; adl(j)=eps
-    ENDIF
-  ENDDO
+  !matrix for Hyman's method
+  adl2=adl; ad2=ad; adu2=adu
+  WHERE(DABS(adl2)<eps) adl2=eps
   CALL dgtqr(adl, ad, adu, c, s, n)
   jmax=DGTJMAX(ad,n)
   jmin=DGTJMIN(ad,n)
@@ -208,8 +205,8 @@ IF(DABS(t)>one) THEN
     RETURN
   ENDIF
   !update eigenvalue approximation
-  CALL dgtlcorr2(pdl, pd, pdu, adl, ad, adu, er, ei, lda, c, s, alpha, t, &
-                 tol, i, d, n, td, check)
+  CALL dgtlcorr2(pdl, pd, pdu, adl2, ad2, adu2, er, ei, alpha, t, tol, &
+                 i, d, n, td, check)
   IF(check) THEN
     !3rd stopping criterion met
     CALL dgtker2(adl, ad, adu, xr, yr, c, s, jmin, jmax, n)
@@ -220,12 +217,9 @@ ELSE
   CALL dgteval(pdl, pd, pdu, t, adl, ad, adu, d, n, 0)
   CALL dseval(ncoeff, DABS(t), alpha, d, 0)
   adl=adl/alpha; ad=ad/alpha; adu=adu/alpha
-  DO j=1,n-1
-    lda(j)=adl(j)
-    IF(DABS(lda(j))<eps) THEN
-      lda(j)=eps; adl(j)=eps
-    ENDIF
-  ENDDO
+  !matrix for Hyman's method
+  adl2=adl; ad2=ad; adu2=adu
+  WHERE(DABS(adl2)<eps) adl2=eps
   CALL dgtqr(adl, ad, adu, c, s, n)
   jmax=DGTJMAX(ad,n)
   jmin=DGTJMIN(ad,n)
@@ -245,8 +239,8 @@ ELSE
     RETURN
   ENDIF
   !update eigenvalue approximation
-  CALL dgtlcorr1(pdl, pd, pdu, adl, ad, adu, er, ei, lda, c, s, alpha, t, &
-                 tol, i, d, n, td, check)
+  CALL dgtlcorr1(pdl, pd, pdu, adl2, ad2, adu2, er, ei, alpha, t, tol, &
+                 i, d, n, td, check)
   IF(check) THEN
     !3rd stopping criterion met
     CALL dgtker2(adl, ad, adu, xr, yr, c, s, jmin, jmax, n)
@@ -266,14 +260,14 @@ END SUBROUTINE dgtapprox
 ! where |t|<=1. All i-1 previously found eigenvalues are stored in 	*
 ! (er,ei). The eigenvalue approximation is updated in er(i), ei(i).	*
 !************************************************************************
-SUBROUTINE dgtlcorr1(pdl, pd, pdu, adl, ad, adu, er, ei, lda, c, s, alpha, t, tol, i, d, n, td, check)
+SUBROUTINE dgtlcorr1(pdl, pd, pdu, adl, ad, adu, er, ei, alpha, t, tol, i, d, n, td, check)
 IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT) :: check
 INTEGER, INTENT(IN) :: d, i, n, td
 REAL(dp), INTENT(IN) :: alpha, t, tol
 !array arguments
-REAL(dp), INTENT(IN) :: adl(*), ad(*), adu(*), lda(*), c(*), s(*)
+REAL(dp), INTENT(IN) :: adl(*), ad(*), adu(*)
 REAL(dp), INTENT(IN) :: pdl(n-1,*), pd(n,*), pdu(n-1,*)
 REAL(dp), INTENT(INOUT) :: er(*), ei(*)
 !local scalars
@@ -297,36 +291,36 @@ CALL dgteval(pdl, pd, pdu, t, bdl, bd, bdu, d, n, 1)
 CALL dgteval(pdl, pd, pdu, t, cdl, cd, cdu, d, n, 2)
  bdl=bdl/alpha; bd=bd/alpha; bdu=bdu/alpha
  cdl=cdl/alpha; cd=cd/alpha; cdu=cdu/alpha
-!compute 1st column of Q^{T}
-q(1)=one; q(2:n)=zero
-CALL dgtqm('T', c, s, q, n)
-!compute v0 and b0 for Hyman's method
-b0=ad(n)/q(n)
-v0(1:n-1)=b0*q(1:n-1)
-v0(n-1)=v0(n-1)-adu(n-1)
-IF(n>2) v0(n-2)=v0(n-2)-adl(n-2)
+!compute v0 and b0 (Hyman's method)
 v0(n)=one
-CALL dgtrs('N', ad, adu, adl, v0, n-1)
-!compute v1 and b1 for Hyman's method
-v1=zero
+v0(n-1)=-ad(n)
+IF(n>2) THEN
+  v0(n-2)=-adu(n-1)
+  v0(1:n-3)=zero
+ENDIF
+CALL dgtrs('N', adl(1), ad(2), adu(2), v0(1), n-1)
+b0=ad(1)*v0(1)+adu(1)*v0(2)
+!compute v1 and b1 (Hyman's method)
 CALL dgtmv('N', bdl, bd, bdu, v0, v1, one, zero, n)
-CALL dgtqm('T', c, s, v1, n)
-b1=v1(n)/q(n)
-v1(1:n-1)=b1*q(1:n-1)-v1(1:n-1); v1(n)=zero
-CALL dgtrs('N', ad, adu, adl, v1, n-1)
-!compute b2 for Hyman's method
-v2=zero
+b1=v1(1)
+v1(1:n-1)=-v1(2:n)
+v1(n)=zero
+CALL dgtrs('N', adl(1), ad(2), adu(2), v1(1), n-1)
+b1=b1+ad(1)*v1(1)+adu(1)*v1(2)
+!compute v2 and b2 (Hyman's method)
 CALL dgtmv('N', cdl, cd, cdu, v0, v2, one, zero, n)
 CALL dgtmv('N', bdl, bd, bdu, v1, v2, two, one, n)
-CALL dgtqm('T', c, s, v2, n)
-b2=v2(n)/q(n)
-
+b2=v2(1)
+v2(1:n-1)=-v2(2:n)
+v2(n)=zero
+CALL dgtrs('N', adl(1), ad(2), adu(2), v2(1), n-1)
+b2=b2+ad(1)*v2(1)+adu(1)*v2(2)
 !compute temp1 and temp2
 temp1=czero; temp2=czero
 DO k=1,n-1
-  y1=bdl(k)/lda(k)
+  y1=bdl(k)/adl(k)
   temp1=temp1+y1
-  temp2=temp2+cdl(k)/lda(k)-y1**2
+  temp2=temp2+cdl(k)/adl(k)-y1**2
 ENDDO
 temp2=temp2+temp1**2
 !compute y1=p'/p and y2=-(p'/p)'
@@ -371,14 +365,14 @@ END SUBROUTINE dgtlcorr1
 ! where |t|>1. All i-1 previously found eigenvalues are stored in 	*
 ! (er,ei). The eigenvalue approximation is updated in er(i), ei(i).	*
 !************************************************************************
-SUBROUTINE dgtlcorr2(pdl, pd, pdu, adl, ad, adu, er, ei, lda, c, s, alpha, t, tol, i, d, n, td, check)
+SUBROUTINE dgtlcorr2(pdl, pd, pdu, adl, ad, adu, er, ei, alpha, t, tol, i, d, n, td, check)
 IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT) :: check
 INTEGER, INTENT(IN) :: d, i, n, td
 REAL(dp), INTENT(IN) :: alpha, t, tol
 !array arguments
-REAL(dp), INTENT(IN) :: adl(*), ad(*), adu(*), lda(*), c(*), s(*)
+REAL(dp), INTENT(IN) :: adl(*), ad(*), adu(*)
 REAL(dp), INTENT(IN) :: pdl(n-1,*), pd(n,*), pdu(n-1,*)
 REAL(dp), INTENT(INOUT) :: er(*), ei(*)
 !local scalars
@@ -402,36 +396,36 @@ CALL drevgteval(pdl, pd, pdu, t, bdl, bd, bdu, d, n, 1)
 CALL drevgteval(pdl, pd, pdu, t, cdl, cd, cdu, d, n, 2)
  bdl=bdl/alpha; bd=bd/alpha; bdu=bdu/alpha
  cdl=cdl/alpha; cd=cd/alpha; cdu=cdu/alpha
-!compute 1st column of Q^{T}
-q(1)=one; q(2:n)=zero
-CALL dgtqm('T', c, s, q, n)
-!compute v0 and b0 for Hyman's method
-b0=ad(n)/q(n)
-v0(1:n-1)=b0*q(1:n-1)
-v0(n-1)=v0(n-1)-adu(n-1)
-IF(n>2) v0(n-2)=v0(n-2)-adl(n-2)
+!compute v0 and b0 (Hyman's method)
 v0(n)=one
-CALL dgtrs('N', ad, adu, adl, v0, n-1)
-!compute v1 and b1 for Hyman's method
-v1=zero
+v0(n-1)=-ad(n)
+IF(n>2) THEN
+  v0(n-2)=-adu(n-1)
+  v0(1:n-3)=zero
+ENDIF
+CALL dgtrs('N', adl(1), ad(2), adu(2), v0(1), n-1)
+b0=ad(1)*v0(1)+adu(1)*v0(2)
+!compute v1 and b1 (Hyman's method)
 CALL dgtmv('N', bdl, bd, bdu, v0, v1, one, zero, n)
-CALL dgtqm('T', c, s, v1, n)
-b1=v1(n)/q(n)
-v1(1:n-1)=b1*q(1:n-1)-v1(1:n-1); v1(n)=zero
-CALL dgtrs('N', ad, adu, adl, v1, n-1)
-!compute b2 for Hyman's method
-v2=zero
+b1=v1(1)
+v1(1:n-1)=-v1(2:n)
+v1(n)=zero
+CALL dgtrs('N', adl(1), ad(2), adu(2), v1(1), n-1)
+b1=b1+ad(1)*v1(1)+adu(1)*v1(2)
+!compute v2 and b2 (Hyman's method)
 CALL dgtmv('N', cdl, cd, cdu, v0, v2, one, zero, n)
 CALL dgtmv('N', bdl, bd, bdu, v1, v2, two, one, n)
-CALL dgtqm('T', c, s, v2, n)
-b2=v2(n)/q(n)
-
+b2=v2(1)
+v2(1:n-1)=-v2(2:n)
+v2(n)=zero
+CALL dgtrs('N', adl(1), ad(2), adu(2), v2(1), n-1)
+b2=b2+ad(1)*v2(1)+adu(1)*v2(2)
 !compute temp1 and temp2
 temp1=czero; temp2=czero
 DO k=1,n-1
-  y1=bdl(k)/lda(k)
+  y1=bdl(k)/adl(k)
   temp1=temp1+y1
-  temp2=temp2+cdl(k)/lda(k)-y1**2
+  temp2=temp2+cdl(k)/adl(k)-y1**2
 ENDDO
 temp2=temp2+temp1**2
 !compute y1=revp'/revp and y2=revp''/revp
@@ -1245,8 +1239,8 @@ INTEGER :: j, jmax, jmin
 REAL(dp) :: alpha
 COMPLEX(dp) :: t
 !local arrays
-COMPLEX(dp), DIMENSION(n-1) :: adl, adu, c, s, lda
-COMPLEX(dp), DIMENSION(n) :: ad, x, y
+COMPLEX(dp), DIMENSION(n-1) :: adl, adl2, adu, adu2, c, s
+COMPLEX(dp), DIMENSION(n) :: ad, ad2, x, y
 !intrinsic procedures
 INTRINSIC :: DBLE, DCMPLX, DIMAG, ZABS
 
@@ -1258,12 +1252,9 @@ IF(ZABS(t)>one) THEN
   CALL zrevgteval(pdl, pd, pdu, t, adl, ad, adu, d, n, 0)
   CALL drevseval(ncoeff, ZABS(t), alpha, d, 0)
   adl=adl/alpha; ad=ad/alpha; adu=adu/alpha
-  DO j=1,n-1
-    lda(j)=adl(j)
-    IF(ZABS(lda(j))<eps) THEN
-      lda(j)=eps; adl(j)=eps
-    ENDIF
-  ENDDO
+  !matrix for Hyman's method
+  adl2=adl; ad2=ad; adu2=adu
+  WHERE(ZABS(adl2)<eps) adl2=eps
   CALL zgtqr(adl, ad, adu, c, s, n)
   jmax=ZGTJMAX(ad,n)
   jmin=ZGTJMIN(ad,n)
@@ -1285,8 +1276,8 @@ IF(ZABS(t)>one) THEN
     RETURN
   ENDIF
   !update eigenvalue approximation
-  CALL zgtlcorr2(pdl, pd, pdu, adl, ad, adu, er, ei, lda, c, s, alpha, t, &
-                 tol, i, d, n, td, check)
+  CALL zgtlcorr2(pdl, pd, pdu, adl2, ad2, adu2, er, ei, alpha, t, tol, &
+                 i, d, n, td, check)
   IF(check) THEN
     !3rd stopping criterion met
     CALL zgtker2(adl, ad, adu, x, y, c, s, jmin, jmax, n)
@@ -1298,12 +1289,9 @@ ELSE
   CALL zgteval(pdl, pd, pdu, t, adl, ad, adu, d, n, 0)
   CALL dseval(ncoeff, ZABS(t), alpha, d, 0)
   adl=adl/alpha; ad=ad/alpha; adu=adu/alpha
-  DO j=1,n-1
-    lda(j)=adl(j)
-    IF(ZABS(lda(j))<eps) THEN
-      lda(j)=eps; adl(j)=eps
-    ENDIF
-  ENDDO
+  !matrix for Hyman's method
+  adl2=adl; ad2=ad; adu2=adu
+  WHERE(ZABS(adl2)<eps) adl2=eps
   CALL zgtqr(adl, ad, adu, c, s, n)
   jmax=ZGTJMAX(ad,n)
   jmin=ZGTJMIN(ad,n)
@@ -1325,8 +1313,8 @@ ELSE
     RETURN
   ENDIF
   !update eigenvalue approximation
-  CALL zgtlcorr1(pdl, pd, pdu, adl, ad, adu, er, ei, lda, c, s, alpha, t, &
-                 tol, i, d, n, td, check)
+  CALL zgtlcorr1(pdl, pd, pdu, adl2, ad2, adu2, er, ei, alpha, t, tol, &
+                 i, d, n, td, check)
   IF(check) THEN
     !3rd stopping criterion met
     CALL zgtker2(adl, ad, adu, x, y, c, s, jmin, jmax, n)
@@ -1347,7 +1335,7 @@ END SUBROUTINE zgtapprox
 ! where |t|<=1. All i-1 previously found eigenvalues are stored in 	*
 ! (er,ei). The eigenvalue approximation is updated in er(i), ei(i).	*
 !************************************************************************
-SUBROUTINE zgtlcorr1(pdl, pd, pdu, adl, ad, adu, er, ei, lda, c, s, alpha, t, tol, i, d, n, td, check)
+SUBROUTINE zgtlcorr1(pdl, pd, pdu, adl, ad, adu, er, ei, alpha, t, tol, i, d, n, td, check)
 IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT) :: check
@@ -1357,7 +1345,7 @@ COMPLEX(dp), INTENT(INOUT) :: t
 !array arguments
 REAL(dp), INTENT(IN) :: pdl(n-1,*), pd(n,*), pdu(n-1,*)
 REAL(dp), INTENT(INOUT) :: er(*), ei(*)
-COMPLEX(dp), INTENT(IN) :: adl(*), ad(*), adu(*), lda(*), c(*), s(*)
+COMPLEX(dp), INTENT(IN) :: adl(*), ad(*), adu(*)
 !local scalars
 INTEGER :: k
 COMPLEX(dp) :: b0, b1, b2, temp1, temp2, x1, x2, y1, y2
@@ -1378,36 +1366,37 @@ CALL zgteval(pdl, pd, pdu, t, bdl, bd, bdu, d, n, 1)
 CALL zgteval(pdl, pd, pdu, t, cdl, cd, cdu, d, n, 2)
  bdl=bdl/alpha; bd=bd/alpha; bdu=bdu/alpha
  cdl=cdl/alpha; cd=cd/alpha; cdu=cdu/alpha
-!compute 1st column of Q^{T}
-q(1)=cone; q(2:n)=czero
-CALL zgtqm('C', c, s, q, n)
-!compute v0 and b0 for Hyman's method
-b0=ad(n)/q(n)
-v0(1:n-1)=b0*q(1:n-1)
-v0(n-1)=v0(n-1)-adu(n-1)
-IF(n>2) v0(n-2)=v0(n-2)-adl(n-2)
+!compute v0 and b0 (Hyman's method)
 v0(n)=cone
-CALL zgtrs('N', ad, adu, adl, v0, n-1)
-!compute v1 and b1 for Hyman's method
-v1=czero
+v0(n-1)=-ad(n)
+IF(n>2) THEN
+  v0(n-2)=-adu(n-1)
+  v0(1:n-3)=czero
+ENDIF
+CALL zgtrs('N', adl(1), ad(2), adu(2), v0(1), n-1)
+b0=ad(1)*v0(1)+adu(1)*v0(2)
+!compute v1 and b1 (Hyman's method)
 CALL zgtmv('N', bdl, bd, bdu, v0, v1, cone, czero, n)
-CALL zgtqm('C', c, s, v1, n)
-b1=v1(n)/q(n)
-v1(1:n-1)=b1*q(1:n-1)-v1(1:n-1); v1(n)=czero
-CALL zgtrs('N', ad, adu, adl, v1, n-1)
-!compute b2 for Hyman's method
-v2=czero
+b1=v1(1)
+v1(1:n-1)=-v1(2:n)
+v1(n)=czero
+CALL zgtrs('N', adl(1), ad(2), adu(2), v1(1), n-1)
+b1=b1+ad(1)*v1(1)+adu(1)*v1(2)
+!compute v2 and b2 (Hyman's method)
 CALL zgtmv('N', cdl, cd, cdu, v0, v2, cone, czero, n)
 CALL zgtmv('N', bdl, bd, bdu, v1, v2, ctwo, cone, n)
-CALL zgtqm('C', c, s, v2, n)
-b2=v2(n)/q(n)
+b2=v2(1)
+v2(1:n-1)=-v2(2:n)
+v2(n)=zero
+CALL zgtrs('N', adl(1), ad(2), adu(2), v2(1), n-1)
+b2=b2+ad(1)*v2(1)+adu(1)*v2(2)
 
 !compute temp1 and temp2
 temp1=czero; temp2=czero
 DO k=1,n-1
-  y1=bdl(k)/lda(k)
+  y1=bdl(k)/adl(k)
   temp1=temp1+y1
-  temp2=temp2+cdl(k)/lda(k)-y1**2
+  temp2=temp2+cdl(k)/adl(k)-y1**2
 ENDDO
 temp2=temp2+temp1**2
 !compute y1=p'/p and y2=-(p'/p)'
@@ -1452,7 +1441,7 @@ END SUBROUTINE zgtlcorr1
 ! where |t|>1. All i-1 previously found eigenvalues are stored in 	*
 ! (er,ei). The eigenvalue approximation is updated in er(i), ei(i).	*
 !************************************************************************
-SUBROUTINE zgtlcorr2(pdl, pd, pdu, adl, ad, adu, er, ei, lda, c, s, alpha, t, tol, i, d, n, td, check)
+SUBROUTINE zgtlcorr2(pdl, pd, pdu, adl, ad, adu, er, ei, alpha, t, tol, i, d, n, td, check)
 IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT) :: check
@@ -1462,7 +1451,7 @@ COMPLEX(dp), INTENT(INOUT) :: t
 !array arguments
 REAL(dp), INTENT(IN) :: pdl(n-1,*), pd(n,*), pdu(n-1,*)
 REAL(dp), INTENT(INOUT) :: er(*), ei(*)
-COMPLEX(dp), INTENT(IN) :: adl(*), ad(*), adu(*), lda(*), c(*), s(*)
+COMPLEX(dp), INTENT(IN) :: adl(*), ad(*), adu(*)
 !local scalars
 INTEGER :: k
 COMPLEX(dp) :: b0, b1, b2, temp1, temp2, x1, x2, y1, y2
@@ -1483,36 +1472,37 @@ CALL zrevgteval(pdl, pd, pdu, t, bdl, bd, bdu, d, n, 1)
 CALL zrevgteval(pdl, pd, pdu, t, cdl, cd, cdu, d, n, 2)
  bdl=bdl/alpha; bd=bd/alpha; bdu=bdu/alpha
  cdl=cdl/alpha; cd=cd/alpha; cdu=cdu/alpha
-!compute 1st column of Q^{T}
-q(1)=cone; q(2:n)=czero
-CALL zgtqm('C', c, s, q, n)
-!compute v0 and b0 for Hyman's method
-b0=ad(n)/q(n)
-v0(1:n-1)=b0*q(1:n-1)
-v0(n-1)=v0(n-1)-adu(n-1)
-IF(n>2) v0(n-2)=v0(n-2)-adl(n-2)
+!compute v0 and b0 (Hyman's method)
 v0(n)=cone
-CALL zgtrs('N', ad, adu, adl, v0, n-1)
-!compute v1 and b1 for Hyman's method
-v1=czero
+v0(n-1)=-ad(n)
+IF(n>2) THEN
+  v0(n-2)=-adu(n-1)
+  v0(1:n-3)=czero
+ENDIF
+CALL zgtrs('N', adl(1), ad(2), adu(2), v0(1), n-1)
+b0=ad(1)*v0(1)+adu(1)*v0(2)
+!compute v1 and b1 (Hyman's method)
 CALL zgtmv('N', bdl, bd, bdu, v0, v1, cone, czero, n)
-CALL zgtqm('C', c, s, v1, n)
-b1=v1(n)/q(n)
-v1(1:n-1)=b1*q(1:n-1)-v1(1:n-1); v1(n)=czero
-CALL zgtrs('N', ad, adu, adl, v1, n-1)
-!compute b2 for Hyman's method
-v2=czero
+b1=v1(1)
+v1(1:n-1)=-v1(2:n)
+v1(n)=czero
+CALL zgtrs('N', adl(1), ad(2), adu(2), v1(1), n-1)
+b1=b1+ad(1)*v1(1)+adu(1)*v1(2)
+!compute v2 and b2 (Hyman's method)
 CALL zgtmv('N', cdl, cd, cdu, v0, v2, cone, czero, n)
 CALL zgtmv('N', bdl, bd, bdu, v1, v2, ctwo, cone, n)
-CALL zgtqm('C', c, s, v2, n)
-b2=v2(n)/q(n)
+b2=v2(1)
+v2(1:n-1)=-v2(2:n)
+v2(n)=zero
+CALL zgtrs('N', adl(1), ad(2), adu(2), v2(1), n-1)
+b2=b2+ad(1)*v2(1)+adu(1)*v2(2)
 
 !compute temp1 and temp2
 temp1=czero; temp2=czero
 DO k=1,n-1
-  y1=bdl(k)/lda(k)
+  y1=bdl(k)/adl(k)
   temp1=temp1+y1
-  temp2=temp2+cdl(k)/lda(k)-y1**2
+  temp2=temp2+cdl(k)/adl(k)-y1**2
 ENDDO
 temp2=temp2+temp1**2
 !compute y1=revp'/revp and y2=revp''/revp

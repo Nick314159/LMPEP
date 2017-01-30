@@ -27,7 +27,7 @@ do
 done
 
 #Build and setup
-cd src
+cd bin
 ./buildGepoly.sh $FLAGS
 sleep 3
 cd ..
@@ -44,7 +44,7 @@ fi
 echo "Finished Gepoly test at `date`" 
 
 #Generate graphs
-cd src
+cd python
 py=`which python`
 $py gepoly_graph.py
 

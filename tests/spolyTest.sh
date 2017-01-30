@@ -32,10 +32,10 @@ resultsDir=`pwd`
 cd ..
 
 #Build
-cd src
+cd bin
 ./buildSpoly.sh $FLAGS
 sleep 3
-cd AMVW/doubleshift
+cd ../src/AMVW/doubleshift
 ./configure.sh $resultsDir
 make > /dev/null 2>&1
 
@@ -61,7 +61,7 @@ fi
 echo "Finished Spoly test at `date`" 
 
 #Generate graphs
-cd src
+cd python
 py=`which python`
 $py spoly_graph.py
 

@@ -32,7 +32,7 @@ resultsDir=`pwd`
 cd ..
 
 #Build
-cd src
+cd bin
 ./buildTri.sh $FLAGS
 sleep 3
 cd ..
@@ -48,7 +48,7 @@ fi
 echo "Finished Tridiagonal test at `date`" 
 
 #Generate graphs
-cd src
+cd python
 py=`which python`
 $py tri_table.py
 

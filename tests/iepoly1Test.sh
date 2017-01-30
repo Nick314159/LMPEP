@@ -27,7 +27,7 @@ do
 done
 
 #Build
-cd src
+cd bin
 ./buildIepoly1.sh $FLAGS
 sleep 3
 cd ..
@@ -42,7 +42,7 @@ fi
 echo "Finished Iepoly1 test at `date`" 
 
 #Generate graphs
-cd src
+cd python
 py=`which python`
 $py iepoly1_graph.py
 

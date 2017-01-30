@@ -27,7 +27,7 @@ do
 done
 
 #Build and setup
-cd src
+cd bin
 ./buildComplexity.sh $FLAGS
 sleep 3
 cd ..
@@ -45,7 +45,7 @@ fi
 echo "Finished Complexity test at `date`" 
 
 #Generate graphs
-cd src
+cd python
 py=`which python`
 $py cc_graph.py
 

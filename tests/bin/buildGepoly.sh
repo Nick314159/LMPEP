@@ -15,5 +15,5 @@ do
     shift
 done
 cd ../src
-gfortran $FLAGS environment.f90 util.f90 ../../src/dslmpep_subroutines.f90 ../../src/dgelmpep_subroutines.f90 ../../src/dgeeam_subroutines.f90 ge_test_driver.f90 -lscalapack-openmpi -llapack -lblas && rm *.mod
+gfortran $FLAGS ../environment.f90 util.f90 dslmpep_subroutines_test.f90 dgelmpep_subroutines_test.f90 dgeeam_subroutines_test.f90 ge_test_driver.f90 -lscalapack-openmpi -llapack -lblas && rm *.mod
 mv a.out ../bin/gepoly.out

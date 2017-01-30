@@ -15,5 +15,5 @@ do
     shift
 done
 cd ../src
-gfortran $FLAGS environment.f90 util.f90 ../../src/dslmpep_subroutines.f90 ../../src/dgtlmpep_subroutines.f90 eigen_v1.1/bgt.f90 tri_test_driver.f90 -lscalapack-openmpi -llapack -lblas && rm *.mod
+gfortran $FLAGS ../environment.f90 util.f90 dslmpep_subroutines_test.f90 dgtlmpep_subroutines_test.f90 eigen_v1.1/bgt.f90 tri_test_driver.f90 -lscalapack-openmpi -llapack -lblas && rm *.mod
 mv a.out ../bin/tri.out

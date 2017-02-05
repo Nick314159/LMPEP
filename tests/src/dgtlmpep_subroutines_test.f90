@@ -377,7 +377,7 @@ REAL(dp), INTENT(IN) :: pdl(n-1,*), pd(n,*), pdu(n-1,*)
 REAL(dp), INTENT(INOUT) :: er(*), ei(*)
 !local scalars
 INTEGER :: k
-REAL(dp) :: b0, b1, b2
+REAL(dp) :: b0, b1, b2, norm
 COMPLEX(dp) :: temp1, temp2, x1, x2, y1, y2
 !local arrays
 REAL(dp), DIMENSION(n-1) :: bdl, bdu, cdl, cdu

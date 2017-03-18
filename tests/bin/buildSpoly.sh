@@ -15,5 +15,5 @@ do
     shift
 done
 cd ../src
-gfortran $FLAGS ../environment.f90 util.f90 dslmpep_subroutines_test.f90 pzeros.f90 spoly_test_driver.f90 -lscalapack-openmpi -llapack -lblas && rm *.mod
+gfortran $FLAGS ../environment.f90 util.f90 dslmpep_subroutines_test.f90 pzeros.f90 spoly_test_driver.f90 -lscalapack -llapack -lblas && rm *.mod
 mv a.out ../bin/spoly.out

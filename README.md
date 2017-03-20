@@ -6,7 +6,7 @@ and efficiently solving matrix eigenvalue problems using a variety of methods sp
 - [Thomas R. Cameron](http://thomasrcameron.com/), 
 The College of Idaho, USA
 - [Nikolas I. Steckley](http://www.nsteckley.com), 
-Software Development Engineer, DiscoverOrg LLC.
+Steckley & Associates
 
 
 ## Getting started ##

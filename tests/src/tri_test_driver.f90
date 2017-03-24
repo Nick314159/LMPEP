@@ -127,11 +127,11 @@ DO j=1,8
   CALL SYSTEM_CLOCK(COUNT=clock_start)
   CALL dgtlm(pdl,pd,pdu,xr,xi,yr,yi,er,ei,berr,ncoeff,iseed,d,n)
   CALL SYSTEM_CLOCK(COUNT=clock_stop)
-  WRITE(1,'(20G15.4)', advance='no')  DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+  WRITE(1,'(ES15.2)', advance='no')  DBLE(clock_stop-clock_start)/DBLE(clock_rate)
   WRITE(1, '(A)', advance='no') ', '
   !error estimates for dgtlmpep
   CALL dposterrcond(pdl,pd,pdu,xr,xi,yr,yi,er,ei,ncoeff,berr,cond,ferr,d,n)
-  WRITE(1,'(20G15.4)', advance='no')  SUM(ferr)/(n*d)
+  WRITE(1,'(ES15.2)', advance='no')  SUM(ferr)/(n*d)
   WRITE(1, '(A)', advance='no') ', '
 
 !!! Compute eigenvalues using EIGEN
@@ -139,7 +139,7 @@ DO j=1,8
   CALL SYSTEM_CLOCK(COUNT=clock_start)
   CALL eigen(n,a,s,z,cond)
   CALL SYSTEM_CLOCK(COUNT=clock_stop)
-  WRITE(1,'(20G15.4)', advance='no') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+  WRITE(1,'(ES15.2)', advance='no') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
   WRITE(1, '(A)', advance='no') ', '
   !error estimates for eigen
   pdl(:,1)=one; pd(:,1)=a; pdu(:,1)=one
@@ -188,7 +188,7 @@ DO j=1,8
   ENDDO
   !error estimates for eigen
   CALL dposterrcond(pdl,pd,pdu,xr,xi,yr,yi,er,ei,ncoeff,berr,cond,ferr,d,n)
-  WRITE(1,'(20G15.4)', advance='no') SUM(ferr)/(n*d)
+  WRITE(1,'(ES15.2)', advance='no') SUM(ferr)/(n*d)
   WRITE(1, *)
 
 !!! Deallocate

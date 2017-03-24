@@ -121,11 +121,11 @@ DO k=1,7
   CALL SYSTEM_CLOCK(COUNT=clock_start)
   CALL dgtlm(pdl, pd, pdu, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n)
   CALL SYSTEM_CLOCK(COUNT=clock_stop)
-  WRITE(1,'(20G15.4)', advance='no')  DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+  WRITE(1,'(ES15.2)', advance='no')  DBLE(clock_stop-clock_start)/DBLE(clock_rate)
   WRITE(1, '(A)', advance='no') ', '
   !error estimates for dgtlmpep
   CALL dposterrcond(pdl,pd,pdu,xr,xi,yr,yi,er,ei,ncoeff,berr,cond,ferr,d,n)
-  WRITE(1,'(20G15.4)', advance='no')  SUM(ferr)/(n*d)
+  WRITE(1,'(ES15.2)', advance='no')  SUM(ferr)/(n*d)
   WRITE(1, '(A)', advance='no') ', '
 
 !!! Compute eigenvalues using QEP3D
@@ -149,7 +149,7 @@ DO k=1,7
     CALL reigencx(a,au,al,b,bu,bl,c,cu,cl,n,zcx,mxit,iter,itermx,imax,mode-4)
   ENDIF
   CALL SYSTEM_CLOCK(COUNT=clock_stop)
-  WRITE(1,'(20G15.4)', advance='no') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+  WRITE(1,'(ES15.2)', advance='no') DBLE(clock_stop-clock_start)/DBLE(clock_rate)
   WRITE(1, '(A)', advance='no') ', '
   !eigenvectors
   IF(mode<5) zcx=DCMPLX(z)
@@ -192,7 +192,7 @@ DO k=1,7
   ENDDO
   !error estimates for QEP3D
   CALL dposterrcond(pdl,pd,pdu,xr,xi,yr,yi,er,ei,ncoeff,berr,cond,ferr,d,n)
-  WRITE(1,'(20G15.4)', advance='no')  SUM(ferr)/(n*d)
+  WRITE(1,'(ES15.2)', advance='no')  SUM(ferr)/(n*d)
   WRITE(1, *)
 
 !!! Deallocate

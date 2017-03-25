@@ -10,13 +10,12 @@ Steckley & Associates
 
 
 ## Getting started ##
-To get started with __lmpep__ tests, update the enviroment file in tests/src/environment.f90 with the path to the tests directory.
+__LMPEP__ source code can be found in the _src_ directory. Numerical tests can be found in the _tests_ directory; please update the enviroment file in _tests/src/environment.f90_ with the path to the _tests_ directory to run them.
 
 ## Related articles ##
 This software is based on the following articles:
 
- 1. J. L. Aurentz, T. Mach, L. Robol, R. Vandebril, and D. S. Watkins, Fast and backward stable computation of the eigenvalues of matrix polynomials, Preprint on arXiv.org math,
-(2016).
+ 1. J. L. Aurentz, T. Mach, L. Robol, R. Vandebril, and D. S. Watkins, Fast and backward stable computation of the eigenvalues of matrix polynomials, Preprint on arXiv.org math, (2016).
  2. J. L. Aurentz, T. Mach, R. Vandebril, and D. S. Watkins, Fast and backward stable computation of roots of polynomials, SIAM J. Matrix Anal. Appl., 36 (2015), pp. 942–973.
  3. D. A. Bini, Numerical computation of polynomial zeros by means of Aberths method, Numer. Algorithms, 13 (1996), pp. 179–200.
  4. D. A. Bini, L. Gemignani, and F. Tisseur, The Ehrlich-Aberth method for the nonsymmetric tridiagonal eigenvalue problem, SIAM J. Matrix Anal. Appl., 27 (2005), pp. 153–175.

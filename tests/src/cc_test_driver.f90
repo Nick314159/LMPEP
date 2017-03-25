@@ -52,7 +52,7 @@ WRITE(1, *)
 
 d = 2
 n = startingSize
-DO WHILE (n<maxSize)
+DO WHILE (n<=maxSize)
   WRITE(1, '(i6)', advance='no') d
   WRITE(1, '(A)', advance='no') ', '
   WRITE(1, '(i6)', advance='no') n
@@ -61,23 +61,24 @@ DO WHILE (n<maxSize)
   DO j=1,m
     !create general problem
     ALLOCATE(work(n+n*(d+1)), x(n), p(n,n*(d+1)), ncoeff(d+1))
-    DO i=1,d+1
-      CALL dlarnv(2, iseed, n, x)
-      CALL dlagge(n, n, n-1, n-1, x, p(1,n*(i-1)+1), n, iseed, work, info)
-    ENDDO
-    DO i=1,d+1
-      ncoeff(i)=dlange('F',n,n,p(1,n*(i-1)+1),n,x)
-    ENDDO
+    !DO i=1,d+1
+    !  CALL dlarnv(2, iseed, n, x)
+    !  CALL dlagge(n, n, n-1, n-1, x, p(1,n*(i-1)+1), n, iseed, work, info)
+    !ENDDO
+    !DO i=1,d+1
+    !  ncoeff(i)=dlange('F',n,n,p(1,n*(i-1)+1),n,x)
+    !ENDDO
     
     !solve problem using General code
     ALLOCATE(xr(n,n*d), xi(n,n*d), yr(n,n*d), yi(n,n*d))
     ALLOCATE(berr(n*d), er(n*d), ei(n*d), cond(n*d), ferr(n*d))
-    CALL SYSTEM_CLOCK(count_rate=clock_rate)
-    CALL SYSTEM_CLOCK(COUNT=clock_start)
-    CALL dgelm(p, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n, 'NR')
-    CALL SYSTEM_CLOCK(COUNT=clock_stop)
+    !CALL SYSTEM_CLOCK(count_rate=clock_rate)
+    !CALL SYSTEM_CLOCK(COUNT=clock_start)
+    !CALL dgelm(p, xr, xi, yr, yi, er, ei, berr, ncoeff, iseed, d, n, 'NR')
+    !CALL SYSTEM_CLOCK(COUNT=clock_stop)
     
-    timeStats(j,1) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+    !timeStats(j,1) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+    timeStats(j,1)=1.D0
 
     !create Hessenberg problem
     DO i=1,d+1

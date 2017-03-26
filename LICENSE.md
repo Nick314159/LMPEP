@@ -1,7 +1,7 @@
 The MIT License (MIT)
 
-Copyright (c) 2014,
-Thomas R. Cameron
+Copyright (c) 2017,
+Thomas R. Cameron,
 Nikolas I. Steckley
 
 Permission is hereby granted, free of charge, to any person obtaining

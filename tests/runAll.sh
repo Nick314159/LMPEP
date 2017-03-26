@@ -25,7 +25,7 @@ done
 
 
 clear
-./clean.sh
+./bin/clean.sh
 echo ' ------------------------------------------'
 echo 'Running spoly...'
 ./spolyTest.sh $FLAGS 50 10000 5

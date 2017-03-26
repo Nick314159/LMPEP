@@ -30,21 +30,21 @@ echo ' ------------------------------------------'
 echo 'Running spoly...'
 ./spolyTest.sh $FLAGS 50 10000 5
 echo ' ------------------------------------------'
-#echo 'Running gepoly...'
-#./gepolyTest.sh $FLAGS 20 400 50 2000 5
-#echo ' ------------------------------------------'
+echo 'Running gepoly...'
+./gepolyTest.sh $FLAGS 20 400 50 2000 5
+echo ' ------------------------------------------'
 echo 'Running cc...'
 ./ccTest.sh $FLAGS 20 640 50 2000 5
 echo ' ------------------------------------------'
-#echo 'Running iepoly1...'
-#./iepoly1Test.sh $FLAGS 20 400 50 2000 5
-#echo ' ------------------------------------------'
-#echo 'Running iepoly2...'
-#./iepoly2Test.sh $FLAGS 
-#echo ' ------------------------------------------'
-#echo 'Running accuracy...'
-#./accuracyTest.sh $FLAGS 
-#echo ' ------------------------------------------'
+echo 'Running iepoly1...'
+./iepoly1Test.sh $FLAGS 20 400 50 2000 5
+echo ' ------------------------------------------'
+echo 'Running iepoly2...'
+./iepoly2Test.sh $FLAGS 
+echo ' ------------------------------------------'
+echo 'Running accuracy...'
+./accuracyTest.sh $FLAGS 
+echo ' ------------------------------------------'
 echo 'Running Tridiagonal...'
 ./triTest.sh $FLAGS 
 echo ' ------------------------------------------'

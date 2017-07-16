@@ -4,7 +4,7 @@ and efficiently solving matrix eigenvalue problems using a variety of methods sp
 
 ## Authors ##
 - [Thomas R. Cameron](http://thomasrcameron.com/), 
-The College of Idaho, USA
+Davidson College, NC
 - [Nikolas I. Steckley](http://www.nsteckley.com), 
 Steckley & Associates
 

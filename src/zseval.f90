@@ -1,17 +1,17 @@
 !************************************************************************
-!			      SUBROUTINE DSEVAL				*
+!			SUBROUTINE ZSEVAL				*
 !************************************************************************
-! Evaluate scalar polynomial p with real coeffs of degree d and its	*
-! der=0,1,2 derivatives at real number t, where |t|<=1. Returns         *
-! evaluation in a.					                *
+! Evaluate scalar polynomial p with real coeffs of degree d, and its	*
+! der=0,1,2 derivatives at complex number t, where |t|<=1. Returns 	*
+! evaluation in a.							*
 !************************************************************************
-SUBROUTINE dseval(p, t, a, d, der)
+SUBROUTINE zseval(p, t, a, d, der)
 IMPLICIT NONE
 INTEGER, PARAMETER :: dp=KIND(0.0D0), itmax=50
 !scalar arguments
 INTEGER, INTENT(IN) :: d, der
-REAL(dp), INTENT(IN) :: t
-REAL(dp), INTENT(INOUT) :: a
+COMPLEX(dp), INTENT(IN) :: t
+COMPLEX(dp), INTENT(INOUT) :: a
 !array arguments
 REAL(dp), INTENT(IN) :: p(*)
 !local scalars
@@ -34,4 +34,4 @@ ELSE
   ENDDO
 ENDIF
 RETURN
-END SUBROUTINE dseval
+END SUBROUTINE zseval

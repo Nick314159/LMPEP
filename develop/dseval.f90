@@ -1,6 +1,7 @@
 !************************************************************************
-!			     SUBROUTINE DSEVAL				*
+!                           SUBROUTINE DSEVAL				            *
 !           Authors: Thomas R. Cameron, Nikolas I. Steckley             *
+!                   Date: 8/7/2017                                      *
 !************************************************************************
 ! Evaluates scalar polynomial with real coefficients at real number.    *
 !************************************************************************
@@ -17,14 +18,15 @@
 ! MEMORY: O(deg), FLOPS: O(deg)                                         *
 !************************************************************************
 SUBROUTINE dseval(p, t, deg, der, a)
+USE util
 IMPLICIT NONE
 !scalar arguments
-INTEGER(1), INTENT(IN)      :: der
-INTEGER(4), INTENT(IN)      :: deg
-REAL(8),    INTENT(IN)      :: t
-REAL(8),    INTENT(INOUT)   :: a
+INTEGER(KIND=in1), INTENT(IN)      :: der
+INTEGER(KIND=in4), INTENT(IN)      :: deg
+REAL(KIND=re8),    INTENT(IN)      :: t
+REAL(KIND=re8),    INTENT(INOUT)   :: a
 !array arguments
-REAL(8),    INTENT(IN)      :: p(*)
+REAL(KIND=re8),    INTENT(IN)      :: p(*)
 !local scalars
 INTEGER :: k
 

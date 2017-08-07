@@ -1,9 +1,10 @@
 PROGRAM test
-INTEGER(4)                          :: deg, it, itmax, startDegree, maxDegree
-INTEGER(8)                          :: clock, clock_rate, clock_start, clock_stop
-REAL(8)                             :: a, t
-REAL(8), DIMENSION(:), ALLOCATABLE  :: p
-CHARACTER(LEN=100)                  :: arg
+USE util
+INTEGER(KIND=in4)                           :: deg, it, itmax, startDegree, maxDegree
+INTEGER(KIND=in4)                           :: clock, clock_rate, clock_start, clock_stop
+REAL(KIND=re8)                              :: a, t
+REAL(KIND=re8), DIMENSION(:), ALLOCATABLE   :: p
+CHARACTER(LEN=100)                          :: arg
 
 CALL GETARG(1,arg)
 READ(arg, *) startDegree

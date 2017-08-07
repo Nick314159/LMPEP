@@ -1,5 +1,5 @@
 !************************************************************************
-!			            SUBROUTINE DSEVAL				                *
+!			     SUBROUTINE DSEVAL				*
 !           Authors: Thomas R. Cameron, Nikolas I. Steckley             *
 !************************************************************************
 ! Evaluates scalar polynomial with real coefficients at real number.    *

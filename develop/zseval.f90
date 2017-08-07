@@ -1,9 +1,21 @@
+
 !************************************************************************
-!			SUBROUTINE ZSEVAL				*
+!			     SUBROUTINE ZSEVAL				*
+!           Authors: Thomas R. Cameron, Nikolas I. Steckley             *
 !************************************************************************
-! Evaluate scalar polynomial p with real coeffs of degree d, and its	*
-! der=0,1,2 derivatives at complex number t, where |t|<=1. Returns 	*
-! evaluation in a.							*
+! Evaluates scalar polynomial with real coefficients at complex number. *
+!************************************************************************
+! Input Variables:                                                      *
+!   p: REAL(8) array of dimension (d+1),                                *
+!       contains polynomial coefficients from constant to leading.      *
+!   t: COMPLEX(8), number that polynomial is evaluated at.              *
+!   deg: INTEGER(4) degree of the polynomial                            *
+!   der: INTEGER(1), derivative to be taken (0,1,2)                     *
+!                                                                       *
+! Output Variables:                                                     *
+!   a: COMPLEX(dp), return value.                                       *
+!                                                                       *
+! MEMORY: O(deg), FLOPS: O(deg)                                         *
 !************************************************************************
 SUBROUTINE zseval(p, t, a, d, der)
 IMPLICIT NONE

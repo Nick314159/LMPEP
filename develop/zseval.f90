@@ -24,12 +24,12 @@ IMPLICIT NONE
 !scalar arguments
 INTEGER(KIND=in1), INTENT(IN)       :: der
 INTEGER(KIND=in4), INTENT(IN)       :: deg
-COMPLEX(KIND=re8),    INTENT(IN)    :: t
-COMPLEX(KIND=re8),    INTENT(INOUT) :: a
+COMPLEX(KIND=re8), INTENT(IN)       :: t
+COMPLEX(KIND=re8), INTENT(INOUT)    :: a
 !array arguments
-COMPLEX(KIND=re8),    INTENT(IN)    :: p(*)
+COMPLEX(KIND=re8), INTENT(IN)       :: p(*)
 !local scalars
-INTEGER                             :: k
+INTEGER(KIND=in4)                   :: k
 
 IF(der==0) THEN
   a=p(deg+1)

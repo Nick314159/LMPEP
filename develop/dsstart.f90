@@ -1,39 +1,37 @@
-!************************************************************************
-!                           SUBROUTINE DSSTART      			        *
-!           Authors: Thomas R. Cameron, Nikolas I. Steckley             *
-!                           Date: 8/9/2017                              *
-!************************************************************************
-! Compute the initial esimates of the roots of a real scalar polynomial *
-! using the Newton Polygon method.                                      *
-!************************************************************************
-! Input Variables:                                                      *
-!   alpha: REAL(re8) array, absolute value of the polynomial coeffs     *
-!   deg: INTEGER(in4), degree of polynomial                             *
-!                                                                       *
-! Output Variables:                                                     *
-!   er: REAL(re8) array, real part of the initial estimates             *
-!   ei: REAL(re8) array, imaginary part of the initial estiamtes        *
-!                                                                       *
-! Memory: O(deg), FLOPS: O(deg)                                         *
+!>\author Thomas R. Cameron* and Nikolas I. Steckley**
+!>\institution *Davidson College and **Portland State University
+!>\date 2017
+!>\brief <b> Computes initial estimates for roots of a polynomial. </b>
+!>\par Purpose:
+!>\verbatim
+!> Uses the Newton Polygon of a polynomial to compute initial estimates to its roots.. 
+!>\endverbatim
+!>\param[in] alpha
+!>\verbatim Double precision array of dimension (deg+1), contains moduli of polynomial coefficients, ordered from constant to leading. \endverbatim
+!>\param[in] deg
+!>\verbatim  Integer, degree of the polynomial.\endverbatim
+!>\param[in] er
+!>\verbatim  Double precision array of dimension deg, real part of eigenvalue approximations.\endverbatim
+!>\param[out] ei
+!>\verbatim  Double precision array of dimension deg, imaginary part of eigenvalue approximations.\endverbatim
+!>\note MEMORY: O(deg), FLOPS: O(deg)
 !************************************************************************
 SUBROUTINE dsstart(alpha, deg, er, ei)
 USE util
 IMPLICIT NONE
 !scalar arguments
-INTEGER(KIND=in4), INTENT(IN)   :: deg
+INTEGER, INTENT(IN)                 :: deg
 !array arguments
-REAL(KIND=re8), INTENT(IN)      :: alpha(*)
-REAL(KIND=re8), INTENT(INOUT)   :: er(*), ei(*)
-!parameters
-REAL(KIND=re8), PARAMETER       :: pi2 = 6.2831853071795865_re8, sigma = 0.7_re8
+DOUBLE PRECISION, INTENT(IN)        :: alpha(*)
+DOUBLE PRECISION, INTENT(INOUT)     :: er(*), ei(*)
 !local scalars
-INTEGER(KIND=in4)               :: c, i, iold, j, nzeros
-REAL(KIND=re8)                  :: ang, r, th
+INTEGER                             :: c, i, iold, j, nzeros
+DOUBLE PRECISION                    :: ang, r, th
 !local arrays
-LOGICAL, DIMENSION(deg+1)       :: h
-REAL(KIND=re8), DIMENSION(deg+1):: a
+LOGICAL, DIMENSION(deg+1)           :: h
+DOUBLE PRECISION, DIMENSION(deg+1)  :: a
 !intrinsic procedures
-INTRINSIC                       :: DCOS, DEXP, DLOG, DSIN
+INTRINSIC                           :: DCOS, DEXP, DLOG, DSIN
 
 !compute log(alpha)
 DO i=1,deg+1

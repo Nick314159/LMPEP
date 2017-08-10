@@ -1,45 +1,46 @@
-!************************************************************************
-!                           SUBROUTINE DSEVAL				            *
-!           Authors: Thomas R. Cameron, Nikolas I. Steckley             *
-!                           Date: 8/10/2017                             *
-!************************************************************************
-! Compute Laguree Correction term of real scalar polynomial at real     *
-! number while ''dividing out'' previously computed roots.              *
-!************************************************************************
-! Input Variables:                                                      *
-!   p: REAL(re8), array of dimension (deg+1),                           *
-!       contains polynomial coefficients from constant to leading.      *
-!   alpha: REAL(re8), array of dimension (d+1),                         *
-!       contains modulie of polynomial coefficients.                    *
-!   tol: REAL(re8), convergence tolerance.                              *
-!   conv: LOGICAL, convergence parameter.                               *
-!   deg: INTEGER(in4), degree of the polynomial                         *
-!   ind: INTEGER(in4), index of eigenvalue being updated                *
-!                                                                       *
-! Output Variables:                                                     *
-!   er: REAL(re8), array of dimension deg,                              *
-!       contains the real part of the eigenvalue approximations.        *
-!   ei: REAL(re8), array of dimension deg,                              *
-!       contains the imaginary part of the eigenvalue approximations.   *
-!   berr: REAL(re8), backward error in current eigenvalue approximation.*
-!                                                                       *
-!   MEMORY: O(deg), FLOPS: O(deg)                                       *
+!>\author Thomas R. Cameron* and Nikolas I. Steckley**
+!>\institution *Davidson College and **Portland State University
+!>\date 2017
+!>\brief <b> Computes Lagueree correction term of real polynomial with real root approximation, while ``dividing out'' previously computed roots. </b>
+!>\par Purpose:
+!>\verbatim
+!> Calculates y1=p'(t)/p(t) and y2=-(p'(t)/p(t))', where t=er(ind) is the current eigenvalue approximation, and then updates y1 and y2 by subtracting the appropriate sum of preivously computed roots indexed by 1,...ind-1. From there the Laguerre correction term can be computed as deg/(y1+-sqrt((deg-1)*(deg*y2-y1**2)), where +- is choosen to maximize the denominator. 
+!>\endverbatim
+!>\param[in] p
+!>\verbatim Double precision array of dimension (deg+1), contains polynomial coefficients, ordered from constant to leading. \endverbatim
+!>\param[in] alpha
+!>\verbatim Double precision array of dimension (deg+1), contains moduli of polynomial coefficients.\endverbatim
+!>\param[in] tol
+!>\verbatim Double precision, used to determine potential convergence of eigenvalue approximation..\endverbatim
+!>\param[in,out] conv
+!>\verbatim Logical, returns true if convergence is reached.\endverbatim
+!>\param[in] deg
+!>\verbatim  Integer, degree of the polynomial.\endverbatim
+!>\param[in] ind
+!>\verbatim  Integer, index of current eigenvalue approximation.\endverbatim
+!>\param[in,out] er
+!>\verbatim  Double precision array of dimension deg, real part of eigenvalue approximations.\endverbatim
+!>\param[in,out] ei
+!>\verbatim  Double precision array of dimension deg, imaginary part of eigenvalue approximations.\endverbatim
+!>\param[in,out] berr
+!>\verbatim  Double precision number, backward error in current eigenvalue approximation.\endverbatim
+!>\note MEMORY: O(deg), FLOPS: O(deg)
 !************************************************************************
 SUBROUTINE dslcorr(p, alpha, tol, conv, deg, ind, er, ei, berr)
 USE util
 IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT)          :: conv
-INTEGER(KIND=in4), INTENT(IN)   :: deg, ind
-REAL(KIND=re8), INTENT(IN)      :: tol
-REAL(KIND=re8), INTENT(INOUT)   :: berr
+INTEGER, INTENT(IN)             :: deg, ind
+DOUBLE PRECISION, INTENT(IN)    :: tol
+DOUBLE PRECISION, INTENT(INOUT) :: berr
 !array arguments
-REAL(KIND=re8), INTENT(IN)      :: p(*), alpha(*)
-REAL(KIND=re8), INTENT(INOUT)   :: er(*), ei(*)
+DOUBLE PRECISION, INTENT(IN)    :: p(*), alpha(*)
+DOUBLE PRECISION, INTENT(INOUT) :: er(*), ei(*)
 !local scalars
-INTEGER(KIND=in4)               :: k
-REAL(KIND=re8)                  :: a, b, c, t
-COMPLEX(KIND=re8)               :: x1, x2, y1, y2
+INTEGER                         :: k
+DOUBLE PRECISION                :: a, b, c, t
+DOUBLE COMPLEX                  :: x1, x2, y1, y2
 !intrinsic procedures
 INTRINSIC                       :: DABS, DBLE, DCMPLX, DIMAG, MIN, ZABS, ZSQRT
 !external subroutines
@@ -96,6 +97,7 @@ k=deg-(ind-1)
 y1=ZSQRT((k-1)*(k*x2-x1**2))
 y2=x1-y1
 y1=x1+y1
+!choose term that maximizes denominator
 IF(ZABS(y1)>ZABS(y2)) THEN
   y1=k*y1**(-1)
   IF(ZABS(y1)<tol) THEN

@@ -2,13 +2,13 @@ PROGRAM test
 USE util
 IMPLICIT NONE
 LOGICAL                                         :: conv
-INTEGER(KIND=in1)                               :: it, itmax
-INTEGER(KIND=in4)                               :: deg, startDegree, maxDegree
-INTEGER(KIND=in8)                               :: clock_rate, clock_start, clock_stop
-REAL(KIND=re8)                                  :: a, t
-REAL(KIND=re8), DIMENSION(:), ALLOCATABLE       :: er, ei, p
-COMPLEX(KIND=re8)                               :: ac, tc
-COMPLEX(KIND=re8), DIMENSION(:), ALLOCATABLE    :: pc
+INTEGER                               :: it, itmax
+INTEGER                               :: deg, startDegree, maxDegree
+INTEGER                               :: clock_rate, clock_start, clock_stop
+DOUBLE PRECISION                                  :: a, t
+DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE       :: er, ei, p
+DOUBLE COMPLEX                               :: ac, tc
+DOUBLE COMPLEX, DIMENSION(:), ALLOCATABLE    :: pc
 CHARACTER(LEN=10)                               :: dt
 CHARACTER(LEN=100)                              :: arg
 

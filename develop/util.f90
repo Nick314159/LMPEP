@@ -1,32 +1,26 @@
+!>\author Thomas R. Cameron* and Nikolas I. Steckley**
+!>\institution *Davidson College and **Portland State University
+!>\date 2017
+!>\brief <b> Several parameters and subroutines. </b>
+!>\par Purpose:
+!>\verbatim
+!> Defines several parameters and subroutines that are used throughout LMPEP. 
+!>\endverbatim
+!************************************************************************
 MODULE util
-
 IMPLICIT NONE
 !parameters
-INTEGER, PARAMETER          :: in1 = SELECTED_INT_KIND(1)
-INTEGER, PARAMETER          :: in4 = SELECTED_INT_KIND(5)
-INTEGER, PARAMETER          :: in8 = SELECTED_INT_KIND(10)
-INTEGER, PARAMETER          :: re8 = SELECTED_REAL_KIND(15, 307)
-REAL(KIND=re8), PARAMETER   :: zero=0.0_re8, one=1.0_re8
-REAL(KIND=re8), PARAMETER   :: eps=EPSILON(zero)
+DOUBLE PRECISION, PARAMETER   :: zero=0.0D0, one=1.0D0
+DOUBLE PRECISION, PARAMETER   :: eps=EPSILON(zero)
+DOUBLE PRECISION, PARAMETER   :: pi2 = 6.2831853071795865, sigma = 0.7
 
 CONTAINS
 
-!************************************************************************
-!**********                    SUBROUTINES                    ***********
-!************************************************************************
-!    DRNUM   :  real random number between -1 and 1                     *
-!    ZRNUM   :  complex random number with real and imaginary parts     *
-!                between -1 and 1                                       *
-!    DRARR   :  real random array with each entery between -1 and 1     *
-!    ZRARR   :  complex random array with each entry having real        *
-!                and imaginary parts between -1 and 1                   *
-!************************************************************************
-
 SUBROUTINE drnum(a)
 !scalar inputs
-REAL(KIND=re8)  :: a
+DOUBLE PRECISION    :: a
 !local scalars
-REAL(KIND=re8)  :: a1, a2
+DOUBLE PRECISION    :: a1, a2
 
 CALL RANDOM_NUMBER(a1)
 CALL RANDOM_NUMBER(a2)
@@ -35,9 +29,9 @@ END SUBROUTINE drnum
 
 SUBROUTINE zrnum(a)
 !scalar inputs
-COMPLEX(KIND=re8)   :: a
+DOUBLE COMPLEX      :: a
 !local scalars
-REAL(KIND=re8)      :: a1, a2
+DOUBLE PRECISION    :: a1, a2
 
 CALL drnum(a1)
 CALL drnum(a2)
@@ -47,11 +41,11 @@ END SUBROUTINE zrnum
 SUBROUTINE drarr(p, n)
 IMPLICIT NONE
 !scalar inputs
-INTEGER(KIND=in4), INTENT(IN)   :: n
+INTEGER, INTENT(IN)             :: n
 !array inputs
-REAL(KIND=re8), INTENT(INOUT)   :: p(*)
+DOUBLE PRECISION, INTENT(INOUT) :: p(*)
 !local arrays
-REAL(KIND=re8), DIMENSION(n)    :: p1, p2
+DOUBLE PRECISION, DIMENSION(n)  :: p1, p2
 
 CALL RANDOM_NUMBER(p1)
 CALL RANDOM_NUMBER(p2)
@@ -62,11 +56,11 @@ END SUBROUTINE drarr
 SUBROUTINE zrarr(p, n)
 IMPLICIT NONE
 !scalar inputs
-INTEGER(KIND=in4), INTENT(IN)       :: n
+INTEGER, INTENT(IN)       :: n
 !array inputs
-COMPLEX(KIND=re8), INTENT(INOUT)    :: p(*)
+DOUBLE COMPLEX, INTENT(INOUT)    :: p(*)
 !local arrays
-REAL(KIND=re8), DIMENSION(n)        :: p1, p2
+DOUBLE PRECISION, DIMENSION(n)        :: p1, p2
 
 CALL drarr(p1,n)
 CALL drarr(p2,n)
@@ -155,12 +149,12 @@ END SUBROUTINE zrarr
 !************************************************************************
 SUBROUTINE cnvex(n, a, h)
 IMPLICIT NONE
-INTEGER(KIND=in4), INTENT(IN)   :: n
+INTEGER, INTENT(IN)   :: n
 LOGICAL, INTENT(OUT)            :: h(*)
-REAL(KIND=re8), INTENT(IN)      :: a(*)
+DOUBLE PRECISION, INTENT(IN)      :: a(*)
 
 ! Local variables
-INTEGER(KIND=in4)               :: i, j, k, m, nj, jc
+INTEGER               :: i, j, k, m, nj, jc
 
 h(1:n) = .TRUE.
 
@@ -202,8 +196,8 @@ END SUBROUTINE cnvex
 !************************************************************************
 SUBROUTINE left(h, i, il)
 IMPLICIT NONE
-INTEGER(KIND=in4), INTENT(IN)   :: i
-INTEGER(KIND=in4), INTENT(OUT)  :: il
+INTEGER, INTENT(IN)   :: i
+INTEGER, INTENT(OUT)  :: il
 LOGICAL, INTENT(IN)             :: h(*)
 
 DO il = i-1, 0, -1
@@ -230,8 +224,8 @@ END SUBROUTINE left
 !************************************************************************
 SUBROUTINE right(n, h, i, ir)
 IMPLICIT NONE
-INTEGER(KIND=in4), INTENT(IN)   :: n, i
-INTEGER(KIND=in4), INTENT(OUT)  :: ir
+INTEGER, INTENT(IN)   :: n, i
+INTEGER, INTENT(OUT)  :: ir
 LOGICAL, INTENT(IN)             :: h(*)
 
 DO ir = i+1, n
@@ -259,12 +253,12 @@ END SUBROUTINE right
 !************************************************************************
 SUBROUTINE cmerge(n, a, i, m, h)
 IMPLICIT NONE
-INTEGER(KIND=in4), INTENT(IN)   :: n, m, i
+INTEGER, INTENT(IN)   :: n, m, i
 LOGICAL, INTENT(INOUT)          :: h(*)
-REAL(KIND=re8), INTENT(IN)      :: a(*)
+DOUBLE PRECISION, INTENT(IN)      :: a(*)
 
 ! Local variables
-INTEGER(KIND=in4)               :: ir, il, irr, ill
+INTEGER               :: ir, il, irr, ill
 LOGICAL                         :: tstl, tstr
 
 ! at the left and the right of the common vertex (I,A(I)) determine
@@ -325,13 +319,13 @@ END SUBROUTINE cmerge
 !************************************************************************
 FUNCTION ctest(a, il, i, ir) RESULT(OK)
 IMPLICIT NONE
-INTEGER(KIND=in4), INTENT(IN)   :: i, il, ir
-REAL(KIND=re8), INTENT(IN)      :: a(*)
+INTEGER, INTENT(IN)   :: i, il, ir
+DOUBLE PRECISION, INTENT(IN)      :: a(*)
 LOGICAL                         :: OK
 
 ! Local variables
-REAL(KIND=re8)                  :: s1, s2
-REAL(KIND=re8), PARAMETER       :: toler = 0.4_re8
+DOUBLE PRECISION                  :: s1, s2
+DOUBLE PRECISION, PARAMETER       :: toler = 0.4D0
 
 s1 = a(i) - a(il)
 s2 = a(ir) - a(i)

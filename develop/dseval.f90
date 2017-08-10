@@ -1,48 +1,48 @@
-!>\author Thomas R. Cameron
-!>\author Nikolas I. Steckley
-!>\date 8/7/2017
+!>\author Thomas R. Cameron* and Nikolas I. Steckley**
+!>\institution *Davidson College and **Portland State University
+!>\date 2017
 !>\brief <b> Evaluates scalar polynomial with real coefficients at real number. </b>
 !>\par Purpose:
 !>\verbatim
-!> Evaluates scalar polynomial with real coefficients at real number (Fill out with more info)
+!> Calculates p(t), p'(t), or p''(t), where p is real scalar polynomial and t is a real number. What derivative is taken is determined by the parameter der and the computation is done via Horner's method. 
 !>\endverbatim
 !>\param[in] p
-!>\verbatim REAL(re8), array of dimension (d+1) contains polynomial coefficients from constant to leading. \endverbatim
+!>\verbatim Double precision array of dimension (deg+1), contains polynomial coefficients, ordered from constant to leading. \endverbatim
 !>\param[in] t
-!>\verbatim REAL(re8), number that polynomial is evaluated at.\endverbatim
+!>\verbatim Double precision, number to be evaluated.\endverbatim
 !>\param[in] deg
-!>\verbatim  INTEGER(in4), degree of the polynomial.\endverbatim
+!>\verbatim  Integer, degree of the polynomial.\endverbatim
 !>\param[in] der
-!>\verbatim  INTEGER(in1), derivative to be taken (0,1,2).\endverbatim
+!>\verbatim  Integer, derivative to be taken (0,1,2).\endverbatim
 !>\param[out] a
-!>\verbatim  REAL(re8), return value.\endverbatim
+!>\verbatim  Double precision, return value.\endverbatim
 !>\note MEMORY: O(deg), FLOPS: O(deg)
 !************************************************************************
 SUBROUTINE dseval(p, t, deg, der, a)
-USE util
 IMPLICIT NONE
 !scalar arguments
-INTEGER(KIND=in1), INTENT(IN)   :: der  
-INTEGER(KIND=in4), INTENT(IN)   :: deg 
-REAL(KIND=re8), INTENT(IN)      :: t 
-REAL(KIND=re8), INTENT(INOUT)   :: a          
-
+INTEGER, INTENT(IN)             :: deg, der
+DOUBLE PRECISION, INTENT(IN)    :: t 
+DOUBLE PRECISION, INTENT(INOUT) :: a
 !array arguments
-REAL(KIND=re8), INTENT(IN)      :: p(*) 
+DOUBLE PRECISION, INTENT(IN)    :: p(*) 
 !local scalars
-INTEGER(KIND=in4)               :: k
+INTEGER                         :: k
 
 IF(der==0) THEN
+!no derivative
   a=p(deg+1)
   DO k=deg,1,-1
     a=t*a+p(k)
   ENDDO
 ELSEIF(der==1) THEN
+!1st derivative
   a=deg*p(deg+1)
   DO k=deg,2,-1
     a=t*a+(k-1)*p(k)
   ENDDO
 ELSE
+!2nd derivative
   a=deg*(deg-1)*p(deg+1)
   DO k=deg,3,-1
     a=t*a+(k-1)*(k-2)*p(k)

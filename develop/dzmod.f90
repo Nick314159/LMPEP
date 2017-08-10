@@ -1,27 +1,23 @@
-!************************************************************************
-!                           FUNCTION DZMOD      			            *
-!           Authors: Thomas R. Cameron, Nikolas I. Steckley             *
-!                           Date: 8/9/2017                              *
-!************************************************************************
-! Compute the moduli of a complex number while avoid harmul overflow    *
-! and underflow.                                                        *
-!************************************************************************
-! Input Variables:                                                      *
-!   a: REAL(re8), real part                                             *
-!   b: REAL(re8), imaginary part                                        *
-!                                                                       *
-! Output Variables:                                                     *
-!   r: moduli of the complex number a+bi                                *   
-!                                                                       *
-! Memory: O(1), FLOPS: O(1)                                             *
+!>\author Thomas R. Cameron* and Nikolas I. Steckley**
+!>\institution *Davidson College and **Portland State University
+!>\date 2017
+!>\brief <b> Returns moduli of complex number. </b>
+!>\par Purpose:
+!>\verbatim
+!> Returns moduli of complex number a+bi, while avoiding harmul overflow and underflow. 
+!>\endverbatim
+!>\param[in] a
+!>\verbatim Double precision number, real part. \endverbatim
+!>\param[in] b
+!>\verbatim Double precision number, imaginary part.\endverbatim
 !************************************************************************
 FUNCTION dzmod(a, b) RESULT(r)
 USE util
 IMPLICIT NONE
 !scalar arguments
-REAL(KIND=re8), INTENT(IN)  :: a, b
+DOUBLE PRECISION, INTENT(IN)    :: a, b
 !return scalar
-REAL(KIND=re8)              :: r
+DOUBLE PRECISION                :: r
 
 IF(DABS(a)<eps .AND. DABS(b)<eps) THEN
   r=zero

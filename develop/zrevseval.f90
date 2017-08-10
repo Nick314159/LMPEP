@@ -1,47 +1,49 @@
-!************************************************************************
-!                           SUBROUTINE ZREVSEVAL				        *
-!           Authors: Thomas R. Cameron, Nikolas I. Steckley             *
-!                           Date: 8/9/2017                              *
-!************************************************************************
-! Evaluates the reversal of a complex scalar polynomial at a complex    *
-! number.                                                               *
-!************************************************************************
-! Input Variables:                                                      *
-!   p: COMPLEX(re8), array of dimension (d+1),                          *
-!       contains polynomial coefficients from constant to leading.      *
-!   t: COMPLEX(re8), number that polynomial is evaluated at.            *
-!   deg: INTEGER(in4), degree of the polynomial                         *
-!   der: INTEGER(in1), derivative to be taken (0,1,2)                   *
-!                                                                       *
-! Output Variables:                                                     *
-!   a: COMPLEX(re8), return value.                                      *
-!                                                                       *
-!   MEMORY: O(deg), FLOPS: O(deg)                                       *
+!>\author Thomas R. Cameron* and Nikolas I. Steckley**
+!>\institution *Davidson College and **Portland State University
+!>\date 2017
+!>\brief <b> Evaluates the reversal of a scalar polynomial with complex coefficients at complex number. </b>
+!>\par Purpose:
+!>\verbatim
+!> Calculates revp(t), revp'(t), or revp''(t), where revp(t)=t^(deg)p(t^(-1)) and t is a nonzero complex number. What derivative is taken is determined by the parameter der and the computation is done via Horner's method. 
+!>\endverbatim
+!>\param[in] p
+!>\verbatim Double complex array of dimension (deg+1), contains polynomial coefficients, ordered from constant to leading. \endverbatim
+!>\param[in] t
+!>\verbatim Double complex, number to be evaluated.\endverbatim
+!>\param[in] deg
+!>\verbatim  Integer, degree of the polynomial.\endverbatim
+!>\param[in] der
+!>\verbatim  Integer, derivative to be taken (0,1,2).\endverbatim
+!>\param[out] a
+!>\verbatim  Double complex, return value.\endverbatim
+!>\note MEMORY: O(deg), FLOPS: O(deg)
 !************************************************************************
 SUBROUTINE zrevseval(p, t, deg, der, a)
 USE util
 IMPLICIT NONE
 !scalar arguments
-INTEGER(KIND=in1), INTENT(IN)       :: der
-INTEGER(KIND=in4), INTENT(IN)       :: deg
-COMPLEX(KIND=re8), INTENT(IN)       :: t
-COMPLEX(KIND=re8), INTENT(INOUT)    :: a
+INTEGER, INTENT(IN)             :: deg, der
+DOUBLE COMPLEX, INTENT(IN)      :: t
+DOUBLE COMPLEX, INTENT(INOUT)   :: a
 !array arguments
-COMPLEX(KIND=re8), INTENT(IN)       :: p(*)
+DOUBLE COMPLEX, INTENT(IN)      :: p(*)
 !local scalars
-INTEGER(KIND=in4)                   :: k
+INTEGER                         :: k
 
 IF(der==0) THEN
+!no derivative
   a=p(1)
   DO k=2,deg+1
     a=t*a+p(k)
   ENDDO
 ELSEIF(der==1) THEN
+!1st derivative 
   a=deg*p(1)
   DO k=2,deg
     a=t*a+(deg-k+1)*p(k)
   ENDDO
 ELSE
+!2nd derivative
   a=deg*(deg-1)*p(1)
   DO k=2,deg-1
     a=t*a+(deg-k+1)*(deg-k)*p(k)

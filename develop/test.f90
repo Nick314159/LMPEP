@@ -21,7 +21,7 @@ itmax=100
 deg=startDegree
 
 OPEN(UNIT=1,FILE="results.csv")
-WRITE(1,'(A)') '        DEG   |   AVG ET'
+WRITE(1,'(A)') '        DEG   ,   AVG ET'
 
 IF (dt=='DSEVAL') THEN
 DO WHILE(deg<maxDegree)

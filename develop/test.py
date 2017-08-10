@@ -1,47 +1,24 @@
-from ctypes import *
-from random import *
-import time
-import sys
-#Import Fortran library
-lib = cdll.LoadLibrary("/libtest.a")
+import csv
+from numpy import *
+from pylab import *
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as pyplot
+degree, time = [], []
 
-#Make methods available for execution
-dseval = lib.dseval
-drarr = lib.drarr
-drnum = lib.drnum
+with open('results.csv') as f:
+  reader = csv.reader(f)
+  headers= next(reader)
+  for row in reader:
+    degree.append(float(row[0].strip()))
+    time.append(float(row[1].strip()))
 
-zseval = lib.zseval
-zrarr = lib.zrarr
-zrnum = lib.zrnum
+degree=np.array(degree)
+time=np.array(time)
+fig, ax = plt.subplots()
+ax.loglog(degree, time, 'k-o',  label='Method Time')
+ax.loglog(degree, time[0]*(degree/degree[0]), 'k--', label='O(n)')
+ax.set_ylabel('Seconds')
+ax.set_xlabel('Degree')
+legend = ax.legend(loc=0, shadow=True)
+savefig("times.pdf", format='pdf')
 
-#Command line arguements
-startDegree=sys.argv[1]
-maxDegree=sys.argv[2]
-dt=sys.argv[3]
-
-#Hard coded values
-itmax =100
-der = 2
-
-t, a = 0 #Need to allocate memory for this
-
-degree=startDegree
-if dt=="D":
-	while degree<maxDegree:
-		p = [None]* (degree+1)
-		start = time.clock
-		for i in range(itmax):
-			# NOTE: The byref() is necessary since
-			# FORTRAN does references,
-			# and not values (like e.g. C)
-			drarr(byref(p), byref(degree)+1)
-			drnum(byref(t))
-			dseval(byref(p), byref(t), byref(degree), byref(der), byref(a))
-		endTime = clock.time
-		print("Degree, Average Time")
-		print(degree + "," + (startTime-endTime)/itmax)
-		degree *= 2
-	
-
-elif dt=="Z":
-	print(1)

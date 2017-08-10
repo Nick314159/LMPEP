@@ -19,6 +19,9 @@ READ(arg,*) dt
 itmax=100
 deg=startDegree
 
+OPEN(UNIT=1,FILE="results.csv")
+WRITE(1,'(A)') '        DEG   |   AVG ET'
+
 IF (dt=='DSEVAL') THEN
 DO WHILE(deg<maxDegree)
     ALLOCATE(p(deg+1))
@@ -30,9 +33,9 @@ DO WHILE(deg<maxDegree)
         CALL dseval(p, t, deg, 0, a)
     ENDDO
     CALL SYSTEM_CLOCK(count=clock_stop)
-    WRITE(*,*) '        DEG   |   AVG ET'
-    WRITE(*,*) '        ----------------'
-    WRITE(*,*) deg,' ', (DBLE(clock_stop-clock_start)/DBLE(clock_rate))/itmax
+    WRITE(1,'(I10)', advance='no') deg
+    WRITE(1,'(A)', advance='no') ','
+    WRITE(1,'(ES15.2)') (DBLE(clock_stop-clock_start)/DBLE(clock_rate))/itmax
     DEALLOCATE(p)
     deg=2*deg
 ENDDO
@@ -47,9 +50,9 @@ DO WHILE(deg<maxDegree)
         CALL zseval(pc, tc, deg, 0, ac)
     ENDDO
     CALL SYSTEM_CLOCK(count=clock_stop)
-    WRITE(*,*) '        DEG   |   AVG ET'
-    WRITE(*,*) '        ----------------'
-    WRITE(*,*) deg,' ', (DBLE(clock_stop-clock_start)/DBLE(clock_rate))/itmax
+    WRITE(1,'(I10)', advance='no') deg
+    WRITE(1,'(A)', advance='no') ','
+    WRITE(1,'(ES15.2)') (DBLE(clock_stop-clock_start)/DBLE(clock_rate))/itmax
     DEALLOCATE(pc)
     deg=2*deg
 ENDDO
@@ -63,12 +66,14 @@ DO WHILE(deg<maxDegree)
         CALL dsstart(p, deg, er, ei)
     ENDDO
     CALL SYSTEM_CLOCK(count=clock_stop)
-    WRITE(*,*) '        DEG   |   AVG ET'
-    WRITE(*,*) '        ----------------'
-    WRITE(*,*) deg,' ', (DBLE(clock_stop-clock_start)/DBLE(clock_rate))/itmax
+    WRITE(1,'(I10)', advance='no') deg
+    WRITE(1,'(A)', advance='no') ','
+    WRITE(1,'(ES15.2)') (DBLE(clock_stop-clock_start)/DBLE(clock_rate))/itmax
     DEALLOCATE(er,ei,p)
     deg=2*deg
 ENDDO
 ENDIF
+
+ CLOSE(UNIT=1)
 
 END PROGRAM test

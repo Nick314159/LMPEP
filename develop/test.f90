@@ -1,5 +1,6 @@
 PROGRAM test
 USE util
+IMPLICIT NONE
 INTEGER(KIND=in4)                               :: deg, it, itmax, startDegree, maxDegree
 INTEGER(KIND=in4)                               :: clock, clock_rate, clock_start, clock_stop
 REAL(KIND=re8)                                  :: a, t

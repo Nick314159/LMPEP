@@ -1,66 +1,63 @@
-SUBROUTINE dslcorr(p, alpha, tol, check, deg, ind, er, ei, berr)
+SUBROUTINE dslcorr(p, alpha, tol, conv, deg, ind, er, ei, berr)
 USE util
 IMPLICIT NONE
 !scalar arguments
-LOGICAL, INTENT(INOUT) :: check
-INTEGER(KIND=in1), INTENT(IN) :: deg
-INTEGER, INTENT(IN) :: d, i
-REAL(KIND=re8), INTENT(IN) :: tol
-REAL(KIND=re8), INTENT(INOUT) :: berr
+LOGICAL, INTENT(INOUT)          :: conv
+INTEGER(KIND=in4), INTENT(IN)   :: deg, ind
+REAL(KIND=re8), INTENT(IN)      :: tol
+REAL(KIND=re8), INTENT(INOUT)   :: berr
 !array arguments
-REAL(KIND=re8), INTENT(IN) :: p(*), alpha(*)
-REAL(KIND=re8), INTENT(INOUT) :: er(*), ei(*)
+REAL(KIND=re8), INTENT(IN)      :: p(*), alpha(*)
+REAL(KIND=re8), INTENT(INOUT)   :: er(*), ei(*)
 !local scalars
-INTEGER :: k
-REAL(dp) :: a, b, c, t
-DOUBLE COMPLEX :: x1, x2, y1, y2
+INTEGER(KIND=in4)               :: k
+REAL(KIND=re8)                  :: a, b, c, t
+COMPLEX(KIND=re8)               :: x1, x2, y1, y2
 !intrinsic procedures
-INTRINSIC :: DABS, DBLE, DCMPLX, DIMAG, ZABS, ZSQRT
+INTRINSIC                       :: DABS, DBLE, DCMPLX, DIMAG, ZABS, ZSQRT
 
 !initiate variables
-x1=czero; x2=czero
-DO k=1,i-1
-  y1=1/DCMPLX(er(i)-er(k),-ei(k))
+x1=zero; x2=zero
+DO k=1,ind-1
+  y1=DCMPLX(er(i)-er(k),-ei(k))**(-1)
   x1=x1+y1
   x2=x2+y1**2
 ENDDO
-t=er(i)
+t=er(ind)
 !split into 2 cases
 IF(DABS(t)>1) THEN
   !compute a=revp, berr
-  t=1/t
-  CALL drevseval(p, t, a, d, 0)
-  CALL drevseval(alpha, DABS(t), berr, d, 0)
+  t=t**(-1)
+  CALL drevseval(p, t, deg, 0, a)
+  CALL drevseval(alpha,DABS(t),deg,0,berr)
   berr=MIN(DABS(a)/berr, DABS(a))
   IF(berr<eps) THEN
     ei(i)=zero
-    check=.TRUE.
+    conv=.TRUE.
     RETURN
-  ELSE
-    !compute b=revp', c=revp''
-    CALL drevseval(p, t, b, d, 1)
-    CALL drevseval(p, t, c, d, 2)
-    !compute y1=p'/p and y2=(p'/p)'
-    y1=t*(d-t*(b/a))
-    y2=t**2*(d-2*t*(b/a)+t**2*((b/a)**2-c/a))
   ENDIF
+  !compute b=revp', c=revp''
+  CALL drevseval(p, t, deg, 1, b)
+  CALL drevseval(p, t, deg, 2, c)
+  !compute y1=p'/p and y2=(p'/p)'
+  y1=t*(d-t*(b/a))
+  y2=t**2*(d-2*t*(b/a)+t**2*((b/a)**2-c/a))
 ELSE
   !compute a=p, berr
-  CALL dseval(p, t, a, d, 0)
-  CALL dseval(alpha, DABS(t), berr, d, 0)
+  CALL dseval(p, t, deg, 0, a)
+  CALL dseval(alpha, DABS(t), deg, 0, berr)
   berr=MIN(DABS(a)/berr, DABS(a))
   IF(berr<eps) THEN
     ei(i)=zero
-    check=.TRUE.
+    conv=.TRUE.
     RETURN
-  ELSE
-    !compute b=p', c=p''
-    CALL dseval(p, t, b, d, 1)
-    CALL dseval(p, t, c, d, 2)
-    !compute y1=p'/p and y2=(p'/p)'
-    y1=b/a
-    y2=y1**2-c/a
   ENDIF
+  !compute b=p', c=p''
+  CALL dseval(p, t, deg, 1, b)
+  CALL dseval(p, t, deg, 2, c)
+  !compute y1=p'/p and y2=(p'/p)'
+  y1=b/a
+  y2=y1**2-c/a
 ENDIF
 !remove previously found roots
 x1=y1-x1

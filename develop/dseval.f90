@@ -2,6 +2,10 @@
 !>\author Nikolas I. Steckley
 !>\date 8/7/2017
 !>\brief <b> Evaluates scalar polynomial with real coefficients at real number. </b>
+!>\par Purpose:
+!>\verbatim
+!> Evaluates scalar polynomial with real coefficients at real number (Fill out with more info)
+!>\endverbatim
 !>\param[in] p
 !>\verbatim REAL(re8), array of dimension (d+1) contains polynomial coefficients from constant to leading. \endverbatim
 !>\param[in] t

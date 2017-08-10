@@ -73,7 +73,7 @@
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">USE </span><a class="code" href="classutil.html">util</a></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">IMPLICIT NONE</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">!scalar arguments</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">INTEGER</span>, <span class="keywordtype">INTENT(IN)</span>             :: deg</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">INTEGER(KIND=in4)</span>, <span class="keywordtype">INTENT(IN)</span>   :: deg</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">!array arguments</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">REAL(KIND=re8)</span>, <span class="keywordtype">INTENT(IN)</span>      :: alpha(*)</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">REAL(KIND=re8)</span>, <span class="keywordtype">INTENT(INOUT)</span>   :: er(*), ei(*)</div>
@@ -115,13 +115,13 @@
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keywordflow">ENDDO</span></div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keywordflow">RETURN</span></div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">END SUBROUTINE </span><a class="code" href="dsstart_8f90.html#a1b2ae9b811a1b8c505c7cda133598d18">dsstart</a></div>
-<div class="ttc" id="classutil_html_ad20eb5d1569b0777e3f6dd921503be2b"><div class="ttname"><a href="classutil.html#ad20eb5d1569b0777e3f6dd921503be2b">util::cnvex</a></div><div class="ttdeci">subroutine cnvex(n, a, h)</div><div class="ttdef"><b>Definition:</b> <a href="util_8f90_source.html#l00155">util.f90:155</a></div></div>
+<div class="ttc" id="classutil_html_ad20eb5d1569b0777e3f6dd921503be2b"><div class="ttname"><a href="classutil.html#ad20eb5d1569b0777e3f6dd921503be2b">util::cnvex</a></div><div class="ttdeci">subroutine cnvex(n, a, h)</div><div class="ttdef"><b>Definition:</b> <a href="util_8f90_source.html#l00156">util.f90:156</a></div></div>
 <div class="ttc" id="classutil_html"><div class="ttname"><a href="classutil.html">util</a></div><div class="ttdef"><b>Definition:</b> <a href="util_8f90_source.html#l00001">util.f90:1</a></div></div>
 <div class="ttc" id="dsstart_8f90_html_a1b2ae9b811a1b8c505c7cda133598d18"><div class="ttname"><a href="dsstart_8f90.html#a1b2ae9b811a1b8c505c7cda133598d18">dsstart</a></div><div class="ttdeci">subroutine dsstart(alpha, deg, er, ei)</div><div class="ttdef"><b>Definition:</b> <a href="dsstart_8f90_source.html#l00019">dsstart.f90:19</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 9 2017 19:14:12 for LMPEP by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 10 2017 11:50:05 for LMPEP by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

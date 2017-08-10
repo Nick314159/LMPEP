@@ -59,6 +59,7 @@
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions/Subroutines</h2></td></tr>
 <tr class="memitem:a59299c96f28205c90ee80f6fd7a76f11"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dseval_8f90.html#a59299c96f28205c90ee80f6fd7a76f11">dseval</a> (p, t, deg, der, a)</td></tr>
+<tr class="memdesc:a59299c96f28205c90ee80f6fd7a76f11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluates scalar polynomial with real coefficients at real number.  <a href="#a59299c96f28205c90ee80f6fd7a76f11">More...</a><br/></td></tr>
 <tr class="separator:a59299c96f28205c90ee80f6fd7a76f11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function/Subroutine Documentation</h2>
@@ -104,14 +105,31 @@ Functions/Subroutines</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="dseval_8f90_source.html#l00020">20</a> of file <a class="el" href="dseval_8f90_source.html">dseval.f90</a>.</p>
+<p>Evaluates scalar polynomial with real coefficients at real number. </p>
+<dl class="section author"><dt>Author</dt><dd>Thomas R. Cameron </dd>
+<dd>
+Nikolas I. Steckley </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>8/7/2017 </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>REAL(re8), array of dimension (d+1) contains polynomial coefficients from constant to leading. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>REAL(re8), number that polynomial is evaluated at. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">deg</td><td>INTEGER(in4), degree of the polynomial. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">der</td><td>INTEGER(in1), derivative to be taken (0,1,2). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">a</td><td>REAL(re8), return value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>MEMORY: O(deg), FLOPS: O(deg) </dd></dl>
+
+<p>Definition at line <a class="el" href="dseval_8f90_source.html#l00012">12</a> of file <a class="el" href="dseval_8f90_source.html">dseval.f90</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="dseval_8f90_a59299c96f28205c90ee80f6fd7a76f11_icgraph.png" border="0" usemap="#dseval_8f90_a59299c96f28205c90ee80f6fd7a76f11_icgraph" alt=""/></div>
 <map name="dseval_8f90_a59299c96f28205c90ee80f6fd7a76f11_icgraph" id="dseval_8f90_a59299c96f28205c90ee80f6fd7a76f11_icgraph">
-<area shape="rect" id="node2" href="dslcorr_8f90.html#aaf43e0726d0d0701384f015c92d5fb28" title="dslcorr" alt="" coords="113,5,173,32"/><area shape="rect" id="node3" href="test_8f90.html#a9bc57b8dbe7c3e1b9db72b918a1b6bab" title="test" alt="" coords="121,56,164,83"/></map>
+<area shape="rect" id="node2" href="dslcorr_8f90.html#a5485e2f800a2dcddfe35722b54e467b3" title="dslcorr" alt="" coords="113,5,173,32"/><area shape="rect" id="node3" href="test_8f90.html#a9bc57b8dbe7c3e1b9db72b918a1b6bab" title="test" alt="" coords="221,31,264,57"/></map>
 </div>
 </p>
 
@@ -120,7 +138,7 @@ Here is the caller graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 9 2017 19:14:12 for LMPEP by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 10 2017 11:50:05 for LMPEP by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

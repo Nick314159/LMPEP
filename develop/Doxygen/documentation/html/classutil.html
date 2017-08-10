@@ -78,8 +78,10 @@ Public Member Functions</h2></td></tr>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ae519431665d5d23f4ee1e56410e8efaa"><td class="memItemLeft" align="right" valign="top">integer, parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classutil.html#ae519431665d5d23f4ee1e56410e8efaa">in1</a> = SELECTED_INT_KIND(1)</td></tr>
 <tr class="separator:ae519431665d5d23f4ee1e56410e8efaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae220c72e1f7a32f09f69d2a6e1b158a4"><td class="memItemLeft" align="right" valign="top">integer, parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classutil.html#ae220c72e1f7a32f09f69d2a6e1b158a4">in4</a> = SELECTED_INT_KIND(6)</td></tr>
+<tr class="memitem:ae220c72e1f7a32f09f69d2a6e1b158a4"><td class="memItemLeft" align="right" valign="top">integer, parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classutil.html#ae220c72e1f7a32f09f69d2a6e1b158a4">in4</a> = SELECTED_INT_KIND(5)</td></tr>
 <tr class="separator:ae220c72e1f7a32f09f69d2a6e1b158a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a335b68863203aafecb9bba07d545f384"><td class="memItemLeft" align="right" valign="top">integer, parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classutil.html#a335b68863203aafecb9bba07d545f384">in8</a> = SELECTED_INT_KIND(10)</td></tr>
+<tr class="separator:a335b68863203aafecb9bba07d545f384"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f3c54aaf24abcf762f9ae10ed7292b6"><td class="memItemLeft" align="right" valign="top">integer, parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classutil.html#a7f3c54aaf24abcf762f9ae10ed7292b6">re8</a> = SELECTED_REAL_KIND(15, 307)</td></tr>
 <tr class="separator:a7f3c54aaf24abcf762f9ae10ed7292b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa192f30af325ad5130e29b53f83c9601"><td class="memItemLeft" align="right" valign="top">real(kind=<a class="el" href="classutil.html#a7f3c54aaf24abcf762f9ae10ed7292b6">re8</a>), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classutil.html#aa192f30af325ad5130e29b53f83c9601">zero</a> =0.0_re8</td></tr>
@@ -106,7 +108,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">real(kind=<a class="el" href="classutil.html#a7f3c54aaf24abcf762f9ae10ed7292b6">re8</a>), dimension(:), intent(in)&#160;</td>
+          <td class="paramtype">real(kind=<a class="el" href="classutil.html#a7f3c54aaf24abcf762f9ae10ed7292b6">re8</a>), dimension(*), intent(in)&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
@@ -124,7 +126,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">logical, dimension(:), intent(inout)&#160;</td>
+          <td class="paramtype">logical, dimension(*), intent(inout)&#160;</td>
           <td class="paramname"><em>h</em>&#160;</td>
         </tr>
         <tr>
@@ -135,7 +137,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="util_8f90_source.html#l00259">259</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
+<p>Definition at line <a class="el" href="util_8f90_source.html#l00260">260</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -170,13 +172,13 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">real(kind=<a class="el" href="classutil.html#a7f3c54aaf24abcf762f9ae10ed7292b6">re8</a>), dimension(:), intent(in)&#160;</td>
+          <td class="paramtype">real(kind=<a class="el" href="classutil.html#a7f3c54aaf24abcf762f9ae10ed7292b6">re8</a>), dimension(*), intent(in)&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">logical, dimension(:), intent(out)&#160;</td>
+          <td class="paramtype">logical, dimension(*), intent(out)&#160;</td>
           <td class="paramname"><em>h</em>&#160;</td>
         </tr>
         <tr>
@@ -187,7 +189,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="util_8f90_source.html#l00155">155</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
+<p>Definition at line <a class="el" href="util_8f90_source.html#l00156">156</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -216,7 +218,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">logical function util::ctest </td>
           <td>(</td>
-          <td class="paramtype">real(kind=<a class="el" href="classutil.html#a7f3c54aaf24abcf762f9ae10ed7292b6">re8</a>), dimension(:), intent(in)&#160;</td>
+          <td class="paramtype">real(kind=<a class="el" href="classutil.html#a7f3c54aaf24abcf762f9ae10ed7292b6">re8</a>), dimension(*), intent(in)&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
@@ -245,7 +247,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="util_8f90_source.html#l00325">325</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
+<p>Definition at line <a class="el" href="util_8f90_source.html#l00326">326</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -282,7 +284,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="util_8f90_source.html#l00046">46</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
+<p>Definition at line <a class="el" href="util_8f90_source.html#l00047">47</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -309,7 +311,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="util_8f90_source.html#l00024">24</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
+<p>Definition at line <a class="el" href="util_8f90_source.html#l00025">25</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -329,7 +331,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">subroutine util::left </td>
           <td>(</td>
-          <td class="paramtype">logical, dimension(:), intent(in)&#160;</td>
+          <td class="paramtype">logical, dimension(*), intent(in)&#160;</td>
           <td class="paramname"><em>h</em>, </td>
         </tr>
         <tr>
@@ -352,7 +354,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="util_8f90_source.html#l00202">202</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
+<p>Definition at line <a class="el" href="util_8f90_source.html#l00203">203</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -378,7 +380,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">logical, dimension(:), intent(in)&#160;</td>
+          <td class="paramtype">logical, dimension(*), intent(in)&#160;</td>
           <td class="paramname"><em>h</em>, </td>
         </tr>
         <tr>
@@ -401,7 +403,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="util_8f90_source.html#l00230">230</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
+<p>Definition at line <a class="el" href="util_8f90_source.html#l00231">231</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -438,7 +440,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="util_8f90_source.html#l00061">61</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
+<p>Definition at line <a class="el" href="util_8f90_source.html#l00062">62</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -474,7 +476,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="util_8f90_source.html#l00035">35</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
+<p>Definition at line <a class="el" href="util_8f90_source.html#l00036">36</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -507,7 +509,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="util_8f90_source.html#l00009">9</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
+<p>Definition at line <a class="el" href="util_8f90_source.html#l00010">10</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
 
 </div>
 </div>
@@ -530,12 +532,26 @@ Here is the caller graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">integer, parameter util::in4 = SELECTED_INT_KIND(6)</td>
+          <td class="memname">integer, parameter util::in4 = SELECTED_INT_KIND(5)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="util_8f90_source.html#l00006">6</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a335b68863203aafecb9bba07d545f384"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">integer, parameter util::in8 = SELECTED_INT_KIND(10)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="util_8f90_source.html#l00007">7</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
 
 </div>
 </div>
@@ -549,7 +565,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="util_8f90_source.html#l00008">8</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
+<p>Definition at line <a class="el" href="util_8f90_source.html#l00009">9</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
 
 </div>
 </div>
@@ -563,7 +579,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="util_8f90_source.html#l00007">7</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
+<p>Definition at line <a class="el" href="util_8f90_source.html#l00008">8</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
 
 </div>
 </div>
@@ -577,7 +593,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="util_8f90_source.html#l00008">8</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
+<p>Definition at line <a class="el" href="util_8f90_source.html#l00009">9</a> of file <a class="el" href="util_8f90_source.html">util.f90</a>.</p>
 
 </div>
 </div>
@@ -587,7 +603,7 @@ Here is the caller graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 9 2017 19:14:12 for LMPEP by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 10 2017 11:50:05 for LMPEP by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

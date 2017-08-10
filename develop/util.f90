@@ -3,7 +3,8 @@ MODULE util
 IMPLICIT NONE
 !parameters
 INTEGER, PARAMETER          :: in1 = SELECTED_INT_KIND(1)
-INTEGER, PARAMETER          :: in4 = SELECTED_INT_KIND(6)     
+INTEGER, PARAMETER          :: in4 = SELECTED_INT_KIND(5)
+INTEGER, PARAMETER          :: in8 = SELECTED_INT_KIND(10)
 INTEGER, PARAMETER          :: re8 = SELECTED_REAL_KIND(15, 307)
 REAL(KIND=re8), PARAMETER   :: zero=0.0_re8, one=1.0_re8
 REAL(KIND=re8), PARAMETER   :: eps=EPSILON(zero)
@@ -155,13 +156,13 @@ END SUBROUTINE zrarr
 SUBROUTINE cnvex(n, a, h)
 IMPLICIT NONE
 INTEGER(KIND=in4), INTENT(IN)   :: n
-LOGICAL, INTENT(OUT)            :: h(:)
-REAL(KIND=re8), INTENT(IN)      :: a(:)
+LOGICAL, INTENT(OUT)            :: h(*)
+REAL(KIND=re8), INTENT(IN)      :: a(*)
 
 ! Local variables
 INTEGER(KIND=in4)               :: i, j, k, m, nj, jc
 
-h(1:n) = .true.
+h(1:n) = .TRUE.
 
 ! compute K such that N-2 <= 2**K < N-1
 k = INT(LOG(n-2.0D0)/LOG(2.0D0))
@@ -178,9 +179,9 @@ DO i = 0, k
   DO j = 0, nj
     jc = (j+j+1)*m+1
     CALL cmerge(n, a, jc, m, h)
-  END DO
+  ENDDO
   m = m+m
-END DO
+ENDDO
 RETURN
 END SUBROUTINE cnvex
 
@@ -203,11 +204,11 @@ SUBROUTINE left(h, i, il)
 IMPLICIT NONE
 INTEGER(KIND=in4), INTENT(IN)   :: i
 INTEGER(KIND=in4), INTENT(OUT)  :: il
-LOGICAL, INTENT(IN)             :: h(:)
+LOGICAL, INTENT(IN)             :: h(*)
 
 DO il = i-1, 0, -1
   IF (h(il)) RETURN
-END DO
+ENDDO
 RETURN
 END SUBROUTINE left
 
@@ -231,11 +232,11 @@ SUBROUTINE right(n, h, i, ir)
 IMPLICIT NONE
 INTEGER(KIND=in4), INTENT(IN)   :: n, i
 INTEGER(KIND=in4), INTENT(OUT)  :: ir
-LOGICAL, INTENT(IN)             :: h(:)
+LOGICAL, INTENT(IN)             :: h(*)
 
 DO ir = i+1, n
   IF (h(ir)) RETURN
-END DO
+ENDDO
 RETURN
 END SUBROUTINE right
 
@@ -259,8 +260,8 @@ END SUBROUTINE right
 SUBROUTINE cmerge(n, a, i, m, h)
 IMPLICIT NONE
 INTEGER(KIND=in4), INTENT(IN)   :: n, m, i
-LOGICAL, INTENT(IN OUT)         :: h(:)
-REAL(KIND=re8), INTENT(IN)      :: a(:)
+LOGICAL, INTENT(INOUT)          :: h(*)
+REAL(KIND=re8), INTENT(IN)      :: a(*)
 
 ! Local variables
 INTEGER(KIND=in4)               :: ir, il, irr, ill
@@ -278,27 +279,27 @@ IF (ctest(a, il, i, ir)) THEN
 ELSE
 ! continue the search of a pair of vertices in the left and right
 ! sets which yield the upper convex hull
-  h(i) = .false.
+  h(i) = .FALSE.
   DO
     IF (il == (i-m)) THEN
-      tstl = .true.
+      tstl = .TRUE.
     ELSE
       CALL left(h, il, ill)
       tstl = ctest(a, ill, il, ir)
-    END IF
+    ENDIF
     IF (ir == MIN(n, i+m)) THEN
-      tstr = .true.
+      tstr = .TRUE.
     ELSE
       CALL right(n, h, ir, irr)
       tstr = ctest(a, il, ir, irr)
-    END IF
+    ENDIF
     h(il) = tstl
     h(ir) = tstr
     IF (tstl.AND.tstr) RETURN
     IF(.NOT.tstl) il = ill
     IF(.NOT.tstr) ir = irr
-  END DO
-END IF
+  ENDDO
+ENDIF
 
 RETURN
 END SUBROUTINE cmerge
@@ -325,19 +326,19 @@ END SUBROUTINE cmerge
 FUNCTION ctest(a, il, i, ir) RESULT(OK)
 IMPLICIT NONE
 INTEGER(KIND=in4), INTENT(IN)   :: i, il, ir
-REAL(KIND=re8), INTENT(IN)      :: a(:)
+REAL(KIND=re8), INTENT(IN)      :: a(*)
 LOGICAL                         :: OK
 
 ! Local variables
 REAL(KIND=re8)                  :: s1, s2
-REAL(KIND=re8), PARAMETER       :: toler = 0.4D0
+REAL(KIND=re8), PARAMETER       :: toler = 0.4_re8
 
 s1 = a(i) - a(il)
 s2 = a(ir) - a(i)
 s1 = s1*(ir-i)
 s2 = s2*(i-il)
-OK = .false.
-IF(s1 > (s2+toler)) OK = .true.
+OK = .FALSE.
+IF(s1 > (s2+toler)) OK = .TRUE.
 RETURN
 END FUNCTION ctest
 

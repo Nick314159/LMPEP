@@ -20,7 +20,7 @@ SUBROUTINE dsstart(alpha, deg, er, ei)
 USE util
 IMPLICIT NONE
 !scalar arguments
-INTEGER, INTENT(IN)             :: deg
+INTEGER(KIND=in4), INTENT(IN)   :: deg
 !array arguments
 REAL(KIND=re8), INTENT(IN)      :: alpha(*)
 REAL(KIND=re8), INTENT(INOUT)   :: er(*), ei(*)

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #compile scalar subroutines to object files
-gfortran -c -O3 util.f90 dzmod.f90 dsstart.f90 dseval.f90 drevseval.f90 zseval.f90 zrevseval.f90
+gfortran -c -O3 util.f90 dzmod.f90 dsstart.f90 dseval.f90 drevseval.f90 zseval.f90 zrevseval.f90 dslcorr.f90
 
 #add object files to library and copy library to /usr/lib64
 ar crv libtest.a *.o

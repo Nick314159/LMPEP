@@ -1,12 +1,17 @@
 !>\author Thomas R. Cameron
 !>\author Nikolas I. Steckley
 !>\date 8/7/2017
-!>\brief Evaluates scalar polynomial with real coefficients at real number. 
-!>\param[in] p REAL(re8), array of dimension (d+1) contains polynomial coefficients from constant to leading. 
-!>\param[in] t REAL(re8), number that polynomial is evaluated at.
-!>\param[in] deg INTEGER(in4), degree of the polynomial.
-!>\param[in] der INTEGER(in1), derivative to be taken (0,1,2).
-!>\param[out] a REAL(re8), return value.    
+!>\brief <b> Evaluates scalar polynomial with real coefficients at real number. </b>
+!>\param[in] p
+!>\verbatim REAL(re8), array of dimension (d+1) contains polynomial coefficients from constant to leading. \endverbatim
+!>\param[in] t
+!>\verbatim REAL(re8), number that polynomial is evaluated at.\endverbatim
+!>\param[in] deg
+!>\verbatim  INTEGER(in4), degree of the polynomial.\endverbatim
+!>\param[in] der
+!>\verbatim  INTEGER(in1), derivative to be taken (0,1,2).\endverbatim
+!>\param[out] a
+!>\verbatim  REAL(re8), return value.\endverbatim
 !>\note MEMORY: O(deg), FLOPS: O(deg)
 !************************************************************************
 SUBROUTINE dseval(p, t, deg, der, a)

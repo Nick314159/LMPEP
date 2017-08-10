@@ -20,5 +20,5 @@ ax.loglog(degree, time[0]*(degree/degree[0]), 'k--', label='O(n)')
 ax.set_ylabel('Seconds')
 ax.set_xlabel('Degree')
 legend = ax.legend(loc=0, shadow=True)
-savefig("times.pdf", format='pdf')
+savefig("results.pdf", format='pdf')
 

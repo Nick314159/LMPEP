@@ -1,10 +1,10 @@
 !>\author Thomas R. Cameron* and Nikolas I. Steckley**
 !>\institution *Davidson College and **Portland State University
 !>\date 2017
-!>\brief <b> Evaluates scalar polynomial with complex coefficients at complex number. </b>
+!>\brief <b> ZSEVAL evaluates complex scalar polynomial at complex number. </b>
 !>\par Purpose:
 !>\verbatim
-!> Calculates p(t), p'(t), or p''(t), where p is complex scalar polynomial and t is a complex number. What derivative is taken is determined by the parameter der and the computation is done via Horner's method. 
+!> ZSEVAL calculates p(t), p'(t), or p''(t), where p is a complex scalar polynomial and t is a complex number. What derivative is taken is determined by the parameter der and the computation is done via Horner's method. 
 !>\endverbatim
 !>\param[in] p
 !>\verbatim Double complex array of dimension (deg+1), contains polynomial coefficients, ordered from constant to leading. \endverbatim

@@ -1,10 +1,10 @@
 !>\author Thomas R. Cameron* and Nikolas I. Steckley**
 !>\institution *Davidson College and **Portland State University
 !>\date 2017
-!>\brief <b> Evaluates the reversal of a scalar polynomial with complex coefficients at complex number. </b>
+!>\brief <b> ZREVSEVAL evaluates the reversal of a complex scalar polynomial at a complex number. </b>
 !>\par Purpose:
 !>\verbatim
-!> Calculates revp(t), revp'(t), or revp''(t), where revp(t)=t^(deg)p(t^(-1)) and t is a nonzero complex number. What derivative is taken is determined by the parameter der and the computation is done via Horner's method. 
+!> ZREVSEVAL calculates revp(t), revp'(t), or revp''(t), where revp(t)=t^(deg)p(t^(-1)) and t is a nonzero complex number. What derivative is taken is determined by the parameter der and the computation is done via Horner's method. 
 !>\endverbatim
 !>\param[in] p
 !>\verbatim Double complex array of dimension (deg+1), contains polynomial coefficients, ordered from constant to leading. \endverbatim
@@ -19,7 +19,6 @@
 !>\note MEMORY: O(deg), FLOPS: O(deg)
 !************************************************************************
 SUBROUTINE zrevseval(p, t, deg, der, a)
-USE util
 IMPLICIT NONE
 !scalar arguments
 INTEGER, INTENT(IN)             :: deg, der

@@ -1,10 +1,10 @@
 !>\author Thomas R. Cameron* and Nikolas I. Steckley**
 !>\institution *Davidson College and **Portland State University
 !>\date 2017
-!>\brief <b> Computes initial estimates for roots of a polynomial. </b>
+!>\brief <b> DSSTART computes initial estimates to the roots of a polynomial. </b>
 !>\par Purpose:
 !>\verbatim
-!> Uses the Newton Polygon of a polynomial to compute initial estimates to its roots.. 
+!> DSSTART uses the Newton Polygon of a polynomial to compute initial estimates to that polynomials roots.  
 !>\endverbatim
 !>\param[in] alpha
 !>\verbatim Double precision array of dimension (deg+1), contains moduli of polynomial coefficients, ordered from constant to leading. \endverbatim

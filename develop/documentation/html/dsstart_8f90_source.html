@@ -38,6 +38,7 @@
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Types&#160;List</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -96,7 +97,7 @@ $(document).ready(function(){initNavTree('dsstart_8f90_source.html','');});
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordflow">ENDIF</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keywordflow">ENDDO</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">!compute upper convex hull</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;CALL <a class="code" href="classutil.html#ad20eb5d1569b0777e3f6dd921503be2b">cnvex</a>(deg+1,a,h)</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;CALL <a class="code" href="cnvex_8f90.html#adbba31f33811d4b7401a3ca2d373ce82">cnvex</a>(deg+1,a,h)</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">!compute initial estimates</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;iold=1; c=0; th=pi2/deg</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keywordflow">DO</span> i=2,deg+1</div>
@@ -114,7 +115,7 @@ $(document).ready(function(){initNavTree('dsstart_8f90_source.html','');});
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keywordflow">ENDDO</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keywordflow">RETURN</span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">END SUBROUTINE </span><a class="code" href="dsstart_8f90.html#a1b2ae9b811a1b8c505c7cda133598d18">dsstart</a></div>
-<div class="ttc" id="classutil_html_ad20eb5d1569b0777e3f6dd921503be2b"><div class="ttname"><a href="classutil.html#ad20eb5d1569b0777e3f6dd921503be2b">util::cnvex</a></div><div class="ttdeci">subroutine cnvex(n, a, h)</div><div class="ttdef"><b>Definition:</b> <a href="util_8f90_source.html#l00150">util.f90:150</a></div></div>
+<div class="ttc" id="cnvex_8f90_html_adbba31f33811d4b7401a3ca2d373ce82"><div class="ttname"><a href="cnvex_8f90.html#adbba31f33811d4b7401a3ca2d373ce82">cnvex</a></div><div class="ttdeci">subroutine cnvex(n, a, h)</div><div class="ttdoc"> Compute the upper convex hull of the set  </div><div class="ttdef"><b>Definition:</b> <a href="cnvex_8f90_source.html#l00030">cnvex.f90:30</a></div></div>
 <div class="ttc" id="classutil_html"><div class="ttname"><a href="classutil.html">util</a></div><div class="ttdoc"> Several parameters and subroutines.  </div><div class="ttdef"><b>Definition:</b> <a href="util_8f90_source.html#l00010">util.f90:10</a></div></div>
 <div class="ttc" id="dsstart_8f90_html_a1b2ae9b811a1b8c505c7cda133598d18"><div class="ttname"><a href="dsstart_8f90.html#a1b2ae9b811a1b8c505c7cda133598d18">dsstart</a></div><div class="ttdeci">subroutine dsstart(alpha, deg, er, ei)</div><div class="ttdoc"> DSSTART computes initial estimates to the roots of a polynomial.  </div><div class="ttdef"><b>Definition:</b> <a href="dsstart_8f90_source.html#l00019">dsstart.f90:19</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -123,7 +124,7 @@ $(document).ready(function(){initNavTree('dsstart_8f90_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dsstart_8f90.html">dsstart.f90</a></li>
-    <li class="footer">Generated on Fri Aug 11 2017 18:34:56 for LMPEP by
+    <li class="footer">Generated on Fri Aug 11 2017 19:22:03 for LMPEP by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>
   </ul>

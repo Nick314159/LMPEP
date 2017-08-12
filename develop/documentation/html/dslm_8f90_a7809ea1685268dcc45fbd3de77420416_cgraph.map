@@ -1,0 +1,15 @@
+<map id="dslm" name="dslm">
+<area shape="rect" id="node2" href="$dsstart_8f90.html#a1b2ae9b811a1b8c505c7cda133598d18" title=" DSSTART computes initial estimates to the roots of a polynomial. &#160;" alt="" coords="105,81,165,108"/>
+<area shape="rect" id="node8" href="$dslcorr_8f90.html#a5485e2f800a2dcddfe35722b54e467b3" title=" DSLCORR computes the Lagueree correction term of real polynomial with real root approximation, while ``dividing out&#39;&#39; previously computed roots. &#160;" alt="" coords="105,157,165,184"/>
+<area shape="rect" id="node11" href="$zslcorr_8f90.html#a19feb1728006fb88dbd9daae66bbd36c" title=" ZSLCORR computes the Lagueree correction term of complex polynomial with complex root approximation..." alt="" coords="105,220,164,247"/>
+<area shape="rect" id="node14" href="$dzmod_8f90.html#a61c7ef7637ccd8305c744fa7ecc067f4" title=" DZMOD returns moduli of complex number. &#160;" alt="" coords="221,309,281,336"/>
+<area shape="rect" id="node3" href="$cnvex_8f90.html#adbba31f33811d4b7401a3ca2d373ce82" title=" Compute the upper convex hull of the set &#160;" alt="" coords="223,56,278,83"/>
+<area shape="rect" id="node4" href="$classutil.html#a8bd33a2a68e95c579967e29b7aacd16d" title="util::cmerge" alt="" coords="336,56,424,83"/>
+<area shape="rect" id="node5" href="$classutil.html#a216b549fd78e55763c6c2974cc4d53f8" title="util::left" alt="" coords="478,5,541,32"/>
+<area shape="rect" id="node6" href="$classutil.html#a28fc2bcdee1ad20c677c30eb65300c2b" title="util::right" alt="" coords="474,56,545,83"/>
+<area shape="rect" id="node7" href="$classutil.html#af6680af65b6fdb1841beea3d9e916d35" title="util::ctest" alt="" coords="473,107,546,133"/>
+<area shape="rect" id="node9" href="$dseval_8f90.html#a59299c96f28205c90ee80f6fd7a76f11" title=" DSEVAL evaluates a real scalar polynomial at a real number. &#160;" alt="" coords="221,107,280,133"/>
+<area shape="rect" id="node10" href="$drevseval_8f90.html#a601888eaec65a235fb6417473947aa37" title=" DREVSEVAL evaluates the reversal of a real scalar polynomial at a real number. &#160;" alt="" coords="213,157,288,184"/>
+<area shape="rect" id="node12" href="$zseval_8f90.html#acedb55885f99f4ddb5e262f8ce91dde1" title=" ZSEVAL evaluates complex scalar polynomial at complex number. &#160;" alt="" coords="222,208,279,235"/>
+<area shape="rect" id="node13" href="$zrevseval_8f90.html#a1365b838673f326e2640730dc8e033ea" title=" ZREVSEVAL evaluates the reversal of a complex scalar polynomial at a complex number. &#160;" alt="" coords="213,259,288,285"/>
+</map>

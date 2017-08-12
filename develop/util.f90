@@ -69,63 +69,7 @@ RETURN
 END SUBROUTINE zrarr
 
 
-!************************************************************************
-!    NUMERICAL COMPUTATION OF THE ROOTS OF A POLYNOMIAL HAVING          *
-!        COMPLEX COEFFICIENTS, BASED ON ABERTH'S METHOD.                *
-!                      Version 1.4, June   1996                         *
-!    (D. Bini, Dipartimento di Matematica, Universita' di Pisa)         *
-!                         (bini@dm.unipi.it)                            *
-!                                                                                               
-!  ***************************************************************************
-!  * All the software  contained in this library  is protected by copyright. *
-!  * Permission  to use, copy, modify, and  distribute this software for any *
-!  * purpose without fee is hereby granted, provided that this entire notice *
-!  * is included  in all copies  of any software which is or includes a copy *
-!  * or modification  of this software  and in all copies  of the supporting *
-!  * documentation for such software.                                        *
-!  ***************************************************************************
-!  * THIS SOFTWARE IS BEING PROVIDED "AS IS", WITHOUT ANY EXPRESS OR IMPLIED *
-!  * WARRANTY. IN NO EVENT, NEITHER  THE AUTHORS, NOR THE PUBLISHER, NOR ANY *
-!  * MEMBER  OF THE EDITORIAL BOARD OF  THE JOURNAL  "NUMERICAL ALGORITHMS", *
-!  * NOR ITS EDITOR-IN-CHIEF, BE  LIABLE FOR ANY ERROR  IN THE SOFTWARE, ANY *
-!  * MISUSE  OF IT  OR ANY DAMAGE ARISING OUT OF ITS USE. THE ENTIRE RISK OF *
-!  * USING THE SOFTWARE LIES WITH THE PARTY DOING SO.                        *
-!  ***************************************************************************
-!  * ANY USE  OF THE SOFTWARE  CONSTITUTES  ACCEPTANCE  OF THE TERMS  OF THE *
-!  * ABOVE STATEMENT.                                                        *
-!  ***************************************************************************
-!       
-!   AUTHOR:
-!   
-!       DARIO ANDREA BINI
-!       UNIVERSITY OF PISA, ITALY
-!       E-MAIL: bini@dm.unipi.it
-!   
-!   REFERENCE:
-!   
-!    -  NUMERICAL COMPUTATION OF POLYNOMIAL ZEROS BY MEANS OF
-!       ABERTH'S METHOD
-!       NUMERICAL ALGORITHMS, 13 (1996), PP. 179-200
-!   
-!   This version, which is compatible with Lahey's free ELF90 compiler
-!   by Alan Miller, CSIRO Mathematical & Information Sciences,
-!   Private Bag 10, Clayton South MDC, Victoria, Australia 3169.
-!   Alan.Miller @ mel.dms.csiro.au    http://www.mel.dms.csiro.au/~alan
-!   Latest revision of ELF90 version - 5 May 1997
-!   
-!************************************************************************
-! Work performed under the support of the ESPRIT BRA project 6846 POSSO *
-!************************************************************************
-!**********         SUBROUTINES AND FUNCTIONS                 ***********
-!************************************************************************
-!    CNVEX   :  Computes the convex hull                                *
-!    CMERGE  :  Used by CNVEX                                           *
-!    LEFT    :  Used by CMERGE                                          *
-!    RIGHT   :  Used by CMERGE                                          *
-!    CTEST   :  Convexity test, Used by CMERGE                          *
-!************************************************************************
-!                                                                       *
-!                                                                       *
+
 !************************************************************************
 !                             SUBROUTINE CNVEX                          *
 !************************************************************************

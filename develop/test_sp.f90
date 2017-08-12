@@ -162,9 +162,8 @@ DO WHILE(deg<maxDegree)
     DO it=1,itmax
         CALL drarr(p,deg+1)
         CALL dslm(p, deg, er, ei, berr)
-        RETURN
+        STOP
     ENDDO
-    PRINT*, MAXVAL(berr)
     CALL SYSTEM_CLOCK(count=clock_stop)
     WRITE(1,'(I10)', advance='no') deg
     WRITE(1,'(A)', advance='no') ','

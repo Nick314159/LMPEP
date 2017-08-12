@@ -65,10 +65,9 @@ IF(DZMOD(er(ind),ei(ind))>1) THEN
   !compute a=revp, berr
   t=t**(-1)
   CALL zrevseval(p, t, deg, 0, a)
-  CALL zrevseval(alpha,DZMOD(er(ind),ei(ind)),deg,0,berr)
+  CALL zrevseval(alpha,DZMOD(er(ind),ei(ind))**(-1),deg,0,berr)
   berr=DZMOD(DBLE(a),DIMAG(a))*berr**(-1)
   IF(berr<eps) THEN
-    ei(ind)=zero
     conv=.TRUE.
     RETURN
   ENDIF
@@ -84,7 +83,6 @@ ELSE
   CALL zseval(alpha, DZMOD(er(ind),ei(ind)), deg, 0, berr)
   berr=DZMOD(DBLE(a),DIMAG(a))*berr**(-1)
   IF(berr<eps) THEN
-    ei(ind)=zero
     conv=.TRUE.
     RETURN
   ENDIF

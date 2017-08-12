@@ -47,6 +47,8 @@ EXTERNAL                            :: dzmod
 DO i=1,deg+1
     alpha(i)=DABS(p(i))
 ENDDO
+!initial estimates
+CALL dsstart(alpha, deg, er, ei)
 !Laguerre's method
 DO i=1,deg
     conv=.FALSE.
@@ -54,15 +56,15 @@ DO i=1,deg
         tol=eps*DZMOD(er(i),ei(i))
         IF(DABS(ei(i))<tol) THEN
             CALL dslcorr(p, alpha, tol, conv, deg, i, er, ei, berr(i))
-            PRINT*, berr(i)
         ELSE
             CALL zslcorr(p, alpha, tol, conv, deg, i, er, ei, berr(i))
-            PRINT*, berr(i)
         ENDIF
         IF(conv) THEN
             EXIT
         ENDIF
     ENDDO
+    PRINT*, i, it, berr(i)
+    PRINT*, er(i), ei(i)
 ENDDO
 RETURN
 END SUBROUTINE dslm

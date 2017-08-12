@@ -78,7 +78,7 @@ ELSE
   !compute a=p, berr
   CALL dseval(p, t, deg, 0, a)
   CALL dseval(alpha, DABS(t), deg, 0, berr)
-  berr=MIN(DABS(a)*berr**(-1), DABS(a))
+  berr=DABS(a)*berr**(-1)
   IF(berr<eps) THEN
     ei(ind)=zero
     conv=.TRUE.

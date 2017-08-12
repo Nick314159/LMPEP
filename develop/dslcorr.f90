@@ -1,5 +1,5 @@
-!>\author Thomas R. Cameron* and Nikolas I. Steckley**
-!>\institution *Davidson College and **Portland State University
+!>\author Thomas R. Cameron, Davidson College
+!>\author Nikolas I. Steckley, Portland State University
 !>\date 2017
 !>\brief <b> DSLCORR computes the Lagueree correction term of real polynomial with real root approximation, while ``dividing out'' previously computed roots. </b>
 !>\par Purpose:

@@ -14,3 +14,6 @@ gfortran -O3 test_sp.f90 -ltest -o test_sp.exe
 rm *.mod
 rm *.o
 rm *.a
+
+#Generate documentation
+doxygen Doxygen/config

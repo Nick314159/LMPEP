@@ -1,7 +1,7 @@
 <map id="dsstart" name="dsstart">
 <area shape="rect" id="node2" href="$cnvex_8f90.html#adbba31f33811d4b7401a3ca2d373ce82" title=" Compute the upper convex hull of the set &#160;" alt="" coords="115,56,170,83"/>
-<area shape="rect" id="node3" href="$classutil.html#a8bd33a2a68e95c579967e29b7aacd16d" title="util::cmerge" alt="" coords="219,56,307,83"/>
-<area shape="rect" id="node4" href="$left_8f90.html#a4589c8ebb44369af2e6a9ae4c6c3f25b" title=" Given as input the integer I and the vector H of logical, compute the the maximum integer IL such th..." alt="" coords="372,5,412,32"/>
-<area shape="rect" id="node5" href="$right_8f90.html#ab8cfb81c27c1ad6d58dd2895f3986628" title=" Given as input the integer I and the vector H of logical, compute the the minimum integer IR such th..." alt="" coords="369,56,415,83"/>
-<area shape="rect" id="node6" href="$classutil.html#af6680af65b6fdb1841beea3d9e916d35" title="util::ctest" alt="" coords="355,107,429,133"/>
+<area shape="rect" id="node3" href="$cmerge_8f90.html#a80622a48065c4191517c1a7a3953f2f3" title="Given the upper convex hulls of two consecutive sets of pairs (j,A(j)), compute the upper convex hull..." alt="" coords="219,56,285,83"/>
+<area shape="rect" id="node4" href="$left_8f90.html#a4589c8ebb44369af2e6a9ae4c6c3f25b" title=" Given as input the integer I and the vector H of logical, compute the the maximum integer IL such th..." alt="" coords="351,5,391,32"/>
+<area shape="rect" id="node5" href="$right_8f90.html#ab8cfb81c27c1ad6d58dd2895f3986628" title=" Given as input the integer I and the vector H of logical, compute the the minimum integer IR such th..." alt="" coords="347,56,394,83"/>
+<area shape="rect" id="node6" href="$classutil.html#af6680af65b6fdb1841beea3d9e916d35" title="util::ctest" alt="" coords="334,107,407,133"/>
 </map>

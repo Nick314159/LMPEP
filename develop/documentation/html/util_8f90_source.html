@@ -180,7 +180,7 @@ $(document).ready(function(){initNavTree('util_8f90_source.html','');});
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  nj = max(0, int((n-2-m)/(m+m)))</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="keywordflow">DO</span> j = 0, nj</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    jc = (j+j+1)*m+1</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    CALL <a class="code" href="classutil.html#a8bd33a2a68e95c579967e29b7aacd16d">cmerge</a>(n, a, jc, m, h)</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    CALL <a class="code" href="cmerge_8f90.html#a80622a48065c4191517c1a7a3953f2f3">cmerge</a>(n, a, jc, m, h)</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="keywordflow">ENDDO</span></div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  m = m+m</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="keywordflow">ENDDO</span></div>
@@ -259,7 +259,7 @@ $(document).ready(function(){initNavTree('util_8f90_source.html','');});
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment">!            H(j) is .TRUE. if (j,A(j)) is a vertex of the convex hull  *</span></div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="comment">!            This vector is used also as output.                        *</span></div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="comment">!************************************************************************</span></div>
-<div class="line"><a name="l00198"></a><span class="lineno"><a class="line" href="classutil.html#a8bd33a2a68e95c579967e29b7aacd16d">  198</a></span>&#160;<span class="keyword">SUBROUTINE </span><a class="code" href="classutil.html#a8bd33a2a68e95c579967e29b7aacd16d">cmerge</a>(n, a, i, m, h)</div>
+<div class="line"><a name="l00198"></a><span class="lineno"><a class="line" href="classutil.html#a8bd33a2a68e95c579967e29b7aacd16d">  198</a></span>&#160;<span class="keyword">SUBROUTINE </span><a class="code" href="cmerge_8f90.html#a80622a48065c4191517c1a7a3953f2f3">cmerge</a>(n, a, i, m, h)</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="keywordtype">IMPLICIT NONE</span></div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="keywordtype">INTEGER</span>, <span class="keywordtype">INTENT(IN)</span>   :: n, m, i</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="keywordtype">LOGICAL</span>, <span class="keywordtype">INTENT(INOUT)</span>          :: h(*)</div>
@@ -304,7 +304,7 @@ $(document).ready(function(){initNavTree('util_8f90_source.html','');});
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="keywordflow">ENDIF</span></div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;<span class="keywordflow">RETURN</span></div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<span class="keyword">END SUBROUTINE </span><a class="code" href="classutil.html#a8bd33a2a68e95c579967e29b7aacd16d">cmerge</a></div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<span class="keyword">END SUBROUTINE </span><a class="code" href="cmerge_8f90.html#a80622a48065c4191517c1a7a3953f2f3">cmerge</a></div>
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="comment">!************************************************************************</span></div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="comment">!                             FUNCTION CTEST                            *</span></div>
@@ -345,12 +345,12 @@ $(document).ready(function(){initNavTree('util_8f90_source.html','');});
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="keyword">END FUNCTION </span><a class="code" href="classutil.html#af6680af65b6fdb1841beea3d9e916d35">ctest</a></div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="keyword">END MODULE </span><a class="code" href="classutil.html">util</a></div>
-<div class="ttc" id="classutil_html_a8bd33a2a68e95c579967e29b7aacd16d"><div class="ttname"><a href="classutil.html#a8bd33a2a68e95c579967e29b7aacd16d">util::cmerge</a></div><div class="ttdeci">subroutine cmerge(n, a, i, m, h)</div><div class="ttdef"><b>Definition:</b> <a href="util_8f90_source.html#l00198">util.f90:198</a></div></div>
 <div class="ttc" id="classutil_html_a1e1479c67781ee2c8fa106da8cfd8d12"><div class="ttname"><a href="classutil.html#a1e1479c67781ee2c8fa106da8cfd8d12">util::drarr</a></div><div class="ttdeci">subroutine drarr(p, n)</div><div class="ttdef"><b>Definition:</b> <a href="util_8f90_source.html#l00041">util.f90:41</a></div></div>
 <div class="ttc" id="right_8f90_html_ab8cfb81c27c1ad6d58dd2895f3986628"><div class="ttname"><a href="right_8f90.html#ab8cfb81c27c1ad6d58dd2895f3986628">right</a></div><div class="ttdeci">subroutine right(n, h, i, ir)</div><div class="ttdoc"> Given as input the integer I and the vector H of logical, compute the the minimum integer IR such th...</div><div class="ttdef"><b>Definition:</b> <a href="right_8f90_source.html#l00011">right.f90:11</a></div></div>
 <div class="ttc" id="classutil_html_aba3a309d964d7f65c0759e87fad7de89"><div class="ttname"><a href="classutil.html#aba3a309d964d7f65c0759e87fad7de89">util::zrnum</a></div><div class="ttdeci">subroutine zrnum(a)</div><div class="ttdef"><b>Definition:</b> <a href="util_8f90_source.html#l00030">util.f90:30</a></div></div>
 <div class="ttc" id="classutil_html_a92f068c4367aac8188c12ff7384c30a6"><div class="ttname"><a href="classutil.html#a92f068c4367aac8188c12ff7384c30a6">util::zrarr</a></div><div class="ttdeci">subroutine zrarr(p, n)</div><div class="ttdef"><b>Definition:</b> <a href="util_8f90_source.html#l00056">util.f90:56</a></div></div>
 <div class="ttc" id="cnvex_8f90_html_adbba31f33811d4b7401a3ca2d373ce82"><div class="ttname"><a href="cnvex_8f90.html#adbba31f33811d4b7401a3ca2d373ce82">cnvex</a></div><div class="ttdeci">subroutine cnvex(n, a, h)</div><div class="ttdoc"> Compute the upper convex hull of the set  </div><div class="ttdef"><b>Definition:</b> <a href="cnvex_8f90_source.html#l00030">cnvex.f90:30</a></div></div>
+<div class="ttc" id="cmerge_8f90_html_a80622a48065c4191517c1a7a3953f2f3"><div class="ttname"><a href="cmerge_8f90.html#a80622a48065c4191517c1a7a3953f2f3">cmerge</a></div><div class="ttdeci">subroutine cmerge(n, a, i, m, h)</div><div class="ttdoc">Given the upper convex hulls of two consecutive sets of pairs (j,A(j)), compute the upper convex hull...</div><div class="ttdef"><b>Definition:</b> <a href="cmerge_8f90_source.html#l00014">cmerge.f90:14</a></div></div>
 <div class="ttc" id="classutil_html_af6680af65b6fdb1841beea3d9e916d35"><div class="ttname"><a href="classutil.html#af6680af65b6fdb1841beea3d9e916d35">util::ctest</a></div><div class="ttdeci">logical function ctest(a, il, i, ir)</div><div class="ttdef"><b>Definition:</b> <a href="util_8f90_source.html#l00264">util.f90:264</a></div></div>
 <div class="ttc" id="classutil_html_a09d6395879f7041aa94e3b2d2a65efb4"><div class="ttname"><a href="classutil.html#a09d6395879f7041aa94e3b2d2a65efb4">util::drnum</a></div><div class="ttdeci">subroutine drnum(a)</div><div class="ttdef"><b>Definition:</b> <a href="util_8f90_source.html#l00019">util.f90:19</a></div></div>
 <div class="ttc" id="classutil_html"><div class="ttname"><a href="classutil.html">util</a></div><div class="ttdoc"> Several parameters and subroutines.  </div><div class="ttdef"><b>Definition:</b> <a href="util_8f90_source.html#l00010">util.f90:10</a></div></div>
@@ -361,7 +361,7 @@ $(document).ready(function(){initNavTree('util_8f90_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="util_8f90.html">util.f90</a></li>
-    <li class="footer">Generated on Fri Aug 11 2017 19:28:04 for LMPEP by
+    <li class="footer">Generated on Fri Aug 11 2017 19:32:13 for LMPEP by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>
   </ul>

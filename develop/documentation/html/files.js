@@ -1,5 +1,6 @@
 var files =
 [
+    [ "cmerge.f90", "cmerge_8f90.html", "cmerge_8f90" ],
     [ "cnvex.f90", "cnvex_8f90.html", "cnvex_8f90" ],
     [ "drevseval.f90", "drevseval_8f90.html", "drevseval_8f90" ],
     [ "dseval.f90", "dseval_8f90.html", "dseval_8f90" ],

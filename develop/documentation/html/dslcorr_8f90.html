@@ -147,7 +147,9 @@ Functions/Subroutines</h2></td></tr>
 </div><div class="memdoc">
 
 <p><b> DSLCORR computes the Lagueree correction term of real polynomial with real root approximation, while ``dividing out'' previously computed roots. </b> </p>
-<dl class="section author"><dt>Author</dt><dd>Thomas R. Cameron* and Nikolas I. Steckley**  *Davidson College and **Portland State University </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Thomas R. Cameron, Davidson College </dd>
+<dd>
+Nikolas I. Steckley, Portland State University </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2017 </dd></dl>
 <dl class="section user"><dt>Purpose:</dt><dd><pre class="fragment"> DSLCORR calculates y1=p'(t)/p(t) and y2=-(p'(t)/p(t))', where t=er(ind) is the current eigenvalue approximation, and then updates y1 and y2 by subtracting the appropriate sum of preivously computed roots indexed by 1,...ind-1. From there the Laguerre correction term can be computed as deg/(y1+-sqrt((deg-1)*(deg*y2-y1**2)), where +- is choosen to maximize the denominator. 
 </pre> </dd></dl>
@@ -195,7 +197,7 @@ Here is the caller graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dslcorr_8f90.html">dslcorr.f90</a></li>
-    <li class="footer">Generated on Fri Aug 11 2017 18:24:06 for LMPEP by
+    <li class="footer">Generated on Fri Aug 11 2017 18:34:56 for LMPEP by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>
   </ul>

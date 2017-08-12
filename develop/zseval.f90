@@ -1,5 +1,5 @@
-!>\author Thomas R. Cameron* and Nikolas I. Steckley**
-!>\institution *Davidson College and **Portland State University
+!>\author Thomas R. Cameron, Davidson College
+!>\author Nikolas I. Steckley, Portland State University
 !>\date 2017
 !>\brief <b> ZSEVAL evaluates complex scalar polynomial at complex number. </b>
 !>\par Purpose:

@@ -8,7 +8,6 @@ INTEGER(KIND=8)                             :: clock_rate, clock_start, clock_st
 DOUBLE PRECISION                            :: a, t
 DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE :: alpha, berr, er, ei, p
 DOUBLE COMPLEX                              :: ac, tc
-DOUBLE COMPLEX, DIMENSION(:), ALLOCATABLE   :: pc
 CHARACTER(LEN=10)                           :: dt
 CHARACTER(LEN=100)                          :: arg
 !external functions
@@ -62,38 +61,38 @@ DO WHILE(deg<maxDegree)
     DEALLOCATE(p)
     deg=2*deg
 ENDDO
-ELSEIF(dt=='ZSEVAL') THEN
+ELSEIF(dt=='DZSEVAL') THEN
 DO WHILE(deg<maxDegree)
-    ALLOCATE(pc(deg+1))
+    ALLOCATE(p(deg+1))
     CALL SYSTEM_CLOCK(count_rate=clock_rate)
     CALL SYSTEM_CLOCK(count=clock_start)
     DO it=1,itmax
-        CALL zrarr(pc, deg+1)
+        CALL drarr(p, deg+1)
         CALL zrnum(tc)
-        CALL zseval(pc, tc, deg, 0, ac)
+        CALL dzseval(p, tc, deg, 0, ac)
     ENDDO
     CALL SYSTEM_CLOCK(count=clock_stop)
     WRITE(1,'(I10)', advance='no') deg
     WRITE(1,'(A)', advance='no') ','
     WRITE(1,'(ES15.2)') (DBLE(clock_stop-clock_start)/DBLE(clock_rate))/itmax
-    DEALLOCATE(pc)
+    DEALLOCATE(p)
     deg=2*deg
 ENDDO
-ELSEIF(dt=='ZREVSEVAL') THEN
+ELSEIF(dt=='DZREVSEVAL') THEN
 DO WHILE(deg<maxDegree)
-    ALLOCATE(pc(deg+1))
+    ALLOCATE(p(deg+1))
     CALL SYSTEM_CLOCK(count_rate=clock_rate)
     CALL SYSTEM_CLOCK(count=clock_start)
     DO it=1,itmax
-        CALL zrarr(pc, deg+1)
+        CALL drarr(p, deg+1)
         CALL zrnum(tc)
-        CALL zrevseval(pc, tc**(-1), deg, 0, ac)
+        CALL dzrevseval(p, tc**(-1), deg, 0, ac)
     ENDDO
     CALL SYSTEM_CLOCK(count=clock_stop)
     WRITE(1,'(I10)', advance='no') deg
     WRITE(1,'(A)', advance='no') ','
     WRITE(1,'(ES15.2)') (DBLE(clock_stop-clock_start)/DBLE(clock_rate))/itmax
-    DEALLOCATE(pc)
+    DEALLOCATE(p)
     deg=2*deg
 ENDDO
 ELSEIF(dt=='DSSTART') THEN
@@ -124,7 +123,7 @@ DO WHILE(deg<maxDegree)
         ENDDO
         CALL RANDOM_NUMBER(er)
         CALL RANDOM_NUMBER(ei)
-        CALL dslcorr(p, alpha, 2*10**(-15), conv, deg, deg, er, ei, t)
+        CALL dslcorr(p, alpha, 2*10**(-15), deg, deg, conv, er, ei, t)
     ENDDO
     CALL SYSTEM_CLOCK(count=clock_stop)
     WRITE(1,'(I10)', advance='no') deg
@@ -133,25 +132,25 @@ DO WHILE(deg<maxDegree)
     DEALLOCATE(alpha,er,ei,p)
     deg=2*deg
 ENDDO
-ELSEIF(dt=='ZSLCORR') THEN
+ELSEIF(dt=='DZSLCORR') THEN
 DO WHILE(deg<maxDegree)
-    ALLOCATE(alpha(deg+1),er(deg),ei(deg),pc(deg+1))
+    ALLOCATE(alpha(deg+1),er(deg),ei(deg),p(deg+1))
     CALL SYSTEM_CLOCK(count_rate=clock_rate)
     CALL SYSTEM_CLOCK(count=clock_start)
     DO it=1,itmax
-        CALL zrarr(pc, deg+1)
+        CALL drarr(p, deg+1)
         DO k=1,deg+1
-            alpha(k)=DZMOD(DBLE(pc(k)),DIMAG(pc(k)))
+            alpha(k)=DABS(p(k))
         ENDDO
         CALL RANDOM_NUMBER(er)
         CALL RANDOM_NUMBER(ei)
-        CALL dslcorr(pc, alpha, 2*10**(-15), conv, deg, deg, er, ei, t)
+        CALL dzslcorr(p, alpha, 2*10**(-15), deg, deg, conv, er, ei, t)
     ENDDO
     CALL SYSTEM_CLOCK(count=clock_stop)
     WRITE(1,'(I10)', advance='no') deg
     WRITE(1,'(A)', advance='no') ','
     WRITE(1,'(ES15.2)') (DBLE(clock_stop-clock_start)/DBLE(clock_rate))/itmax
-    DEALLOCATE(alpha,er,ei,pc)
+    DEALLOCATE(alpha,er,ei,p)
     deg=2*deg
 ENDDO
 ELSEIF(dt=='DSLM') THEN

@@ -32,8 +32,7 @@ DOUBLE PRECISION, DIMENSION(deg+1)  :: a
 !intrinsic procedures
 INTRINSIC                           :: dcos, dexp, dlog, dsin, epsilon
 !parameters
-DOUBLE PRECISION, PARAMETER         :: zero=0.0D0, one=1.0D0
-DOUBLE PRECISION, PARAMETER         :: eps=epsilon(zero)
+DOUBLE PRECISION, PARAMETER         :: eps=epsilon(0.0D0)
 DOUBLE PRECISION, PARAMETER         :: pi2 = 6.283185307179586D0, sigma = 0.7D0
 !external subroutines
 EXTERNAL                            :: cnvex
@@ -43,7 +42,7 @@ DO i=1,deg+1
   IF(alpha(i)>=eps) THEN
     a(i)=dlog(alpha(i))
   ELSE
-    a(i)=-one
+    a(i)=-1.0D0
   ENDIF
 ENDDO
 !compute upper convex hull

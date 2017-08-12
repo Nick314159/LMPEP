@@ -8,14 +8,14 @@
 !>\endverbatim
 !>\param[in] p
 !>\verbatim Double precision array of dimension (deg+1), contains polynomial coefficients, ordered from constant to leading. \endverbatim
+!>\param[in] deg
+!>\verbatim Integer, degree of the polynomial.\endverbatim
 !>\param[in,out] er
 !>\verbatim Double precision array of dimension deg, real part of eigenvalue approximations.\endverbatim
 !>\param[in,out] ei
 !>\verbatim  Double precision array of dimension deg, imaginary part of eigenvalue approximations.\endverbatim
 !>\param[in,out] berr
 !>\verbatim  Double precision array of dimension deg, backward error of each eigenvalue approximation.\endverbatim
-!>\param[in] deg
-!>\verbatim Integer, degree of the polynomial.\endverbatim
 !>\note MEMORY: O(deg), FLOPS: O(deg^2)
 !************************************************************************
 SUBROUTINE dslm(p, deg, er, ei, berr)
@@ -37,7 +37,7 @@ INTRINSIC                           :: dabs, epsilon
 INTEGER, PARAMETER                  :: itmax=25
 DOUBLE PRECISION, PARAMETER         :: eps=epsilon(0.0D0)
 !external subroutines
-EXTERNAL                            :: dsstart, dslcorr, zslcorr
+EXTERNAL                            :: dsstart, dslcorr, dzslcorr
 !external functions
 DOUBLE PRECISION                    :: dzmod
 EXTERNAL                            :: dzmod
@@ -56,7 +56,7 @@ DO i=1,deg
         IF(dabs(ei(i))<tol) THEN
             CALL dslcorr(p, alpha, tol, deg, i, conv, er, ei, berr(i))
         ELSE
-            CALL zslcorr(p, alpha, tol, deg, i, conv, er, ei, berr(i))
+            CALL dzslcorr(p, alpha, tol, deg, i, conv, er, ei, berr(i))
         ENDIF
         IF(conv) THEN
             EXIT

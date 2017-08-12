@@ -8,21 +8,25 @@
 !>\verbatim abscissa of the common vertex of the two sets  \endverbatim
 !>\param[in] m
 !>\verbatim  the number of elements of each set is M+1 \endverbatim
-!>\param[inout] h
+!>\param[in,out] h
 !>\verbatim vector defining the vertices of the convex hull, i.e.,H(j) is .TRUE. if (j,A(j)) is a vertex of the convex hull. This vector is used also as output.\endverbatim
 !************************************************************************
 SUBROUTINE cmerge(n, a, i, m, h)
 IMPLICIT NONE
-INTEGER, INTENT(IN)   :: n, m, i
+INTEGER, INTENT(IN)             :: n, m, i
 LOGICAL, INTENT(INOUT)          :: h(*)
-DOUBLE PRECISION, INTENT(IN)      :: a(*)
+DOUBLE PRECISION, INTENT(IN)    :: a(*)
 
 ! Local variables
-INTEGER               :: ir, il, irr, ill
+INTEGER                         :: ir, il, irr, ill
 LOGICAL                         :: tstl, tstr
+!intrinsic functions            
+INTRINSIC                       :: MIN
+!external subroutines
+EXTERNAL                        :: left, right
 !external functions
-LOGICAL     :: ctest
-EXTERNAL    :: ctest
+LOGICAL                         :: ctest
+EXTERNAL                        :: ctest
 
 ! at the left and the right of the common vertex (I,A(I)) determine
 ! the abscissae IL,IR, of the closest vertices of the upper convex

@@ -25,10 +25,6 @@ INTEGER, INTENT(IN)                 :: deg
 !array arguments
 DOUBLE PRECISION, INTENT(IN)        :: p(*)
 DOUBLE PRECISION, INTENT(INOUT)     :: berr(*), er(*), ei(*)
-!parameters
-INTEGER, PARAMETER                  :: itmax=25
-DOUBLE PRECISION, PARAMETER         :: zero=0.0D0
-DOUBLE PRECISION, PARAMETER         :: eps=EPSILON(zero)
 !local scalars
 LOGICAL                             :: conv
 INTEGER                             :: i, it
@@ -36,7 +32,10 @@ DOUBLE PRECISION                    :: tol
 !local arrays
 DOUBLE PRECISION, DIMENSION(deg+1)  :: alpha
 !intrinsic procedures
-INTRINSIC                           :: DABS
+INTRINSIC                           :: dabs, epsilon
+!parameters
+INTEGER, PARAMETER                  :: itmax=25
+DOUBLE PRECISION, PARAMETER         :: eps=epsilon(0.0D0)
 !external subroutines
 EXTERNAL                            :: dsstart, dslcorr, zslcorr
 !external functions
@@ -45,7 +44,7 @@ EXTERNAL                            :: dzmod
 
 !alpha
 DO i=1,deg+1
-    alpha(i)=DABS(p(i))
+    alpha(i)=dabs(p(i))
 ENDDO
 !initial estimates
 CALL dsstart(alpha, deg, er, ei)
@@ -53,18 +52,17 @@ CALL dsstart(alpha, deg, er, ei)
 DO i=1,deg
     conv=.FALSE.
     DO it=1,itmax
-        tol=eps*DZMOD(er(i),ei(i))
-        IF(DABS(ei(i))<tol) THEN
-            CALL dslcorr(p, alpha, tol, conv, deg, i, er, ei, berr(i))
+        tol=eps*dzmod(er(i),ei(i))
+        IF(dabs(ei(i))<tol) THEN
+            CALL dslcorr(p, alpha, tol, deg, i, conv, er, ei, berr(i))
         ELSE
-            CALL zslcorr(p, alpha, tol, conv, deg, i, er, ei, berr(i))
+            CALL zslcorr(p, alpha, tol, deg, i, conv, er, ei, berr(i))
         ENDIF
         IF(conv) THEN
             EXIT
         ENDIF
     ENDDO
-    PRINT*, i, it, berr(i)
-    PRINT*, er(i), ei(i)
+    PRINT*, i, it, berr(i), er(i), ei(i)
 ENDDO
 RETURN
 END SUBROUTINE dslm

@@ -14,14 +14,15 @@
 !>\verbatim  Integer, degree of the polynomial.\endverbatim
 !>\param[in] der
 !>\verbatim  Integer, derivative to be taken (0,1,2).\endverbatim
-!>\param[out] a
+!>\param[in,out] a
 !>\verbatim  Double precision, return value.\endverbatim
 !>\note MEMORY: O(deg), FLOPS: O(deg)
 !************************************************************************
 SUBROUTINE dseval(p, t, deg, der, a)
 IMPLICIT NONE
 !scalar arguments
-INTEGER, INTENT(IN)             :: deg, der
+INTEGER(KIND=1), INTENT(IN)     :: der
+INTEGER, INTENT(IN)             :: deg
 DOUBLE PRECISION, INTENT(IN)    :: t 
 DOUBLE PRECISION, INTENT(INOUT) :: a
 !array arguments

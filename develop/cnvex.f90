@@ -29,12 +29,15 @@
 !************************************************************************
 SUBROUTINE cnvex(n, a, h)
 IMPLICIT NONE
-INTEGER, INTENT(IN)   :: n
+INTEGER, INTENT(IN)             :: n
 LOGICAL, INTENT(OUT)            :: h(*)
-DOUBLE PRECISION, INTENT(IN)      :: a(*)
-
+DOUBLE PRECISION, INTENT(IN)    :: a(*)
+!intrinsic functions
+INTRINSIC                       :: INT,MAX
+!external subroutines
+EXTERNAL                        :: cmerge
 ! Local variables
-INTEGER               :: i, j, k, m, nj, jc
+INTEGER                         :: i, j, k, m, nj, jc
 
 h(1:n) = .TRUE.
 

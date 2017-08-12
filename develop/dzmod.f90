@@ -15,20 +15,18 @@ DOUBLE PRECISION FUNCTION dzmod(a, b)
 IMPLICIT NONE
 !scalar arguments
 DOUBLE PRECISION, INTENT(IN)    :: a, b
+!intrinsic functions
+INTRINSIC                       :: dabs, dsqrt, epsilon
 !parameters
 DOUBLE PRECISION, PARAMETER     :: zero=0.0D0
-DOUBLE PRECISION, PARAMETER     :: eps=EPSILON(zero)
-!return scalar
-DOUBLE PRECISION                :: r
+DOUBLE PRECISION, PARAMETER     :: eps=epsilon(zero)
 
-IF(DABS(a)<eps .AND. DABS(b)<eps) THEN
-  r=zero
-ELSEIF(DABS(a)<DABS(b)) THEN
-  r=DABS(b)*DSQRT(1+(a/b)**2)
+IF(dabs(a)<eps .AND. dabs(b)<eps) THEN
+  dzmod=zero
+ELSEIF(dabs(a)<dabs(b)) THEN
+  dzmod=dabs(b)*dsqrt(1+(a/b)**2)
 ELSE
-  r=DABS(a)*DSQRT(1+(b/a)**2)
+  dzmod=dabs(a)*dsqrt(1+(b/a)**2)
 ENDIF
-
-dzmod=r
 RETURN
 END FUNCTION dzmod

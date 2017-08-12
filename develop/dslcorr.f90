@@ -12,12 +12,12 @@
 !>\verbatim Double precision array of dimension (deg+1), contains moduli of polynomial coefficients.\endverbatim
 !>\param[in] tol
 !>\verbatim Double precision, used to determine potential convergence of eigenvalue approximation..\endverbatim
-!>\param[in,out] conv
-!>\verbatim Logical, returns true if convergence is reached.\endverbatim
 !>\param[in] deg
 !>\verbatim  Integer, degree of the polynomial.\endverbatim
 !>\param[in] ind
 !>\verbatim  Integer, index of current eigenvalue approximation.\endverbatim
+!>\param[in,out] conv
+!>\verbatim Logical, returns true if convergence is reached.\endverbatim
 !>\param[in,out] er
 !>\verbatim  Double precision array of dimension deg, real part of eigenvalue approximations.\endverbatim
 !>\param[in,out] ei
@@ -26,7 +26,7 @@
 !>\verbatim  Double precision number, backward error in current eigenvalue approximation.\endverbatim
 !>\note MEMORY: O(deg), FLOPS: O(deg)
 !************************************************************************
-SUBROUTINE dslcorr(p, alpha, tol, conv, deg, ind, er, ei, berr)
+SUBROUTINE dslcorr(p, alpha, tol, deg, ind, conv, er, ei, berr)
 IMPLICIT NONE
 !scalar arguments
 LOGICAL, INTENT(INOUT)          :: conv
@@ -36,33 +36,36 @@ DOUBLE PRECISION, INTENT(INOUT) :: berr
 !array arguments
 DOUBLE PRECISION, INTENT(IN)    :: p(*), alpha(*)
 DOUBLE PRECISION, INTENT(INOUT) :: er(*), ei(*)
-!parameters
-DOUBLE PRECISION, PARAMETER     :: zero=0.0D0
-DOUBLE PRECISION, PARAMETER     :: eps=EPSILON(zero)
 !local scalars
 INTEGER                         :: k
-DOUBLE PRECISION                :: a, b, c, t
+DOUBLE PRECISION                :: a, b, c, t, t2
 DOUBLE COMPLEX                  :: x1, x2, y1, y2
 !intrinsic procedures
-INTRINSIC                       :: DABS, DBLE, DCMPLX, DIMAG, ZABS, ZSQRT
+INTRINSIC                       :: dabs, dble, dcmplx, dimag, epsilon, zabs, zsqrt
+!parameters
+DOUBLE PRECISION, PARAMETER     :: zero=0.0D0
+DOUBLE PRECISION, PARAMETER     :: eps=epsilon(zero)
+DOUBLE COMPLEX, PARAMETER       :: czero=dcmplx(zero,zero)
 !external subroutines
 EXTERNAL                        :: dseval, drevseval
 
 !initiate variables
-x1=zero; x2=zero
+x1=czero; x2=czero
 DO k=1,ind-1
-  y1=DCMPLX(er(ind)-er(k),-ei(k))**(-1)
+  y1=dcmplx(er(ind)-er(k),-ei(k))**(-1)
   x1=x1+y1
   x2=x2+y1**2
 ENDDO
 t=er(ind)
+t2=dabs(t)
 !split into 2 cases
-IF(DABS(t)>1) THEN
+IF(t2>1) THEN
   !compute a=revp, berr
   t=t**(-1)
+  t2=t2**(-1)
   CALL drevseval(p, t, deg, 0, a)
-  CALL drevseval(alpha,DABS(t),deg,0,berr)
-  berr=DABS(a)*berr**(-1)
+  CALL drevseval(alpha, t2, deg, 0, berr)
+  berr=dabs(a)*berr**(-1)
   IF(berr<eps) THEN
     ei(ind)=zero
     conv=.TRUE.
@@ -77,8 +80,8 @@ IF(DABS(t)>1) THEN
 ELSE
   !compute a=p, berr
   CALL dseval(p, t, deg, 0, a)
-  CALL dseval(alpha, DABS(t), deg, 0, berr)
-  berr=DABS(a)*berr**(-1)
+  CALL dseval(alpha, t2, deg, 0, berr)
+  berr=dabs(a)*berr**(-1)
   IF(berr<eps) THEN
     ei(ind)=zero
     conv=.TRUE.
@@ -95,27 +98,27 @@ ENDIF
 x1=y1-x1
 x2=y2-x2
 !denominator of Laguerre correction term
-y1=ZSQRT((deg-1)*(deg*x2-x1**2))
+y1=zsqrt((deg-1)*(deg*x2-x1**2))
 y2=x1-y1
 y1=x1+y1
 !choose term that maximizes denominator
-IF(ZABS(y1)>ZABS(y2)) THEN
+IF(zabs(y1)>zabs(y2)) THEN
   y1=deg*y1**(-1)
-  IF(ZABS(y1)<tol) THEN
+  IF(zabs(y1)<tol) THEN
     ei(ind)=zero
     conv=.TRUE.
   ELSE
-    er(ind)=er(ind)-DBLE(y1)
-    ei(ind)=-DIMAG(y1)
+    er(ind)=er(ind)-dble(y1)
+    ei(ind)=-dimag(y1)
   ENDIF
 ELSE
   y2=deg*y2**(-1)
-  IF(ZABS(y2)<tol) THEN
+  IF(zabs(y2)<tol) THEN
     ei(ind)=zero
     conv=.TRUE.
   ELSE
-    er(ind)=er(ind)-DBLE(y2)
-    ei(ind)=-DIMAG(y2)
+    er(ind)=er(ind)-dble(y2)
+    ei(ind)=-dimag(y2)
   ENDIF
 ENDIF
 RETURN

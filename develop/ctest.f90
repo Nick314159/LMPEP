@@ -13,21 +13,22 @@
 !>     .FALSE.,  otherwise.
 !>\endverbatim
 !************************************************************************
-FUNCTION ctest(a, il, i, ir) RESULT(OK)
+LOGICAL FUNCTION ctest(a, il, i, ir)
 IMPLICIT NONE
-INTEGER, INTENT(IN)   :: i, il, ir
-DOUBLE PRECISION, INTENT(IN)      :: a(*)
-LOGICAL                         :: OK
-
+INTEGER, INTENT(IN)             :: i, il, ir
+DOUBLE PRECISION, INTENT(IN)    :: a(*)
 ! Local variables
-DOUBLE PRECISION                  :: s1, s2
-DOUBLE PRECISION, PARAMETER       :: toler = 0.4D0
+DOUBLE PRECISION                :: s1, s2
+DOUBLE PRECISION, PARAMETER     :: toler = 0.4D0
 
 s1 = a(i) - a(il)
 s2 = a(ir) - a(i)
 s1 = s1*(ir-i)
 s2 = s2*(i-il)
-OK = .FALSE.
-IF(s1 > (s2+toler)) OK = .TRUE.
+IF(s1 > (s2+toler)) THEN
+    ctest=.TRUE.
+ELSE
+    ctest=.FALSE.
+ENDIF
 RETURN
 END FUNCTION ctest

@@ -29,11 +29,11 @@ ABOVE STATEMENT.
 \verbatim
 SUBROUTINES AND FUNCTIONS
 
- CNVEX:  Computes the convex hull
- CMERGE  :  Used by CNVEX 
- LEFT :  Used by CMERGE
- RIGHT:  Used by CMERGE
- CTEST:  Convexity test, Used by CMERGE
+ CNVEX  :  Computes the convex hull
+ CMERGE :  Used by CNVEX 
+ LEFT   :  Used by CMERGE
+ RIGHT  :  Used by CMERGE
+ CTEST  :  Convexity test, Used by CMERGE
 \endverbatim
 
 \see 

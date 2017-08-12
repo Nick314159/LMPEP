@@ -1,10 +1,10 @@
 !>\author Thomas R. Cameron, Davidson College
 !>\author Nikolas I. Steckley, Portland State University
 !>\date 2017
-!>\brief <b> ZSEVAL evaluates complex scalar polynomial at complex number. </b>
+!>\brief <b> ZSEVAL evaluates real scalar polynomial at complex number. </b>
 !>\par Purpose:
 !>\verbatim
-!> ZSEVAL calculates p(t), p'(t), or p''(t), where p is a complex scalar polynomial and t is a complex number. What derivative is taken is determined by the parameter der and the computation is done via Horner's method. 
+!> ZSEVAL calculates p(t), p'(t), or p''(t), where p is a real scalar polynomial and t is a complex number. What derivative is taken is determined by the parameter der and the computation is done via Horner's method. 
 !>\endverbatim
 !>\param[in] p
 !>\verbatim Double complex array of dimension (deg+1), contains polynomial coefficients, ordered from constant to leading. \endverbatim
@@ -21,11 +21,12 @@
 SUBROUTINE zseval(p, t, deg, der, a)
 IMPLICIT NONE
 !scalar arguments
-INTEGER, INTENT(IN)             :: deg, der
+INTEGER(KIND=1), INTENT(IN)     :: der
+INTEGER, INTENT(IN)             :: deg
 DOUBLE COMPLEX, INTENT(IN)      :: t
 DOUBLE COMPLEX, INTENT(INOUT)   :: a
 !array arguments
-DOUBLE COMPLEX, INTENT(IN)      :: p(*)
+DOUBLE PRECISION, INTENT(IN)    :: p(*)
 !local scalars
 INTEGER                         :: k
 

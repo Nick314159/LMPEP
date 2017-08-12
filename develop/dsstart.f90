@@ -10,9 +10,9 @@
 !>\verbatim Double precision array of dimension (deg+1), contains moduli of polynomial coefficients, ordered from constant to leading. \endverbatim
 !>\param[in] deg
 !>\verbatim  Integer, degree of the polynomial.\endverbatim
-!>\param[in] er
+!>\param[in,out] er
 !>\verbatim  Double precision array of dimension deg, real part of eigenvalue approximations.\endverbatim
-!>\param[out] ei
+!>\param[out,out] ei
 !>\verbatim  Double precision array of dimension deg, imaginary part of eigenvalue approximations.\endverbatim
 !>\note MEMORY: O(deg), FLOPS: O(deg)
 !************************************************************************
@@ -23,10 +23,6 @@ INTEGER, INTENT(IN)                 :: deg
 !array arguments
 DOUBLE PRECISION, INTENT(IN)        :: alpha(*)
 DOUBLE PRECISION, INTENT(INOUT)     :: er(*), ei(*)
-!parameters
-DOUBLE PRECISION, PARAMETER         :: zero=0.0D0, one=1.0D0
-DOUBLE PRECISION, PARAMETER         :: eps=EPSILON(zero)
-DOUBLE PRECISION, PARAMETER         :: pi2 = 6.283185307179586, sigma = 0.7D0
 !local scalars
 INTEGER                             :: c, i, iold, j, nzeros
 DOUBLE PRECISION                    :: ang, r, th
@@ -34,12 +30,18 @@ DOUBLE PRECISION                    :: ang, r, th
 LOGICAL, DIMENSION(deg+1)           :: h
 DOUBLE PRECISION, DIMENSION(deg+1)  :: a
 !intrinsic procedures
-INTRINSIC                           :: DCOS, DEXP, DLOG, DSIN
+INTRINSIC                           :: dcos, dexp, dlog, dsin, epsilon
+!parameters
+DOUBLE PRECISION, PARAMETER         :: zero=0.0D0, one=1.0D0
+DOUBLE PRECISION, PARAMETER         :: eps=epsilon(zero)
+DOUBLE PRECISION, PARAMETER         :: pi2 = 6.283185307179586D0, sigma = 0.7D0
+!external subroutines
+EXTERNAL                            :: cnvex
 
 !compute log(alpha)
 DO i=1,deg+1
   IF(alpha(i)>=eps) THEN
-    a(i)=DLOG(alpha(i))
+    a(i)=dlog(alpha(i))
   ELSE
     a(i)=-one
   ENDIF
@@ -51,11 +53,11 @@ iold=1; c=0; th=pi2/deg
 DO i=2,deg+1
   IF(h(i)) THEN
     nzeros=i-iold
-    r=DEXP((a(iold)-a(i))/nzeros)
+    r=dexp((a(iold)-a(i))/nzeros)
     ang=pi2/nzeros
     DO j=1,nzeros
-      er(c+j)=r*DCOS(ang*j+th*i+sigma)
-      ei(c+j)=r*DSIN(ang*j+th*i+sigma)
+      er(c+j)=r*dcos(ang*j+th*i+sigma)
+      ei(c+j)=r*dsin(ang*j+th*i+sigma)
     ENDDO
     c=c+nzeros
     iold=i

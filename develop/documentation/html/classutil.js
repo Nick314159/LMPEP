@@ -1,12 +1,7 @@
 var classutil =
 [
-    [ "cmerge", "classutil.html#a8bd33a2a68e95c579967e29b7aacd16d", null ],
-    [ "cnvex", "classutil.html#ad20eb5d1569b0777e3f6dd921503be2b", null ],
-    [ "ctest", "classutil.html#af6680af65b6fdb1841beea3d9e916d35", null ],
     [ "drarr", "classutil.html#a1e1479c67781ee2c8fa106da8cfd8d12", null ],
     [ "drnum", "classutil.html#a09d6395879f7041aa94e3b2d2a65efb4", null ],
-    [ "left", "classutil.html#a216b549fd78e55763c6c2974cc4d53f8", null ],
-    [ "right", "classutil.html#a28fc2bcdee1ad20c677c30eb65300c2b", null ],
     [ "zrarr", "classutil.html#a92f068c4367aac8188c12ff7384c30a6", null ],
     [ "zrnum", "classutil.html#aba3a309d964d7f65c0759e87fad7de89", null ],
     [ "eps", "classutil.html#ad633ed6a8ac702a32c438375e4982956", null ],

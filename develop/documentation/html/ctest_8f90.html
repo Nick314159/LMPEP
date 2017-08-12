@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>LMPEP: right.f90 File Reference</title>
+<title>LMPEP: ctest.f90 File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,41 +61,41 @@
   </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){initNavTree('right_8f90.html','');});
+$(document).ready(function(){initNavTree('ctest_8f90.html','');});
 </script>
 <div id="doc-content">
 <div class="header">
   <div class="summary">
 <a href="#func-members">Functions/Subroutines</a>  </div>
   <div class="headertitle">
-<div class="title">right.f90 File Reference</div>  </div>
+<div class="title">ctest.f90 File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><a href="right_8f90_source.html">Go to the source code of this file.</a></p>
+<p><a href="ctest_8f90_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions/Subroutines</h2></td></tr>
-<tr class="memitem:ab8cfb81c27c1ad6d58dd2895f3986628"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="right_8f90.html#ab8cfb81c27c1ad6d58dd2895f3986628">right</a> (n, h, i, ir)</td></tr>
-<tr class="memdesc:ab8cfb81c27c1ad6d58dd2895f3986628"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b> Given as input the integer I and the vector H of logical, compute the the minimum integer IR such that IR&gt;I and H(IL) is TRUE. </b>  <a href="#ab8cfb81c27c1ad6d58dd2895f3986628">More...</a><br/></td></tr>
-<tr class="separator:ab8cfb81c27c1ad6d58dd2895f3986628"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e09cb3812405d1bcb2d1861b333c2f1"><td class="memItemLeft" align="right" valign="top">logical function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ctest_8f90.html#a1e09cb3812405d1bcb2d1861b333c2f1">ctest</a> (a, il, i, ir)</td></tr>
+<tr class="memdesc:a1e09cb3812405d1bcb2d1861b333c2f1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>Test the convexity of the angle formed by (IL,A(IL)), (I,A(I)), (IR,A(IR)) at the vertex (I,A(I)), up to within the tolerance TOLER. If convexity holds then the function is set to .TRUE., otherwise CTEST=.FALSE. The parameter TOLER is set to 0.4 by default</b>  <a href="#a1e09cb3812405d1bcb2d1861b333c2f1">More...</a><br/></td></tr>
+<tr class="separator:a1e09cb3812405d1bcb2d1861b333c2f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function/Subroutine Documentation</h2>
-<a class="anchor" id="ab8cfb81c27c1ad6d58dd2895f3986628"></a>
+<a class="anchor" id="a1e09cb3812405d1bcb2d1861b333c2f1"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">subroutine right </td>
+          <td class="memname">logical function ctest </td>
           <td>(</td>
-          <td class="paramtype">integer, intent(in)&#160;</td>
-          <td class="paramname"><em>n</em>, </td>
+          <td class="paramtype">double precision, dimension(*), intent(in)&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">logical, dimension(*), intent(in)&#160;</td>
-          <td class="paramname"><em>h</em>, </td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>il</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -106,7 +106,7 @@ Functions/Subroutines</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">integer, intent(out)&#160;</td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
           <td class="paramname"><em>ir</em>&#160;</td>
         </tr>
         <tr>
@@ -117,26 +117,30 @@ Functions/Subroutines</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><b> Given as input the integer I and the vector H of logical, compute the the minimum integer IR such that IR&gt;I and H(IL) is TRUE. </b> </p>
+<p><b>Test the convexity of the angle formed by (IL,A(IL)), (I,A(I)), (IR,A(IR)) at the vertex (I,A(I)), up to within the tolerance TOLER. If convexity holds then the function is set to .TRUE., otherwise CTEST=.FALSE. The parameter TOLER is set to 0.4 by default</b> </p>
 <dl class="section note"><dt>Note</dt><dd>Borrowed from <a class="el" href="bini.html">Numerical Computation of the Newton Polygon of a Polynomial</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td><pre class="fragment">Length of vector h </pre> </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td><pre class="fragment">Vector of Logical </pre> </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td><pre class="fragment">Integer </pre> </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">ir</td><td><pre class="fragment">Minimum integer such that ir&gt;i, h(ir)=.TRUE. </pre> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td><pre class="fragment">vector of double </pre> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">IL,I,IR</td><td><pre class="fragment">integers such that IL &lt; I &lt; IR </pre> </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd><pre class="fragment">     .TRUE. if the angle formed by (IL,A(IL)), (I,A(I)), (IR,A(IR)) at 
+            the vertex (I,A(I)), is convex up to within the tolerance  
+            TOLER, i.e., if                                            
+            (A(I)-A(IL))*(IR-I)-(A(IR)-A(I))*(I-IL)&gt;TOLER.             
+     .FALSE.,  otherwise.
+</pre> </dd></dl>
 
-<p>Definition at line <a class="el" href="right_8f90_source.html#l00011">11</a> of file <a class="el" href="right_8f90_source.html">right.f90</a>.</p>
+<p>Definition at line <a class="el" href="ctest_8f90_source.html#l00037">37</a> of file <a class="el" href="ctest_8f90_source.html">ctest.f90</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="right_8f90_ab8cfb81c27c1ad6d58dd2895f3986628_icgraph.png" border="0" usemap="#right_8f90_ab8cfb81c27c1ad6d58dd2895f3986628_icgraph" alt=""/></div>
-<map name="right_8f90_ab8cfb81c27c1ad6d58dd2895f3986628_icgraph" id="right_8f90_ab8cfb81c27c1ad6d58dd2895f3986628_icgraph">
-<area shape="rect" id="node2" href="cmerge_8f90.html#a80622a48065c4191517c1a7a3953f2f3" title="Given the upper convex hulls of two consecutive sets of pairs (j,A(j)), compute the upper convex hull..." alt="" coords="102,31,167,57"/><area shape="rect" id="node3" href="cnvex_8f90.html#adbba31f33811d4b7401a3ca2d373ce82" title=" Compute the upper convex hull of the set &#160;" alt="" coords="217,31,271,57"/><area shape="rect" id="node4" href="dsstart_8f90.html#a1b2ae9b811a1b8c505c7cda133598d18" title=" DSSTART computes initial estimates to the roots of a polynomial. &#160;" alt="" coords="321,31,381,57"/><area shape="rect" id="node5" href="dslm_8f90.html#a7809ea1685268dcc45fbd3de77420416" title=" DSLM computes the roots of a real polynomial. &#160;" alt="" coords="430,5,479,32"/><area shape="rect" id="node6" href="test__sp_8f90.html#a9bc57b8dbe7c3e1b9db72b918a1b6bab" title="test" alt="" coords="528,31,571,57"/></map>
+<div class="center"><img src="ctest_8f90_a1e09cb3812405d1bcb2d1861b333c2f1_icgraph.png" border="0" usemap="#ctest_8f90_a1e09cb3812405d1bcb2d1861b333c2f1_icgraph" alt=""/></div>
+<map name="ctest_8f90_a1e09cb3812405d1bcb2d1861b333c2f1_icgraph" id="ctest_8f90_a1e09cb3812405d1bcb2d1861b333c2f1_icgraph">
+<area shape="rect" id="node2" href="cmerge_8f90.html#a80622a48065c4191517c1a7a3953f2f3" title="Given the upper convex hulls of two consecutive sets of pairs (j,A(j)), compute the upper convex hull..." alt="" coords="105,31,170,57"/><area shape="rect" id="node3" href="cnvex_8f90.html#adbba31f33811d4b7401a3ca2d373ce82" title=" Compute the upper convex hull of the set &#160;" alt="" coords="219,31,274,57"/><area shape="rect" id="node4" href="dsstart_8f90.html#a1b2ae9b811a1b8c505c7cda133598d18" title=" DSSTART computes initial estimates to the roots of a polynomial. &#160;" alt="" coords="323,31,383,57"/><area shape="rect" id="node5" href="dslm_8f90.html#a7809ea1685268dcc45fbd3de77420416" title=" DSLM computes the roots of a real polynomial. &#160;" alt="" coords="433,5,482,32"/><area shape="rect" id="node6" href="test__sp_8f90.html#a9bc57b8dbe7c3e1b9db72b918a1b6bab" title="test" alt="" coords="531,31,573,57"/></map>
 </div>
 </p>
 
@@ -147,7 +151,7 @@ Here is the caller graph for this function:</div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="right_8f90.html">right.f90</a></li>
+    <li class="navelem"><a class="el" href="ctest_8f90.html">ctest.f90</a></li>
     <li class="footer">Generated on Fri Aug 11 2017 19:36:08 for LMPEP by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>

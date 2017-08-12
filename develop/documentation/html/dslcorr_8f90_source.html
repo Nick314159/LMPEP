@@ -123,7 +123,7 @@ $(document).ready(function(){initNavTree('dslcorr_8f90_source.html','');});
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="comment">!compute a=p, berr</span></div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  CALL <a class="code" href="dseval_8f90.html#a59299c96f28205c90ee80f6fd7a76f11">dseval</a>(p, t, deg, 0, a)</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  CALL <a class="code" href="dseval_8f90.html#a59299c96f28205c90ee80f6fd7a76f11">dseval</a>(alpha, dabs(t), deg, 0, berr)</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  berr=min(dabs(a)*berr**(-1), dabs(a))</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  berr=dabs(a)*berr**(-1)</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keywordflow">IF</span>(berr&lt;eps) <span class="keywordflow">THEN</span></div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    ei(ind)=zero</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    conv=.true.</div>
@@ -174,7 +174,7 @@ $(document).ready(function(){initNavTree('dslcorr_8f90_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dslcorr_8f90.html">dslcorr.f90</a></li>
-    <li class="footer">Generated on Fri Aug 11 2017 19:36:08 for LMPEP by
+    <li class="footer">Generated on Fri Aug 11 2017 22:48:36 for LMPEP by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>
   </ul>

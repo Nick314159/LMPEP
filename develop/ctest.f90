@@ -31,4 +31,3 @@ OK = .FALSE.
 IF(s1 > (s2+toler)) OK = .TRUE.
 RETURN
 END FUNCTION ctest
-

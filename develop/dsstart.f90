@@ -17,13 +17,16 @@
 !>\note MEMORY: O(deg), FLOPS: O(deg)
 !************************************************************************
 SUBROUTINE dsstart(alpha, deg, er, ei)
-USE util
 IMPLICIT NONE
 !scalar arguments
 INTEGER, INTENT(IN)                 :: deg
 !array arguments
 DOUBLE PRECISION, INTENT(IN)        :: alpha(*)
 DOUBLE PRECISION, INTENT(INOUT)     :: er(*), ei(*)
+!parameters
+DOUBLE PRECISION, PARAMETER         :: zero=0.0D0, one=1.0D0
+DOUBLE PRECISION, PARAMETER         :: eps=EPSILON(zero)
+DOUBLE PRECISION, PARAMETER         :: pi2 = 6.283185307179586, sigma = 0.7D0
 !local scalars
 INTEGER                             :: c, i, iold, j, nzeros
 DOUBLE PRECISION                    :: ang, r, th

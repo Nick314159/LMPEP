@@ -20,6 +20,9 @@ DOUBLE PRECISION, INTENT(IN)      :: a(*)
 ! Local variables
 INTEGER               :: ir, il, irr, ill
 LOGICAL                         :: tstl, tstr
+!external functions
+LOGICAL     :: ctest
+EXTERNAL    :: ctest
 
 ! at the left and the right of the common vertex (I,A(I)) determine
 ! the abscissae IL,IR, of the closest vertices of the upper convex

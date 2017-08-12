@@ -100,25 +100,27 @@ $(document).ready(function(){initNavTree('dslm_8f90_source.html','');});
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keywordflow">DO</span> i=1,deg+1</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    alpha(i)=dabs(p(i))</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keywordflow">ENDDO</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">!Laguerre&#39;s method</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordflow">DO</span> i=1,deg</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    conv=.false.</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">DO</span> it=1,itmax</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        tol=eps*<a class="code" href="dzmod_8f90.html#a61c7ef7637ccd8305c744fa7ecc067f4">dzmod</a>(er(i),ei(i))</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordflow">IF</span>(dabs(ei(i))&lt;tol) <span class="keywordflow">THEN</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            CALL <a class="code" href="dslcorr_8f90.html#a5485e2f800a2dcddfe35722b54e467b3">dslcorr</a>(p, alpha, tol, conv, deg, i, er, ei, berr(i))</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            print*, berr(i)</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordflow">ELSE</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            CALL <a class="code" href="zslcorr_8f90.html#a19feb1728006fb88dbd9daae66bbd36c">zslcorr</a>(p, alpha, tol, conv, deg, i, er, ei, berr(i))</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            print*, berr(i)</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">!initial estimates</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;CALL <a class="code" href="dsstart_8f90.html#a1b2ae9b811a1b8c505c7cda133598d18">dsstart</a>(alpha, deg, er, ei)</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">!Laguerre&#39;s method</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordflow">DO</span> i=1,deg</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    conv=.false.</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">DO</span> it=1,itmax</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        tol=eps*<a class="code" href="dzmod_8f90.html#a61c7ef7637ccd8305c744fa7ecc067f4">dzmod</a>(er(i),ei(i))</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keywordflow">IF</span>(dabs(ei(i))&lt;tol) <span class="keywordflow">THEN</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            CALL <a class="code" href="dslcorr_8f90.html#a5485e2f800a2dcddfe35722b54e467b3">dslcorr</a>(p, alpha, tol, conv, deg, i, er, ei, berr(i))</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordflow">ELSE</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            CALL <a class="code" href="zslcorr_8f90.html#a19feb1728006fb88dbd9daae66bbd36c">zslcorr</a>(p, alpha, tol, conv, deg, i, er, ei, berr(i))</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">ENDIF</span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordflow">IF</span>(conv) <span class="keywordflow">THEN</span></div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keywordflow">EXIT</span></div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordflow">ENDIF</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordflow">ENDDO</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keywordflow">ENDDO</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keywordflow">RETURN</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">END SUBROUTINE </span><a class="code" href="dslm_8f90.html#a7809ea1685268dcc45fbd3de77420416">dslm</a></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    print*, i, it, berr(i)</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    print*, er(i), ei(i)</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keywordflow">ENDDO</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keywordflow">RETURN</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">END SUBROUTINE </span><a class="code" href="dslm_8f90.html#a7809ea1685268dcc45fbd3de77420416">dslm</a></div>
 <div class="ttc" id="dslm_8f90_html_a7809ea1685268dcc45fbd3de77420416"><div class="ttname"><a href="dslm_8f90.html#a7809ea1685268dcc45fbd3de77420416">dslm</a></div><div class="ttdeci">subroutine dslm(p, deg, er, ei, berr)</div><div class="ttdoc"> DSLM computes the roots of a real polynomial.  </div><div class="ttdef"><b>Definition:</b> <a href="dslm_8f90_source.html#l00021">dslm.f90:21</a></div></div>
 <div class="ttc" id="dslcorr_8f90_html_a5485e2f800a2dcddfe35722b54e467b3"><div class="ttname"><a href="dslcorr_8f90.html#a5485e2f800a2dcddfe35722b54e467b3">dslcorr</a></div><div class="ttdeci">subroutine dslcorr(p, alpha, tol, conv, deg, ind, er, ei, berr)</div><div class="ttdoc"> DSLCORR computes the Lagueree correction term of real polynomial with real root approximation, while ``dividing out&amp;#39;&amp;#39; previously computed roots.  </div><div class="ttdef"><b>Definition:</b> <a href="dslcorr_8f90_source.html#l00029">dslcorr.f90:29</a></div></div>
 <div class="ttc" id="dzmod_8f90_html_a61c7ef7637ccd8305c744fa7ecc067f4"><div class="ttname"><a href="dzmod_8f90.html#a61c7ef7637ccd8305c744fa7ecc067f4">dzmod</a></div><div class="ttdeci">DOUBLE PRECISION function dzmod(a, b)</div><div class="ttdoc"> DZMOD returns moduli of complex number.  </div><div class="ttdef"><b>Definition:</b> <a href="dzmod_8f90_source.html#l00014">dzmod.f90:14</a></div></div>
@@ -130,7 +132,7 @@ $(document).ready(function(){initNavTree('dslm_8f90_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dslm_8f90.html">dslm.f90</a></li>
-    <li class="footer">Generated on Fri Aug 11 2017 19:36:08 for LMPEP by
+    <li class="footer">Generated on Fri Aug 11 2017 22:48:36 for LMPEP by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>
   </ul>

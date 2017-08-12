@@ -6,7 +6,7 @@ INTEGER(KIND=1)                             :: it, itmax
 INTEGER(KIND=4)                             :: deg, k, startDegree, maxDegree
 INTEGER(KIND=8)                             :: clock_rate, clock_start, clock_stop
 DOUBLE PRECISION                            :: a, t
-DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE :: alpha, er, ei, p
+DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE :: alpha, berr, er, ei, p
 DOUBLE COMPLEX                              :: ac, tc
 DOUBLE COMPLEX, DIMENSION(:), ALLOCATABLE   :: pc
 CHARACTER(LEN=10)                           :: dt
@@ -118,7 +118,7 @@ DO WHILE(deg<maxDegree)
     CALL SYSTEM_CLOCK(count_rate=clock_rate)
     CALL SYSTEM_CLOCK(count=clock_start)
     DO it=1,itmax
-        CALL drarr(p,deg)
+        CALL drarr(p,deg+1)
         DO k=1,deg+1
             alpha(k)=DABS(p(k))
         ENDDO
@@ -139,7 +139,7 @@ DO WHILE(deg<maxDegree)
     CALL SYSTEM_CLOCK(count_rate=clock_rate)
     CALL SYSTEM_CLOCK(count=clock_start)
     DO it=1,itmax
-        CALL zrarr(pc, deg)
+        CALL zrarr(pc, deg+1)
         DO k=1,deg+1
             alpha(k)=DZMOD(DBLE(pc(k)),DIMAG(pc(k)))
         ENDDO
@@ -152,6 +152,24 @@ DO WHILE(deg<maxDegree)
     WRITE(1,'(A)', advance='no') ','
     WRITE(1,'(ES15.2)') (DBLE(clock_stop-clock_start)/DBLE(clock_rate))/itmax
     DEALLOCATE(alpha,er,ei,pc)
+    deg=2*deg
+ENDDO
+ELSEIF(dt=='DSLM') THEN
+DO WHILE(deg<maxDegree)
+    ALLOCATE(berr(deg),er(deg),ei(deg),p(deg+1))
+    CALL SYSTEM_CLOCK(count_rate=clock_rate)
+    CALL SYSTEM_CLOCK(count=clock_start)
+    DO it=1,itmax
+        CALL drarr(p,deg+1)
+        CALL dslm(p, deg, er, ei, berr)
+        RETURN
+    ENDDO
+    PRINT*, MAXVAL(berr)
+    CALL SYSTEM_CLOCK(count=clock_stop)
+    WRITE(1,'(I10)', advance='no') deg
+    WRITE(1,'(A)', advance='no') ','
+    WRITE(1,'(ES15.2)') (DBLE(clock_stop-clock_start)/DBLE(clock_rate))/itmax
+    DEALLOCATE(berr,er,ei,p)
     deg=2*deg
 ENDDO
 ENDIF

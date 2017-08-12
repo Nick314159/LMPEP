@@ -1,24 +1,3 @@
-
-
-!************************************************************************
-!                             FUNCTION CTEST                            *
-!************************************************************************
-! Test the convexity of the angle formed by (IL,A(IL)), (I,A(I)),       *
-! (IR,A(IR)) at the vertex (I,A(I)), up to within the tolerance         *
-! TOLER. If convexity holds then the function is set to .TRUE.,         *
-! otherwise CTEST=.FALSE. The parameter TOLER is set to 0.4 by default. *
-!************************************************************************
-! Input variables:                                                      *
-!     A       : vector of double                                        *
-!     IL,I,IR : integers such that IL < I < IR                          *
-!************************************************************************
-! Output:                                                               *
-!     .TRUE. if the angle formed by (IL,A(IL)), (I,A(I)), (IR,A(IR)) at *
-!            the vertex (I,A(I)), is convex up to within the tolerance  *
-!            TOLER, i.e., if                                            *
-!            (A(I)-A(IL))*(IR-I)-(A(IR)-A(I))*(I-IL)>TOLER.             *
-!     .FALSE.,  otherwise.                                              *
-!************************************************************************
 !>\brief <b>Test the convexity of the angle formed by (IL,A(IL)), (I,A(I)), (IR,A(IR)) at the vertex (I,A(I)), up to within the tolerance TOLER. If convexity holds then the function is set to .TRUE., otherwise CTEST=.FALSE. The parameter TOLER is set to 0.4 by default</b>
 !>\note Borrowed from \ref bini
 !>\param[in] a

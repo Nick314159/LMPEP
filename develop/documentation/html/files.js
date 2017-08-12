@@ -7,6 +7,8 @@ var files =
     [ "dslm.f90", "dslm_8f90.html", "dslm_8f90" ],
     [ "dsstart.f90", "dsstart_8f90.html", "dsstart_8f90" ],
     [ "dzmod.f90", "dzmod_8f90.html", "dzmod_8f90" ],
+    [ "left.f90", "left_8f90.html", "left_8f90" ],
+    [ "right.f90", "right_8f90.html", "right_8f90" ],
     [ "test_sp.f90", "test__sp_8f90.html", "test__sp_8f90" ],
     [ "util.f90", "util_8f90.html", [
       [ "util", "classutil.html", "classutil" ]

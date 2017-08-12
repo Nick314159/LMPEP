@@ -5,8 +5,8 @@
 <area shape="rect" id="node14" href="$dzmod_8f90.html#a61c7ef7637ccd8305c744fa7ecc067f4" title=" DZMOD returns moduli of complex number. &#160;" alt="" coords="221,309,281,336"/>
 <area shape="rect" id="node3" href="$cnvex_8f90.html#adbba31f33811d4b7401a3ca2d373ce82" title=" Compute the upper convex hull of the set &#160;" alt="" coords="223,56,278,83"/>
 <area shape="rect" id="node4" href="$classutil.html#a8bd33a2a68e95c579967e29b7aacd16d" title="util::cmerge" alt="" coords="336,56,424,83"/>
-<area shape="rect" id="node5" href="$classutil.html#a216b549fd78e55763c6c2974cc4d53f8" title="util::left" alt="" coords="478,5,541,32"/>
-<area shape="rect" id="node6" href="$classutil.html#a28fc2bcdee1ad20c677c30eb65300c2b" title="util::right" alt="" coords="474,56,545,83"/>
+<area shape="rect" id="node5" href="$left_8f90.html#a4589c8ebb44369af2e6a9ae4c6c3f25b" title=" Given as input the integer I and the vector H of logical, compute the the maximum integer IL such th..." alt="" coords="489,5,529,32"/>
+<area shape="rect" id="node6" href="$right_8f90.html#ab8cfb81c27c1ad6d58dd2895f3986628" title=" Given as input the integer I and the vector H of logical, compute the the minimum integer IR such th..." alt="" coords="486,56,533,83"/>
 <area shape="rect" id="node7" href="$classutil.html#af6680af65b6fdb1841beea3d9e916d35" title="util::ctest" alt="" coords="473,107,546,133"/>
 <area shape="rect" id="node9" href="$dseval_8f90.html#a59299c96f28205c90ee80f6fd7a76f11" title=" DSEVAL evaluates a real scalar polynomial at a real number. &#160;" alt="" coords="221,107,280,133"/>
 <area shape="rect" id="node10" href="$drevseval_8f90.html#a601888eaec65a235fb6417473947aa37" title=" DREVSEVAL evaluates the reversal of a real scalar polynomial at a real number. &#160;" alt="" coords="213,157,288,184"/>

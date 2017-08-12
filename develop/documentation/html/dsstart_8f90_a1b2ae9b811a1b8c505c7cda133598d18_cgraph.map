@@ -1,7 +1,7 @@
 <map id="dsstart" name="dsstart">
 <area shape="rect" id="node2" href="$cnvex_8f90.html#adbba31f33811d4b7401a3ca2d373ce82" title=" Compute the upper convex hull of the set &#160;" alt="" coords="115,56,170,83"/>
 <area shape="rect" id="node3" href="$classutil.html#a8bd33a2a68e95c579967e29b7aacd16d" title="util::cmerge" alt="" coords="219,56,307,83"/>
-<area shape="rect" id="node4" href="$classutil.html#a216b549fd78e55763c6c2974cc4d53f8" title="util::left" alt="" coords="361,5,423,32"/>
-<area shape="rect" id="node5" href="$classutil.html#a28fc2bcdee1ad20c677c30eb65300c2b" title="util::right" alt="" coords="357,56,427,83"/>
+<area shape="rect" id="node4" href="$left_8f90.html#a4589c8ebb44369af2e6a9ae4c6c3f25b" title=" Given as input the integer I and the vector H of logical, compute the the maximum integer IL such th..." alt="" coords="372,5,412,32"/>
+<area shape="rect" id="node5" href="$right_8f90.html#ab8cfb81c27c1ad6d58dd2895f3986628" title=" Given as input the integer I and the vector H of logical, compute the the minimum integer IR such th..." alt="" coords="369,56,415,83"/>
 <area shape="rect" id="node6" href="$classutil.html#af6680af65b6fdb1841beea3d9e916d35" title="util::ctest" alt="" coords="355,107,429,133"/>
 </map>

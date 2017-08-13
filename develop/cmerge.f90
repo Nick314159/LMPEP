@@ -21,7 +21,7 @@ DOUBLE PRECISION, INTENT(IN)    :: a(*)
 INTEGER                         :: ir, il, irr, ill
 LOGICAL                         :: tstl, tstr
 !intrinsic functions            
-INTRINSIC                       :: MIN
+INTRINSIC                       :: min
 !external subroutines
 EXTERNAL                        :: left, right
 !external functions
@@ -48,7 +48,7 @@ ELSE
       CALL left(h, il, ill)
       tstl = ctest(a, ill, il, ir)
     ENDIF
-    IF (ir == MIN(n, i+m)) THEN
+    IF (ir == min(n, i+m)) THEN
       tstr = .TRUE.
     ELSE
       CALL right(n, h, ir, irr)

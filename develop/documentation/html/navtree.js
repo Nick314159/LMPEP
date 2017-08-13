@@ -2,15 +2,6 @@ var NAVTREE =
 [
   [ "LMPEP", "index.html", [
     [ "Numerical Computation of the Newton Polygon of a Polynomial", "bini.html", null ],
-    [ "Data Types List", null, [
-      [ "Data Types List", "annotated.html", "annotated" ],
-      [ "Data Types", "classes.html", null ],
-      [ "Data Fields", "functions.html", [
-        [ "All", "functions.html", null ],
-        [ "Functions/Subroutines", "functions_func.html", null ],
-        [ "Variables", "functions_vars.html", null ]
-      ] ]
-    ] ],
     [ "Files", null, [
       [ "File List", "files.html", "files" ],
       [ "File Members", "globals.html", [
@@ -23,7 +14,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"annotated.html"
+"bini.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

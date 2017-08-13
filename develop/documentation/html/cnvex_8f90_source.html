@@ -39,7 +39,6 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
-      <li><a href="annotated.html"><span>Data&#160;Types&#160;List</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
@@ -73,38 +72,41 @@ $(document).ready(function(){initNavTree('cnvex_8f90_source.html','');});
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">!************************************************************************</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="cnvex_8f90.html#adbba31f33811d4b7401a3ca2d373ce82">   30</a></span>&#160;<span class="keyword">SUBROUTINE </span><a class="code" href="cnvex_8f90.html#adbba31f33811d4b7401a3ca2d373ce82">cnvex</a>(n, a, h)</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">IMPLICIT NONE</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keywordtype">INTEGER</span>, <span class="keywordtype">INTENT(IN)</span>   :: n</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keywordtype">INTEGER</span>, <span class="keywordtype">INTENT(IN)</span>             :: n</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keywordtype">LOGICAL</span>, <span class="keywordtype">INTENT(OUT)</span>            :: h(*)</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keywordtype">DOUBLE PRECISION</span>, <span class="keywordtype">INTENT(IN)</span>      :: a(*)</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">! Local variables</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">INTEGER</span>               :: i, j, k, m, nj, jc</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;h(1:n) = .true.</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">! compute K such that N-2 &lt;= 2**K &lt; N-1</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;k = int(log(n-2.0d0)/log(2.0d0))</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keywordflow">IF</span>(2**(k+1) &lt;= (n-2)) k = k+1</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">! For each M=1,2,4,8,...,2**K, consider the NJ pairs of consecutive</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">! sets made up by M+1 points having the common vertex</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">! (JC,A(JC)), where JC=M*(2*J+1)+1 and J=0,...,NJ,</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">! NJ = MAX(0, INT((N-2-M)/(M+M))).</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">! Compute the upper convex hull of their union by means of subroutine CMERGE</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;m = 1</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordflow">DO</span> i = 0, k</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  nj = max(0, int((n-2-m)/(m+m)))</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keywordflow">DO</span> j = 0, nj</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    jc = (j+j+1)*m+1</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    CALL <a class="code" href="cmerge_8f90.html#a80622a48065c4191517c1a7a3953f2f3">cmerge</a>(n, a, jc, m, h)</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordflow">ENDDO</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  m = m+m</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keywordflow">ENDDO</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keywordflow">RETURN</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">END SUBROUTINE </span><a class="code" href="cnvex_8f90.html#adbba31f33811d4b7401a3ca2d373ce82">cnvex</a></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keywordtype">DOUBLE PRECISION</span>, <span class="keywordtype">INTENT(IN)</span>    :: a(*)</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">!intrinsic functions</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keywordtype">INTRINSIC</span>                       :: int,max</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">!external subroutines</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keywordtype">EXTERNAL</span>                        :: <a class="code" href="cmerge_8f90.html#a80622a48065c4191517c1a7a3953f2f3">cmerge</a></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">! Local variables</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keywordtype">INTEGER</span>                         :: i, j, k, m, nj, jc</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;h(1:n) = .true.</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">! compute K such that N-2 &lt;= 2**K &lt; N-1</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;k = int(log(n-2.0d0)/log(2.0d0))</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keywordflow">IF</span>(2**(k+1) &lt;= (n-2)) k = k+1</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">! For each M=1,2,4,8,...,2**K, consider the NJ pairs of consecutive</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">! sets made up by M+1 points having the common vertex</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">! (JC,A(JC)), where JC=M*(2*J+1)+1 and J=0,...,NJ,</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">! NJ = MAX(0, INT((N-2-M)/(M+M))).</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">! Compute the upper convex hull of their union by means of subroutine CMERGE</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;m = 1</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keywordflow">DO</span> i = 0, k</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  nj = max(0, int((n-2-m)/(m+m)))</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordflow">DO</span> j = 0, nj</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    jc = (j+j+1)*m+1</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    CALL <a class="code" href="cmerge_8f90.html#a80622a48065c4191517c1a7a3953f2f3">cmerge</a>(n, a, jc, m, h)</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keywordflow">ENDDO</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  m = m+m</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keywordflow">ENDDO</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keywordflow">RETURN</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">END SUBROUTINE </span><a class="code" href="cnvex_8f90.html#adbba31f33811d4b7401a3ca2d373ce82">cnvex</a></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
 <div class="ttc" id="cnvex_8f90_html_adbba31f33811d4b7401a3ca2d373ce82"><div class="ttname"><a href="cnvex_8f90.html#adbba31f33811d4b7401a3ca2d373ce82">cnvex</a></div><div class="ttdeci">subroutine cnvex(n, a, h)</div><div class="ttdoc"> Compute the upper convex hull of the set  </div><div class="ttdef"><b>Definition:</b> <a href="cnvex_8f90_source.html#l00030">cnvex.f90:30</a></div></div>
 <div class="ttc" id="cmerge_8f90_html_a80622a48065c4191517c1a7a3953f2f3"><div class="ttname"><a href="cmerge_8f90.html#a80622a48065c4191517c1a7a3953f2f3">cmerge</a></div><div class="ttdeci">subroutine cmerge(n, a, i, m, h)</div><div class="ttdoc">Given the upper convex hulls of two consecutive sets of pairs (j,A(j)), compute the upper convex hull...</div><div class="ttdef"><b>Definition:</b> <a href="cmerge_8f90_source.html#l00014">cmerge.f90:14</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -113,7 +115,7 @@ $(document).ready(function(){initNavTree('cnvex_8f90_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="cnvex_8f90.html">cnvex.f90</a></li>
-    <li class="footer">Generated on Fri Aug 11 2017 22:48:36 for LMPEP by
+    <li class="footer">Generated on Sun Aug 13 2017 12:25:08 for LMPEP by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>
   </ul>

@@ -1,12 +1,11 @@
 PROGRAM test
-USE util
 IMPLICIT NONE
 LOGICAL                                     :: conv
 INTEGER(KIND=1)                             :: it, itmax
 INTEGER(KIND=4)                             :: deg, k, startDegree, maxDegree
 INTEGER(KIND=8)                             :: clock_rate, clock_start, clock_stop
 DOUBLE PRECISION                            :: a, t
-DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE :: alpha, berr, er, ei, p
+DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE :: alpha, berr, berr_max, er, ei, p
 DOUBLE COMPLEX                              :: ac, tc
 CHARACTER(LEN=10)                           :: dt
 CHARACTER(LEN=100)                          :: arg
@@ -25,7 +24,7 @@ itmax=127
 deg=startDegree
 
 OPEN(UNIT=1,FILE="results.csv")
-WRITE(1,'(A)') '        DEG   |   AVG ET'
+WRITE(1,'(A)') dt
 
 IF (dt=='DSEVAL') THEN
 DO WHILE(deg<maxDegree)
@@ -155,25 +154,66 @@ DO WHILE(deg<maxDegree)
 ENDDO
 ELSEIF(dt=='DSLM') THEN
 DO WHILE(deg<maxDegree)
-    ALLOCATE(berr(deg),er(deg),ei(deg),p(deg+1))
+    ALLOCATE(berr(deg),berr_max(itmax),er(deg),ei(deg),p(deg+1))
     CALL SYSTEM_CLOCK(count_rate=clock_rate)
     CALL SYSTEM_CLOCK(count=clock_start)
     DO it=1,itmax
         CALL drarr(p,deg+1)
         CALL dslm(p, deg, er, ei, berr)
-        STOP
+        berr_max(it)=MAXVAL(berr)
     ENDDO
     CALL SYSTEM_CLOCK(count=clock_stop)
     WRITE(1,'(I10)', advance='no') deg
     WRITE(1,'(A)', advance='no') ','
-    WRITE(1,'(ES15.2)') (DBLE(clock_stop-clock_start)/DBLE(clock_rate))/itmax
-    DEALLOCATE(berr,er,ei,p)
+    WRITE(1,'(ES15.2)', advance='no') (DBLE(clock_stop-clock_start)/DBLE(clock_rate))/itmax
+    WRITE(1,'(A)', advance='no') ','
+    WRITE(1,'(ES15.2)') SUM(berr_max)/itmax
+    DEALLOCATE(berr,berr_max,er,ei,p)
     deg=2*deg
 ENDDO
 ENDIF
 
  CLOSE(UNIT=1)
 
-CALL EXECUTE_COMMAND_LINE('python test.py')
+CALL EXECUTE_COMMAND_LINE('python test_sp.py')
+
+CONTAINS
+
+SUBROUTINE drnum(a)
+!scalar inputs
+DOUBLE PRECISION    :: a
+!local scalars
+DOUBLE PRECISION    :: a1, a2
+
+CALL RANDOM_NUMBER(a1)
+CALL RANDOM_NUMBER(a2)
+a=-a1+2*a2
+END SUBROUTINE drnum
+
+SUBROUTINE zrnum(a)
+!scalar inputs
+DOUBLE COMPLEX      :: a
+!local scalars
+DOUBLE PRECISION    :: a1, a2
+
+CALL drnum(a1)
+CALL drnum(a2)
+a=DCMPLX(a1,a2)
+END SUBROUTINE zrnum
+
+SUBROUTINE drarr(p, n)
+IMPLICIT NONE
+!scalar inputs
+INTEGER, INTENT(IN)             :: n
+!array inputs
+DOUBLE PRECISION, INTENT(INOUT) :: p(*)
+!local arrays
+DOUBLE PRECISION, DIMENSION(n)  :: p1, p2
+
+CALL RANDOM_NUMBER(p1)
+CALL RANDOM_NUMBER(p2)
+p(1:n)=-p1+2*p2
+RETURN
+END SUBROUTINE drarr
 
 END PROGRAM test

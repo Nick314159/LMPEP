@@ -10,9 +10,9 @@
 !>\verbatim Minimum integer such that ir>i, h(ir)=.TRUE. \endverbatim
 SUBROUTINE right(n, h, i, ir)
 IMPLICIT NONE
-INTEGER, INTENT(IN)   :: n, i
-INTEGER, INTENT(OUT)  :: ir
-LOGICAL, INTENT(IN)             :: h(*)
+INTEGER, INTENT(IN)     :: n, i
+INTEGER, INTENT(OUT)    :: ir
+LOGICAL, INTENT(IN)     :: h(*)
 
 DO ir = i+1, n
   IF (h(ir)) RETURN

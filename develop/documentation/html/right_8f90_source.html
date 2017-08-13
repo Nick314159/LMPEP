@@ -39,7 +39,6 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
-      <li><a href="annotated.html"><span>Data&#160;Types&#160;List</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
@@ -72,9 +71,9 @@ $(document).ready(function(){initNavTree('right_8f90_source.html','');});
 <a href="right_8f90.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
 <div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="right_8f90.html#ab8cfb81c27c1ad6d58dd2895f3986628">   11</a></span>&#160;<span class="keyword">SUBROUTINE </span><a class="code" href="right_8f90.html#ab8cfb81c27c1ad6d58dd2895f3986628">right</a>(n, h, i, ir)</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keywordtype">IMPLICIT NONE</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keywordtype">INTEGER</span>, <span class="keywordtype">INTENT(IN)</span>   :: n, i</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keywordtype">INTEGER</span>, <span class="keywordtype">INTENT(OUT)</span>  :: ir</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keywordtype">LOGICAL</span>, <span class="keywordtype">INTENT(IN)</span>             :: h(*)</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keywordtype">INTEGER</span>, <span class="keywordtype">INTENT(IN)</span>     :: n, i</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keywordtype">INTEGER</span>, <span class="keywordtype">INTENT(OUT)</span>    :: ir</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keywordtype">LOGICAL</span>, <span class="keywordtype">INTENT(IN)</span>     :: h(*)</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keywordflow">DO</span> ir = i+1, n</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="keywordflow">IF</span> (h(ir)) <span class="keywordflow">RETURN</span></div>
@@ -89,7 +88,7 @@ $(document).ready(function(){initNavTree('right_8f90_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="right_8f90.html">right.f90</a></li>
-    <li class="footer">Generated on Fri Aug 11 2017 22:48:36 for LMPEP by
+    <li class="footer">Generated on Sun Aug 13 2017 12:25:08 for LMPEP by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>
   </ul>

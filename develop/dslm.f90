@@ -34,7 +34,7 @@ DOUBLE PRECISION, DIMENSION(deg+1)  :: alpha
 !intrinsic procedures
 INTRINSIC                           :: dabs, epsilon
 !parameters
-INTEGER, PARAMETER                  :: itmax=25
+INTEGER, PARAMETER                  :: itmax=35
 DOUBLE PRECISION, PARAMETER         :: eps=epsilon(0.0D0)
 !external subroutines
 EXTERNAL                            :: dsstart, dslcorr, dzslcorr
@@ -62,7 +62,6 @@ DO i=1,deg
             EXIT
         ENDIF
     ENDDO
-    PRINT*, i, it, berr(i), er(i), ei(i)
 ENDDO
 RETURN
 END SUBROUTINE dslm

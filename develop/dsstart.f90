@@ -10,9 +10,9 @@
 !>\verbatim Double precision array of dimension (deg+1), contains moduli of polynomial coefficients, ordered from constant to leading. \endverbatim
 !>\param[in] deg
 !>\verbatim  Integer, degree of the polynomial.\endverbatim
-!>\param[in,out] er
+!>\param[out] er
 !>\verbatim  Double precision array of dimension deg, real part of eigenvalue approximations.\endverbatim
-!>\param[out,out] ei
+!>\param[out] ei
 !>\verbatim  Double precision array of dimension deg, imaginary part of eigenvalue approximations.\endverbatim
 !>\note MEMORY: O(deg), FLOPS: O(deg)
 !************************************************************************
@@ -22,7 +22,7 @@ IMPLICIT NONE
 INTEGER, INTENT(IN)                 :: deg
 !array arguments
 DOUBLE PRECISION, INTENT(IN)        :: alpha(*)
-DOUBLE PRECISION, INTENT(INOUT)     :: er(*), ei(*)
+DOUBLE PRECISION, INTENT(OUT)       :: er(*), ei(*)
 !local scalars
 INTEGER                             :: c, i, iold, j, nzeros
 DOUBLE PRECISION                    :: ang, r, th

@@ -22,7 +22,7 @@
 !>\verbatim  Double precision array of dimension deg, real part of eigenvalue approximations.\endverbatim
 !>\param[in,out] ei
 !>\verbatim  Double precision array of dimension deg, imaginary part of eigenvalue approximations.\endverbatim
-!>\param[in,out] berr
+!>\param[out] berr
 !>\verbatim  Double precision number, backward error in current eigenvalue approximation.\endverbatim
 !>\note MEMORY: O(deg), FLOPS: O(deg)
 !************************************************************************
@@ -32,7 +32,7 @@ IMPLICIT NONE
 LOGICAL, INTENT(INOUT)          :: conv
 INTEGER, INTENT(IN)             :: deg, ind
 DOUBLE PRECISION, INTENT(IN)    :: tol
-DOUBLE PRECISION, INTENT(INOUT) :: berr
+DOUBLE PRECISION, INTENT(OUT)   :: berr
 !array arguments
 DOUBLE PRECISION, INTENT(IN)    :: p(*), alpha(*)
 DOUBLE PRECISION, INTENT(INOUT) :: er(*), ei(*)

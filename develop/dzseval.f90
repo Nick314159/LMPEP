@@ -24,7 +24,7 @@ IMPLICIT NONE
 INTEGER(KIND=1), INTENT(IN)     :: der
 INTEGER, INTENT(IN)             :: deg
 DOUBLE COMPLEX, INTENT(IN)      :: t
-DOUBLE COMPLEX, INTENT(INOUT)   :: a
+DOUBLE COMPLEX, INTENT(OUT)     :: a
 !array arguments
 DOUBLE PRECISION, INTENT(IN)    :: p(*)
 !local scalars

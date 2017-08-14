@@ -8,9 +8,9 @@
 !>\verbatim Maximum integer such that il<i, h(il)=.TRUE. \endverbatim
 SUBROUTINE left(h, i, il)
 IMPLICIT NONE
-INTEGER, INTENT(IN)   :: i
-INTEGER, INTENT(OUT)  :: il
-LOGICAL, INTENT(IN)             :: h(*)
+INTEGER, INTENT(IN)     :: i
+INTEGER, INTENT(OUT)    :: il
+LOGICAL, INTENT(IN)     :: h(*)
 
 DO il = i-1, 0, -1
   IF (h(il)) RETURN

@@ -14,7 +14,7 @@
 !>\verbatim  Integer, degree of the polynomial.\endverbatim
 !>\param[in] der
 !>\verbatim  Integer, derivative to be taken (0,1,2).\endverbatim
-!>\param[in,out] a
+!>\param[out] a
 !>\verbatim  Double precision, return value.\endverbatim
 !>\note MEMORY: O(deg), FLOPS: O(deg)
 !************************************************************************
@@ -24,7 +24,7 @@ IMPLICIT NONE
 INTEGER(KIND=1), INTENT(IN)     :: der
 INTEGER, INTENT(IN)             :: deg
 DOUBLE PRECISION, INTENT(IN)    :: t
-DOUBLE PRECISION, INTENT(INOUT) :: a
+DOUBLE PRECISION, INTENT(OUT)   :: a
 !array arguments
 DOUBLE PRECISION, INTENT(IN)    :: p(*)
 !local scalars

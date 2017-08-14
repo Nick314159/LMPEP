@@ -10,11 +10,11 @@
 !>\verbatim Double precision array of dimension (deg+1), contains polynomial coefficients, ordered from constant to leading. \endverbatim
 !>\param[in] deg
 !>\verbatim Integer, degree of the polynomial.\endverbatim
-!>\param[in,out] er
+!>\param[out] er
 !>\verbatim Double precision array of dimension deg, real part of eigenvalue approximations.\endverbatim
-!>\param[in,out] ei
+!>\param[out] ei
 !>\verbatim  Double precision array of dimension deg, imaginary part of eigenvalue approximations.\endverbatim
-!>\param[in,out] berr
+!>\param[out] berr
 !>\verbatim  Double precision array of dimension deg, backward error of each eigenvalue approximation.\endverbatim
 !>\note MEMORY: O(deg), FLOPS: O(deg^2)
 !************************************************************************
@@ -24,7 +24,7 @@ IMPLICIT NONE
 INTEGER, INTENT(IN)                 :: deg
 !array arguments
 DOUBLE PRECISION, INTENT(IN)        :: p(*)
-DOUBLE PRECISION, INTENT(INOUT)     :: berr(*), er(*), ei(*)
+DOUBLE PRECISION, INTENT(OUT)       :: berr(*), er(*), ei(*)
 !local scalars
 LOGICAL                             :: conv
 INTEGER                             :: i, it
@@ -34,7 +34,7 @@ DOUBLE PRECISION, DIMENSION(deg+1)  :: alpha
 !intrinsic procedures
 INTRINSIC                           :: dabs, epsilon
 !parameters
-INTEGER, PARAMETER                  :: itmax=35
+INTEGER, PARAMETER                  :: itmax=40
 DOUBLE PRECISION, PARAMETER         :: eps=epsilon(0.0D0)
 !external subroutines
 EXTERNAL                            :: dsstart, dslcorr, dzslcorr

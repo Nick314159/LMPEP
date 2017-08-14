@@ -16,23 +16,23 @@
 !>\verbatim  Integer, degree of the polynomial.\endverbatim
 !>\param[in] ind
 !>\verbatim  Integer, index of current eigenvalue approximation.\endverbatim
-!>\param[in,out] conv
+!>\param[out] conv
 !>\verbatim Logical, returns true if convergence is reached.\endverbatim
 !>\param[in,out] er
 !>\verbatim  Double precision array of dimension deg, real part of eigenvalue approximations.\endverbatim
 !>\param[in,out] ei
 !>\verbatim  Double precision array of dimension deg, imaginary part of eigenvalue approximations.\endverbatim
-!>\param[in,out] berr
+!>\param[out] berr
 !>\verbatim  Double precision number, backward error in current eigenvalue approximation.\endverbatim
 !>\note MEMORY: O(deg), FLOPS: O(deg)
 !************************************************************************
 SUBROUTINE dslcorr(p, alpha, tol, deg, ind, conv, er, ei, berr)
 IMPLICIT NONE
 !scalar arguments
-LOGICAL, INTENT(INOUT)          :: conv
+LOGICAL, INTENT(OUT)            :: conv
 INTEGER, INTENT(IN)             :: deg, ind
 DOUBLE PRECISION, INTENT(IN)    :: tol
-DOUBLE PRECISION, INTENT(INOUT) :: berr
+DOUBLE PRECISION, INTENT(OUT)   :: berr
 !array arguments
 DOUBLE PRECISION, INTENT(IN)    :: p(*), alpha(*)
 DOUBLE PRECISION, INTENT(INOUT) :: er(*), ei(*)

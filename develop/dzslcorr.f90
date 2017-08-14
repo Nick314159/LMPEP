@@ -16,7 +16,7 @@
 !>\verbatim  Integer, degree of the polynomial.\endverbatim
 !>\param[in] ind
 !>\verbatim  Integer, index of current eigenvalue approximation.\endverbatim
-!>\param[in,out] conv
+!>\param[out] conv
 !>\verbatim Logical, returns true if convergence is reached.\endverbatim
 !>\param[in,out] er
 !>\verbatim  Double precision array of dimension deg, real part of eigenvalue approximations.\endverbatim
@@ -29,7 +29,7 @@
 SUBROUTINE dzslcorr(p, alpha, tol, deg, ind, conv, er, ei, berr)
 IMPLICIT NONE
 !scalar arguments
-LOGICAL, INTENT(INOUT)          :: conv
+LOGICAL, INTENT(OUT)            :: conv
 INTEGER, INTENT(IN)             :: deg, ind
 DOUBLE PRECISION, INTENT(IN)    :: tol
 DOUBLE PRECISION, INTENT(OUT)   :: berr

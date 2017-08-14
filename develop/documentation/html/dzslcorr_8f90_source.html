@@ -73,10 +73,10 @@ $(document).ready(function(){initNavTree('dzslcorr_8f90_source.html','');});
 <div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="dzslcorr_8f90.html#a22eddaa9ac0ea7be92699c5313a1a57c">   29</a></span>&#160;<span class="keyword">SUBROUTINE </span><a class="code" href="dzslcorr_8f90.html#a22eddaa9ac0ea7be92699c5313a1a57c">dzslcorr</a>(p, alpha, tol, deg, ind, conv, er, ei, berr)</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keywordtype">IMPLICIT NONE</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">!scalar arguments</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keywordtype">LOGICAL</span>, <span class="keywordtype">INTENT(INOUT)</span>          :: conv</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keywordtype">LOGICAL</span>, <span class="keywordtype">INTENT(OUT)</span>            :: conv</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keywordtype">INTEGER</span>, <span class="keywordtype">INTENT(IN)</span>             :: deg, ind</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keywordtype">DOUBLE PRECISION</span>, <span class="keywordtype">INTENT(IN)</span>    :: tol</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keywordtype">DOUBLE PRECISION</span>, <span class="keywordtype">INTENT(INOUT)</span> :: berr</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keywordtype">DOUBLE PRECISION</span>, <span class="keywordtype">INTENT(OUT)</span>   :: berr</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">!array arguments</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">DOUBLE PRECISION</span>, <span class="keywordtype">INTENT(IN)</span>    :: p(*), alpha(*)</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keywordtype">DOUBLE PRECISION</span>, <span class="keywordtype">INTENT(INOUT)</span> :: er(*), ei(*)</div>
@@ -177,7 +177,7 @@ $(document).ready(function(){initNavTree('dzslcorr_8f90_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dzslcorr_8f90.html">dzslcorr.f90</a></li>
-    <li class="footer">Generated on Sun Aug 13 2017 12:25:08 for LMPEP by
+    <li class="footer">Generated on Mon Aug 14 2017 11:29:16 for LMPEP by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>
   </ul>

@@ -71,9 +71,9 @@ $(document).ready(function(){initNavTree('left_8f90_source.html','');});
 <a href="left_8f90.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
 <div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="left_8f90.html#a4589c8ebb44369af2e6a9ae4c6c3f25b">    9</a></span>&#160;<span class="keyword">SUBROUTINE </span><a class="code" href="left_8f90.html#a4589c8ebb44369af2e6a9ae4c6c3f25b">left</a>(h, i, il)</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keywordtype">IMPLICIT NONE</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keywordtype">INTEGER</span>, <span class="keywordtype">INTENT(IN)</span>   :: i</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keywordtype">INTEGER</span>, <span class="keywordtype">INTENT(OUT)</span>  :: il</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keywordtype">LOGICAL</span>, <span class="keywordtype">INTENT(IN)</span>             :: h(*)</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keywordtype">INTEGER</span>, <span class="keywordtype">INTENT(IN)</span>     :: i</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keywordtype">INTEGER</span>, <span class="keywordtype">INTENT(OUT)</span>    :: il</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keywordtype">LOGICAL</span>, <span class="keywordtype">INTENT(IN)</span>     :: h(*)</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keywordflow">DO</span> il = i-1, 0, -1</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <span class="keywordflow">IF</span> (h(il)) <span class="keywordflow">RETURN</span></div>
@@ -88,7 +88,7 @@ $(document).ready(function(){initNavTree('left_8f90_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="left_8f90.html">left.f90</a></li>
-    <li class="footer">Generated on Sun Aug 13 2017 12:25:08 for LMPEP by
+    <li class="footer">Generated on Mon Aug 14 2017 11:29:16 for LMPEP by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>
   </ul>

@@ -99,13 +99,13 @@ Functions/Subroutines</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double precision, dimension(*), intent(inout)&#160;</td>
+          <td class="paramtype">double precision, dimension(*), intent(out)&#160;</td>
           <td class="paramname"><em>er</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double precision, dimension(*), intent(inout)&#160;</td>
+          <td class="paramtype">double precision, dimension(*), intent(out)&#160;</td>
           <td class="paramname"><em>ei</em>&#160;</td>
         </tr>
         <tr>
@@ -127,8 +127,8 @@ Nikolas I. Steckley, Portland State University </dd></dl>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">alpha</td><td><pre class="fragment">Double precision array of dimension (deg+1), contains moduli of polynomial coefficients, ordered from constant to leading. </pre> </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">deg</td><td><pre class="fragment">Integer, degree of the polynomial.</pre> </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">er</td><td><pre class="fragment">Double precision array of dimension deg, real part of eigenvalue approximations.</pre> </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">out,out]</td><td>ei <pre class="fragment">Double precision array of dimension deg, imaginary part of eigenvalue approximations.</pre> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">er</td><td><pre class="fragment">Double precision array of dimension deg, real part of eigenvalue approximations.</pre> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ei</td><td><pre class="fragment">Double precision array of dimension deg, imaginary part of eigenvalue approximations.</pre> </td></tr>
   </table>
   </dd>
 </dl>
@@ -162,7 +162,7 @@ Here is the caller graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dsstart_8f90.html">dsstart.f90</a></li>
-    <li class="footer">Generated on Sun Aug 13 2017 12:25:08 for LMPEP by
+    <li class="footer">Generated on Mon Aug 14 2017 11:29:16 for LMPEP by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>
   </ul>

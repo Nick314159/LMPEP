@@ -14,7 +14,7 @@
 !>\verbatim  Integer, degree of the polynomial.\endverbatim
 !>\param[in] der
 !>\verbatim  Integer, derivative to be taken (0,1,2).\endverbatim
-!>\param[in,out] a
+!>\param[out] a
 !>\verbatim  Double complex, return value.\endverbatim
 !>\note MEMORY: O(deg), FLOPS: O(deg)
 !************************************************************************

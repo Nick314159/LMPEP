@@ -10,7 +10,7 @@ DOUBLE COMPLEX                              :: ac, tc
 CHARACTER(LEN=10)                           :: dt
 CHARACTER(LEN=100)                          :: arg
 !intrinsic subroutines
-INTRINSIC                                   :: dabs, dble, getarg, maxval, random_number, system_clock
+INTRINSIC                                   :: dabs, dble, getarg, maxval, random_number, system_clock, sum
 !external subroutines
 EXTERNAL                                    :: dseval, drevseval, dzseval, dzrevseval, dsstart, dslcorr, dzslcorr, dslm
 !external functions
@@ -173,7 +173,7 @@ DO WHILE(deg<maxDegree)
     WRITE(1,'(A)', advance='no') ','
     WRITE(1,'(ES15.2)', advance='no') (dble(clock_stop-clock_start)/dble(clock_rate))/itmax
     WRITE(1,'(A)', advance='no') ','
-    WRITE(1,'(ES15.2)') SUM(berr_max)/itmax
+    WRITE(1,'(ES15.2)') sum(berr_max)/itmax
     DEALLOCATE(berr,berr_max,er,ei,p)
     deg=2*deg
 ENDDO

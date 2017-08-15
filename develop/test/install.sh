@@ -8,7 +8,7 @@ ar crv libsptest.a *.o
 sudo cp libsptest.a /usr/lib64/
 
 #compile test program to executable file
-gfortran -O3 test.f90 -lsptest -o test.exe
+gfortran -O3 test.f90 -lsptest -llmpep -o test.exe
 
 #clean up
 rm *.o

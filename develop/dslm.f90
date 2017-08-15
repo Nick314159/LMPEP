@@ -34,7 +34,7 @@ DOUBLE PRECISION, DIMENSION(deg+1)  :: alpha
 !intrinsic procedures
 INTRINSIC                           :: dabs, epsilon
 !parameters
-INTEGER, PARAMETER                  :: itmax=40
+INTEGER, PARAMETER                  :: itmax=50
 DOUBLE PRECISION, PARAMETER         :: eps=epsilon(0.0D0)
 !external subroutines
 EXTERNAL                            :: dsstart, dslcorr, dzslcorr

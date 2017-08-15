@@ -74,9 +74,11 @@ IF(t2>1) THEN
   !compute b=revp', c=revp''
   CALL drevseval(p, t, deg, 1, b)
   CALL drevseval(p, t, deg, 2, c)
-  !compute y1=p'/p and y2=(p'/p)'
-  y1=t*(deg-t*(b*a**(-1)))
-  y2=t**2*(deg-2*t*(b*a**(-1))+t**2*((b*a**(-1))**2-(c*a**(-1))))
+  !compute y1=p'/p and y2=-(p'/p)'
+  b=b*a**(-1)
+  c=c*a**(-1)
+  y1=dcmplx(t*(deg-t*b),zero)
+  y2=dcmplx(t**2*(deg-2*t*b+t**2*(b**2-c)),zero)
 ELSE
   !compute a=p, berr
   CALL dseval(p, t, deg, 0, a)
@@ -90,9 +92,11 @@ ELSE
   !compute b=p', c=p''
   CALL dseval(p, t, deg, 1, b)
   CALL dseval(p, t, deg, 2, c)
-  !compute y1=p'/p and y2=(p'/p)'
-  y1=b*a**(-1)
-  y2=y1**2-(c*a**(-1))
+  !compute y1=p'/p and y2=-(p'/p)'
+  b=b*a**(-1)
+  c=c*a**(-1)
+  y1=dcmplx(b,zero)
+  y2=dcmplx(b**2-c,zero)
 ENDIF
 !remove previously found roots
 x1=y1-x1

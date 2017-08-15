@@ -32,14 +32,14 @@ DOUBLE PRECISION, DIMENSION(deg+1)  :: a
 !intrinsic procedures
 INTRINSIC                           :: dcos, dexp, dlog, dsin, epsilon
 !parameters
-DOUBLE PRECISION, PARAMETER         :: eps=epsilon(0.0D0)
+DOUBLE PRECISION, PARAMETER         :: zero=0.0D0
 DOUBLE PRECISION, PARAMETER         :: pi2 = 6.283185307179586D0, sigma = 0.7D0
 !external subroutines
 EXTERNAL                            :: cnvex
 
 !compute log(alpha)
 DO i=1,deg+1
-  IF(alpha(i)>=eps) THEN
+  IF(alpha(i)>zero) THEN
     a(i)=dlog(alpha(i))
   ELSE
     a(i)=-1.0D0

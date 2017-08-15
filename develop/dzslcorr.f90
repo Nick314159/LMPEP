@@ -67,7 +67,7 @@ IF(t2>1) THEN
   t2=t2**(-1)
   CALL dzrevseval(p, t, deg, 0, a)
   CALL drevseval(alpha, t2, deg, 0, berr)
-  berr=dzmod(dble(a),dimag(a))*berr**(-1)
+  berr=zabs(a)*berr**(-1)
   IF(berr<eps) THEN
     conv=.TRUE.
     RETURN
@@ -75,14 +75,16 @@ IF(t2>1) THEN
   !compute b=revp', c=revp''
   CALL dzrevseval(p, t, deg, 1, b)
   CALL dzrevseval(p, t, deg, 2, c)
-  !compute y1=p'/p and y2=(p'/p)'
-  y1=t*(deg-t*(b*a**(-1)))
-  y2=t**2*(deg-2*t*(b*a**(-1))+t**2*((b*a**(-1))**2-(c*a**(-1))))
+  !compute y1=p'/p and y2=-(p'/p)'
+  b=b*a**(-1)
+  c=c*a**(-1)
+  y1=t*(deg-t*b)
+  y2=t**2*(deg-2*t*b+t**2*(b**2-c))
 ELSE
   !compute a=p, berr
   CALL dzseval(p, t, deg, 0, a)
   CALL dseval(alpha, t2, deg, 0, berr)
-  berr=dzmod(dble(a),dimag(a))*berr**(-1)
+  berr=zabs(a)*berr**(-1)
   IF(berr<eps) THEN
     conv=.TRUE.
     RETURN
@@ -90,9 +92,11 @@ ELSE
   !compute b=p', c=p''
   CALL dzseval(p, t, deg, 1, b)
   CALL dzseval(p, t, deg, 2, c)
-  !compute y1=p'/p and y2=(p'/p)'
-  y1=b*a**(-1)
-  y2=y1**2-(c*a**(-1))
+  !compute y1=p'/p and y2=-(p'/p)'
+  b=b*a**(-1)
+  c=c*a**(-1)
+  y1=b
+  y2=b**2-c
 ENDIF
 !remove previously found roots
 x1=y1-x1

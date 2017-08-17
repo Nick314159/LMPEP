@@ -3,7 +3,8 @@ USE poly_zeroes
 IMPLICIT NONE
 INTEGER(KIND=8)                             :: clock, clock_rate, clock_start, clock_stop
 INTEGER                                     :: i, j, nitmax, iter
-REAL(KIND=dp), DIMENSION(:), ALLOCATABLE    :: radius, time
+REAL(KIND=dp), DIMENSION(:), ALLOCATABLE    :: radius
+REAL(KIND=dp), DIMENSION(:,:), ALLOCATABLE    :: time
 REAL(KIND=dp)                               :: new_root, eps, big, small, aux, ru, ri
 COMPLEX(KIND=dp), DIMENSION(:), ALLOCATABLE :: root, poly
 LOGICAL, DIMENSION(:), ALLOCATABLE          :: err
@@ -34,7 +35,7 @@ deg=startDegree
 itmax = 10
 OPEN(UNIT=1,FILE="results.csv")
 WRITE(1,'(A)') 'Degree, Pzeros, LMPEP'
-ALLOCATE(time(itmax))
+ALLOCATE(time(itmax, 2))
 DO WHILE(deg<maxDegree)
   WRITE(1,'(I10)', advance='no') deg
   WRITE(1,'(A)', advance='no') ','
@@ -51,14 +52,10 @@ DO WHILE(deg<maxDegree)
     CALL system_clock(count=clock_start)
     CALL polzeros (deg, poly, eps, big, small, nitmax, root, radius, err, iter)
     CALL system_clock(count=clock_stop)
-    time(it)=(dble(clock_stop-clock_start)/dble(clock_rate))
+    time(it, 1)=(dble(clock_stop-clock_start)/dble(clock_rate))
     DEALLOCATE(poly,radius,root,err)
-  END DO
-  WRITE(1,'(ES15.2)', advance='no') sum(time)/dble(itmax)
-  WRITE(1,'(A)', advance='no') ','
 
-  !LMPEP
-  DO it = 1, itmax
+    !LMPEP
     ALLOCATE(p(deg+1), er(deg), ei(deg), berr(deg))
     DO i=1, deg+1
       CALL random_number(ru)
@@ -68,10 +65,13 @@ DO WHILE(deg<maxDegree)
     CALL system_clock(count=clock_start)
     CALL dslm(p, deg, er, ei, berr)
     CALL system_clock(count=clock_stop)
-    time(it)=(dble(clock_stop-clock_start)/dble(clock_rate))
+    time(it, 2)=(dble(clock_stop-clock_start)/dble(clock_rate))
     DEALLOCATE(p, er, ei, berr)
   END DO
-  WRITE(1,'(ES15.2)') sum(time)/dble(itmax)
+  
+  WRITE(1,'(ES15.2)', advance='no') sum(time(:,1))/dble(itmax)
+  WRITE(1,'(A)', advance='no') ','
+  WRITE(1,'(ES15.2)') sum(time(:,2))/dble(itmax)
 
   deg=2*deg
 END DO

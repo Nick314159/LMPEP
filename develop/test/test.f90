@@ -32,7 +32,7 @@ CALL getarg(2,arg)
 READ(arg, *) maxDegree
 
 deg=startDegree
-itmax = 10
+itmax = 127
 OPEN(UNIT=1,FILE="results.csv")
 WRITE(1,'(A)') 'Degree, Pzeros, LMPEP'
 ALLOCATE(time(itmax, 2))

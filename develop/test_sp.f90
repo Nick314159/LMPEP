@@ -10,12 +10,9 @@ DOUBLE COMPLEX                              :: ac, tc
 CHARACTER(LEN=10)                           :: dt
 CHARACTER(LEN=100)                          :: arg
 !intrinsic subroutines
-INTRINSIC                                   :: dabs, dble, getarg, maxval, random_number, system_clock, sum
+INTRINSIC                                   :: dabs, dble, dcmplx, getarg, maxval, random_number, system_clock, sum
 !external subroutines
 EXTERNAL                                    :: dseval, drevseval, dzseval, dzrevseval, dsstart, dslcorr, dzslcorr, dslm
-!external functions
-DOUBLE PRECISION                            :: dzmod
-EXTERNAL                                    :: dzmod
 
 CALL init_random_seed()
 
@@ -38,8 +35,8 @@ DO WHILE(deg<maxDegree)
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
     DO it=1,itmax
-        CALL drarr(p, deg+1)
-        CALL drnum(t)
+        CALL daruv(deg+1,p)
+        CALL random_number(t)
         CALL dseval(p, t, deg, 0, a)
     ENDDO
     CALL system_clock(count=clock_stop)
@@ -55,8 +52,8 @@ DO WHILE(deg<maxDegree)
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
     DO it=1,itmax
-        CALL drarr(p, deg+1)
-        CALL drnum(t)
+        CALL daruv(deg+1,p)
+        CALL random_number(t)
         CALL drevseval(p, t**(-1), deg, 0, a)
     ENDDO
     CALL system_clock(count=clock_stop)
@@ -72,8 +69,10 @@ DO WHILE(deg<maxDegree)
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
     DO it=1,itmax
-        CALL drarr(p, deg+1)
-        CALL zrnum(tc)
+        CALL daruv(deg+1,p)
+        CALL random_number(a)
+        CALL random_number(t)
+        tc=dcmplx(a,t)
         CALL dzseval(p, tc, deg, 0, ac)
     ENDDO
     CALL system_clock(count=clock_stop)
@@ -89,8 +88,10 @@ DO WHILE(deg<maxDegree)
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
     DO it=1,itmax
-        CALL drarr(p, deg+1)
-        CALL zrnum(tc)
+        CALL daruv(deg+1,p)
+        CALL random_number(a)
+        CALL random_number(t)
+        tc=dcmplx(a,t)
         CALL dzrevseval(p, tc**(-1), deg, 0, ac)
     ENDDO
     CALL system_clock(count=clock_stop)
@@ -106,8 +107,11 @@ DO WHILE(deg<maxDegree)
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
     DO it=1,itmax
-        CALL random_number(p)
-        CALL dsstart(p, deg, er, ei)
+        CALL daruv(deg+1,p)
+        DO k=1,deg+1
+            alpha(k)=dabs(p(k))
+        ENDDO
+        CALL dsstart(alpha, deg, er, ei)
     ENDDO
     CALL system_clock(count=clock_stop)
     WRITE(1,'(I10)', advance='no') deg
@@ -122,12 +126,12 @@ DO WHILE(deg<maxDegree)
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
     DO it=1,itmax
-        CALL drarr(p,deg+1)
+        CALL daruv(deg+1,p)
         DO k=1,deg+1
             alpha(k)=dabs(p(k))
         ENDDO
-        CALL drarr(er,deg)
-        CALL drarr(ei,deg)
+        CALL daruv(deg,er)
+        CALL daruv(deg,ei)
         CALL dslcorr(p, alpha, 2*10**(-15), deg, deg, conv, er, ei, t)
     ENDDO
     CALL system_clock(count=clock_stop)
@@ -143,12 +147,12 @@ DO WHILE(deg<maxDegree)
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
     DO it=1,itmax
-        CALL drarr(p, deg+1)
+        CALL daruv(deg+1,p)
         DO k=1,deg+1
             alpha(k)=dabs(p(k))
         ENDDO
-        CALL drarr(er,deg)
-        CALL drarr(ei,deg)
+        CALL daruv(deg,er)
+        CALL daruv(deg,ei)
         CALL dzslcorr(p, alpha, 2*10**(-15), deg, deg, conv, er, ei, t)
     ENDDO
     CALL system_clock(count=clock_stop)
@@ -164,7 +168,7 @@ DO WHILE(deg<maxDegree)
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
     DO it=1,itmax
-        CALL drarr(p,deg+1)
+        CALL daruv(deg+1,p)
         CALL dslm(p, deg, er, ei, berr)
         berr_max(it)=maxval(berr)
     ENDDO
@@ -182,58 +186,5 @@ ENDIF
  CLOSE(UNIT=1)
 
 CALL EXECUTE_COMMAND_LINE('python test_sp.py')
-
-CONTAINS
-
-SUBROUTINE init_random_seed()
-INTEGER                             :: i, n, clock
-INTEGER, DIMENSION(:), ALLOCATABLE  :: seed
-
-CALL RANDOM_SEED(size = n)
-ALLOCATE(seed(n))
-
-CALL SYSTEM_CLOCK(COUNT=clock)
-seed = clock + 37 * (/ (i - 1, i = 1, n) /)
-CALL RANDOM_SEED(PUT = seed)
-
-DEALLOCATE(seed)
-END SUBROUTINE init_random_seed
-
-SUBROUTINE drnum(a)
-!scalar inputs
-DOUBLE PRECISION    :: a
-!local scalars
-DOUBLE PRECISION    :: a1, a2
-
-CALL random_number(a1)
-CALL random_number(a2)
-a=-a1+2*a2
-END SUBROUTINE drnum
-
-SUBROUTINE zrnum(a)
-!scalar inputs
-DOUBLE COMPLEX      :: a
-!local scalars
-DOUBLE PRECISION    :: a1, a2
-
-CALL drnum(a1)
-CALL drnum(a2)
-a=dcmplx(a1,a2)
-END SUBROUTINE zrnum
-
-SUBROUTINE drarr(p, n)
-IMPLICIT NONE
-!scalar inputs
-INTEGER, INTENT(IN)             :: n
-!array inputs
-DOUBLE PRECISION, INTENT(INOUT) :: p(*)
-!local arrays
-DOUBLE PRECISION, DIMENSION(n)  :: p1, p2
-
-CALL random_number(p1)
-CALL random_number(p2)
-p(1:n)=-p1+2*p2
-RETURN
-END SUBROUTINE drarr
 
 END PROGRAM test

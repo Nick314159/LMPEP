@@ -56,7 +56,6 @@ subroutine DAMVW(NP,POLY,REIGS,IEIGS,ITS,FLAG)
   double precision :: ALPHA, nrm, trace, disc, detm
   
   FLAG = 0
-
   ! check to make sure it's worth the effort
   if(NP <= 0)then
      print*, "N =", NP
@@ -80,7 +79,6 @@ subroutine DAMVW(NP,POLY,REIGS,IEIGS,ITS,FLAG)
   end do
   
   N = nnew
-  print*, N
   !print*, POLY
   if (N == 0) then
      ! all coefficients 0 => all roots 0
@@ -243,7 +241,7 @@ subroutine DAMVW(NP,POLY,REIGS,IEIGS,ITS,FLAG)
 				call dnormalpoly(1,ie1)
 				re2 = re1
 				ie2 = -ie1
-				print*, "Random shift!"
+				print*, "Random shift! (DAMVW.f90 Line:244)"
 		    else
 		       call DCDB(N,stop_index,TEMP,QCB) 
 		       call DMQF(TEMP(1:2,:),re1,ie1,re2,ie2)

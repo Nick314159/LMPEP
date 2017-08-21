@@ -1,3 +1,17 @@
+!>\author Thomas R. Cameron, Davidson College
+!>\author Nikolas I. Steckley, Portland State University
+!>\date 2017
+!>\brief <b> DARUV creates a random array of numbers </b>
+!>\par Purpose:
+!>\verbatim
+!> DARUV creates N random double precious numbers and writes them to the array X
+!>\endverbatim
+!>\param[in] n
+!>\verbatim Integer number of random numbers desired \endverbatim
+!>\param[out] x
+!>\verbatim Double precision array to write random numbers to\endverbatim
+!>\note MEMORY: O(deg), FLOPS: O(deg)
+!***********************************************************************
 SUBROUTINE daruv(n,x)
 !scalar arguments
 INTEGER, INTENT(IN)             :: n

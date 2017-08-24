@@ -16,8 +16,8 @@
 !>\verbatim  Integer, degree of the polynomial.\endverbatim
 !>\param[in] ind
 !>\verbatim  Integer, index of current eigenvalue approximation.\endverbatim
-!>\param[out] conv
-!>\verbatim Logical, returns true if convergence is reached.\endverbatim
+!>\param[out] check
+!>\verbatim Logical, returns false if convergence is reached.\endverbatim
 !>\param[in,out] er
 !>\verbatim  Double precision array of dimension deg, real part of eigenvalue approximations.\endverbatim
 !>\param[in,out] ei
@@ -26,10 +26,10 @@
 !>\verbatim  Double precision number, backward error in current eigenvalue approximation.\endverbatim
 !>\note MEMORY: O(deg), FLOPS: O(deg)
 !************************************************************************
-SUBROUTINE dzslcorr(p, alpha, tol, deg, ind, conv, er, ei, berr)
+SUBROUTINE dzslcorr(p, alpha, tol, deg, ind, check, er, ei, berr)
 IMPLICIT NONE
 !scalar arguments
-LOGICAL, INTENT(OUT)            :: conv
+LOGICAL, INTENT(OUT)            :: check
 INTEGER, INTENT(IN)             :: deg, ind
 DOUBLE PRECISION, INTENT(IN)    :: tol
 DOUBLE PRECISION, INTENT(OUT)   :: berr
@@ -58,6 +58,11 @@ DO k=1,ind-1
   x1=x1+y1
   x2=x2+y1**2
 ENDDO
+DO k=ind+1,deg
+  y1=dcmplx(er(ind)-er(k),ei(ind)-ei(k))**(-1)
+  x1=x1+y1
+  x2=x2+y1**2
+ENDDO
 t=dcmplx(er(ind),ei(ind))
 t2=dzmod(er(ind),ei(ind))
 !split into 2 cases
@@ -69,7 +74,7 @@ IF(t2>1) THEN
   CALL drevseval(alpha, t2, deg, 0, berr)
   berr=zabs(a)*berr**(-1)
   IF(berr<eps) THEN
-    conv=.TRUE.
+    check=.FALSE.
     RETURN
   ENDIF
   !compute b=revp', c=revp''
@@ -86,7 +91,7 @@ ELSE
   CALL dseval(alpha, t2, deg, 0, berr)
   berr=zabs(a)*berr**(-1)
   IF(berr<eps) THEN
-    conv=.TRUE.
+    check=.FALSE.
     RETURN
   ENDIF
   !compute b=p', c=p''
@@ -113,7 +118,7 @@ IF(zabs(y1)>zabs(y2)) THEN
   !y1=deg*y1**(-1)
   y1=y1**(-1)
   IF(zabs(y1)<tol) THEN
-    conv=.TRUE.
+    check=.FALSE.
   ELSE
     er(ind)=er(ind)-dble(y1)
     ei(ind)=ei(ind)-dimag(y1)
@@ -122,7 +127,7 @@ ELSE
   !y2=deg*y2**(-1)
   y2=y2**(-1)
   IF(zabs(y2)<tol) THEN
-    conv=.TRUE.
+    check=.FALSE.
   ELSE
     er(ind)=er(ind)-dble(y2)
     ei(ind)=ei(ind)-dimag(y2)

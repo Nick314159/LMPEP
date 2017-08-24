@@ -26,7 +26,7 @@ INTEGER, INTENT(IN)                 :: deg
 DOUBLE PRECISION, INTENT(IN)        :: p(*)
 DOUBLE PRECISION, INTENT(OUT)       :: berr(*), er(*), ei(*)
 !local scalars
-LOGICAL                             :: conv
+LOGICAL, DIMENSION(deg)             :: check
 INTEGER                             :: i, it
 DOUBLE PRECISION                    :: tol
 !local arrays
@@ -46,20 +46,22 @@ EXTERNAL                            :: dzmod
 DO i=1,deg+1
     alpha(i)=dabs(p(i))
 ENDDO
+!check
+DO i=1,deg
+    check(i)=.TRUE.
+ENDDO
 !initial estimates
 CALL dsstart(alpha, deg, er, ei)
-!Laguerre's method
-DO i=1,deg
-    conv=.FALSE.
-    DO it=1,itmax
-        tol=eps*dzmod(er(i),ei(i))
-        IF(dabs(ei(i))<tol) THEN
-            CALL dslcorr(p, alpha, tol, deg, i, conv, er, ei, berr(i))
-        ELSE
-            CALL dzslcorr(p, alpha, tol, deg, i, conv, er, ei, berr(i))
-        ENDIF
-        IF(conv) THEN
-            EXIT
+!Laguerre's Method
+DO it=1,itmax
+    DO i=1,deg
+        IF(check(i)) THEN
+            tol=eps*dzmod(er(i),ei(i))
+            IF(dabs(ei(i))<tol) THEN
+                CALL dslcorr(p, alpha, tol, deg, i, check(i), er, ei, berr(i))
+            ELSE
+                CALL dzslcorr(p, alpha, tol, deg, i, check(i), er, ei, berr(i))
+            ENDIF
         ENDIF
     ENDDO
 ENDDO

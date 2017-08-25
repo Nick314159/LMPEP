@@ -41,26 +41,13 @@ READ(arg, '(I10)') maxDegree
 deg=startDegree
 itmax = 127
 OPEN(UNIT=1,FILE="results.csv")
-WRITE(1,'(A)') 'Degree, Pzeros, LMPEP, AMVW'
+WRITE(1,'(A)') 'Degree, LMPEP, Pzeros, AMVW'
 ALLOCATE(time(itmax, 3))
 DO WHILE(deg<maxDegree)
   WRITE(1,'(I10)', advance='no') deg
   WRITE(1,'(A)', advance='no') ','
 
   DO it = 1, itmax
-    !Pzeros
-    ALLOCATE(radius(1:deg),root(1:deg),poly(0:deg),err(deg+1))
-    DO i=0,deg
-      CALL random_number(ru)
-      CALL random_number(ri)
-      poly(i)=dcmplx(-1+2*ru,-1+2*ri)
-    END DO
-    CALL system_clock(count_rate=clock_rate)
-    CALL system_clock(count=clock_start)
-    CALL polzeros (deg, poly, eps, big, small, nitmax, root, radius, err, iter)
-    CALL system_clock(count=clock_stop)
-    time(it, 1)=(dble(clock_stop-clock_start)/dble(clock_rate))
-    DEALLOCATE(poly,radius,root,err)
 
     !LMPEP
     ALLOCATE(p(deg+1), er(deg), ei(deg), berr(deg))
@@ -69,19 +56,35 @@ DO WHILE(deg<maxDegree)
     CALL system_clock(count=clock_start)
     CALL dslm(p, deg, er, ei, berr)
     CALL system_clock(count=clock_stop)
-    time(it, 2)=(dble(clock_stop-clock_start)/dble(clock_rate))
-    DEALLOCATE(p, er, ei, berr)
+    time(it, 1)=(dble(clock_stop-clock_start)/dble(clock_rate))
+    DEALLOCATE(er, ei, berr)
 
-    !AMVW
-    ALLOCATE(POLY(deg),REIGS(deg),IEIGS(deg),ITS(deg),COEFFS(1))
-    ALLOCATE(ALLROOTS(deg,NEWTNUM+1),RESIDUALS(deg,3*(NEWTNUM+1)),WPOLY(deg),ROOTS(deg),radius(1:deg))
-    CALL DNORMALPOLY(deg,POLY)
+    !Pzeros
+    ALLOCATE(poly(0:deg), radius(1:deg),root(1:deg),err(deg+1)) 
+    DO i=0,deg
+     ! CALL random_number(ru)
+      !CALL random_number(ri)
+      poly(i)=dcmplx(p(i),0)
+    END DO
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
-    CALL DAMVW(deg,POLY,REIGS,IEIGS,ITS,FLAG)
+    CALL polzeros (deg, poly, eps, big, small, nitmax, root, radius, err, iter)
+    CALL system_clock(count=clock_stop)
+    time(it, 2)=(dble(clock_stop-clock_start)/dble(clock_rate))
+    DEALLOCATE(poly, radius,root,err)
+
+
+
+    !AMVW
+    ALLOCATE(REIGS(deg),IEIGS(deg),ITS(deg),COEFFS(1)) !POLY(deg)
+    ALLOCATE(ALLROOTS(deg,NEWTNUM+1),RESIDUALS(deg,3*(NEWTNUM+1)),WPOLY(deg),ROOTS(deg),radius(1:deg))
+    !CALL DNORMALPOLY(deg,POLY)
+    CALL system_clock(count_rate=clock_rate)
+    CALL system_clock(count=clock_start)
+    CALL DAMVW(deg,p,REIGS,IEIGS,ITS,FLAG)
     CALL SYSTEM_CLOCK(COUNT=clock_stop)  
     time(it, 3) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
-    DEALLOCATE(POLY,REIGS,IEIGS,ITS,COEFFS,ALLROOTS,RESIDUALS,WPOLY,ROOTS,radius)
+    DEALLOCATE(p, REIGS,IEIGS,ITS,COEFFS,ALLROOTS,RESIDUALS,WPOLY,ROOTS,radius)
   ENDDO
   
   WRITE(1,'(ES15.2)', advance='no') sum(time(:,1))/dble(itmax)

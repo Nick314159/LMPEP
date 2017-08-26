@@ -1,0 +1,47 @@
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!                       MODULE EIGENSOLVE                             !!!
+!!!!!              by D.A. Bini, L. Gemignani, F. Tisseur                 !!!
+!!!!!                              v. 1.1                                 !!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!   bini@dm.unipi.it, gemignan@dm.unipi.it, tisseur@maths.man.ac.uk   !!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!                    Latest revision: March 2004  
+
+ 
+This directory contains the following files
+ README      : this file
+ bgt.f90     : file with the module eigensolve
+ driver1.f90 : example of driver program for the normalized problem
+ driver2.f90 : example of driver program for unnormalized problems
+ driver3.f90 : example of driver program with refinement in quadruple prec
+ tests.f90   : driver program with 17 test problems
+ 
+The module eigensolve contains subroutines for solving the generalized
+tridiagonal eigenvalue problem 
+            det(T-x S)=0
+where T is an irreducible tridiagonal matrix with real entries
+and S is a nonsingular diagonal matrix with real entries.
+More precisely, the subroutines are
+                                                                                
+ EIGEN:    recursive subroutine for computing the generalized eigenvalues
+ ABERTH:   Aberth's iteration
+ NEWTCORR: Newton correction
+ VALIDATE: computation of inclusion radii for all the approximations
+ POLY:     computation of det(T-x S)
+ NORMALIZE: subroutine which transforms the generalized eigenvalue problem
+          T-xS into normalized form T'-xS' where T' has unit off-diagonal
+          entries
+ Quadruple precision subroutines:
+ QABERTH: It refines the approximations in quadruple precision
+ QNEWTCORR:
+ QNORMALIZE:
+
+ CALLING LINE:
+ CALL eigen(n,a,s,z,cond)
+ n: size of the matrix
+ a: diagonal elements of T
+ s: diagonal elements of S
+ z: complex vector with the approximations to the eigenvalues
+ cond: real vector with the condition number estimates of the eigenvalues
+                                                                  
+                                                                                

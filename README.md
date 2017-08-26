@@ -1,7 +1,6 @@
-# LMPEP - Eigenvalue solver for general and specialized matrix polynomials #
-## Laguerre's Method applied to the Polynomial Eigenvalue Problem ##
+# LMPEP - Laguerre's Method Applied to the Polynomial Eigenvalue Problem ##
 This package is a collection of Fortran 90 subroutines for accurately 
-and efficiently solving matrix eigenvalue problems using a variety of methods specfialized for distinct problem types.
+and efficiently solving the polynomial eigenvalue problem using Laguerre's method.
 
 ## Authors ##
 - [Thomas R. Cameron](http://thomasrcameron.com/), 
@@ -10,8 +9,8 @@ Davidson College, NC
 Portland State University, OR
 
 
-## Getting started ##
-__LMPEP__ source code can be found in the _src_ directory. Numerical tests can be found in the _tests_ directory; please update the enviroment file in _tests/src/environment.f90_ with the path to the _tests_ directory to run them.
+## In Progress ##
+Currently we are updating the code in the develop section, in the hopes of developing more robust algorithms and better documentation. Also, we are working on the parallelization of these methods. 
 
 ## Related articles ##
 This software is based on the following articles:

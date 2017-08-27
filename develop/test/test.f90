@@ -10,7 +10,7 @@ COMPLEX(KIND=dp), DIMENSION(:), ALLOCATABLE     :: root, poly
 LOGICAL, DIMENSION(:), ALLOCATABLE              :: err
 INTEGER(kind=1)                                 :: it, itmax
 INTEGER                                         :: deg, k, startDegree, maxDegree, flag
-DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE     :: berr, er, ei, p
+DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE     :: berr, er, ei, p, p2
 CHARACTER(LEN=100)                              :: arg
 DOUBLE PRECISION, ALLOCATABLE                   :: REIGS(:), IEIGS(:), RESIDUALS(:,:)
 INTEGER, ALLOCATABLE                            :: ITS(:)
@@ -68,14 +68,17 @@ DO WHILE(deg<maxDegree)
     DEALLOCATE(poly,radius,root,err)
 
     !AMVW
-    ALLOCATE(REIGS(deg),IEIGS(deg),ITS(deg)) !POLY(deg)
+    ALLOCATE(p2(deg),REIGS(deg),IEIGS(deg),ITS(deg)) !POLY(deg)
+    DO i=1,deg
+        p2(i)=p(i)/p(deg+1)
+    ENDDO
     !CALL DNORMALPOLY(deg,POLY)
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
-    CALL DAMVW(deg,p,REIGS,IEIGS,ITS,FLAG)
+    CALL DAMVW(deg,p2,REIGS,IEIGS,ITS,FLAG)
     CALL SYSTEM_CLOCK(COUNT=clock_stop)  
     time(it, 3) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
-    DEALLOCATE(p, REIGS,IEIGS,ITS)
+    DEALLOCATE(p,p2,REIGS,IEIGS,ITS)
   ENDDO
   
   WRITE(1,'(ES15.2)', advance='no') sum(time(:,1))/dble(itmax)

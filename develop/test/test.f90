@@ -2,18 +2,20 @@ PROGRAM test
 USE poly_zeroes
 IMPLICIT NONE
 INTEGER(KIND=8)                                 :: clock, clock_rate, clock_start, clock_stop
-INTEGER                                         :: i, nitmax, iter
+INTEGER                                         :: i, j, nitmax, iter
 REAL(KIND=dp), DIMENSION(:), ALLOCATABLE        :: radius
-DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE   :: time
+DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE   :: time, backward_error
 REAL(KIND=dp)                                   :: eps, big, small, aux, ru, ri
 COMPLEX(KIND=dp), DIMENSION(:), ALLOCATABLE     :: root, poly
 LOGICAL, DIMENSION(:), ALLOCATABLE              :: err
 INTEGER(kind=1)                                 :: it, itmax
 INTEGER                                         :: deg, k, startDegree, maxDegree, flag
-DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE     :: berr, er, ei, p, p2
+DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE     :: berr, er, ei, p, p2, alpha
 CHARACTER(LEN=100)                              :: arg
 DOUBLE PRECISION, ALLOCATABLE                   :: REIGS(:), IEIGS(:), RESIDUALS(:,:)
 INTEGER, ALLOCATABLE                            :: ITS(:)
+DOUBLE PRECISION                                :: t2
+DOUBLE COMPLEX                                  :: a, t
 !intrinsic subroutines
 INTRINSIC                                       :: dabs, dble, dcmplx, getarg, maxval, random_number, system_clock
 INTRINSIC                                       :: epsilon, tiny, huge
@@ -36,58 +38,95 @@ READ(arg, '(I10)') maxDegree
 deg=startDegree
 itmax = 127
 OPEN(UNIT=1,FILE="results.csv")
-WRITE(1,'(A)') 'Degree, LMPEP, Pzeros, AMVW'
-ALLOCATE(time(itmax, 3))
+WRITE(1,'(A)') 'Degree, LMPEP Time, LMPEP berr, Pzeros Time, Pzeros berr, AMVW Time, AMVW berr'
+ALLOCATE(time(itmax, 3), backward_error(itmax, 3))
 DO WHILE(deg<maxDegree)
   WRITE(1,'(I10)', advance='no') deg
   WRITE(1,'(A)', advance='no') ','
 
   DO it = 1, itmax
     !LMPEP
-    ALLOCATE(p(deg+1), er(deg), ei(deg), berr(deg))
+    ALLOCATE(p(deg+1), er(deg), ei(deg), berr(deg), alpha(deg+1))
     CALL daruv(deg+1,p)
+    DO j = 1, deg
+       alpha(j)=dabs(p(j))
+    END DO
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
     CALL dslm(p, deg, er, ei, berr)
     CALL system_clock(count=clock_stop)
     time(it, 1)=(dble(clock_stop-clock_start)/dble(clock_rate))
-    DEALLOCATE(er, ei, berr)
+    backward_error(it, 1) = MAXVAL(berr)
 
     !Pzeros
-    ALLOCATE(poly(0:deg),radius(1:deg),root(1:deg),err(deg+1)) 
-    DO i=0,deg
-     ! CALL random_number(ru)
-      !CALL random_number(ri)
-      poly(i)=dcmplx(p(i+1),0)
+    ALLOCATE(poly(0:deg), radius(1:deg), root(1:deg), err(deg+1)) 
+    DO i= 0, deg
+      poly(i)=dcmplx(p(i+1), 0.0D0)
     END DO
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
     CALL polzeros(deg, poly, eps, big, small, nitmax, root, radius, err, iter)
     CALL system_clock(count=clock_stop)
     time(it, 2)=(dble(clock_stop-clock_start)/dble(clock_rate))
-    DEALLOCATE(poly,radius,root,err)
+    DO j = 1, deg
+      t =  root(j)
+      t2 = zabs(t)
+      IF (t2>1) THEN
+        t = t**(-1)
+        t2 = t2**(-1)
+        CALL dzrevseval(p, t, deg, 0, a)
+        CALL drevseval(alpha, t2, deg, 0, berr(j))
+      ELSE
+        CALL dzseval(p, t, deg, 0, a)
+        CALL dseval(alpha, t2, deg, 0, berr(j)) 
+      END IF
+      berr(j) = zabs(a)/berr(j)
+    END DO
+    backward_error(it, 2) = MAXVAL(berr)
+    DEALLOCATE(er, ei)
+    DEALLOCATE(poly, radius ,root, err)
 
     !AMVW
-    ALLOCATE(p2(deg),REIGS(deg),IEIGS(deg),ITS(deg)) !POLY(deg)
+    ALLOCATE(REIGS(deg),IEIGS(deg),ITS(deg), p2(deg))
     DO i=1,deg
-        p2(i)=p(i)/p(deg+1)
+        p2(deg-i+1)=p(i)/p(deg+1)
     ENDDO
-    !CALL DNORMALPOLY(deg,POLY)
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
-    CALL DAMVW(deg,p2,REIGS,IEIGS,ITS,FLAG)
+    CALL DAMVW(deg, p2, REIGS, IEIGS, ITS, FLAG)
     CALL SYSTEM_CLOCK(COUNT=clock_stop)  
     time(it, 3) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
-    DEALLOCATE(p,p2,REIGS,IEIGS,ITS)
+    DO j = 1, deg
+      t =  dcmplx(REIGS(j), IEIGS(j))
+      t2 = zabs(t)
+      IF (t2>1) THEN
+        t = t**(-1)
+        t2 = t2**(-1)
+        CALL dzrevseval(p, t, deg, 0, a)
+        CALL drevseval(alpha, t2, deg, 0, berr(j))
+      ELSE
+        CALL dzseval(p, t, deg, 0, a)
+        CALL dseval(alpha, t2, deg, 0, berr(j)) 
+      END IF
+      berr(j) = zabs(a)/berr(j)
+    END DO
+    backward_error(it, 3) = MAXVAL(berr)
+    DEALLOCATE(p, p2, REIGS,IEIGS,ITS, alpha, berr)
   ENDDO
   
   WRITE(1,'(ES15.2)', advance='no') sum(time(:,1))/dble(itmax)
   WRITE(1,'(A)', advance='no') ','
-  WRITE(1,'(ES15.2)', advance='no') sum(time(:,2))/dble(itmax)
+  WRITE(1,'(ES15.2)', advance='no') sum(backward_error(:,1))/dble(itmax)
   WRITE(1,'(A)', advance='no') ','
-  WRITE(1,'(ES15.2)') sum(time(:,3))/dble(itmax)
+  WRITE(1,'(ES15.2)', advance='no') sum(time(:,2))/dble(itmax)
+  WRITE(1,'(A)', advance='no') ',' 
+  WRITE(1,'(ES15.2)', advance='no') sum(backward_error(:,2))/dble(itmax)
+  WRITE(1,'(A)', advance='no') ','
+  WRITE(1,'(ES15.2)', advance='no') sum(time(:,3))/dble(itmax)
+  WRITE(1,'(A)', advance='no') ','
+  WRITE(1,'(ES15.2)') sum(backward_error(:,3))/dble(itmax)
   deg=2*deg
 ENDDO
-DEALLOCATE(time)
+DEALLOCATE(time, backward_error)
 END PROGRAM test
 

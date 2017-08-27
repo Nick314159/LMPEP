@@ -75,12 +75,12 @@ $(document).ready(function(){initNavTree('dzslcorr_8f90.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions/Subroutines</h2></td></tr>
-<tr class="memitem:a22eddaa9ac0ea7be92699c5313a1a57c"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dzslcorr_8f90.html#a22eddaa9ac0ea7be92699c5313a1a57c">dzslcorr</a> (p, alpha, tol, deg, ind, conv, er, ei, berr)</td></tr>
-<tr class="memdesc:a22eddaa9ac0ea7be92699c5313a1a57c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b> DZSLCORR computes the Lagueree correction term of a real polynomial with complex root approximation, while ``dividing out'' previously computed roots. </b>  <a href="#a22eddaa9ac0ea7be92699c5313a1a57c">More...</a><br/></td></tr>
-<tr class="separator:a22eddaa9ac0ea7be92699c5313a1a57c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c956eab6ffa718951fdb69fe398497a"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dzslcorr_8f90.html#a4c956eab6ffa718951fdb69fe398497a">dzslcorr</a> (p, alpha, tol, deg, ind, check, er, ei, berr)</td></tr>
+<tr class="memdesc:a4c956eab6ffa718951fdb69fe398497a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b> DZSLCORR computes the Lagueree correction term of a real polynomial with complex root approximation, while ``dividing out'' previously computed roots. </b>  <a href="#a4c956eab6ffa718951fdb69fe398497a">More...</a><br/></td></tr>
+<tr class="separator:a4c956eab6ffa718951fdb69fe398497a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function/Subroutine Documentation</h2>
-<a class="anchor" id="a22eddaa9ac0ea7be92699c5313a1a57c"></a>
+<a class="anchor" id="a4c956eab6ffa718951fdb69fe398497a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -118,7 +118,7 @@ Functions/Subroutines</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">logical, intent(out)&#160;</td>
-          <td class="paramname"><em>conv</em>, </td>
+          <td class="paramname"><em>check</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -160,7 +160,7 @@ Nikolas I. Steckley, Portland State University </dd></dl>
     <tr><td class="paramdir">[in]</td><td class="paramname">tol</td><td><pre class="fragment">Double precision, used to determine potential convergence of eigenvalue approximation..</pre> </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">deg</td><td><pre class="fragment">Integer, degree of the polynomial.</pre> </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">ind</td><td><pre class="fragment">Integer, index of current eigenvalue approximation.</pre> </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">conv</td><td><pre class="fragment">Logical, returns true if convergence is reached.</pre> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">check</td><td><pre class="fragment">Logical, returns false if convergence is reached.</pre> </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">er</td><td><pre class="fragment">Double precision array of dimension deg, real part of eigenvalue approximations.</pre> </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">ei</td><td><pre class="fragment">Double precision array of dimension deg, imaginary part of eigenvalue approximations.</pre> </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">berr</td><td><pre class="fragment">Double precision number, backward error in current eigenvalue approximation.</pre> </td></tr>
@@ -174,8 +174,8 @@ Nikolas I. Steckley, Portland State University </dd></dl>
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="dzslcorr_8f90_a22eddaa9ac0ea7be92699c5313a1a57c_cgraph.png" border="0" usemap="#dzslcorr_8f90_a22eddaa9ac0ea7be92699c5313a1a57c_cgraph" alt=""/></div>
-<map name="dzslcorr_8f90_a22eddaa9ac0ea7be92699c5313a1a57c_cgraph" id="dzslcorr_8f90_a22eddaa9ac0ea7be92699c5313a1a57c_cgraph">
+<div class="center"><img src="dzslcorr_8f90_a4c956eab6ffa718951fdb69fe398497a_cgraph.png" border="0" usemap="#dzslcorr_8f90_a4c956eab6ffa718951fdb69fe398497a_cgraph" alt=""/></div>
+<map name="dzslcorr_8f90_a4c956eab6ffa718951fdb69fe398497a_cgraph" id="dzslcorr_8f90_a4c956eab6ffa718951fdb69fe398497a_cgraph">
 <area shape="rect" id="node2" href="dzseval_8f90.html#a0a4b5759876c235cfa7e96a904e0aefd" title=" DZSEVAL evaluates real scalar polynomial at complex number. &#160;" alt="" coords="129,5,193,32"/><area shape="rect" id="node3" href="dzrevseval_8f90.html#a6ac1bc6b4e40077104de50d3e7113870" title=" DZREVSEVAL evaluates the reversal of a real scalar polynomial at a complex number. &#160;" alt="" coords="121,56,202,83"/><area shape="rect" id="node4" href="dzmod_8f90.html#a61c7ef7637ccd8305c744fa7ecc067f4" title=" DZMOD returns moduli of complex number. &#160;" alt="" coords="131,107,191,133"/><area shape="rect" id="node5" href="drevseval_8f90.html#a601888eaec65a235fb6417473947aa37" title=" DREVSEVAL evaluates the reversal of a real scalar polynomial at a real number. &#160;" alt="" coords="124,157,199,184"/><area shape="rect" id="node6" href="dseval_8f90.html#a59299c96f28205c90ee80f6fd7a76f11" title=" DSEVAL evaluates a real scalar polynomial at a real number. &#160;" alt="" coords="132,208,191,235"/></map>
 </div>
 </p>
@@ -183,8 +183,8 @@ Here is the call graph for this function:</div>
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="dzslcorr_8f90_a22eddaa9ac0ea7be92699c5313a1a57c_icgraph.png" border="0" usemap="#dzslcorr_8f90_a22eddaa9ac0ea7be92699c5313a1a57c_icgraph" alt=""/></div>
-<map name="dzslcorr_8f90_a22eddaa9ac0ea7be92699c5313a1a57c_icgraph" id="dzslcorr_8f90_a22eddaa9ac0ea7be92699c5313a1a57c_icgraph">
+<div class="center"><img src="dzslcorr_8f90_a4c956eab6ffa718951fdb69fe398497a_icgraph.png" border="0" usemap="#dzslcorr_8f90_a4c956eab6ffa718951fdb69fe398497a_icgraph" alt=""/></div>
+<map name="dzslcorr_8f90_a4c956eab6ffa718951fdb69fe398497a_icgraph" id="dzslcorr_8f90_a4c956eab6ffa718951fdb69fe398497a_icgraph">
 <area shape="rect" id="node2" href="dslm_8f90.html#a7809ea1685268dcc45fbd3de77420416" title=" DSLM computes the roots of a real polynomial. &#160;" alt="" coords="121,5,170,32"/><area shape="rect" id="node3" href="test__sp_8f90.html#a9bc57b8dbe7c3e1b9db72b918a1b6bab" title="test" alt="" coords="219,31,261,57"/></map>
 </div>
 </p>
@@ -197,7 +197,7 @@ Here is the caller graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dzslcorr_8f90.html">dzslcorr.f90</a></li>
-    <li class="footer">Generated on Thu Aug 24 2017 15:19:15 for LMPEP by
+    <li class="footer">Generated on Sat Aug 26 2017 17:48:47 for LMPEP by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>
   </ul>

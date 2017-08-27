@@ -69,28 +69,28 @@ $(document).ready(function(){initNavTree('init__random__seed_8f90_source.html','
 </div><!--header-->
 <div class="contents">
 <a href="init__random__seed_8f90.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">!***********************************************************************</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="init__random__seed_8f90.html#a9e3ce39b474d153efd023b93087b37ae">   11</a></span>&#160;<span class="keyword">SUBROUTINE </span><a class="code" href="init__random__seed_8f90.html#a9e3ce39b474d153efd023b93087b37ae">init_random_seed</a>()</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keywordtype">INTEGER</span>                             :: i, n, clock</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keywordtype">INTEGER</span>, <span class="keywordtype">DIMENSION(:)</span>, <span class="keywordtype">ALLOCATABLE</span>  :: seed</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;CALL random_seed(<span class="keyword">size</span> = n)</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">ALLOCATE</span>(seed(n))</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;CALL system_clock(count=clock)</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;seed = clock + 37 * (/ (i - 1, i = 1, n) /)</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;CALL random_seed(put = seed)</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">DEALLOCATE</span>(seed)</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">END SUBROUTINE </span><a class="code" href="init__random__seed_8f90.html#a9e3ce39b474d153efd023b93087b37ae">init_random_seed</a></div>
-<div class="ttc" id="init__random__seed_8f90_html_a9e3ce39b474d153efd023b93087b37ae"><div class="ttname"><a href="init__random__seed_8f90.html#a9e3ce39b474d153efd023b93087b37ae">init_random_seed</a></div><div class="ttdeci">subroutine init_random_seed()</div><div class="ttdoc"> Init Random Seed initialzes the random number generator seed  </div><div class="ttdef"><b>Definition:</b> <a href="init__random__seed_8f90_source.html#l00011">init_random_seed.f90:11</a></div></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">!***********************************************************************</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="init__random__seed_8f90.html#a9e3ce39b474d153efd023b93087b37ae">   10</a></span>&#160;<span class="keyword">SUBROUTINE </span><a class="code" href="init__random__seed_8f90.html#a9e3ce39b474d153efd023b93087b37ae">init_random_seed</a>()</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keywordtype">INTEGER</span>                             :: i, n, clock</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keywordtype">INTEGER</span>, <span class="keywordtype">DIMENSION(:)</span>, <span class="keywordtype">ALLOCATABLE</span>  :: seed</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;CALL random_seed(<span class="keyword">size</span> = n)</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">ALLOCATE</span>(seed(n))</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;CALL system_clock(count=clock)</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;seed = clock + 37 * (/ (i - 1, i = 1, n) /)</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;CALL random_seed(put = seed)</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">DEALLOCATE</span>(seed)</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">END SUBROUTINE </span><a class="code" href="init__random__seed_8f90.html#a9e3ce39b474d153efd023b93087b37ae">init_random_seed</a></div>
+<div class="ttc" id="init__random__seed_8f90_html_a9e3ce39b474d153efd023b93087b37ae"><div class="ttname"><a href="init__random__seed_8f90.html#a9e3ce39b474d153efd023b93087b37ae">init_random_seed</a></div><div class="ttdeci">subroutine init_random_seed()</div><div class="ttdoc"> Init Random Seed initialzes the random number generator seed  </div><div class="ttdef"><b>Definition:</b> <a href="init__random__seed_8f90_source.html#l00010">init_random_seed.f90:10</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="init__random__seed_8f90.html">init_random_seed.f90</a></li>
-    <li class="footer">Generated on Thu Aug 24 2017 15:19:15 for LMPEP by
+    <li class="footer">Generated on Sat Aug 26 2017 17:48:47 for LMPEP by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>
   </ul>

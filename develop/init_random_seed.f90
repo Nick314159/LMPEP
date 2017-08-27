@@ -6,7 +6,6 @@
 !>\verbatim
 !> Init Random Seed sets the random number gernerater's seed, ensuring truely random problems each run of the program
 !>\endverbatim
-!>\note MEMORY: O(deg), FLOPS: O(deg)
 !***********************************************************************
 SUBROUTINE init_random_seed()
 INTEGER                             :: i, n, clock

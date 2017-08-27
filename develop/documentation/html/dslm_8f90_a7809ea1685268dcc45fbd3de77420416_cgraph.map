@@ -1,7 +1,7 @@
 <map id="dslm" name="dslm">
 <area shape="rect" id="node2" href="$dsstart_8f90.html#a1b2ae9b811a1b8c505c7cda133598d18" title=" DSSTART computes initial estimates to the roots of a polynomial. &#160;" alt="" coords="107,81,167,108"/>
-<area shape="rect" id="node8" href="$dslcorr_8f90.html#af0475cb4206e79a38e0bb3cbb5e3115b" title=" DSLCORR computes the Lagueree correction term of real polynomial with real root approximation, while ``dividing out&#39;&#39; previously computed roots. &#160;" alt="" coords="107,157,167,184"/>
-<area shape="rect" id="node11" href="$dzslcorr_8f90.html#a22eddaa9ac0ea7be92699c5313a1a57c" title=" DZSLCORR computes the Lagueree correction term of a real polynomial with complex root approximation..." alt="" coords="104,208,171,235"/>
+<area shape="rect" id="node8" href="$dslcorr_8f90.html#ad03cab90ee9581318be8a06a3000facf" title=" DSLCORR computes the Lagueree correction term of real polynomial with real root approximation, while ``dividing out&#39;&#39; previously computed roots. &#160;" alt="" coords="107,157,167,184"/>
+<area shape="rect" id="node11" href="$dzslcorr_8f90.html#a4c956eab6ffa718951fdb69fe398497a" title=" DZSLCORR computes the Lagueree correction term of a real polynomial with complex root approximation..." alt="" coords="104,208,171,235"/>
 <area shape="rect" id="node14" href="$dzmod_8f90.html#a61c7ef7637ccd8305c744fa7ecc067f4" title=" DZMOD returns moduli of complex number. &#160;" alt="" coords="230,309,290,336"/>
 <area shape="rect" id="node3" href="$cnvex_8f90.html#adbba31f33811d4b7401a3ca2d373ce82" title=" Compute the upper convex hull of the set &#160;" alt="" coords="233,56,287,83"/>
 <area shape="rect" id="node4" href="$cmerge_8f90.html#a80622a48065c4191517c1a7a3953f2f3" title="Given the upper convex hulls of two consecutive sets of pairs (j,A(j)), compute the upper convex hull..." alt="" coords="350,56,415,83"/>

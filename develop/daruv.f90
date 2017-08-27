@@ -10,7 +10,6 @@
 !>\verbatim Integer number of random numbers desired \endverbatim
 !>\param[out] x
 !>\verbatim Double precision array to write random numbers to\endverbatim
-!>\note MEMORY: O(deg), FLOPS: O(deg)
 !***********************************************************************
 SUBROUTINE daruv(n,x)
 !scalar arguments

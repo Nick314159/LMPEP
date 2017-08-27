@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>LMPEP: /home/thomas/Documents/FORTRAN/LMPEP/README.md Source File</title>
+<title>LMPEP: /home/nsteckley/Documents/Personal/Cameron/LMPEP/README.md Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -65,44 +65,43 @@ $(document).ready(function(){initNavTree('_r_e_a_d_m_e_8md.html','');});
 <div id="doc-content">
 <div class="header">
   <div class="headertitle">
-<div class="title">/home/thomas/Documents/FORTRAN/LMPEP/README.md</div>  </div>
+<div class="title">/home/nsteckley/Documents/Personal/Cameron/LMPEP/README.md</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_r_e_a_d_m_e_8md.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor"># LMPEP - Eigenvalue solver for general and specialized matrix polynomials #</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">## Laguerre&#39;s Method applied to the Polynomial Eigenvalue Problem ##</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span>This <span class="keyword">package </span>is a collection of Fortran 90 subroutines for accurately </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;and efficiently solving matrix eigenvalue problems using a variety of methods specfialized for distinct problem types.</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;## Authors ##</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;- [Thomas R. Cameron](http:<span class="comment">//thomasrcameron.com/), </span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;Davidson College, NC</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;- [Nikolas I. Steckley](http:<span class="comment">//www.nsteckley.com), </span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;Portland State University, OR</div>
+<a href="_r_e_a_d_m_e_8md.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor"># LMPEP - Laguerre&#39;s Method Applied to the Polynomial Eigenvalue Problem ##</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span>This <span class="keyword">package </span>is a collection of Fortran 90 subroutines for accurately </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;and efficiently solving the polynomial eigenvalue problem using Laguerre&#39;s method.</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;## Authors ##</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;- [Thomas R. Cameron](http:<span class="comment">//thomasrcameron.com/), </span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;Davidson College, NC</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;- [Nikolas I. Steckley](http:<span class="comment">//www.nsteckley.com), </span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;Portland State University, OR</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;## Getting started ##</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;__LMPEP__ source code can be found in the _src_ directory. Numerical tests can be found in the _tests_ directory; please update the enviroment file in _tests/src/environment.f90_ with the path to the _tests_ directory to run them.</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;## Related articles ##</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;This software is based on the following articles:</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; 1. J. L. Aurentz, T. Mach, L. Robol, R. Vandebril, and D. S. Watkins, Fast and backward stable computation of the eigenvalues of matrix polynomials, Preprint on arXiv.org math, (2016).</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; 2. J. L. Aurentz, T. Mach, R. Vandebril, and D. S. Watkins, Fast and backward stable computation of roots of polynomials, SIAM J. Matrix Anal. Appl., 36 (2015), pp. 942–973.</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; 3. D. A. Bini, Numerical computation of polynomial zeros by means of Aberths method, Numer. Algorithms, 13 (1996), pp. 179–200.</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; 4. D. A. Bini, L. Gemignani, and F. Tisseur, The Ehrlich-Aberth method <span class="keywordflow">for</span> the nonsymmetric tridiagonal eigenvalue problem, SIAM J. Matrix Anal. Appl., 27 (2005), pp. 153–175.</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; 5. D. A. Bini and V. Noferini, Solving polynomial eigenvalue problem by means of the Ehrlich-Aberth method, Linear Algebra Appl., 439 (2013), pp. 1130–1149.</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; 6. J. Gary, Hyman’s method applied to the general eigenvalue problem, Mathematics of Computation, 19 (1965), pp. 314–316.</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; 7. S. J. Hammerling, C. J. Munro, and T. Francoise, An algorithm <span class="keywordflow">for</span> the complete solution of quadratic eigenvalue problem, Transactions on Mathematical Software, 39 (2013), p. 19.</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; 8. B. Parlett, Laguerre’s method applied to the matrix eigenvalue problem, Mathematics ofComputation, 18 (1964), pp. 464–485.</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; 9. B. Plestenjak, Numerical methods <span class="keywordflow">for</span> the tridiagonal hyperbolic quadratic eigenvalue problem, SIAM J. Matrix Anal. Appl., 28 (2006), pp. 1157–1172.</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; 10. F. Tisseur, Backward error and condition of polynomial eigenvalue problem, Linear Algebra Appl., 309 (2000), pp. 339–361.</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;## In Progress ##</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;Currently we are updating the code in the develop section, in the hopes of developing more robust algorithms and better documentation. Also, we are working on the parallelization of these methods. </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;## Related articles ##</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;This software is based on the following articles:</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; 1. J. L. Aurentz, T. Mach, L. Robol, R. Vandebril, and D. S. Watkins, Fast and backward stable computation of the eigenvalues of matrix polynomials, Preprint on arXiv.org math, (2016).</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; 2. J. L. Aurentz, T. Mach, R. Vandebril, and D. S. Watkins, Fast and backward stable computation of roots of polynomials, SIAM J. Matrix Anal. Appl., 36 (2015), pp. 942–973.</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; 3. D. A. Bini, Numerical computation of polynomial zeros by means of Aberths method, Numer. Algorithms, 13 (1996), pp. 179–200.</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; 4. D. A. Bini, L. Gemignani, and F. Tisseur, The Ehrlich-Aberth method for the nonsymmetric tridiagonal eigenvalue problem, SIAM J. Matrix Anal. Appl., 27 (2005), pp. 153–175.</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; 5. D. A. Bini and V. Noferini, Solving polynomial eigenvalue problem by means of the Ehrlich-Aberth method, Linear Algebra Appl., 439 (2013), pp. 1130–1149.</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; 6. J. Gary, Hyman’s method applied to the general eigenvalue problem, Mathematics of Computation, 19 (1965), pp. 314–316.</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; 7. S. J. Hammerling, C. J. Munro, and T. Francoise, An algorithm for the complete solution of quadratic eigenvalue problem, Transactions on Mathematical Software, 39 (2013), p. 19.</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; 8. B. Parlett, Laguerre’s method applied to the matrix eigenvalue problem, Mathematics ofComputation, 18 (1964), pp. 464–485.</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; 9. B. Plestenjak, Numerical methods for the tridiagonal hyperbolic quadratic eigenvalue problem, SIAM J. Matrix Anal. Appl., 28 (2006), pp. 1157–1172.</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; 10. F. Tisseur, Backward error and condition of polynomial eigenvalue problem, Linear Algebra Appl., 309 (2000), pp. 339–361.</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="_r_e_a_d_m_e_8md.html">README.md</a></li>
-    <li class="footer">Generated on Thu Aug 24 2017 15:19:15 for LMPEP by
+    <li class="footer">Generated on Sat Aug 26 2017 17:48:47 for LMPEP by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>
   </ul>

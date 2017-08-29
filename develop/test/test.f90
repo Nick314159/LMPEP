@@ -20,7 +20,7 @@ DOUBLE COMPLEX                                  :: a, t
 INTRINSIC                                       :: dabs, dble, dcmplx, getarg, maxval, random_number, system_clock
 INTRINSIC                                       :: epsilon, tiny, huge
 !external subroutines
-EXTERNAL                                        :: dslm
+EXTERNAL                                        :: dslm, damvw, dseval, dzseval, drevseval, dzrevseval, daruv, init_random_seed
 
 CALL init_random_seed()
 
@@ -56,7 +56,7 @@ DO WHILE(deg<maxDegree)
     CALL dslm(p, deg, er, ei, berr)
     CALL system_clock(count=clock_stop)
     time(it, 1)=(dble(clock_stop-clock_start)/dble(clock_rate))
-    backward_error(it, 1) = MAXVAL(berr)
+    backward_error(it, 1) = maxval(berr)
 
     !Pzeros
     ALLOCATE(poly(0:deg), radius(1:deg), root(1:deg), err(deg+1)) 
@@ -82,7 +82,7 @@ DO WHILE(deg<maxDegree)
       END IF
       berr(j) = zabs(a)/berr(j)
     END DO
-    backward_error(it, 2) = MAXVAL(berr)
+    backward_error(it, 2) = maxval(berr)
     DEALLOCATE(er, ei)
     DEALLOCATE(poly, radius ,root, err)
 
@@ -93,9 +93,9 @@ DO WHILE(deg<maxDegree)
     ENDDO
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
-    CALL DAMVW(deg, p2, REIGS, IEIGS, ITS, FLAG)
-    CALL SYSTEM_CLOCK(COUNT=clock_stop)  
-    time(it, 3) = DBLE(clock_stop-clock_start)/DBLE(clock_rate)
+    CALL damvw(deg, p2, REIGS, IEIGS, ITS, FLAG)
+    CALL system_clock(count=clock_stop)  
+    time(it, 3) = dble(clock_stop-clock_start)/dble(clock_rate)
     DO j = 1, deg
       t =  dcmplx(REIGS(j), IEIGS(j))
       t2 = zabs(t)
@@ -110,23 +110,26 @@ DO WHILE(deg<maxDegree)
       END IF
       berr(j) = zabs(a)/berr(j)
     END DO
-    backward_error(it, 3) = MAXVAL(berr)
+    backward_error(it, 3) = maxval(berr)
     DEALLOCATE(p, p2, REIGS,IEIGS,ITS, alpha, berr)
   ENDDO
   
-  WRITE(1,'(ES15.2)', advance='no') sum(time(:,1))/dble(itmax)
+  WRITE(1,'(ES15.2)', advance='no') sum(time(:,1))/itmax
   WRITE(1,'(A)', advance='no') ','
-  WRITE(1,'(ES15.2)', advance='no') sum(backward_error(:,1))/dble(itmax)
+  WRITE(1,'(ES15.2)', advance='no') sum(backward_error(:,1))/itmax
   WRITE(1,'(A)', advance='no') ','
-  WRITE(1,'(ES15.2)', advance='no') sum(time(:,2))/dble(itmax)
+  WRITE(1,'(ES15.2)', advance='no') sum(time(:,2))/itmax
   WRITE(1,'(A)', advance='no') ',' 
-  WRITE(1,'(ES15.2)', advance='no') sum(backward_error(:,2))/dble(itmax)
+  WRITE(1,'(ES15.2)', advance='no') sum(backward_error(:,2))/itmax
   WRITE(1,'(A)', advance='no') ','
-  WRITE(1,'(ES15.2)', advance='no') sum(time(:,3))/dble(itmax)
+  WRITE(1,'(ES15.2)', advance='no') sum(time(:,3))/itmax
   WRITE(1,'(A)', advance='no') ','
-  WRITE(1,'(ES15.2)') sum(backward_error(:,3))/dble(itmax)
+  WRITE(1,'(ES15.2)') sum(backward_error(:,3))/itmax
   deg=2*deg
 ENDDO
 DEALLOCATE(time, backward_error)
+
+CALL EXECUTE_COMMAND_LINE('python test.py')
+
 END PROGRAM test
 

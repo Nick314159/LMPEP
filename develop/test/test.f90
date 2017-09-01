@@ -1,14 +1,14 @@
 PROGRAM test
 USE poly_zeroes
 IMPLICIT NONE
-INTEGER(KIND=8)                                 :: clock, clock_rate, clock_start, clock_stop
+INTEGER                                         :: clock, clock_rate, clock_start, clock_stop
 INTEGER                                         :: i, j, nitmax, iter
 REAL(KIND=dp), DIMENSION(:), ALLOCATABLE        :: radius
 DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE   :: time, backward_error
 REAL(KIND=dp)                                   :: eps, big, small, aux, ru, ri
 COMPLEX(KIND=dp), DIMENSION(:), ALLOCATABLE     :: root, poly
 LOGICAL, DIMENSION(:), ALLOCATABLE              :: err
-INTEGER(kind=1)                                 :: it, itmax
+INTEGER                                         :: it, itmax
 INTEGER                                         :: deg, k, startDegree, maxDegree, flag
 DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE     :: berr, er, ei, p, p2, alpha
 CHARACTER(LEN=100)                              :: arg

@@ -80,7 +80,6 @@ subroutine DAMVW(NP,POLY,REIGS,IEIGS,ITS,FLAG)
   end do
   
   N = nnew
-  print*, N
   !print*, POLY
   if (N == 0) then
      ! all coefficients 0 => all roots 0

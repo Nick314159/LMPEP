@@ -1,9 +1,9 @@
 PROGRAM test
 IMPLICIT NONE
 LOGICAL                                     :: conv
-INTEGER(KIND=1)                             :: it, itmax
-INTEGER(KIND=4)                             :: deg, k, startDegree, maxDegree
-INTEGER(KIND=8)                             :: clock_rate, clock_start, clock_stop
+INTEGER                                     :: it, itmax
+INTEGER                                     :: deg, k, startDegree, maxDegree
+INTEGER                                     :: clock_rate, clock_start, clock_stop
 DOUBLE PRECISION                            :: a, t
 DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE :: alpha, berr, berr_max, er, ei, p
 DOUBLE COMPLEX                              :: ac, tc

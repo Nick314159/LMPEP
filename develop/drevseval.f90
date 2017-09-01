@@ -21,8 +21,7 @@
 SUBROUTINE drevseval(p, t, deg, der, a)
 IMPLICIT NONE
 !scalar arguments
-INTEGER(KIND=1), INTENT(IN)     :: der
-INTEGER, INTENT(IN)             :: deg
+INTEGER, INTENT(IN)             :: der, deg
 DOUBLE PRECISION, INTENT(IN)    :: t
 DOUBLE PRECISION, INTENT(OUT)   :: a
 !array arguments

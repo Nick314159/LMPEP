@@ -21,8 +21,7 @@
 SUBROUTINE dzseval(p, t, deg, der, a)
 IMPLICIT NONE
 !scalar arguments
-INTEGER(KIND=1), INTENT(IN)     :: der
-INTEGER, INTENT(IN)             :: deg
+INTEGER, INTENT(IN)             :: der, deg
 DOUBLE COMPLEX, INTENT(IN)      :: t
 DOUBLE COMPLEX, INTENT(OUT)     :: a
 !array arguments

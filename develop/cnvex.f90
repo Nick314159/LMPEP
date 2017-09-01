@@ -33,7 +33,7 @@ INTEGER, INTENT(IN)             :: n
 LOGICAL, INTENT(OUT)            :: h(*)
 DOUBLE PRECISION, INTENT(IN)    :: a(*)
 !intrinsic functions
-INTRINSIC                       :: INT,MAX
+INTRINSIC                       :: int, max
 !external subroutines
 EXTERNAL                        :: cmerge
 ! Local variables
@@ -52,7 +52,7 @@ IF(2**(k+1) <= (n-2)) k = k+1
 ! Compute the upper convex hull of their union by means of subroutine CMERGE
 m = 1
 DO i = 0, k
-  nj = MAX(0, INT((n-2-m)/(m+m)))
+  nj = max(0, int((n-2-m)/(m+m)))
   DO j = 0, nj
     jc = (j+j+1)*m+1
     CALL cmerge(n, a, jc, m, h)

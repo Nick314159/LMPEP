@@ -1,4 +1,4 @@
-Numerical Computation of the Newton Polygon of a Polynomial {#bini}
+Computation of the Newton Polygon {#bini}
 ============================================================
 \author Dario Andrea Bini,\n University of Pisa, Italy
 \note E-mail: bini@dm.unipi.it

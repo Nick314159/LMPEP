@@ -15,6 +15,5 @@ var files =
     [ "dzslcorr.f90", "dzslcorr_8f90.html", "dzslcorr_8f90" ],
     [ "init_random_seed.f90", "init__random__seed_8f90.html", "init__random__seed_8f90" ],
     [ "left.f90", "left_8f90.html", "left_8f90" ],
-    [ "right.f90", "right_8f90.html", "right_8f90" ],
-    [ "test_sp.f90", "test__sp_8f90.html", "test__sp_8f90" ]
+    [ "right.f90", "right_8f90.html", "right_8f90" ]
 ];

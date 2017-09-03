@@ -1,7 +1,7 @@
 var NAVTREE =
 [
   [ "LMPEP", "index.html", [
-    [ "Numerical Computation of the Newton Polygon of a Polynomial", "bini.html", null ],
+    [ "Computation of the Newton Polygon", "bini.html", null ],
     [ "Files", null, [
       [ "File List", "files.html", "files" ],
       [ "File Members", "globals.html", [

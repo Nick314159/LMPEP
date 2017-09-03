@@ -1,6 +1,5 @@
 # LMPEP - Laguerre's Method Applied to the Polynomial Eigenvalue Problem ##
-This package is a collection of Fortran 90 subroutines for accurately 
-and efficiently solving the polynomial eigenvalue problem using Laguerre's method.
+LMPEP is a Fortran library collection of solvers and their dependencies for the polynomial eigenvalue problem. There are several subroutines that make use of external subroutines from the BLAS and LAPACK libraries. 
 
 ## Authors ##
 - [Thomas R. Cameron](http://thomasrcameron.com/), 

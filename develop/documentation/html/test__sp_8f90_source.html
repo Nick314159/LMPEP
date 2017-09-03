@@ -25,9 +25,8 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">LMPEP
-   &#160;<span id="projectnumber">1.0</span>
    </div>
-   <div id="projectbrief">Eigenvalue solver for general and tridiagonal matrix polynomials</div>
+   <div id="projectbrief">Laguerre&#39;s Method Applied to the Polynomial Eigenvalue Problem</div>
   </td>
  </tr>
  </tbody>
@@ -71,9 +70,9 @@ $(document).ready(function(){initNavTree('test__sp_8f90_source.html','');});
 <a href="test__sp_8f90.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="test__sp_8f90.html#a9bc57b8dbe7c3e1b9db72b918a1b6bab">    1</a></span>&#160;<span class="keyword">PROGRAM</span> <a class="code" href="test__sp_8f90.html#a9bc57b8dbe7c3e1b9db72b918a1b6bab">test</a></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keywordtype">IMPLICIT NONE</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keywordtype">LOGICAL</span>                                     :: conv</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keywordtype">INTEGER(KIND=1)</span>                             :: it, itmax</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keywordtype">INTEGER(KIND=4)</span>                             :: deg, k, startdegree, maxdegree</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keywordtype">INTEGER(KIND=8)</span>                             :: clock_rate, clock_start, clock_stop</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keywordtype">INTEGER</span>                                     :: it, itmax</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keywordtype">INTEGER</span>                                     :: deg, k, startdegree, maxdegree</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keywordtype">INTEGER</span>                                     :: clock_rate, clock_start, clock_stop</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keywordtype">DOUBLE PRECISION</span>                            :: a, t</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keywordtype">DOUBLE PRECISION</span>, <span class="keywordtype">DIMENSION(:)</span>, <span class="keywordtype">ALLOCATABLE</span> :: alpha, berr, berr_max, er, ei, p</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keywordtype">DOUBLE COMPLEX</span>                              :: ac, tc</div>
@@ -275,7 +274,7 @@ $(document).ready(function(){initNavTree('test__sp_8f90_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="test__sp_8f90.html">test_sp.f90</a></li>
-    <li class="footer">Generated on Sat Aug 26 2017 17:48:47 for LMPEP by
+    <li class="footer">Generated on Sat Sep 2 2017 17:10:20 for LMPEP by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>
   </ul>

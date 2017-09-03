@@ -4,7 +4,8 @@
 !>\brief <b> DZSEVAL evaluates real scalar polynomial at complex number. </b>
 !>\par Purpose:
 !>\verbatim
-!> DZSEVAL calculates p(t), p'(t), or p''(t), where p is a real scalar polynomial and t is a complex number. What derivative is taken is determined by the parameter der and the computation is done via Horner's method. 
+!> DZSEVAL calculates p(t), p'(t), or p''(t), where p is a real scalar polynomial and t is a complex number.
+!> What derivative is taken is determined by the parameter der and the computation is done via Horner's method. 
 !>\endverbatim
 !>\param[in] p
 !>\verbatim Double precision array of dimension (deg+1), contains polynomial coefficients, ordered from constant to leading. \endverbatim

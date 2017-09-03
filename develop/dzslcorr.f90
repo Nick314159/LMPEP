@@ -4,7 +4,10 @@
 !>\brief <b> DZSLCORR computes the Lagueree correction term of a real polynomial with complex root approximation, while ``dividing out'' previously computed roots. </b>
 !>\par Purpose:
 !>\verbatim
-!> DZSLCORR calculates y1=p'(t)/p(t) and y2=-(p'(t)/p(t))', where t=DCMPLX(er(ind),ei(ind)) is the current root approximation, and then updates y1 and y2 by subtracting the appropriate sum of preivously computed roots indexed by 1,...ind-1. From there the Laguerre correction term can be computed as deg/(y1+-sqrt((deg-1)*(deg*y2-y1**2)), where +- is choosen to maximize the denominator. 
+!> DZSLCORR calculates y1=p'(t)/p(t) and y2=-(p'(t)/p(t))', where t=DCMPLX(er(ind),ei(ind)) is the current root approximation,
+!> and then updates y1 and y2 by subtracting the appropriate sum of preivously computed roots indexed by 1,...ind-1.
+!> From there the Laguerre correction term can be computed as deg/(y1+-sqrt((deg-1)*(deg*y2-y1**2)),
+!> where +- is choosen to maximize the denominator. 
 !>\endverbatim
 !>\param[in] p
 !>\verbatim Double precision array of dimension (deg+1), contains polynomial coefficients, ordered from constant to leading. \endverbatim

@@ -4,7 +4,8 @@
 !>\brief <b> DREVSEVAL evaluates the reversal of a real scalar polynomial at a real number. </b>
 !>\par Purpose:
 !>\verbatim
-!> DREVSEVAL calculates revp(t), revp'(t), or revp''(t), where revp(t)=t^(deg)p(t^(-1)) and t is a nonzero real number. What derivative is taken is determined by the parameter der and the computation is done via Horner's method. 
+!> DREVSEVAL calculates revp(t), revp'(t), or revp''(t), where revp(t)=t^(deg)p(t^(-1)) and t is a nonzero real number.
+!> What derivative is taken is determined by the parameter der and the computation is done via Horner's method. 
 !>\endverbatim
 !>\param[in] p
 !>\verbatim Double precision array of dimension (deg+1), contains polynomial coefficients, ordered from constant to leading. \endverbatim

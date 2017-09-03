@@ -7,7 +7,8 @@
 !> DSSTART uses the Newton Polygon of a polynomial to compute initial estimates to that polynomials roots.  
 !>\endverbatim
 !>\param[in] alpha
-!>\verbatim Double precision array of dimension (deg+1), contains moduli of polynomial coefficients, ordered from constant to leading. \endverbatim
+!>\verbatim Double precision array of dimension (deg+1), contains moduli of polynomial coefficients,
+!> ordered from constant to leading. \endverbatim
 !>\param[in] deg
 !>\verbatim  Integer, degree of the polynomial.\endverbatim
 !>\param[out] er

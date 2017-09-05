@@ -1,16 +1,17 @@
 #!/bin/bash
 
-#compile scalar subroutines to object files
-gfortran -c -O3 balance.f90 DCFD.f90 DGR.f90 DRANDPOLYJT.f90 RESCHECK.f90 DCFT.f90 DGTO2.f90 DCB.f90 DFCC.f90 DMQF.f90 DCDB.f90 DFGR.f90 DNORMALPOLY.f90 DAMVW.f90 pzeros.f90
+#compile all files in other_src
+gfortran -c -O3 other_src/*
 
 #add object files to library and copy library to /usr/lib64
-ar crv libsptest.a *.o
-sudo cp libsptest.a /usr/lib64/
+ar crv liblmpeptest.a *.o
+sudo cp liblmpeptest.a /usr/lib64/
 
 #compile test program to executable file
-gfortran -O3 test.f90 -lsptest -llmpep -o test.exe
+gfortran -O3 test_dslm.f90 -llmpeptest -llmpep -o test_dslm.exe
+gfortran -O3 dslm_comparisons.f90 -llmpeptest -llmpep -o dslm_comparisons.exe
 
 #clean up
+rm *.mod
 rm *.o
 rm *.a
-rm *.mod

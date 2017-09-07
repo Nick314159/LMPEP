@@ -36,11 +36,11 @@ CALL getarg(2,arg)
 READ(arg, '(I10)') maxDegree
 
 deg=startDegree
-itmax = 127
+itmax = 10
 OPEN(UNIT=1,FILE="results.csv")
 WRITE(1,'(A)') 'Degree, LMPEP Time, LMPEP berr, Pzeros Time, Pzeros berr, AMVW Time, AMVW berr'
 ALLOCATE(time(itmax, 3), backward_error(itmax, 3))
-DO WHILE(deg<maxDegree)
+DO WHILE(deg<=maxDegree)
   WRITE(1,'(I10)', advance='no') deg
   WRITE(1,'(A)', advance='no') ','
 

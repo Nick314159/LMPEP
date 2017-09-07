@@ -23,14 +23,14 @@ READ(arg, *) maxDegree
 CALL getarg(3,arg)
 READ(arg,*) dt
 
-itmax=127
+itmax=10
 deg=startDegree
 
 OPEN(UNIT=1,FILE="results.csv")
 WRITE(1,'(A)') dt
 
 IF (dt=='DSEVAL') THEN
-DO WHILE(deg<maxDegree)
+DO WHILE(deg<=maxDegree)
     ALLOCATE(p(deg+1))
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
@@ -47,7 +47,7 @@ DO WHILE(deg<maxDegree)
     deg=2*deg
 ENDDO
 ELSEIF(dt=='DREVSEVAL') THEN
-DO WHILE(deg<maxDegree)
+DO WHILE(deg<=maxDegree)
     ALLOCATE(p(deg+1))
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
@@ -64,7 +64,7 @@ DO WHILE(deg<maxDegree)
     deg=2*deg
 ENDDO
 ELSEIF(dt=='DZSEVAL') THEN
-DO WHILE(deg<maxDegree)
+DO WHILE(deg<=maxDegree)
     ALLOCATE(p(deg+1))
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
@@ -83,7 +83,7 @@ DO WHILE(deg<maxDegree)
     deg=2*deg
 ENDDO
 ELSEIF(dt=='DZREVSEVAL') THEN
-DO WHILE(deg<maxDegree)
+DO WHILE(deg<=maxDegree)
     ALLOCATE(p(deg+1))
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
@@ -102,7 +102,7 @@ DO WHILE(deg<maxDegree)
     deg=2*deg
 ENDDO
 ELSEIF(dt=='DSSTART') THEN
-DO WHILE(deg<maxDegree)
+DO WHILE(deg<=maxDegree)
     ALLOCATE(er(deg),ei(deg),p(deg+1))
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
@@ -121,7 +121,7 @@ DO WHILE(deg<maxDegree)
     deg=2*deg
 ENDDO
 ELSEIF(dt=='DSLCORR') THEN
-DO WHILE(deg<maxDegree)
+DO WHILE(deg<=maxDegree)
     ALLOCATE(alpha(deg+1),er(deg),ei(deg),p(deg+1))
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
@@ -142,7 +142,7 @@ DO WHILE(deg<maxDegree)
     deg=2*deg
 ENDDO
 ELSEIF(dt=='DZSLCORR') THEN
-DO WHILE(deg<maxDegree)
+DO WHILE(deg<=maxDegree)
     ALLOCATE(alpha(deg+1),er(deg),ei(deg),p(deg+1))
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
@@ -163,7 +163,7 @@ DO WHILE(deg<maxDegree)
     deg=2*deg
 ENDDO
 ELSEIF(dt=='DSLM') THEN
-DO WHILE(deg<maxDegree)
+DO WHILE(deg<=maxDegree)
     ALLOCATE(berr(deg),berr_max(itmax),er(deg),ei(deg),p(deg+1))
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)

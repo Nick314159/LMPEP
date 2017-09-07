@@ -1,5 +1,4 @@
 <map id="dzmod" name="dzmod">
 <area shape="rect" id="node2" href="$dslm_8f90.html#a7809ea1685268dcc45fbd3de77420416" title=" DSLM computes the roots of a real polynomial. &#160;" alt="" coords="230,5,279,32"/>
-<area shape="rect" id="node4" href="$dzslcorr_8f90.html#a4c956eab6ffa718951fdb69fe398497a" title=" DZSLCORR computes the Lagueree correction term of a real polynomial with complex root approximation..." alt="" coords="115,56,181,83"/>
-<area shape="rect" id="node3" href="$test__sp_8f90.html#a9bc57b8dbe7c3e1b9db72b918a1b6bab" title="test" alt="" coords="328,31,371,57"/>
+<area shape="rect" id="node3" href="$dzslcorr_8f90.html#a4c956eab6ffa718951fdb69fe398497a" title=" DZSLCORR computes the Lagueree correction term of a real polynomial with complex root approximation..." alt="" coords="115,31,181,57"/>
 </map>

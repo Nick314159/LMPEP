@@ -1,6 +1,5 @@
 <map id="drevseval" name="drevseval">
-<area shape="rect" id="node2" href="$dslcorr_8f90.html#ad03cab90ee9581318be8a06a3000facf" title=" DSLCORR computes the Lagueree correction term of real polynomial with real root approximation, while ``dividing out&#39;&#39; previously computed roots. &#160;" alt="" coords="131,22,191,49"/>
-<area shape="rect" id="node5" href="$dzslcorr_8f90.html#a4c956eab6ffa718951fdb69fe398497a" title=" DZSLCORR computes the Lagueree correction term of a real polynomial with complex root approximation..." alt="" coords="128,73,195,100"/>
-<area shape="rect" id="node4" href="$test__sp_8f90.html#a9bc57b8dbe7c3e1b9db72b918a1b6bab" title="test" alt="" coords="341,48,384,74"/>
-<area shape="rect" id="node3" href="$dslm_8f90.html#a7809ea1685268dcc45fbd3de77420416" title=" DSLM computes the roots of a real polynomial. &#160;" alt="" coords="243,22,293,49"/>
+<area shape="rect" id="node2" href="$dslcorr_8f90.html#ad03cab90ee9581318be8a06a3000facf" title=" DSLCORR computes the Lagueree correction term of real polynomial with real root approximation, while ``dividing out&#39;&#39; previously computed roots. &#160;" alt="" coords="131,5,191,32"/>
+<area shape="rect" id="node4" href="$dzslcorr_8f90.html#a4c956eab6ffa718951fdb69fe398497a" title=" DZSLCORR computes the Lagueree correction term of a real polynomial with complex root approximation..." alt="" coords="128,56,195,83"/>
+<area shape="rect" id="node3" href="$dslm_8f90.html#a7809ea1685268dcc45fbd3de77420416" title=" DSLM computes the roots of a real polynomial. &#160;" alt="" coords="243,31,293,57"/>
 </map>

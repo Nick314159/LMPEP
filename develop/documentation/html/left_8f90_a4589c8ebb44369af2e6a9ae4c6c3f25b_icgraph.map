@@ -1,7 +1,6 @@
 <map id="left" name="left">
-<area shape="rect" id="node2" href="$cmerge_8f90.html#a80622a48065c4191517c1a7a3953f2f3" title="Given the upper convex hulls of two consecutive sets of pairs (j,A(j)), compute the upper convex hull..." alt="" coords="94,31,159,57"/>
-<area shape="rect" id="node3" href="$cnvex_8f90.html#adbba31f33811d4b7401a3ca2d373ce82" title=" Compute the upper convex hull of the set &#160;" alt="" coords="209,31,263,57"/>
-<area shape="rect" id="node4" href="$dsstart_8f90.html#a1b2ae9b811a1b8c505c7cda133598d18" title=" DSSTART computes initial estimates to the roots of a polynomial. &#160;" alt="" coords="313,31,373,57"/>
+<area shape="rect" id="node2" href="$cmerge_8f90.html#a80622a48065c4191517c1a7a3953f2f3" title="Given the upper convex hulls of two consecutive sets of pairs (j,A(j)), compute the upper convex hull..." alt="" coords="94,5,159,32"/>
+<area shape="rect" id="node3" href="$cnvex_8f90.html#adbba31f33811d4b7401a3ca2d373ce82" title=" Compute the upper convex hull of the set &#160;" alt="" coords="209,5,263,32"/>
+<area shape="rect" id="node4" href="$dsstart_8f90.html#a1b2ae9b811a1b8c505c7cda133598d18" title=" DSSTART computes initial estimates to the roots of a polynomial. &#160;" alt="" coords="313,5,373,32"/>
 <area shape="rect" id="node5" href="$dslm_8f90.html#a7809ea1685268dcc45fbd3de77420416" title=" DSLM computes the roots of a real polynomial. &#160;" alt="" coords="422,5,471,32"/>
-<area shape="rect" id="node6" href="$test__sp_8f90.html#a9bc57b8dbe7c3e1b9db72b918a1b6bab" title="test" alt="" coords="520,31,563,57"/>
 </map>

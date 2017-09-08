@@ -9,7 +9,7 @@ REAL(KIND=dp)                                   :: eps, big, small, aux, ru, ri
 COMPLEX(KIND=dp), DIMENSION(:), ALLOCATABLE     :: root, poly
 LOGICAL, DIMENSION(:), ALLOCATABLE              :: err
 INTEGER                                         :: it, itmax
-INTEGER                                         :: deg, k, startDegree, maxDegree, flag
+INTEGER                                         :: deg, startDegree, maxDegree, flag
 DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE     :: berr, er, ei, p, p2, alpha
 CHARACTER(LEN=100)                              :: arg
 DOUBLE PRECISION, ALLOCATABLE                   :: REIGS(:), IEIGS(:), RESIDUALS(:,:)

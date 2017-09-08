@@ -85,8 +85,8 @@ IF(t2>1) THEN
   !compute y1=p'/p and y2=-(p'/p)'
   b=b*a**(-1)
   c=c*a**(-1)
-  y1=dcmplx(t*(deg-t*b),zero)
-  y2=dcmplx(t**2*(deg-2*t*b+t**2*(b**2-c)),zero)
+  y1=t*(deg-t*b)
+  y2=t**2*(deg-2*t*b+t**2*(b**2-c))
 ELSE
   !compute a=p, berr
   CALL dseval(p, t, deg, 0, a)
@@ -103,23 +103,19 @@ ELSE
   !compute y1=p'/p and y2=-(p'/p)'
   b=b*a**(-1)
   c=c*a**(-1)
-  y1=dcmplx(b,zero)
-  y2=dcmplx(b**2-c,zero)
+  y1=b
+  y2=b**2-c
 ENDIF
 !remove previously found roots
 x1=y1-x1
 x2=y2-x2
 !denominator of Laguerre correction term
 y1=zsqrt((deg-1)*(deg*x2-x1**2))
-!y1=zsqrt(x2-(x1**2+x2)/deg+(x1/deg)**2)
 y2=x1-y1
-!y2=(x1/deg)-y1
 y1=x1+y1
-!y1=(x1/deg)+y1
 !choose term that maximizes denominator
 IF(zabs(y1)>zabs(y2)) THEN
   y1=deg*y1**(-1)
-  !y1=y1**(-1)
   IF(zabs(y1)<tol) THEN
     ei(ind)=zero
     check=.FALSE.
@@ -129,7 +125,6 @@ IF(zabs(y1)>zabs(y2)) THEN
   ENDIF
 ELSE
   y2=deg*y2**(-1)
-  !y2=y2**(-1)
   IF(zabs(y2)<tol) THEN
     ei(ind)=zero
     check=.FALSE.

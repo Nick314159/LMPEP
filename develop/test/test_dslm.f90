@@ -103,7 +103,7 @@ DO WHILE(deg<=maxDegree)
 ENDDO
 ELSEIF(dt=='DSSTART') THEN
 DO WHILE(deg<=maxDegree)
-    ALLOCATE(er(deg),ei(deg),p(deg+1))
+    ALLOCATE(alpha(deg+1),er(deg),ei(deg),p(deg+1))
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
     DO it=1,itmax
@@ -117,7 +117,7 @@ DO WHILE(deg<=maxDegree)
     WRITE(1,'(I10)', advance='no') deg
     WRITE(1,'(A)', advance='no') ','
     WRITE(1,'(ES15.2)') (dble(clock_stop-clock_start)/dble(clock_rate))/itmax
-    DEALLOCATE(er,ei,p)
+    DEALLOCATE(alpha,er,ei,p)
     deg=2*deg
 ENDDO
 ELSEIF(dt=='DSLCORR') THEN

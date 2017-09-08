@@ -33,7 +33,7 @@ INTEGER, INTENT(IN)             :: n
 LOGICAL, INTENT(OUT)            :: h(*)
 DOUBLE PRECISION, INTENT(IN)    :: a(*)
 !intrinsic functions
-INTRINSIC                       :: int, max
+INTRINSIC                       :: int, log, max
 !external subroutines
 EXTERNAL                        :: cmerge
 ! Local variables
@@ -42,7 +42,7 @@ INTEGER                         :: i, j, k, m, nj, jc
 h(1:n) = .TRUE.
 
 ! compute K such that N-2 <= 2**K < N-1
-k = INT(LOG(n-2.0D0)/LOG(2.0D0))
+k = int(log(n-2.0D0)/log(2.0D0))
 IF(2**(k+1) <= (n-2)) k = k+1
 
 ! For each M=1,2,4,8,...,2**K, consider the NJ pairs of consecutive

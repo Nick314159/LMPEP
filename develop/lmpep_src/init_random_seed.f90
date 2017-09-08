@@ -10,13 +10,15 @@
 SUBROUTINE init_random_seed()
 INTEGER                             :: i, n, clock
 INTEGER, DIMENSION(:), ALLOCATABLE  :: seed
+!intrinsic procedures
+INTRINSIC                           :: count, random_seed, size, system_clock
 
-CALL RANDOM_SEED(size = n)
+CALL random_seed(size = n)
 ALLOCATE(seed(n))
 
-CALL SYSTEM_CLOCK(COUNT=clock)
+CALL system_clock(count=clock)
 seed = clock + 37 * (/ (i - 1, i = 1, n) /)
-CALL RANDOM_SEED(PUT = seed)
+CALL random_seed(PUT = seed)
 
 DEALLOCATE(seed)
 END SUBROUTINE init_random_seed

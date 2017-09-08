@@ -111,15 +111,11 @@ x1=y1-x1
 x2=y2-x2
 !denominator of Laguerre correction term
 y1=zsqrt((deg-1)*(deg*x2-x1**2))
-!y1=zsqrt(x2-(x1**2+x2)/deg+(x1/deg)**2)
 y2=x1-y1
-!y2=(x1/deg)-y1
 y1=x1+y1
-!y1=(x1/deg)+y1
 !choose term that maximizes denominator
 IF(zabs(y1)>zabs(y2)) THEN
   y1=deg*y1**(-1)
-  !y1=y1**(-1)
   IF(zabs(y1)<tol) THEN
     check=.FALSE.
   ELSE
@@ -128,7 +124,6 @@ IF(zabs(y1)>zabs(y2)) THEN
   ENDIF
 ELSE
   y2=deg*y2**(-1)
-  !y2=y2**(-1)
   IF(zabs(y2)<tol) THEN
     check=.FALSE.
   ELSE

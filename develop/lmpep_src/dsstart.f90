@@ -43,7 +43,7 @@ DO i=1,deg+1
   IF(alpha(i)>zero) THEN
     a(i)=dlog(alpha(i))
   ELSE
-    a(i)=-1.0D0
+    a(i)=-1.0D30
   ENDIF
 ENDDO
 !compute upper convex hull

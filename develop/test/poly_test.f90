@@ -50,4 +50,8 @@ p(1)= 1d0/524288d0
 CALL dslm(p, deg, er, ei, berr)
 PRINT*, maxval(berr)
 
+DO i=1,deg
+    PRINT*, er(i), ei(i)
+ENDDO
+
 END PROGRAM poly_test

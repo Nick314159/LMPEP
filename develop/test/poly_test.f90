@@ -73,27 +73,27 @@ exacteigs(2)  = complex(cos(37d0/40d0*pi),0d0)
 exacteigs(1)  = complex(cos(39d0/40d0*pi),0d0)
 
 !Wilkonson Polynomial
-p(21)= 243290200817664D4
-p(20)= -875294803676160D4
-p(19)= 138037597536407D5
-p(18)= -128709312451510D5
-p(17)= 803781182264505D4
-p(16)= -359997951794761D4
-p(15)= 120664780378037D4
-p(14)= -311333643161391D3
-p(13)= 630308120992949D2
-p(12)= -101422998655115D2
+p(1)= 243290200817664D4
+p(2)= -875294803676160D4
+p(3)= 138037597536407D5
+p(4)= -128709312451510D5
+p(5)= 803781182264505D4
+p(6)= -359997951794761D4
+p(7)= 120664780378037D4
+p(8)= -311333643161391D3
+p(9)= 630308120992949D2
+p(10)= -101422998655115D2
 p(11)= 130753501054049D2
-p(10)= -135585182899530D0
-p(9) = 11310276995381D0
-p(8) = -756111184500D0
-p(7) = 40171771630D0
-p(6) = -1672280820D0
-p(5) = 53327946D0
-p(4) = -1256850D0
-p(3) = 20615D0
-p(2) = -210D0
-p(1) = 1D0
+p(12)= -135585182899530D0
+p(13) = 11310276995381D0
+p(14) = -756111184500D0
+p(15) = 40171771630D0
+p(16) = -1672280820D0
+p(17) = 53327946D0
+p(18) = -1256850D0
+p(19) = 20615D0
+p(20) = -210D0
+p(21) = 1D0
 exacteigs(20)  = 20
 exacteigs(19)  = 19
 exacteigs(18)  = 18
@@ -115,8 +115,7 @@ exacteigs(3)  = 3
 exacteigs(2)  = 2
 exacteigs(1)  = 1
 
-
-
+PRINT*, p
 
 !LMPEP
 ALLOCATE(berr(deg),er(deg),ei(deg))
@@ -127,9 +126,12 @@ PRINT*, maxval(berr)
 CALL dsort(er, ei, deg)
 PRINT*, 'LMPEP Absolute Error: Deg 20 Chebyshev Poly'
 DO i=1,deg
-    PRINT*, dzmod(dble(exacteigs(i))-er(i),dimag(exacteigs(i))-ei(i))
+   PRINT*, er(i), ei(i)
+   ! PRINT*, dzmod(dble(exacteigs(i))-er(i),dimag(exacteigs(i))-ei(i))
 ENDDO
 PRINT*, ''
+
+STOP
 
 !POLZEROS
 ALLOCATE(poly(0:deg), radius(1:deg), root(1:deg), err(deg+1))

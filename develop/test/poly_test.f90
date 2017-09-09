@@ -73,6 +73,7 @@ exacteigs(2)  = complex(cos(37d0/40d0*pi),0d0)
 exacteigs(1)  = complex(cos(39d0/40d0*pi),0d0)
 
 
+
 !LMPEP
 ALLOCATE(berr(deg),er(deg),ei(deg))
 
@@ -106,6 +107,20 @@ DO i=1,deg
 ENDDO
 PRINT*, ''
 
+!AMVW
+ALLOCATE(REIGS(deg),IEIGS(deg),ITS(deg), p2(deg))
+DO i=1,deg
+    p2(deg-i+1)=p(i)/p(deg+1)
+ENDDO
+
+CALL damvw(deg, p2, REIGS, IEIGS, ITS, FLAG)
+CALL dsort(REIGS, IEIGS, deg)
+PRINT*, 'AMVW Absolute Error: Deg 20 Chebyshev Poly'
+DO i=1,deg
+    PRINT*, dzmod(dble(exacteigs(i))-REIGS(i),dimag(exacteigs(i))-IEIGS(i))
+ENDDO
+DEALLOCATE(p, p2, REIGS,IEIGS,ITS, berr)
+PRINT*, ''
 CONTAINS
 
 SUBROUTINE dsort(er, ei, n)

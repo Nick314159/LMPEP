@@ -1,34 +1,17 @@
 PROGRAM poly_test
-USE poly_zeroes
 IMPLICIT NONE
-INTEGER                                         :: i, j, nitmax, iter
-REAL(KIND=dp), DIMENSION(:), ALLOCATABLE        :: radius
-DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE   :: time, backward_error
-REAL(KIND=dp)                                   :: eps, big, small, aux, ru, ri
-COMPLEX(KIND=dp), DIMENSION(:), ALLOCATABLE     :: root, poly
-LOGICAL, DIMENSION(:), ALLOCATABLE              :: err
-INTEGER                                         :: it, itmax
-INTEGER                                         :: deg, flag
-DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE     :: berr, er, ei, p, p2, alpha
+INTEGER                                         :: deg
+DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE     :: p
 DOUBLE COMPLEX, DIMENSION(:), ALLOCATABLE       :: exacteigs
-CHARACTER(LEN=100)                              :: arg
-DOUBLE PRECISION, ALLOCATABLE                   :: REIGS(:), IEIGS(:), RESIDUALS(:,:)
-INTEGER, ALLOCATABLE                            :: ITS(:)
-DOUBLE PRECISION                                :: t2
-DOUBLE COMPLEX                                  :: a, t
-DOUBLE PRECISION, PARAMETER                     :: pi = 3.14159265358979323d0
+DOUBLE PRECISION, PARAMETER                     :: pi = 3.1415926535897932d0
 !intrinsic subroutines
-INTRINSIC                                       :: dabs, dble, dcmplx, getarg, maxval, random_number
-INTRINSIC                                       :: epsilon, tiny, huge
-!external subroutines
-EXTERNAL                                        :: dslm, damvw, dseval, dzseval, drevseval, dzrevseval, daruv, init_random_seed
-!external functions
-DOUBLE PRECISION                                :: dzmod
-EXTERNAL                                        :: dzmod
+INTRINSIC                                       :: cos, dcmplx
 
-!Chebysehv Polynomial
+PRINT*, pi
+
+!Chebysehv Deg 20 Polynomial
 deg=20
-ALLOCATE(exacteigs(deg),p(deg+1))
+ALLOCATE(exacteigs(deg), p(deg+1))
 p(21) = 1d0
 p(20) = 0d0
 p(19) =-2621440d0/524288d0
@@ -50,160 +33,222 @@ p(4)= 0d0
 p(3)=-200d0/524288d0
 p(2)= 0d0
 p(1)= 1d0/524288d0
-exacteigs(20)  = complex(cos(1d0/40d0*pi),0d0)
-exacteigs(19)  = complex(cos(3d0/40d0*pi),0d0)
-exacteigs(18)  = complex(cos(5d0/40d0*pi),0d0)
-exacteigs(17)  = complex(cos(7d0/40d0*pi),0d0)
-exacteigs(16)  = complex(cos(9d0/40d0*pi),0d0)
-exacteigs(15)  = complex(cos(11d0/40d0*pi),0d0)
-exacteigs(14)  = complex(cos(13d0/40d0*pi),0d0)
-exacteigs(13)  = complex(cos(15d0/40d0*pi),0d0)
-exacteigs(12)  = complex(cos(17d0/40d0*pi),0d0)
-exacteigs(11)  = complex(cos(19d0/40d0*pi),0d0)
-exacteigs(10)  = complex(cos(21d0/40d0*pi),0d0)
-exacteigs(9)  = complex(cos(23d0/40d0*pi),0d0)
-exacteigs(8)  = complex(cos(25d0/40d0*pi),0d0)
-exacteigs(7)  = complex(cos(27d0/40d0*pi),0d0)
-exacteigs(6)  = complex(cos(29d0/40d0*pi),0d0)
-exacteigs(5)  = complex(cos(31d0/40d0*pi),0d0)
-exacteigs(4)  = complex(cos(33d0/40d0*pi),0d0)
-exacteigs(3)  = complex(cos(35d0/40d0*pi),0d0)
-exacteigs(2)  = complex(cos(37d0/40d0*pi),0d0)
-exacteigs(1)  = complex(cos(39d0/40d0*pi),0d0)
+exacteigs(20)  = dcmplx(cos(1d0/40d0*pi),0d0)
+exacteigs(19)  = dcmplx(cos(3d0/40d0*pi),0d0)
+exacteigs(18)  = dcmplx(cos(5d0/40d0*pi),0d0)
+exacteigs(17)  = dcmplx(cos(7d0/40d0*pi),0d0)
+exacteigs(16)  = dcmplx(cos(9d0/40d0*pi),0d0)
+exacteigs(15)  = dcmplx(cos(11d0/40d0*pi),0d0)
+exacteigs(14)  = dcmplx(cos(13d0/40d0*pi),0d0)
+exacteigs(13)  = dcmplx(cos(15d0/40d0*pi),0d0)
+exacteigs(12)  = dcmplx(cos(17d0/40d0*pi),0d0)
+exacteigs(11)  = dcmplx(cos(19d0/40d0*pi),0d0)
+exacteigs(10)  = dcmplx(cos(21d0/40d0*pi),0d0)
+exacteigs(9)  = dcmplx(cos(23d0/40d0*pi),0d0)
+exacteigs(8)  = dcmplx(cos(25d0/40d0*pi),0d0)
+exacteigs(7)  = dcmplx(cos(27d0/40d0*pi),0d0)
+exacteigs(6)  = dcmplx(cos(29d0/40d0*pi),0d0)
+exacteigs(5)  = dcmplx(cos(31d0/40d0*pi),0d0)
+exacteigs(4)  = dcmplx(cos(33d0/40d0*pi),0d0)
+exacteigs(3)  = dcmplx(cos(35d0/40d0*pi),0d0)
+exacteigs(2)  = dcmplx(cos(37d0/40d0*pi),0d0)
+exacteigs(1)  = dcmplx(cos(39d0/40d0*pi),0d0)
 PRINT*, "Deg 20 Chebyshev Poly"
-CALL test(20, p, exacteigs)
+CALL test(deg, p, exacteigs)
+DEALLOCATE(exacteigs, p)
 
-!Wilkonson Polynomial
-p(1)= 243290200817664D4
-p(2)= -875294803676160D4
-p(3)= 138037597536407D5
-p(4)= -128709312451510D5
-p(5)= 803781182264505D4
-p(6)= -359997951794761D4
-p(7)= 120664780378037D4
-p(8)= -311333643161391D3
-p(9)= 630308120992949D2
-p(10)= -101422998655115D2
-p(11)= 130753501054049D2
-p(12)= -135585182899530D0
-p(13) = 11310276995381D0
-p(14) = -756111184500D0
-p(15) = 40171771630D0
-p(16) = -1672280820D0
-p(17) = 53327946D0
-p(18) = -1256850D0
-p(19) = 20615D0
-p(20) = -210D0
-p(21) = 1D0
-exacteigs(20)  = 20
-exacteigs(19)  = 19
-exacteigs(18)  = 18
-exacteigs(17)  = 17
-exacteigs(16)  = 16
-exacteigs(15)  = 15
-exacteigs(14)  = 14
-exacteigs(13)  = 13
-exacteigs(12)  = 12
-exacteigs(11)  = 11
-exacteigs(10)  = 10
-exacteigs(9)  = 9
-exacteigs(8)  = 8
-exacteigs(7)  = 7
-exacteigs(6)  = 6
-exacteigs(5)  = 5
-exacteigs(4)  = 4
-exacteigs(3)  = 3
-exacteigs(2)  = 2
-exacteigs(1)  = 1
-PRINT*, "Deg 20 Wilkonson Poly"
-CALL test(20, p, exacteigs)
+!Wilkinson Deg 10 Polynomial
+deg=10
+ALLOCATE(exacteigs(deg), p(deg+1))
+p(1)=3628800D0
+p(2)=-10628640D0
+p(3)=12753576D0
+p(4)=-8409500D0
+p(5)=3416930D0
+p(6)=-902055D0
+p(7)=157773D0
+p(8)=-18150D0
+p(9)=1320D0
+p(10)=-55D0
+p(11)=1D0
+exacteigs(1)=dcmplx(1D0,0D0)
+exacteigs(2)=dcmplx(2D0,0D0)
+exacteigs(3)=dcmplx(3D0,0D0)
+exacteigs(4)=dcmplx(4D0,0D0)
+exacteigs(5)=dcmplx(5D0,0D0)
+exacteigs(6)=dcmplx(6D0,0D0)
+exacteigs(7)=dcmplx(7D0,0D0)
+exacteigs(8)=dcmplx(8D0,0D0)
+exacteigs(9)=dcmplx(9D0,0D0)
+exacteigs(10)=dcmplx(10D0,0D0)
+PRINT*, "Deg 10 Wilkins Poly"
+CALL test(deg, p, exacteigs)
+DEALLOCATE(exacteigs, p)
+
+!Wilkinson Deg 15 Polynomial
+deg=15
+ALLOCATE(exacteigs(deg), p(deg+1))
+p(1)=-1307674368000D0
+p(2)=4339163001600D0
+p(3)=-6165817614720D0
+p(4)=5056995703824D0
+p(5)=-2706813345600D0
+p(6)=1009672107080D0
+p(7)=-272803210680D0
+p(8)=54631129553D0
+p(9)=-8207628000D0
+p(10)=928095740D0
+p(11)=-78558480D0
+p(12)=4899622D0
+p(13)=-218400D0
+p(14)=6580D0
+p(15)=-120D0
+p(16)=1D0
+exacteigs(1)=dcmplx(1D0,0D0)
+exacteigs(2)=dcmplx(2D0,0D0)
+exacteigs(3)=dcmplx(3D0,0D0)
+exacteigs(4)=dcmplx(4D0,0D0)
+exacteigs(5)=dcmplx(5D0,0D0)
+exacteigs(6)=dcmplx(6D0,0D0)
+exacteigs(7)=dcmplx(7D0,0D0)
+exacteigs(8)=dcmplx(8D0,0D0)
+exacteigs(9)=dcmplx(9D0,0D0)
+exacteigs(10)=dcmplx(10D0,0D0)
+exacteigs(11)=dcmplx(11D0,0D0)
+exacteigs(12)=dcmplx(12D0,0D0)
+exacteigs(13)=dcmplx(13D0,0D0)
+exacteigs(14)=dcmplx(14D0,0D0)
+exacteigs(15)=dcmplx(15D0,0D0)
+PRINT*, "Deg 15 Wilkins Poly"
+CALL test(deg, p, exacteigs)
+DEALLOCATE(exacteigs, p)
+
+!Wilkinson Deg 20 Polynomial
+deg=20
+ALLOCATE(exacteigs(deg), p(deg+1))
+p(1)=2432902008176640000D0
+p(2)=-8752948036761600000D0
+p(3)=13803759753640704000D0
+p(4)=-12870931245150988800D0
+p(5)=8037811822645051776D0
+p(6)=-3599979517947607200D0
+p(7)=1206647803780373360D0
+p(8)=-311333643161390640D0
+p(9)=63030812099294896D0
+p(10)=-10142299865511450D0
+p(11)=1307535010540395D0
+p(12)=-135585182899530D0
+p(13)=11310276995381D0
+p(14)=-756111184500D0
+p(15)=40171771630D0
+p(16)=-1672280820D0
+p(17)=53327946D0
+p(18)=-1256850D0
+p(19)=20615D0
+p(20)=-210D0
+p(21)=1D0
+
+exacteigs(1)=dcmplx(1D0,0D0)
+exacteigs(2)=dcmplx(2D0,0D0)
+exacteigs(3)=dcmplx(3D0,0D0)
+exacteigs(4)=dcmplx(4D0,0D0)
+exacteigs(5)=dcmplx(5D0,0D0)
+exacteigs(6)=dcmplx(6D0,0D0)
+exacteigs(7)=dcmplx(7D0,0D0)
+exacteigs(8)=dcmplx(8D0,0D0)
+exacteigs(9)=dcmplx(9D0,0D0)
+exacteigs(10)=dcmplx(10D0,0D0)
+exacteigs(11)=dcmplx(11D0,0D0)
+exacteigs(12)=dcmplx(12D0,0D0)
+exacteigs(13)=dcmplx(13D0,0D0)
+exacteigs(14)=dcmplx(14D0,0D0)
+exacteigs(15)=dcmplx(15D0,0D0)
+exacteigs(16)=dcmplx(16D0,0D0)
+exacteigs(17)=dcmplx(17D0,0D0)
+exacteigs(18)=dcmplx(18D0,0D0)
+exacteigs(19)=dcmplx(19D0,0D0)
+exacteigs(20)=dcmplx(20D0,0D0)
+PRINT*, "Deg 20 Wilkins Poly"
+CALL test(deg, p, exacteigs)
+DEALLOCATE(exacteigs, p)
 
 CONTAINS
+
+!********************************************************
+!                       TEST                            *
+!******************************************************** 
 SUBROUTINE test(deg, p, exacteigs)
+USE poly_zeroes
 IMPLICIT NONE
+!scalar arguments
 INTEGER, INTENT(IN)                             :: deg
-DOUBLE PRECISION, DIMENSION(:), INTENT(IN)      :: p    
-DOUBLE COMPLEX, DIMENSION(:), INTENT(IN)        :: exacteigs 
-
-
-INTEGER                                         :: i, j, nitmax, iter
-REAL(KIND=dp), DIMENSION(:), ALLOCATABLE        :: radius
-REAL(KIND=dp)                                   :: eps, big, small, aux, ru, ri
-COMPLEX(KIND=dp), DIMENSION(:), ALLOCATABLE     :: root, poly
-LOGICAL, DIMENSION(:), ALLOCATABLE              :: err
-INTEGER                                         :: it, itmax
-INTEGER                                         :: flag
-DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE     :: berr, er, ei, p2, alpha
-
-
-DOUBLE PRECISION, ALLOCATABLE                   :: REIGS(:), IEIGS(:), RESIDUALS(:,:)
-INTEGER, ALLOCATABLE                            :: ITS(:)
-DOUBLE PRECISION                                :: t2
-DOUBLE COMPLEX                                  :: a, t
-DOUBLE PRECISION, PARAMETER                     :: pi = 3.14159265358979323d0
+!array arguments
+DOUBLE PRECISION, INTENT(IN)                    :: p(*) 
+DOUBLE COMPLEX, INTENT(IN)                      :: exacteigs(*)
+!LMPEP variables
+DOUBLE PRECISION, DIMENSION(deg)                :: berr, er, ei
+!POLZEROS variables
+INTEGER                                         :: iter, nitmax
+LOGICAL, DIMENSION(deg+1)                       :: err
+REAL(KIND=dp), DIMENSION(1:deg)                 :: radius
+COMPLEX(KIND=dp), DIMENSION(0:deg)              :: poly
+COMPLEX(KIND=dp), DIMENSION(1:deg)              :: root
+REAL(KIND=dp), PARAMETER                        :: eps=epsilon(1.0D0), big=huge(1.0D0), small=tiny(1.0D0)
+!AMVW variables
+INTEGER                                         :: FLAG
+INTEGER, DIMENSION(deg)                         :: ITS
+DOUBLE PRECISION, DIMENSION(deg)                :: REIGS, IEIGS, P2
+!loop variables
+INTEGER                                         :: i
 !intrinsic subroutines
-INTRINSIC                                       :: dabs, dble, dcmplx, getarg, maxval, random_number
-INTRINSIC                                       :: epsilon, tiny, huge
+INTRINSIC                                       :: dble, dcmplx, dimag, epsilon, tiny, huge
 !external subroutines
-EXTERNAL                                        :: dslm, damvw, dseval, dzseval, drevseval, dzrevseval, daruv, init_random_seed
+EXTERNAL                                        :: dslm, damvw
 !external functions
 DOUBLE PRECISION                                :: dzmod
 EXTERNAL                                        :: dzmod
 
 
 !LMPEP
-ALLOCATE(berr(deg),er(deg),ei(deg))
-
 CALL dslm(p, deg, er, ei, berr)
-
 CALL dsort(er, ei, deg)
 PRINT*, 'LMPEP Absolute Error:'
 DO i=1,deg
-   !PRINT*, er(i), ei(i)
    PRINT*, dzmod(dble(exacteigs(i))-er(i),dimag(exacteigs(i))-ei(i))
 ENDDO
 PRINT*, ''
-DEALLOCATE(berr, er, ei)
 
 !POLZEROS
-ALLOCATE(poly(0:deg), radius(1:deg), root(1:deg), err(deg+1))
-
-eps    = epsilon(1.0D0)
-small  = tiny(1.0D0)
-big    = huge(1.0D0)
-
-DO i= 0, deg
+nitmax=60
+DO i=0,deg
     poly(i)=dcmplx(p(i+1), 0.0D0)
-END DO
-
+ENDDO
 CALL polzeros(deg, poly, eps, big, small, nitmax, root, radius, err, iter)
-
 CALL zsort(root, deg)
 PRINT*, 'POLZEROS Absolute Error:'
 DO i=1,deg
-    !PRINT*, root(i)
     PRINT*, dzmod(dble(exacteigs(i))-dble(root(i)),dimag(exacteigs(i))-dimag(root(i)))
 ENDDO
 PRINT*, ''
-DEALLOCATE(poly, radius, root, err)
 
 !AMVW
-ALLOCATE(REIGS(deg),IEIGS(deg),ITS(deg), p2(deg))
+FLAG=1
 DO i=1,deg
     p2(deg-i+1)=p(i)/p(deg+1)
 ENDDO
-
-CALL damvw(deg, p2, REIGS, IEIGS, ITS, FLAG)
+CALL damvw(deg, P2, REIGS, IEIGS, ITS, FLAG)
 CALL dsort(REIGS, IEIGS, deg)
 PRINT*, 'AMVW Absolute Error:'
 DO i=1,deg
-    !PRINT*, REIGS(i), IEIGS(i)
     PRINT*, dzmod(dble(exacteigs(i))-REIGS(i),dimag(exacteigs(i))-IEIGS(i))
 ENDDO
-DEALLOCATE(REIGS,IEIGS,ITS, p2)
 PRINT*, ''
+
 END SUBROUTINE test
 
+!********************************************************
+!                       ZSORT                           *
+!******************************************************** 
 SUBROUTINE dsort(er, ei, n)
 IMPLICIT NONE
 !scalar arguments
@@ -227,9 +272,11 @@ DO i=1,n
         er(j)=tr; ei(j)=ti
     ENDIF
 ENDDO
-
 END SUBROUTINE dsort
 
+!********************************************************
+!                       ZSORT                           *
+!********************************************************             
 SUBROUTINE zsort(root, n)
 IMPLICIT NONE
 !scalar arguments
@@ -253,7 +300,6 @@ DO i=1,n
         root(j)=temp
     ENDIF
 ENDDO
-
 END SUBROUTINE zsort
 
 END PROGRAM poly_test

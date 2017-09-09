@@ -99,12 +99,10 @@ END DO
 
 CALL polzeros(deg, poly, eps, big, small, nitmax, root, radius, err, iter)
 
-er(1:deg)=dble(root)
-ei(1:deg)=dimag(root)
-CALL dsort(er, ei, deg)
+CALL zsort(root, deg)
 PRINT*, 'POLZEROS Absolute Error: Deg 20 Chebyshev Poly'
 DO i=1,deg
-    PRINT*, dzmod(dble(exacteigs(i))-er(i),dimag(exacteigs(i))-ei(i))
+    PRINT*, dzmod(dble(exacteigs(i))-dble(root(i)),dimag(exacteigs(i))-dimag(root(i)))
 ENDDO
 PRINT*, ''
 
@@ -135,5 +133,31 @@ DO i=1,n
 ENDDO
 
 END SUBROUTINE dsort
+
+SUBROUTINE zsort(root, n)
+IMPLICIT NONE
+!scalar arguments
+INTEGER, INTENT(IN)             :: n
+!array arguments
+DOUBLE COMPLEX, INTENT(INOUT)   :: root(*)
+!local scalars
+INTEGER                         :: i, j, k
+DOUBLE COMPLEX                  :: temp
+
+DO i=1,n
+    temp=root(i); j=i
+    DO k=i+1,n
+        IF (dble(temp)>dble(root(k))) THEN
+            temp=root(k); j=k
+        ENDIF
+    ENDDO
+    IF (j>i) THEN
+        temp=root(i)
+        root(i)=root(j)
+        root(j)=temp
+    ENDIF
+ENDDO
+
+END SUBROUTINE zsort
 
 END PROGRAM poly_test

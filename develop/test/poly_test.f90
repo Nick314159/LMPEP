@@ -1,7 +1,6 @@
 PROGRAM poly_test
 USE poly_zeroes
 IMPLICIT NONE
-INTEGER                                         :: clock, clock_rate, clock_start, clock_stop
 INTEGER                                         :: i, j, nitmax, iter
 REAL(KIND=dp), DIMENSION(:), ALLOCATABLE        :: radius
 DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE   :: time, backward_error
@@ -19,7 +18,7 @@ DOUBLE PRECISION                                :: t2
 DOUBLE COMPLEX                                  :: a, t
 DOUBLE PRECISION, PARAMETER                     :: pi = 3.14159265358979323d0
 !intrinsic subroutines
-INTRINSIC                                       :: dabs, dble, dcmplx, getarg, maxval, random_number, system_clock
+INTRINSIC                                       :: dabs, dble, dcmplx, getarg, maxval, random_number
 INTRINSIC                                       :: epsilon, tiny, huge
 !external subroutines
 EXTERNAL                                        :: dslm, damvw, dseval, dzseval, drevseval, dzrevseval, daruv, init_random_seed
@@ -71,6 +70,8 @@ exacteigs(4)  = complex(cos(33d0/40d0*pi),0d0)
 exacteigs(3)  = complex(cos(35d0/40d0*pi),0d0)
 exacteigs(2)  = complex(cos(37d0/40d0*pi),0d0)
 exacteigs(1)  = complex(cos(39d0/40d0*pi),0d0)
+PRINT*, "Deg 20 Chebyshev Poly"
+CALL test(20, p, exacteigs)
 
 !Wilkonson Polynomial
 p(1)= 243290200817664D4
@@ -114,24 +115,55 @@ exacteigs(4)  = 4
 exacteigs(3)  = 3
 exacteigs(2)  = 2
 exacteigs(1)  = 1
+PRINT*, "Deg 20 Wilkonson Poly"
+CALL test(20, p, exacteigs)
 
-PRINT*, p
+CONTAINS
+SUBROUTINE test(deg, p, exacteigs)
+IMPLICIT NONE
+INTEGER, INTENT(IN)                             :: deg
+DOUBLE PRECISION, DIMENSION(:), INTENT(IN)      :: p    
+DOUBLE COMPLEX, DIMENSION(:), INTENT(IN)        :: exacteigs 
+
+
+INTEGER                                         :: i, j, nitmax, iter
+REAL(KIND=dp), DIMENSION(:), ALLOCATABLE        :: radius
+REAL(KIND=dp)                                   :: eps, big, small, aux, ru, ri
+COMPLEX(KIND=dp), DIMENSION(:), ALLOCATABLE     :: root, poly
+LOGICAL, DIMENSION(:), ALLOCATABLE              :: err
+INTEGER                                         :: it, itmax
+INTEGER                                         :: flag
+DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE     :: berr, er, ei, p2, alpha
+
+
+DOUBLE PRECISION, ALLOCATABLE                   :: REIGS(:), IEIGS(:), RESIDUALS(:,:)
+INTEGER, ALLOCATABLE                            :: ITS(:)
+DOUBLE PRECISION                                :: t2
+DOUBLE COMPLEX                                  :: a, t
+DOUBLE PRECISION, PARAMETER                     :: pi = 3.14159265358979323d0
+!intrinsic subroutines
+INTRINSIC                                       :: dabs, dble, dcmplx, getarg, maxval, random_number
+INTRINSIC                                       :: epsilon, tiny, huge
+!external subroutines
+EXTERNAL                                        :: dslm, damvw, dseval, dzseval, drevseval, dzrevseval, daruv, init_random_seed
+!external functions
+DOUBLE PRECISION                                :: dzmod
+EXTERNAL                                        :: dzmod
+
 
 !LMPEP
 ALLOCATE(berr(deg),er(deg),ei(deg))
 
 CALL dslm(p, deg, er, ei, berr)
-PRINT*, maxval(berr)
 
 CALL dsort(er, ei, deg)
-PRINT*, 'LMPEP Absolute Error: Deg 20 Chebyshev Poly'
+PRINT*, 'LMPEP Absolute Error:'
 DO i=1,deg
-   PRINT*, er(i), ei(i)
-   ! PRINT*, dzmod(dble(exacteigs(i))-er(i),dimag(exacteigs(i))-ei(i))
+   !PRINT*, er(i), ei(i)
+   PRINT*, dzmod(dble(exacteigs(i))-er(i),dimag(exacteigs(i))-ei(i))
 ENDDO
 PRINT*, ''
-
-STOP
+DEALLOCATE(berr, er, ei)
 
 !POLZEROS
 ALLOCATE(poly(0:deg), radius(1:deg), root(1:deg), err(deg+1))
@@ -147,8 +179,9 @@ END DO
 CALL polzeros(deg, poly, eps, big, small, nitmax, root, radius, err, iter)
 
 CALL zsort(root, deg)
-PRINT*, 'POLZEROS Absolute Error: Deg 20 Chebyshev Poly'
+PRINT*, 'POLZEROS Absolute Error:'
 DO i=1,deg
+    !PRINT*, root(i)
     PRINT*, dzmod(dble(exacteigs(i))-dble(root(i)),dimag(exacteigs(i))-dimag(root(i)))
 ENDDO
 PRINT*, ''
@@ -162,14 +195,14 @@ ENDDO
 
 CALL damvw(deg, p2, REIGS, IEIGS, ITS, FLAG)
 CALL dsort(REIGS, IEIGS, deg)
-PRINT*, 'AMVW Absolute Error: Deg 20 Chebyshev Poly'
+PRINT*, 'AMVW Absolute Error:'
 DO i=1,deg
+    !PRINT*, REIGS(i), IEIGS(i)
     PRINT*, dzmod(dble(exacteigs(i))-REIGS(i),dimag(exacteigs(i))-IEIGS(i))
 ENDDO
-DEALLOCATE(p, p2, REIGS,IEIGS,ITS, berr)
+DEALLOCATE(REIGS,IEIGS,ITS, p2)
 PRINT*, ''
-
-CONTAINS
+END SUBROUTINE test
 
 SUBROUTINE dsort(er, ei, n)
 IMPLICIT NONE

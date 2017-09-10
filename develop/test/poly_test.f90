@@ -7,7 +7,7 @@ DOUBLE PRECISION, PARAMETER                     :: pi = 3.1415926535897932d0
 !intrinsic subroutines
 INTRINSIC                                       :: cos, dcmplx
 
-PRINT*, pi
+OPEN(UNIT=1,FILE="poly_test_results.txt")
 
 !Chebysehv Deg 20 Polynomial
 deg=20
@@ -53,7 +53,7 @@ exacteigs(4)  = dcmplx(cos(33d0/40d0*pi),0d0)
 exacteigs(3)  = dcmplx(cos(35d0/40d0*pi),0d0)
 exacteigs(2)  = dcmplx(cos(37d0/40d0*pi),0d0)
 exacteigs(1)  = dcmplx(cos(39d0/40d0*pi),0d0)
-PRINT*, "Deg 20 Chebyshev Poly"
+WRITE(1, '(A)') "Deg 20 Chebyshev Poly"
 CALL test(deg, p, exacteigs)
 DEALLOCATE(exacteigs, p)
 
@@ -81,7 +81,7 @@ exacteigs(7)=dcmplx(7D0,0D0)
 exacteigs(8)=dcmplx(8D0,0D0)
 exacteigs(9)=dcmplx(9D0,0D0)
 exacteigs(10)=dcmplx(10D0,0D0)
-PRINT*, "Deg 10 Wilkins Poly"
+WRITE(1, '(A)')  "Deg 10 Wilkins Poly"
 CALL test(deg, p, exacteigs)
 DEALLOCATE(exacteigs, p)
 
@@ -119,7 +119,7 @@ exacteigs(12)=dcmplx(12D0,0D0)
 exacteigs(13)=dcmplx(13D0,0D0)
 exacteigs(14)=dcmplx(14D0,0D0)
 exacteigs(15)=dcmplx(15D0,0D0)
-PRINT*, "Deg 15 Wilkins Poly"
+WRITE(1, '(A)') "Deg 15 Wilkins Poly"
 CALL test(deg, p, exacteigs)
 DEALLOCATE(exacteigs, p)
 
@@ -168,10 +168,13 @@ exacteigs(17)=dcmplx(17D0,0D0)
 exacteigs(18)=dcmplx(18D0,0D0)
 exacteigs(19)=dcmplx(19D0,0D0)
 exacteigs(20)=dcmplx(20D0,0D0)
-PRINT*, "Deg 20 Wilkins Poly"
+WRITE(1, '(A)')  "Deg 20 Wilkins Poly"
 CALL test(deg, p, exacteigs)
 DEALLOCATE(exacteigs, p)
 
+
+
+ CLOSE(UNIT=1)
 CONTAINS
 
 !********************************************************
@@ -212,9 +215,9 @@ EXTERNAL                                        :: dzmod
 !LMPEP
 CALL dslm(p, deg, er, ei, berr)
 CALL dsort(er, ei, deg)
-PRINT*, 'LMPEP Absolute Error:'
+WRITE(1, '(A)') 'LMPEP Absolute Error:'
 DO i=1,deg
-   PRINT*, dzmod(dble(exacteigs(i))-er(i),dimag(exacteigs(i))-ei(i))
+   WRITE(1, *) dzmod(dble(exacteigs(i))-er(i),dimag(exacteigs(i))-ei(i))
 ENDDO
 PRINT*, ''
 
@@ -225,9 +228,9 @@ DO i=0,deg
 ENDDO
 CALL polzeros(deg, poly, eps, big, small, nitmax, root, radius, err, iter)
 CALL zsort(root, deg)
-PRINT*, 'POLZEROS Absolute Error:'
+WRITE(1, '(A)') 'POLZEROS Absolute Error:'
 DO i=1,deg
-    PRINT*, dzmod(dble(exacteigs(i))-dble(root(i)),dimag(exacteigs(i))-dimag(root(i)))
+    WRITE(1, *) dzmod(dble(exacteigs(i))-dble(root(i)),dimag(exacteigs(i))-dimag(root(i)))
 ENDDO
 PRINT*, ''
 
@@ -238,9 +241,9 @@ DO i=1,deg
 ENDDO
 CALL damvw(deg, P2, REIGS, IEIGS, ITS, FLAG)
 CALL dsort(REIGS, IEIGS, deg)
-PRINT*, 'AMVW Absolute Error:'
+WRITE(1, '(A)') 'AMVW Absolute Error:'
 DO i=1,deg
-    PRINT*, dzmod(dble(exacteigs(i))-REIGS(i),dimag(exacteigs(i))-IEIGS(i))
+    WRITE(1, *) dzmod(dble(exacteigs(i))-REIGS(i),dimag(exacteigs(i))-IEIGS(i))
 ENDDO
 PRINT*, ''
 

@@ -61,6 +61,3 @@ DO i = 0, k
 ENDDO
 RETURN
 END SUBROUTINE cnvex
-
-
-

@@ -21,4 +21,5 @@ seed = clock + 37 * (/ (i - 1, i = 1, n) /)
 CALL random_seed(PUT = seed)
 
 DEALLOCATE(seed)
+RETURN
 END SUBROUTINE init_random_seed

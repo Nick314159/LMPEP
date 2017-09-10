@@ -19,4 +19,3 @@ DO ir = i+1, n
 ENDDO
 RETURN
 END SUBROUTINE right
-

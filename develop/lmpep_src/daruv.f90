@@ -26,5 +26,5 @@ DO k=1,n
     CALL random_number(r)
     x(k)=-1+2*r
 ENDDO
-
+RETURN
 END SUBROUTINE

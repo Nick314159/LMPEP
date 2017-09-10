@@ -17,4 +17,3 @@ DO il = i-1, 0, -1
 ENDDO
 RETURN
 END SUBROUTINE left
-

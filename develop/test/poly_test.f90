@@ -212,6 +212,29 @@ WRITE(1, '(A)') "Deg 15 Cyclotomic Poly"
 CALL test(deg, p, exacteigs)
 DEALLOCATE(exacteigs, p)
 
+!Wilkinson Deg 20 Polynomial
+deg=8
+ALLOCATE(exacteigs(deg), p(deg+1))
+p(1)=1D0
+p(2)=0D0
+p(3)=-1D0
+p(4)=0D0
+p(5)=1D0
+p(6)=0D0
+p(7)=-1D0
+p(8)=0D0
+p(9)=1D0
+exacteigs(1)=dcmplx(-0.951056516295154, -0.309016994374947)
+exacteigs(2)=dcmplx(0.951056516295154, 0.309016994374947)
+exacteigs(3)=dcmplx(-0.587785252292473, -0.809016994374947)
+exacteigs(4)=dcmplx(0.587785252292473, 0.809016994374947)
+exacteigs(5)=dcmplx(0.587785252292473, -0.809016994374947)
+exacteigs(6)=dcmplx(-0.587785252292473, 0.809016994374947)
+exacteigs(7)=dcmplx(0.951056516295154, -0.309016994374947)
+exacteigs(8)=dcmplx(-0.951056516295154, 0.309016994374947)
+WRITE(1, '(A)') "Deg 20 Cyclotomic Poly"
+CALL test(deg, p, exacteigs)
+DEALLOCATE(exacteigs, p)
 
  CLOSE(UNIT=1)
 CONTAINS

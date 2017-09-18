@@ -5,7 +5,8 @@ gfortran -c -O3 lmpep_src/*
 
 #add object files to library and copy library to /usr/lib64
 ar crv liblmpep.a *.o
-sudo cp liblmpep.a /usr/lib64/
+#sudo cp liblmpep.a /usr/lib64/
+sudo cp liblmpep.a /usr/lib/
 
 #clean up
 rm *.o

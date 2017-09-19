@@ -172,67 +172,51 @@ WRITE(1, '(A)')  "Deg 20 Wilkins Poly"
 CALL test(deg, p, exacteigs)
 DEALLOCATE(exacteigs, p)
 
-!Cyclotomic Deg 10 Polynomial
-deg=4
-ALLOCATE(exacteigs(deg), p(deg+1))
-p(1)=1D0
-p(2)=-1D0
-p(3)=10D0
-p(4)=-1D0
-p(5)=1D0
-exacteigs(1)=dcmplx(0.809016994374947, 0.587785252292473)
-exacteigs(2)=dcmplx(-0.309016994374947, -0.951056516295154)
-exacteigs(3)=dcmplx(-0.309016994374947,0.951056516295154)
-exacteigs(4)=dcmplx(0.809016994374947, -0.587785252292473)
-WRITE(1, '(A)')  "Deg 10 Cyclotomic Poly"
-CALL test(deg, p, exacteigs)
-DEALLOCATE(exacteigs, p)
-
-!Wilkinson Deg 15 Polynomial
-deg=8
-ALLOCATE(exacteigs(deg), p(deg+1))
-p(1)=1D0
-p(2)=-1D0
-p(3)=0D0
-p(4)=1D0
-p(5)=-1D0
-p(6)=1D0
-p(7)=0D0
-p(8)=-1D0
-p(9)=1D0
-exacteigs(1)=dcmplx(-0.978147600733806, -0.207911690817759)
-exacteigs(2)=dcmplx(0.913545457642601, 0.406736643075800)
-exacteigs(3)=dcmplx(0.669130606358858, 0.743144825477394)
-exacteigs(4)=dcmplx(-0.104528463267653, -0.994521895368273)
-exacteigs(5)=dcmplx(-0.104528463267653, 0.994521895368273)
-exacteigs(6)=dcmplx(0.669130606358858, -0.743144825477394)
-exacteigs(7)=dcmplx(0.913545457642601, -0.406736643075800)
-exacteigs(8)=dcmplx(-0.978147600733806, 0.207911690817759)
-WRITE(1, '(A)') "Deg 15 Cyclotomic Poly"
-CALL test(deg, p, exacteigs)
-DEALLOCATE(exacteigs, p)
-
-!Wilkinson Deg 20 Polynomial
-deg=8
+!Cylcotomic Deg 20 Polynomial
+deg=20
 ALLOCATE(exacteigs(deg), p(deg+1))
 p(1)=1D0
 p(2)=0D0
-p(3)=-1D0
+p(3)=0D0
 p(4)=0D0
-p(5)=1D0
-p(6)=0D0
-p(7)=-1D0
+p(5)=0D0
+p(6)=1D0
+p(7)=0D0
 p(8)=0D0
-p(9)=1D0
-exacteigs(1)=dcmplx(-0.951056516295154, -0.309016994374947)
-exacteigs(2)=dcmplx(0.951056516295154, 0.309016994374947)
-exacteigs(3)=dcmplx(-0.587785252292473, -0.809016994374947)
-exacteigs(4)=dcmplx(0.587785252292473, 0.809016994374947)
-exacteigs(5)=dcmplx(0.587785252292473, -0.809016994374947)
-exacteigs(6)=dcmplx(-0.587785252292473, 0.809016994374947)
-exacteigs(7)=dcmplx(0.951056516295154, -0.309016994374947)
-exacteigs(8)=dcmplx(-0.951056516295154, 0.309016994374947)
-WRITE(1, '(A)') "Deg 20 Cyclotomic Poly"
+p(9)=0D0
+p(10)=0D0
+p(11)=1D0
+p(12)=0D0
+p(13)=0D0
+p(14)=0D0
+p(15)=0D0
+p(16)=1D0
+p(17)=0D0
+p(18)=0D0
+p(19)=0D0
+p(20)=0D0
+p(21)=1D0
+exacteigs(1)=dcmplx(-0.992114701314478, -0.125333233564304)
+exacteigs(2)=dcmplx(0.968583161128631, 0.248689887164855)
+exacteigs(3)=dcmplx(-0.929776485888251, -0.368124552684678)
+exacteigs(4)=dcmplx(0.876306680043864, 0.481753674101715)
+exacteigs(5)=dcmplx(0.728968627421412, 0.684547105928689)
+exacteigs(6)=dcmplx(-0.637423989748690, -0.770513242775789)
+exacteigs(7)=dcmplx(0.535826794978997, 0.844327925502015)
+exacteigs(8)=dcmplx(-0.425779291565073, -0.904827052466020)
+exacteigs(9)=dcmplx(-0.187381314585725, -0.982287250728689)
+exacteigs(10)=dcmplx(0.062790519529313, 0.998026728428272)
+exacteigs(11)=dcmplx(0.062790519529313, -0.998026728428272)
+exacteigs(12)=dcmplx(-0.187381314585725, 0.982287250728689)
+exacteigs(13)=dcmplx(-0.425779291565073, 0.904827052466020)
+exacteigs(14)=dcmplx(0.535826794978997, -0.844327925502015)
+exacteigs(15)=dcmplx(-0.637423989748690, 0.770513242775789)
+exacteigs(16)=dcmplx(0.728968627421412, -0.684547105928689)
+exacteigs(17)=dcmplx(0.876306680043864, -0.481753674101715)
+exacteigs(18)=dcmplx(-0.929776485888251, 0.368124552684678)
+exacteigs(19)=dcmplx(0.968583161128631, -0.248689887164855)
+exacteigs(20)=dcmplx(-0.992114701314478, 0.125333233564304)
+WRITE(1, '(A)')  "Deg 20 Cyclotomic Poly"
 CALL test(deg, p, exacteigs)
 DEALLOCATE(exacteigs, p)
 
@@ -312,7 +296,7 @@ PRINT*, ''
 END SUBROUTINE test
 
 !********************************************************
-!                       ZSORT                           *
+!                       DSORT                           *
 !******************************************************** 
 SUBROUTINE dsort(er, ei, n)
 IMPLICIT NONE
@@ -342,6 +326,34 @@ END SUBROUTINE dsort
 !********************************************************
 !                       ZSORT                           *
 !********************************************************             
+!SUBROUTINE zsort(root, n)
+!IMPLICIT NONE
+!scalar arguments
+!INTEGER, INTENT(IN)             :: n
+!array arguments
+!DOUBLE COMPLEX, INTENT(INOUT)   :: root(*)
+!local scalars
+!INTEGER                         :: i, j, k
+!DOUBLE COMPLEX                  :: temp
+
+!DO i=1,n
+!    temp=root(i); j=i
+!    DO k=i+1,n
+!        IF (dble(temp)>dble(root(k))) THEN
+!            temp=root(k); j=k
+!        ENDIF
+!    ENDDO
+!    IF (j>i) THEN
+!        temp=root(i)
+!        root(i)=root(j)
+!        root(j)=temp
+!    ENDIF
+!ENDDO
+!END SUBROUTINE zsort
+
+!********************************************************
+!                       ZSORT                           *
+!********************************************************             
 SUBROUTINE zsort(root, n)
 IMPLICIT NONE
 !scalar arguments
@@ -355,7 +367,7 @@ DOUBLE COMPLEX                  :: temp
 DO i=1,n
     temp=root(i); j=i
     DO k=i+1,n
-        IF (dble(temp)>dble(root(k))) THEN
+        IF (atan2(aimag(temp), real(temp))>atan2(aimag(root(k)), real(root(k)))) THEN
             temp=root(k); j=k
         ENDIF
     ENDDO
@@ -366,5 +378,4 @@ DO i=1,n
     ENDIF
 ENDDO
 END SUBROUTINE zsort
-
 END PROGRAM poly_test

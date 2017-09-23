@@ -2,7 +2,7 @@ import csv
 import numpy as np
 from matplotlib import pyplot as plt
 
-with open('poly_test_results.txt') as f:
+with open('results/poly_test_results.txt') as f:
   reader = csv.reader(f)
   temp = next(reader)
   while True: 
@@ -36,7 +36,7 @@ with open('poly_test_results.txt') as f:
     ax.set_ylabel('Relative Forward Error')
     plt.title(test)
     legend = ax.legend(loc=0, shadow=True)
-    plt.savefig("poly_test_"+test.replace(' ', '_')+".pdf", format='pdf')
+    plt.savefig("diagrams/poly_test_"+test.replace(' ', '_')+".pdf", format='pdf')
 
 plt.show()
 

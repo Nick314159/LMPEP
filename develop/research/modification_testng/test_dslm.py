@@ -2,7 +2,7 @@ import csv
 import numpy as np
 from matplotlib import pyplot as plt
 
-with open('results.csv') as f:
+with open('results/results.csv') as f:
   reader = csv.reader(f)
   headers = next(reader)
   if headers[0].strip()=='DSLM':

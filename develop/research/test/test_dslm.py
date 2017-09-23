@@ -42,6 +42,7 @@ with open('results/results.csv') as f:
     ax.set_xlabel('Degree')
     ax.set_title(headers[0])
     legend = ax.legend(loc=0, shadow=True)
+    plt.savefig("diagrams/test_dslm.pdf", format='pdf')
 
 plt.show()
 

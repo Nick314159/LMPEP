@@ -57,6 +57,7 @@ DO WHILE(deg<=maxDegree)
     time(it, 1)=(dble(clock_stop-clock_start)/dble(clock_rate))
     backward_error(it, 1) = maxval(berr)
     DEALLOCATE(er, ei, berr)
+    PRINT*, 'DSLM:', deg
 
     !DSLM1 
     ALLOCATE(er(deg), ei(deg), berr(deg))
@@ -67,7 +68,7 @@ DO WHILE(deg<=maxDegree)
     time(it, 2)=(dble(clock_stop-clock_start)/dble(clock_rate))
     backward_error(it, 2) = maxval(berr)
     DEALLOCATE(er, ei, berr)
-   
+    PRINT*, 'DSLM1:', deg  
    
     !DSAM 
     ALLOCATE(er(deg), ei(deg), berr(deg))
@@ -78,6 +79,7 @@ DO WHILE(deg<=maxDegree)
     time(it, 3)=(dble(clock_stop-clock_start)/dble(clock_rate))
     backward_error(it, 3) = maxval(berr)
     DEALLOCATE(er, ei, berr)
+    PRINT*, 'DSAM:', deg
 
     DEALLOCATE(p, alpha)
 

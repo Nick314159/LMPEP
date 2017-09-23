@@ -37,7 +37,7 @@ READ(arg, '(I10)') maxDegree
 
 deg=startDegree
 itmax = 10
-OPEN(UNIT=1,FILE="results.csv")
+OPEN(UNIT=1,FILE="results/results.csv")
 WRITE(1,'(A)') 'Degree, LMPEP Time, LMPEP berr, Pzeros Time, Pzeros berr, AMVW Time, AMVW berr'
 ALLOCATE(time(itmax, 3), backward_error(itmax, 3))
 DO WHILE(deg<=maxDegree)

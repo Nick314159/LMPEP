@@ -7,7 +7,7 @@ DOUBLE PRECISION, PARAMETER                     :: pi = 3.1415926535897932d0
 !intrinsic subroutines
 INTRINSIC                                       :: cos, dcmplx
 
-OPEN(UNIT=1,FILE="poly_test_results.txt")
+OPEN(UNIT=1,FILE="results/poly_test_results.txt")
 
 !Chebysehv Deg 20 Polynomial
 deg=20

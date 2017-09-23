@@ -37,6 +37,7 @@ with open('results/results.csv') as f:
   axarr[1].set_ylabel('Avg. of Max Backward Error')
   axarr[1].set_xlabel('Degree')
   axarr[1].set_title('Berr')
+  plt.savefig("diagrams/test.pdf", format='pdf')
 
 plt.show()
 

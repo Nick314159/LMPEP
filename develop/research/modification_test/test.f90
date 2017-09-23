@@ -34,28 +34,52 @@ READ(arg, '(I10)') maxDegree
 deg=startDegree
 itmax = 10
 OPEN(UNIT=1,FILE="results/results.csv")
-WRITE(1,'(A)') 'Degree, LMPEP Time, LMPEP berr'
+WRITE(1,'(A)') 'Degree, DSLM Time, DSLM berr, DSLM1 Time, DSLM1 berr, DSAM Time, DSAM berr'
 ALLOCATE(time(itmax, 3), backward_error(itmax, 3))
 DO WHILE(deg<=maxDegree)
   WRITE(1,'(I10)', advance='no') deg
   WRITE(1,'(A)', advance='no') ','
 
   DO it = 1, itmax
-    !LMPEP
-    ALLOCATE(p(deg+1), er(deg), ei(deg), berr(deg), alpha(deg+1))
+
+    ALLOCATE(p(deg+1), alpha(deg+1))
     CALL daruv(deg+1,p)
     DO j = 1, deg
        alpha(j)=dabs(p(j))
     END DO
+
+    !DSLM 
+    ALLOCATE(er(deg), ei(deg), berr(deg))
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
     CALL dslm(p, deg, er, ei, berr)
     CALL system_clock(count=clock_stop)
     time(it, 1)=(dble(clock_stop-clock_start)/dble(clock_rate))
     backward_error(it, 1) = maxval(berr)
-   
+    DEALLOCATE(er, ei, berr)
 
-    DEALLOCATE(p, er, ei, berr, alpha)
+    !DSLM1 
+    ALLOCATE(er(deg), ei(deg), berr(deg))
+    CALL system_clock(count_rate=clock_rate)
+    CALL system_clock(count=clock_start)
+    CALL dslm1(p, deg, er, ei, berr)
+    CALL system_clock(count=clock_stop)
+    time(it, 2)=(dble(clock_stop-clock_start)/dble(clock_rate))
+    backward_error(it, 2) = maxval(berr)
+    DEALLOCATE(er, ei, berr)
+   
+   
+    !DSAM 
+    ALLOCATE(er(deg), ei(deg), berr(deg))
+    CALL system_clock(count_rate=clock_rate)
+    CALL system_clock(count=clock_start)
+    CALL dsam(p, deg, er, ei, berr)
+    CALL system_clock(count=clock_stop)
+    time(it, 3)=(dble(clock_stop-clock_start)/dble(clock_rate))
+    backward_error(it, 3) = maxval(berr)
+    DEALLOCATE(er, ei, berr)
+
+    DEALLOCATE(p, alpha)
 
    
   ENDDO
@@ -64,11 +88,19 @@ DO WHILE(deg<=maxDegree)
   WRITE(1,'(A)', advance='no') ','
   WRITE(1,'(ES15.2)', advance='no') sum(backward_error(:,1))/itmax
   WRITE(1,'(A)', advance='no') ','
+  WRITE(1,'(ES15.2)', advance='no') sum(time(:,2))/itmax
+  WRITE(1,'(A)', advance='no') ','
+  WRITE(1,'(ES15.2)', advance='no') sum(backward_error(:,2))/itmax
+  WRITE(1,'(A)', advance='no') ','
+  WRITE(1,'(ES15.2)', advance='no') sum(time(:,3))/itmax
+  WRITE(1,'(A)', advance='no') ','
+  WRITE(1,'(ES15.2)', advance='no') sum(backward_error(:,3))/itmax
+  WRITE(1,'(A)')
   deg=2*deg
 ENDDO
 DEALLOCATE(time, backward_error)
 
-!CALL EXECUTE_COMMAND_LINE('python test.py')
+CALL EXECUTE_COMMAND_LINE('python test.py')
 
 END PROGRAM dslm_modifications
 

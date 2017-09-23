@@ -26,7 +26,7 @@ READ(arg,*) dt
 itmax=10
 deg=startDegree
 
-OPEN(UNIT=1,FILE="results.csv")
+OPEN(UNIT=1,FILE="results/results.csv")
 WRITE(1,'(A)') dt
 
 IF (dt=='DSEVAL') THEN

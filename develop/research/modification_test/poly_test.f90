@@ -1,5 +1,6 @@
 PROGRAM poly_test
 IMPLICIT NONE
+INTEGER, PARAMETER     :: dp = SELECTED_REAL_KIND(15, 60)
 INTEGER                                         :: deg
 DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE     :: p
 DOUBLE COMPLEX, DIMENSION(:), ALLOCATABLE       :: exacteigs
@@ -294,7 +295,6 @@ CONTAINS
 !                       TEST                            *
 !******************************************************** 
 SUBROUTINE test(deg, p, exacteigs)
-USE poly_zeroes
 IMPLICIT NONE
 !scalar arguments
 INTEGER, INTENT(IN)                             :: deg
@@ -325,40 +325,38 @@ DOUBLE PRECISION                                :: dzmod
 EXTERNAL                                        :: dzmod
 
 
-!LMPEP
+!DSLM 
 CALL dslm(p, deg, er, ei, berr)
-CALL dsort(er, ei, deg)
-WRITE(1, '(A)') 'LMPEP Absolute Error:'
+WRITE(1, '(A)') 'DSLM Absolute Error:'
 DO i=1,deg
    WRITE(1, *) dzmod(dble(exacteigs(i))-er(i),dimag(exacteigs(i))-ei(i))
 ENDDO
 PRINT*, ''
 
-!POLZEROS
-nitmax=60
-DO i=0,deg
-    poly(i)=dcmplx(p(i+1), 0.0D0)
-ENDDO
-CALL polzeros(deg, poly, eps, big, small, nitmax, root, radius, err, iter)
-CALL zsort(root, deg)
-WRITE(1, '(A)') 'POLZEROS Absolute Error:'
+!DSLM1 
+CALL dslm1(p, deg, er, ei, berr)
+WRITE(1, '(A)') 'DSLM1 Absolute Error:'
 DO i=1,deg
-    WRITE(1, *) dzmod(dble(exacteigs(i))-dble(root(i)),dimag(exacteigs(i))-dimag(root(i)))
+   WRITE(1, *) dzmod(dble(exacteigs(i))-er(i),dimag(exacteigs(i))-ei(i))
 ENDDO
 PRINT*, ''
 
-!AMVW
-FLAG=1
+!DSLM2 
+CALL dslm2(p, deg, er, ei, berr)
+WRITE(1, '(A)') 'DSLM2 Absolute Error:'
 DO i=1,deg
-    p2(deg-i+1)=p(i)/p(deg+1)
-ENDDO
-CALL damvw(deg, P2, REIGS, IEIGS, ITS, FLAG)
-CALL dsort(REIGS, IEIGS, deg)
-WRITE(1, '(A)') 'AMVW Absolute Error:'
-DO i=1,deg
-    WRITE(1, *) dzmod(dble(exacteigs(i))-REIGS(i),dimag(exacteigs(i))-IEIGS(i))
+   WRITE(1, *) dzmod(dble(exacteigs(i))-er(i),dimag(exacteigs(i))-ei(i))
 ENDDO
 PRINT*, ''
+
+!DSAM
+CALL dsam(p, deg, er, ei, berr)
+WRITE(1, '(A)') 'DSAM Absolute Error:'
+DO i=1,deg
+   WRITE(1, *) dzmod(dble(exacteigs(i))-er(i),dimag(exacteigs(i))-ei(i))
+ENDDO
+PRINT*, ''
+
 
 END SUBROUTINE test
 

@@ -36,7 +36,7 @@ x2=czero
 DO k=1,ind-1
     y1=dcmplx(er(ind)-er(k),-ei(k))**(-1)
     x2=x2+(y1-x1)**(2)
-END
+ENDDO
 DO k=ind+1,deg
     y1=dcmplx(er(ind)-er(k),-ei(k))**(-1)
     x2=x2+(y1-x1)**(2)

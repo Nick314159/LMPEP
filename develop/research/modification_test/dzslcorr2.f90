@@ -43,6 +43,7 @@ DO k=ind+1,deg
     y1=dcmplx(er(ind)-er(k),ei(ind)-ei(k))**(-1)
     x2=x2+(y1-x1)**(2)
 ENDDO
+PRINT*, x2
 t=dcmplx(er(ind),ei(ind))
 t2=dzmod(er(ind),ei(ind))
 !split into 2 cases

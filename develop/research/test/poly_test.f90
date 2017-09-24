@@ -172,53 +172,123 @@ WRITE(1, '(A)')  "Deg 20 Wilkins Poly"
 CALL test(deg, p, exacteigs)
 DEALLOCATE(exacteigs, p)
 
-!Cylcotomic Deg 20 Polynomial
-deg=20
+
+x^10 - (7381 x^9)/2520 + (177133 x^8)/50400 - (84095 x^7)/36288 + (341693 x^6)/362880 - (8591 x^5)/34560 + (7513 x^4)/172800 - (121 x^3)/24192 
+
+!Rev Wilkinson Deg 10 Polynomial
+deg=10
 ALLOCATE(exacteigs(deg), p(deg+1))
-p(1)=1D0
-p(2)=0D0
-p(3)=0D0
-p(4)=0D0
-p(5)=0D0
-p(6)=1D0
-p(7)=0D0
-p(8)=0D0
-p(9)=0D0
-p(10)=0D0
+p(1)=1D0/3628800D0
+p(2)=-11D0/725760D0
+p(3)=11D0/30240D0
+p(4)=-121D0/24192D0
+p(5)=7513D0/172800D0
+p(6)=-8591D0/34560D0
+p(7)=341693D0/362880D0
+p(8)=-84095D0/36288D0
+P(9)177133D0/50400D0
+p(10)=-7381D0/2520D0
 p(11)=1D0
-p(12)=0D0
-p(13)=0D0
-p(14)=0D0
-p(15)=0D0
-p(16)=1D0
-p(17)=0D0
-p(18)=0D0
-p(19)=0D0
-p(20)=0D0
-p(21)=1D0
-exacteigs(1)=dcmplx(-0.992114701314478, -0.125333233564304)
-exacteigs(2)=dcmplx(0.968583161128631, 0.248689887164855)
-exacteigs(3)=dcmplx(-0.929776485888251, -0.368124552684678)
-exacteigs(4)=dcmplx(0.876306680043864, 0.481753674101715)
-exacteigs(5)=dcmplx(0.728968627421412, 0.684547105928689)
-exacteigs(6)=dcmplx(-0.637423989748690, -0.770513242775789)
-exacteigs(7)=dcmplx(0.535826794978997, 0.844327925502015)
-exacteigs(8)=dcmplx(-0.425779291565073, -0.904827052466020)
-exacteigs(9)=dcmplx(-0.187381314585725, -0.982287250728689)
-exacteigs(10)=dcmplx(0.062790519529313, 0.998026728428272)
-exacteigs(11)=dcmplx(0.062790519529313, -0.998026728428272)
-exacteigs(12)=dcmplx(-0.187381314585725, 0.982287250728689)
-exacteigs(13)=dcmplx(-0.425779291565073, 0.904827052466020)
-exacteigs(14)=dcmplx(0.535826794978997, -0.844327925502015)
-exacteigs(15)=dcmplx(-0.637423989748690, 0.770513242775789)
-exacteigs(16)=dcmplx(0.728968627421412, -0.684547105928689)
-exacteigs(17)=dcmplx(0.876306680043864, -0.481753674101715)
-exacteigs(18)=dcmplx(-0.929776485888251, 0.368124552684678)
-exacteigs(19)=dcmplx(0.968583161128631, -0.248689887164855)
-exacteigs(20)=dcmplx(-0.992114701314478, 0.125333233564304)
-WRITE(1, '(A)')  "Deg 20 Cyclotomic Poly"
+exacteigs(1)=dcmplx(1D0,0D0)
+exacteigs(2)=dcmplx(1D0/2D0,0D0)
+exacteigs(3)=dcmplx(1D0/3D0,0D0)
+exacteigs(4)=dcmplx(1D0/4D0,0D0)
+exacteigs(5)=dcmplx(1D0/5D0,0D0)
+exacteigs(6)=dcmplx(1D0/6D0,0D0)
+exacteigs(7)=dcmplx(1D0/7D0,0D0)
+exacteigs(8)=dcmplx(1D0/8D0,0D0)
+exacteigs(9)=dcmplx(1D0/9D0,0D0)
+exacteigs(10)=dcmplx(1D0/10D0,0D0)
+WRITE(1, '(A)')  "Deg 10 Rev Wilkins Poly"
 CALL test(deg, p, exacteigs)
 DEALLOCATE(exacteigs, p)
+
+!Rev Wilkinson Deg 15 Polynomial
+deg=15
+ALLOCATE(exacteigs(deg), p(deg+1))
+p(1)=-1D0/1307674368000D0
+p(2)=1D0/10897286400D0
+p(3)=-47D0/9340531200
+p(4)=1D0/5987520D0
+p(5)=-26921D0/7185024000D0
+p(6)=109D0/1814400D0
+p(7)=-324509D0/457228800D0
+p(8)=4783D0/762048D0
+p(9)=-54576553D0/1306368000D0
+p(10)=2271089D0/10886400D0
+p(11)=-277382447D0/359251200D0
+p(12)=2065639D0/997920D0
+p(13)=-35118025721D0/9081072000D0
+p(14)=13215487D0/2802800D0
+p(15)=-1195757D0/360360D0
+p(16)=1D0
+exacteigs(1)=dcmplx(1D0,0D0)
+exacteigs(2)=dcmplx(1D0/2D0,0D0)
+exacteigs(3)=dcmplx(1D0/3D0,0D0)
+exacteigs(4)=dcmplx(1D0/4D0,0D0)
+exacteigs(5)=dcmplx(1D0/5D0,0D0)
+exacteigs(6)=dcmplx(1D0/6D0,0D0)
+exacteigs(7)=dcmplx(1D0/7D0,0D0)
+exacteigs(8)=dcmplx(1D0/8D0,0D0)
+exacteigs(9)=dcmplx(1D0/9D0,0D0)
+exacteigs(10)=dcmplx(1D0/10D0,0D0)
+exacteigs(11)=dcmplx(1D0/11D0,0D0)
+exacteigs(12)=dcmplx(1D0/12D0,0D0)
+exacteigs(13)=dcmplx(1D0/13D0,0D0)
+exacteigs(14)=dcmplx(1D0/14D0,0D0)
+exacteigs(15)=dcmplx(1D0/15D0,0D0)
+WRITE(1, '(A)') "Deg 15 Rev Wilkins Poly"
+CALL test(deg, p, exacteigs)
+DEALLOCATE(exacteigs, p)
+
+!Rev Wilkinson Deg 20 Polynomial
+!deg=20
+!ALLOCATE(exacteigs(deg), p(deg+1))
+!p(1)=
+!p(2)=
+!p(3)=
+!p(4)=
+!p(5)=
+!p(6)=
+!p(7)=
+!p(8)=
+!p(9)=
+!p(10)=
+!p(11)=
+!p(12)=
+!p(13)=
+!p(14)=
+!p(15)=
+!p(16)=
+!p(17)=
+!p(18)=
+!p(19)=
+!p(20)=
+!p(21)=1D0
+
+!exacteigs(1)=dcmplx(1D0,0D0)
+!exacteigs(2)=dcmplx(1D0/2D0,0D0)
+!exacteigs(3)=dcmplx(1D0/3D0,0D0)
+!exacteigs(4)=dcmplx(1D0/4D0,0D0)
+!exacteigs(5)=dcmplx(1D0/5D0,0D0)
+!exacteigs(6)=dcmplx(1D0/6D0,0D0)
+!exacteigs(7)=dcmplx(1D0/7D0,0D0)
+!exacteigs(8)=dcmplx(1D0/8D0,0D0)
+!exacteigs(9)=dcmplx(1D0/9D0,0D0)
+!exacteigs(10)=dcmplx(1D0/10D0,0D0)
+!exacteigs(11)=dcmplx(1D0/11D0,0D0)
+!exacteigs(12)=dcmplx(1D0/12D0,0D0)
+!exacteigs(13)=dcmplx(1D0/13D0,0D0)
+!exacteigs(14)=dcmplx(1D0/14D0,0D0)
+!exacteigs(15)=dcmplx(1D0/15D0,0D0)
+!exacteigs(16)=dcmplx(1D0/16D0,0D0)
+!exacteigs(17)=dcmplx(1D0/17D0,0D0)
+!exacteigs(18)=dcmplx(1D0/18D0,0D0)
+!exacteigs(19)=dcmplx(1D0/19D0,0D0)
+!exacteigs(20)=dcmplx(1D0/20D0,0D0)
+!WRITE(1, '(A)')  "Deg 20 Rev Wilkins Poly"
+!CALL test(deg, p, exacteigs)
+!DEALLOCATE(exacteigs, p)
 
  CLOSE(UNIT=1)
 CONTAINS

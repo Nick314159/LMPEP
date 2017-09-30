@@ -300,7 +300,7 @@ IMPLICIT NONE
 INTEGER, INTENT(IN)                             :: deg
 !array arguments
 DOUBLE PRECISION, INTENT(IN)                    :: p(*) 
-DOUBLE COMPLEX, INTENT(IN)                      :: exacteigs(*)
+DOUBLE COMPLEX, INTENT(INOUT)                      :: exacteigs(*)
 !LMPEP variables
 DOUBLE PRECISION, DIMENSION(deg)                :: berr, er, ei
 !POLZEROS variables
@@ -327,6 +327,7 @@ EXTERNAL                                        :: dzmod
 
 !DSLM 
 CALL dslm(p, deg, er, ei, berr)
+CALL dsort(er, ei, deg)
 WRITE(1, '(A)') 'DSLM Absolute Error:'
 DO i=1,deg
    WRITE(1, *) dzmod(dble(exacteigs(i))-er(i),dimag(exacteigs(i))-ei(i))
@@ -334,7 +335,8 @@ ENDDO
 PRINT*, ''
 
 !DSLM1 
-CALL dslm1(p, deg, er, ei, berr)
+CALL dslm1(p, deg, er, ei, berr) 
+CALL dsort(er, ei, deg)
 WRITE(1, '(A)') 'DSLM1 Absolute Error:'
 DO i=1,deg
    WRITE(1, *) dzmod(dble(exacteigs(i))-er(i),dimag(exacteigs(i))-ei(i))
@@ -343,6 +345,7 @@ PRINT*, ''
 
 !DSLM2 
 CALL dslm2(p, deg, er, ei, berr, exacteigs)
+CALL dsort(er, ei, deg)
 WRITE(1, '(A)') 'DSLM2 Absolute Error:'
 DO i=1,deg
    WRITE(1, *) dzmod(dble(exacteigs(i))-er(i),dimag(exacteigs(i))-ei(i))
@@ -351,6 +354,7 @@ PRINT*, ''
 
 !DSAM
 CALL dsam(p, deg, er, ei, berr)
+CALL dsort(er, ei, deg)
 WRITE(1, '(A)') 'DSAM Absolute Error:'
 DO i=1,deg
    WRITE(1, *) dzmod(dble(exacteigs(i))-er(i),dimag(exacteigs(i))-ei(i))

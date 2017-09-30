@@ -393,34 +393,6 @@ END SUBROUTINE dsort
 !********************************************************
 !                       ZSORT                           *
 !********************************************************             
-!SUBROUTINE zsort(root, n)
-!IMPLICIT NONE
-!scalar arguments
-!INTEGER, INTENT(IN)             :: n
-!array arguments
-!DOUBLE COMPLEX, INTENT(INOUT)   :: root(*)
-!local scalars
-!INTEGER                         :: i, j, k
-!DOUBLE COMPLEX                  :: temp
-
-!DO i=1,n
-!    temp=root(i); j=i
-!    DO k=i+1,n
-!        IF (dble(temp)>dble(root(k))) THEN
-!            temp=root(k); j=k
-!        ENDIF
-!    ENDDO
-!    IF (j>i) THEN
-!        temp=root(i)
-!        root(i)=root(j)
-!        root(j)=temp
-!    ENDIF
-!ENDDO
-!END SUBROUTINE zsort
-
-!********************************************************
-!                       ZSORT                           *
-!********************************************************             
 SUBROUTINE zsort(root, n)
 IMPLICIT NONE
 !scalar arguments
@@ -445,4 +417,5 @@ DO i=1,n
     ENDIF
 ENDDO
 END SUBROUTINE zsort
+
 END PROGRAM poly_test

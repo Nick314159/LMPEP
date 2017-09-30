@@ -34,8 +34,8 @@ ENDDO
 !initial estimates
 !CALL dsstart(alpha, deg, er, ei)
 DO i = 1, deg
-  er(i) = real(exacteigs(i)) + rand()/10
-  ei(i) = aimag(exacteigs(i)) + rand()/10
+  er(i) = real(exacteigs(i)) + rand()/100
+  ei(i) = aimag(exacteigs(i)) + rand()/100
 ENDDO
 !Laguerre's Method
 DO it=1,itmax

@@ -288,6 +288,9 @@ DEALLOCATE(exacteigs, p)
 !DEALLOCATE(exacteigs, p)
 
  CLOSE(UNIT=1)
+
+CALL EXECUTE_COMMAND_LINE('python poly_test.py')
+
 CONTAINS
 
 !********************************************************

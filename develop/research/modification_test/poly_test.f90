@@ -342,7 +342,7 @@ ENDDO
 PRINT*, ''
 
 !DSLM2 
-CALL dslm2(p, deg, er, ei, berr)
+CALL dslm2(p, deg, er, ei, berr, exacteigs)
 WRITE(1, '(A)') 'DSLM2 Absolute Error:'
 DO i=1,deg
    WRITE(1, *) dzmod(dble(exacteigs(i))-er(i),dimag(exacteigs(i))-ei(i))

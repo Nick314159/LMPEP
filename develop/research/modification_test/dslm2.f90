@@ -1,10 +1,11 @@
-SUBROUTINE dslm2(p, deg, er, ei, berr)
+SUBROUTINE dslm2(p, deg, er, ei, berr, exacteigs)
 IMPLICIT NONE
 !scalar arguments
 INTEGER, INTENT(IN)                 :: deg
 !array arguments
 DOUBLE PRECISION, INTENT(IN)        :: p(*)
 DOUBLE PRECISION, INTENT(OUT)       :: berr(*), er(*), ei(*)
+DOUBLE COMPLEX, INTENT(IN)          :: exacteigs(*)
 !local scalars
 LOGICAL, DIMENSION(deg)             :: check
 INTEGER                             :: i, it
@@ -31,7 +32,11 @@ DO i=1,deg
     check(i)=.TRUE.
 ENDDO
 !initial estimates
-CALL dsstart(alpha, deg, er, ei)
+!CALL dsstart(alpha, deg, er, ei)
+DO i = 1, deg
+  er(i) = real(exacteigs(i)) + rand()/10
+  ei(i) = aimag(exacteigs(i)) + rand()/10
+ENDDO
 !Laguerre's Method
 DO it=1,itmax
     DO i=1,deg

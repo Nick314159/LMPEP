@@ -1,6 +1,6 @@
 #!/bin/bash
 
-gfortran -c -O3 *.f90
+gfortran -c -O3 src/*
 
 ar crv libmodtest.a *.o
 sudo cp libmodtest.a /usr/local/lib

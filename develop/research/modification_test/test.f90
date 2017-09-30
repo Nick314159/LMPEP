@@ -1,6 +1,6 @@
 PROGRAM dslm_modifications
 IMPLICIT NONE
-INTEGER, PARAMETER     :: dp = SELECTED_REAL_KIND(15, 60)
+INTEGER, PARAMETER                              :: dp = SELECTED_REAL_KIND(15, 60)
 INTEGER                                         :: clock, clock_rate, clock_start, clock_stop
 INTEGER                                         :: i, j, nitmax, iter
 DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE   :: time, backward_error
@@ -32,7 +32,7 @@ CALL getarg(2,arg)
 READ(arg, '(I10)') maxDegree
 
 deg=startDegree
-itmax = 10
+itmax = 127
 OPEN(UNIT=1,FILE="results/results.csv")
 WRITE(1,'(A)') 'Degree, DSLM Time, DSLM berr, DSLM1 Time, DSLM1 berr, DSLM2 Time, DSLM2 berr, DSAM Time, DSAM berr'
 ALLOCATE(time(itmax, 4), backward_error(itmax, 4))

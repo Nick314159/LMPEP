@@ -398,18 +398,18 @@ END SUBROUTINE dsort
 !********************************************************             
 SUBROUTINE zsort(root, n)
 IMPLICIT NONE
-!scalar arguments
+scalar arguments
 INTEGER, INTENT(IN)             :: n
-!array arguments
+array arguments
 DOUBLE COMPLEX, INTENT(INOUT)   :: root(*)
-!local scalars
+local scalars
 INTEGER                         :: i, j, k
 DOUBLE COMPLEX                  :: temp
 
 DO i=1,n
     temp=root(i); j=i
     DO k=i+1,n
-        IF (atan2(aimag(temp), real(temp))>atan2(aimag(root(k)), real(root(k)))) THEN
+        IF (dble(temp)>dble(root(k))) THEN
             temp=root(k); j=k
         ENDIF
     ENDDO

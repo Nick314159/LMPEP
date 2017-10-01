@@ -398,11 +398,11 @@ END SUBROUTINE dsort
 !********************************************************             
 SUBROUTINE zsort(root, n)
 IMPLICIT NONE
-scalar arguments
+!scalar arguments
 INTEGER, INTENT(IN)             :: n
-array arguments
+!array arguments
 DOUBLE COMPLEX, INTENT(INOUT)   :: root(*)
-local scalars
+!local scalars
 INTEGER                         :: i, j, k
 DOUBLE COMPLEX                  :: temp
 

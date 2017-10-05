@@ -1,7 +1,7 @@
 PROGRAM conv_test
 IMPLICIT NONE
 INTEGER, PARAMETER     :: dp = SELECTED_REAL_KIND(15, 60)
-INTEGER                                         :: deg
+INTEGER                                         :: deg, itmax
 DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE     :: p, berr, er, ei
 DOUBLE COMPLEX, DIMENSION(:), ALLOCATABLE       :: exacteigs
 DOUBLE PRECISION, PARAMETER                     :: pi = 3.1415926535897932d0
@@ -15,18 +15,15 @@ EXTERNAL                                        :: dslm_conv
 DOUBLE PRECISION                                :: dzmod
 EXTERNAL                                        :: dzmod
 !scalar variables
-INTEGER                                         :: itmax
 !array varaiables
 DOUBLE COMPLEX, DIMENSION(:), ALLOCATABLE       :: error
 CHARACTER(LEN=100)                              :: arg
 
 CALL getarg(1,arg)  
 READ(arg, *) deg
-CALL getarg(2,arg)
-READ(arg, *) itmax
 
 OPEN(UNIT=1,FILE="results/conv_test_results.txt")
-
+itmax = 60
 !DSLM 
 !Create random problem
 ALLOCATE(berr(deg),er(deg),ei(deg),p(deg+1), exacteigs(deg), error(itmax))
@@ -41,8 +38,7 @@ DEALLOCATE(berr,er,ei)
 
 !Test for convergence rate
 ALLOCATE(berr(deg),er(deg),ei(deg))
-CALL dslm_conv(p, deg, er, ei, berr, exacteigs, error, itmax)
-CALL dsort(er, ei, deg)
+CALL dslm_conv(p, deg, er, ei, berr, exacteigs, error)
 DO i =1,itmax
   WRITE(1, '(ES15.2)') error(i)  
 ENDDO

@@ -18,23 +18,21 @@
 !>\verbatim  Double precision array of dimension deg, backward error of each eigenvalue approximation.\endverbatim
 !>\note MEMORY: O(deg), FLOPS: O(deg^2)
 !************************************************************************
-SUBROUTINE dslm_conv(p, deg, er, ei, berr, exacteigs, error, itmax)
+SUBROUTINE dslm_conv(p, deg, er, ei, berr, exacteigs, error)
 IMPLICIT NONE
 !scalar arguments
 INTEGER, INTENT(IN)                 :: deg
-INTEGER, INTENT(IN)                 :: itmax
 !array arguments
 DOUBLE PRECISION, INTENT(IN)        :: p(*)
 DOUBLE PRECISION, INTENT(OUT)       :: berr(*), er(*), ei(*) 
 DOUBLE COMPLEX, DIMENSION(deg), INTENT(IN)          :: exacteigs(*)
-DOUBLE COMPLEX, DIMENSION(itmax), INTENT(INOUT)       :: error
+DOUBLE COMPLEX, INTENT(INOUT)       :: error(*)
 !local scalars
 LOGICAL, DIMENSION(deg)             :: check
-INTEGER                             :: i, it
+INTEGER                             :: i, it, itmax
 DOUBLE PRECISION                    :: tol
 !local arrays
 DOUBLE PRECISION, DIMENSION(deg+1)  :: alpha
-DOUBLE COMPLEX, DIMENSION(deg)                    :: it_eigs
 !intrinsic procedures
 INTRINSIC                           :: dabs, epsilon, dcmplx
 !parameters
@@ -42,9 +40,10 @@ DOUBLE PRECISION, PARAMETER         :: eps=epsilon(0.0D0)
 !external subroutines
 EXTERNAL                            :: dsstart, dslcorr, dzslcorr
 !external functions
-DOUBLE PRECISION                    :: dzmod, dnrm2
-EXTERNAL                            :: dzmod, dnrm2
+DOUBLE PRECISION                    :: dzmod, dznrm2
+EXTERNAL                            :: dzmod, dznrm2
 
+itmax = 60
 !alpha
 DO i=1,deg+1
     alpha(i)=dabs(p(i))
@@ -66,9 +65,8 @@ DO it=1,itmax
                 CALL dzslcorr(p, alpha, tol, deg, i, check(i), er, ei, berr(i))
             ENDIF
         ENDIF
-        it_eigs(i) = dcmplx(er(i), ei(i))
     ENDDO
-    error(it) = dnrm2(deg, it_eigs(1:deg)-exacteigs(1:deg), 1)
+    error(it) = dznrm2(deg, dcmplx(er(1:deg), ei(1:deg))-exacteigs(1:deg), 1)
 ENDDO
 RETURN
 END SUBROUTINE dslm_conv

@@ -66,7 +66,7 @@ DO it=1,itmax
             ENDIF
         ENDIF
     ENDDO
-    error(it) = dznrm2(deg, dcmplx(er(1:deg), ei(1:deg))-exacteigs(1:deg), 1)
+    error(it) = dznrm2(deg, dcmplx(er(1:deg), ei(1:deg))-exacteigs(1:deg), 1)/dznrm2(deg, exacteigs(1:deg), 1)
 ENDDO
 RETURN
 END SUBROUTINE dslm_conv

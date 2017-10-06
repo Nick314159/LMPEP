@@ -15,6 +15,7 @@ with open('results/conv_test_results.txt') as f:
   ax.plot(range(1, len(error)+1), error, 'k.', label='Error')
   plt.subplots_adjust(bottom=.1, left=.16)
   ax.set_yscale('log')
+  ax.set_xscale('log')
   ax.set_xlabel('Iteration')
   ax.set_ylabel('Error')
   plt.title("Convergence Test")

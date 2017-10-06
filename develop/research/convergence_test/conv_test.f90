@@ -2,7 +2,7 @@ PROGRAM conv_test
 IMPLICIT NONE
 INTEGER, PARAMETER     :: dp = SELECTED_REAL_KIND(15, 60)
 INTEGER                                         :: deg, itmax
-DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE     :: p, berr, er, ei
+DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE     :: p, berr, er, ei, error
 DOUBLE COMPLEX, DIMENSION(:), ALLOCATABLE       :: exacteigs
 DOUBLE PRECISION, PARAMETER                     :: pi = 3.1415926535897932d0
 !loop variables
@@ -16,7 +16,6 @@ DOUBLE PRECISION                                :: dzmod
 EXTERNAL                                        :: dzmod
 !scalar variables
 !array varaiables
-DOUBLE COMPLEX, DIMENSION(:), ALLOCATABLE       :: error
 CHARACTER(LEN=100)                              :: arg
 
 CALL getarg(1,arg)  

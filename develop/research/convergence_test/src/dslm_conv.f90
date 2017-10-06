@@ -24,9 +24,8 @@ IMPLICIT NONE
 INTEGER, INTENT(IN)                 :: deg
 !array arguments
 DOUBLE PRECISION, INTENT(IN)        :: p(*)
-DOUBLE PRECISION, INTENT(OUT)       :: berr(*), er(*), ei(*) 
+DOUBLE PRECISION, INTENT(OUT)       :: berr(*), er(*), ei(*) , error(*)
 DOUBLE COMPLEX, DIMENSION(deg), INTENT(IN)          :: exacteigs(*)
-DOUBLE COMPLEX, INTENT(INOUT)       :: error(*)
 !local scalars
 LOGICAL, DIMENSION(deg)             :: check
 INTEGER                             :: i, it, itmax

@@ -99,7 +99,7 @@ DO WHILE(deg<=maxDegree)
 ENDDO
 DEALLOCATE(time, backward_error)
 
-CALL EXECUTE_COMMAND_LINE('python test.py')
+CALL EXECUTE_COMMAND_LINE('python time_and_error.py')
 
 END PROGRAM dslm_modifications
 

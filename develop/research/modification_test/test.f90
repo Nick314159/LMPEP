@@ -34,7 +34,7 @@ READ(arg, '(I10)') maxDegree
 deg=startDegree
 itmax = 127
 OPEN(UNIT=1,FILE="results/results.csv")
-WRITE(1,'(A)') 'Degree, DSLM Time, DSLM berr, DSLM1 Time, DSLM1 berr, DSLM2 Time, DSLM2 berr, DSAM Time, DSAM berr'
+WRITE(1,'(A)') 'Degree, DSLM Time, DSLM berr, DSLM1 Time, DSLM1 berr, DSAM Time, DSAM berr'
 ALLOCATE(time(itmax, 4), backward_error(itmax, 4))
 DO WHILE(deg<=maxDegree)
   WRITE(1,'(I10)', advance='no') deg
@@ -67,16 +67,6 @@ DO WHILE(deg<=maxDegree)
     time(it, 2)=(dble(clock_stop-clock_start)/dble(clock_rate))
     backward_error(it, 2) = maxval(berr)
     DEALLOCATE(er, ei, berr)
-
-    !DSLM2
-    ALLOCATE(er(deg), ei(deg), berr(deg))
-    CALL system_clock(count_rate=clock_rate)
-    CALL system_clock(count=clock_start)
-    CALL dslm2(p, deg, er, ei, berr)
-    CALL system_clock(count=clock_stop)
-    time(it, 3)=(dble(clock_stop-clock_start)/dble(clock_rate))
-    backward_error(it, 3) = maxval(berr)
-    DEALLOCATE(er, ei, berr)
    
     !DSAM 
     ALLOCATE(er(deg), ei(deg), berr(deg))
@@ -84,8 +74,8 @@ DO WHILE(deg<=maxDegree)
     CALL system_clock(count=clock_start)
     CALL dsam(p, deg, er, ei, berr)
     CALL system_clock(count=clock_stop)
-    time(it, 4)=(dble(clock_stop-clock_start)/dble(clock_rate))
-    backward_error(it, 4) = maxval(berr)
+    time(it, 3)=(dble(clock_stop-clock_start)/dble(clock_rate))
+    backward_error(it, 3) = maxval(berr)
     DEALLOCATE(er, ei, berr)
 
     DEALLOCATE(p, alpha)
@@ -104,10 +94,6 @@ DO WHILE(deg<=maxDegree)
   WRITE(1,'(ES15.2)', advance='no') sum(time(:,3))/itmax
   WRITE(1,'(A)', advance='no') ','
   WRITE(1,'(ES15.2)', advance='no') sum(backward_error(:,3))/itmax 
-  WRITE(1,'(A)', advance='no') ','
-  WRITE(1,'(ES15.2)', advance='no') sum(time(:,4))/itmax
-  WRITE(1,'(A)', advance='no') ','
-  WRITE(1,'(ES15.2)', advance='no') sum(backward_error(:,4))/itmax
   WRITE(1,'(A)')
   deg=2*deg
 ENDDO

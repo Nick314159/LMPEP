@@ -1,31 +1,28 @@
 PROGRAM conv_test
 IMPLICIT NONE
-INTEGER, PARAMETER     :: dp = SELECTED_REAL_KIND(15, 60)
 INTEGER                                         :: deg, itmax
 DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE     :: p, berr, er, ei, error
 DOUBLE COMPLEX, DIMENSION(:), ALLOCATABLE       :: exacteigs
-DOUBLE PRECISION, PARAMETER                     :: pi = 3.1415926535897932d0
 !loop variables
-INTEGER                                         :: i, j
+INTEGER                                         :: i
 !intrinsic subroutines
-INTRINSIC                                       :: dble, dcmplx, dimag, epsilon, tiny, huge
+INTRINSIC                                       :: dble, dcmplx, dimag, epsilon
 !external subroutines
-EXTERNAL                                        :: dslm_conv
-!external functions
-DOUBLE PRECISION                                :: dzmod
-EXTERNAL                                        :: dzmod
-!scalar variables
+EXTERNAL                                        :: dslm_conv, dslm1_conv, dsam_conv
 !array varaiables
 CHARACTER(LEN=100)                              :: arg
+
+itmax = 60
 
 CALL getarg(1,arg)  
 READ(arg, *) deg
 
-OPEN(UNIT=1,FILE="results/conv_test_results.txt")
-itmax = 60
+
 !DSLM 
-!Create random problem
+OPEN(UNIT=1,FILE="results/dslm_conv_test_results.txt")
 ALLOCATE(berr(deg),er(deg),ei(deg),p(deg+1), exacteigs(deg), error(itmax))
+
+!Create random problem
 CALL daruv(deg+1,p)
 
 !Solve for eigenvalues
@@ -39,40 +36,56 @@ DEALLOCATE(berr,er,ei)
 ALLOCATE(berr(deg),er(deg),ei(deg))
 CALL dslm_conv(p, deg, er, ei, berr, exacteigs, error)
 DO i =1,itmax
-  WRITE(1, '(ES15.2)') error(i)  
+  WRITE(1, '(ES15.2E3)') error(i)  
+ENDDO
+DEALLOCATE(berr,er,ei, exacteigs, error)
+
+ CLOSE(UNIT=1)
+!--------------------------------------
+
+!DSLM1 
+OPEN(UNIT=1,FILE="results/dslm1_conv_test_results.txt")
+ALLOCATE(berr(deg),er(deg),ei(deg), exacteigs(deg), error(itmax))
+
+!Solve for eigenvalues
+CALL dslm1_conv(p, deg, er, ei, berr, exacteigs, error)
+DO i=1,deg
+  exacteigs(i) = dcmplx(er(i), ei(i))
+ENDDO
+DEALLOCATE(berr,er,ei)
+
+!Test for convergence rate
+ALLOCATE(berr(deg),er(deg),ei(deg))
+CALL dslm1_conv(p, deg, er, ei, berr, exacteigs, error)
+DO i =1,itmax
+  WRITE(1, '(ES15.2E3)') error(i)  
+ENDDO
+DEALLOCATE(berr,er,ei, exacteigs, error)
+
+ CLOSE(UNIT=1)
+!--------------------------------------
+
+!DSAM 
+OPEN(UNIT=1,FILE="results/dsam_conv_test_results.txt")
+ALLOCATE(berr(deg),er(deg),ei(deg), exacteigs(deg), error(itmax))
+
+!Solve for eigenvalues
+CALL dsam_conv(p, deg, er, ei, berr, exacteigs, error)
+DO i=1,deg
+  exacteigs(i) = dcmplx(er(i), ei(i))
+ENDDO
+DEALLOCATE(berr,er,ei)
+
+!Test for convergence rate
+ALLOCATE(berr(deg),er(deg),ei(deg))
+CALL dsam_conv(p, deg, er, ei, berr, exacteigs, error)
+DO i =1,itmax
+  WRITE(1, '(ES15.2E3)') error(i)  
 ENDDO
 DEALLOCATE(berr,er,ei,p, exacteigs, error)
 
  CLOSE(UNIT=1)
+
+
 CALL EXECUTE_COMMAND_LINE('python conv_test.py')
-CONTAINS
-
-!********************************************************
-!                       DSORT                           *
-!******************************************************** 
-SUBROUTINE dsort(er, ei, n)
-IMPLICIT NONE
-!scalar arguments
-INTEGER, INTENT(IN)             :: n
-!array arguments
-DOUBLE PRECISION, INTENT(INOUT) :: er(*), ei(*)
-!local scalars
-INTEGER                         :: i, j, k
-DOUBLE PRECISION                :: tr, ti
-
-DO i=1,n
-    tr=er(i); ti=ei(i); j=i
-    DO k=i+1,n
-        IF (tr>er(k)) THEN
-            tr=er(k); ti=ei(k); j=k
-        ENDIF
-    ENDDO
-    IF (j>i) THEN
-        tr=er(i); ti=ei(i)
-        er(i)=er(j); ei(i)=ei(j)
-        er(j)=tr; ei(j)=ti
-    ENDIF
-ENDDO
-END SUBROUTINE dsort
-
 END PROGRAM conv_test

@@ -8,7 +8,7 @@ INTEGER                                         :: i
 !intrinsic subroutines
 INTRINSIC                                       :: dble, dcmplx, dimag, epsilon
 !external subroutines
-EXTERNAL                                        :: dslm_conv, dslm1_conv, dsam_conv, dsam, dslm1
+EXTERNAL                                        :: dslm_conv, dsam_conv, dsam
 !array varaiables
 CHARACTER(LEN=100)                              :: arg
 
@@ -37,28 +37,6 @@ DEALLOCATE(berr,er,ei)
 !Test for convergence rate
 ALLOCATE(berr(deg),er(deg),ei(deg))
 CALL dslm_conv(p, deg, er, ei, berr, exacteigs, error)
-DO i =1,itmax
-  WRITE(1, '(ES15.2E3)') error(i)  
-ENDDO
-DEALLOCATE(berr,er,ei, exacteigs, error)
-
- CLOSE(UNIT=1)
-!--------------------------------------
-
-!DSLM1 
-OPEN(UNIT=1,FILE="results/dslm1_conv_test_results.txt")
-ALLOCATE(berr(deg),er(deg),ei(deg), exacteigs(deg), error(itmax))
-
-!Compute convergent vector
-CALL dslm1(p, deg, er, ei, berr)
-DO i=1,deg
-  exacteigs(i) = dcmplx(er(i), ei(i))
-ENDDO
-DEALLOCATE(berr,er,ei)
-
-!Test for convergence rate
-ALLOCATE(berr(deg),er(deg),ei(deg))
-CALL dslm1_conv(p, deg, er, ei, berr, exacteigs, error)
 DO i =1,itmax
   WRITE(1, '(ES15.2E3)') error(i)  
 ENDDO

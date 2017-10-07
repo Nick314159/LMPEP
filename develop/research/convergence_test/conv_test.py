@@ -1,7 +1,7 @@
 import csv
 import numpy as np
 from matplotlib import pyplot as plt
-methods = ["dslm", "dslm1", "dsam"]
+methods = ["dslm", "dsam"]
 
 for method in methods:
   with open('results/'+method+'_conv_test_results.txt') as f:

@@ -33,6 +33,7 @@ DO i=1,deg
 ENDDO
 !initial estimates
 CALL dsstart(alpha, deg, er, ei)
+error(1) = dznrm2(deg, dcmplx(er(1:deg), ei(1:deg))-exacteigs(1:deg), 1)/dznrm2(deg, exacteigs(1:deg), 1)
 !Laguerre's Method
 DO it=1,itmax
     DO i=1,deg
@@ -45,7 +46,7 @@ DO it=1,itmax
             ENDIF
         ENDIF
     ENDDO
-    error(it) = dznrm2(deg, dcmplx(er(1:deg), ei(1:deg))-exacteigs(1:deg), 1)/dznrm2(deg, exacteigs(1:deg), 1)
+    error(it+1) = dznrm2(deg, dcmplx(er(1:deg), ei(1:deg))-exacteigs(1:deg), 1)/dznrm2(deg, exacteigs(1:deg), 1)
 ENDDO
 RETURN
 END SUBROUTINE dsam_conv

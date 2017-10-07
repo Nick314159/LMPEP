@@ -25,7 +25,7 @@ CALL daruv(deg+1,p)
 
 !DSLM 
 OPEN(UNIT=1,FILE="results/dslm_conv_test_results.txt")
-ALLOCATE(berr(deg),er(deg),ei(deg), exacteigs(deg), error(itmax))
+ALLOCATE(berr(deg),er(deg),ei(deg), exacteigs(deg), error(itmax+1))
 
 !Compute convergent vector
 CALL dslm(p, deg, er, ei, berr)
@@ -47,7 +47,7 @@ DEALLOCATE(berr,er,ei, exacteigs, error)
 
 !DSAM 
 OPEN(UNIT=1,FILE="results/dsam_conv_test_results.txt")
-ALLOCATE(berr(deg),er(deg),ei(deg), exacteigs(deg), error(itmax))
+ALLOCATE(berr(deg),er(deg),ei(deg), exacteigs(deg), error(itmax+1))
 
 !Compute convergent vector
 CALL dsam(p, deg, er, ei, berr)

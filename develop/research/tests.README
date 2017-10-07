@@ -1,0 +1,14 @@
+comparision_test:
+  dslm_comparisons.f90: Test DSLM, Pzeros, AMVW over a given degree range for time and backward error
+  poly_test.f90: Test DSLM, Pzeros, AMVW on given polynomials with known roots for backward error
+  poly_test_z.f90: Test DSLM, Pzeros, AMVW on given complex polynomials with known roots for backward error
+  test_dslm.f90: Test individual subroutines of DSLM
+
+convergence_test:
+  conv_test.f90: Test rate of convergence of DSLM, DSLM1, DSAM on a random problem of given degree
+
+modification_test:
+  poly_test.f90: Test DSLM, DSLM1, DSAM on given polynomials with known roots for backward error
+  time_and_error.f90: Test DSLM, DSLM1, DSAM over a given degree range for time and backward error
+
+

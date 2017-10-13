@@ -1,0 +1,128 @@
+\documentclass[final,hyperref={pdfpagelabels=false}]{beamer}
+\mode<presentation>
+{
+	  \usetheme{Berlin}
+	  \usecolortheme{beaver}
+	%\usetheme{Dreuw}
+}
+\usepackage{times}
+\usepackage{amsmath,amsthm, amssymb, latexsym}
+\boldmath
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{subcaption}
+
+\usepackage[orientation=landscape,size=a0,scale=1.4,debug]{beamerposter}
+\graphicspath{{../figures/}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+\graphicspath{{figures/}}
+\title[Fancy Posters]{On the application of Laguerre's method to the polynomial eigenvalue problem}
+\author[Cameron \& Steckley]{Thomas R. Cameron \and Nikolas Steckley}
+\institute[Davidson College \& Portland State University]{Davidson College \& Portland State University}
+\date{}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+\begin{document}
+	\maketitle
+	
+	\begin{block}{\large Abstract}
+		The polynomial eigenvalue problem arises in many applications and has received a great deal of attention over the last decade. The use of root-finding methods to solve the polynomial eigenvalue problem dates back to the work of Kublanovskaya (1969, 1970) and has received a resurgence due to the work of Bini and Noferini (2013). In this paper, we present a method which uses Laguerre iteration for computing the eigenvalues of a matrix polynomial. An effective method based on the numerical range is presented for computing initial estimates to the eigenvalues of a matrix polynomial. A detailed explanation of the stopping criteria is given, and it is shown that under suitable conditions we can guarantee the backward stability of the eigenvalues computed by our method. Then, robust methods are provided for computing both the right and left eigenvectors and the condition number of each eigenpair. Applications for Hessenberg and tridiagonal matrix polynomials are given and we show that both structures benefit from substantial computational savings. Finally, we present several numerical experiments to verify the accuracy of our method and its competitiveness for solving the roots of a polynomial and the tridiagonal eigenvalue problem. 
+	\end{block}
+	\begin{columns}[t]
+		\begin{column}{.48\linewidth}
+				\begin{block}{\large Laguerre's method}
+					Laguerre's method has incredible virtues including guaranteed global
+					convergence when all roots are real [1], and when these are simple zeros this method
+					is known to exhibit local cubic convergence. In practice, the complex iterations seem
+					as powerful as the real one's [24]. Given an approximation ? to one of the roots of p(?), Laguerre?s method uses p(?), p'(?), and p''(?) to obtain a better approximation. Following the development in~\cite{Parlett1964}, we define the following:
+				\begin{equation}\label{eq:S1}
+				S_{1}(\lambda)=\frac{p^{'}(\lambda)}{p(\lambda)}=\underset{i=1}{\overset{N_{1}}\sum}\frac{1}{\lambda-r_{i}},
+				\end{equation}
+				where $r_{1},\ldots,r_{N_{1}}$ are the roots of $p(\lambda)$, and
+				\begin{equation}\label{eq:S2}
+				S_{2}(\lambda)=-\left(\frac{p^{'}(\lambda)}{p(\lambda)}\right)^{'}=\underset{i=1}{\overset{N_{1}}\sum}\frac{1}{(\lambda-r_{i})^{2}}.
+				\end{equation}
+				Then the next approximation is given by
+				\begin{equation}\label{eq:lit}
+				\hat{\lambda}=\lambda-\frac{N_{1}}{S_{1}\pm\sqrt{(N_{1}-1)(N_{1}S_{2}-S_{1}^{2})}},
+				\end{equation}
+				where the sign of the square root is chosen to maximize the magnitude of the denominator. We call $\hat{\lambda}$ the \emph{Laguerre iterate} of $\lambda$. Once the roots $r_{1},\ldots,r_{k}$ have been found, we deflate the problem by subtracting
+				\[
+				\underset{i=1}{\overset{k}\sum}\frac{1}{\lambda-r_{i}}~\text{ and }~\underset{i=1}{\overset{k}\sum}\frac{1}{(\lambda-r_{i})^{2}}
+				\]
+				from equations~\eqref{eq:S1} and~\eqref{eq:S2}, respectively.
+				
+				The undesirable numerical properties of the determinant are well-known, and it is for these reasons that we do not work with the polynomial $p(\lambda)$ directly. Rather, an effective method for computing equations~\eqref{eq:S1}--\eqref{eq:S2} can be derived from Jacobi's formula:
+				\begin{equation}\label{eq:clit}
+				\begin{split}
+				\frac{p^{'}(\lambda)}{p(\lambda)}&=\text{trace}\left(X_{1}(\lambda)\right),\\
+				-\left(\frac{p^{'}(\lambda)}{p(\lambda)}\right)^{'}&=\text{trace}\left(X_{1}^{2}(\lambda)-X_{2}(\lambda)\right),
+				\end{split}
+				\end{equation}
+			\end{block}
+			\begin{block}{Initial Estimates}
+				In the scalar case, the Newton Polygon method is used to find initial estimates. However; for Matrix Polynomials we propose a new method motivate by the numerical range of polynomial.The numerical range of a matrix polynomial is the
+				set
+				\begin{equation}\label{eq:WP}
+				W(P) = \{\lambda \in  \mathbb{C}: x^*P(\lambda)x = 0, \forall x\in \mathbb{C}^n\neq 0\}
+				\end{equation}
+				which clearly contains the set of all eigenvalues. We make use of the columns of $Q=[q_{j}]_{j=1}^{n}$ obtained from the QR factorization of the constant and leading coefficient matrices, see Section~\ref{sec:zeroinf}. Initial estimates to the finite eigenvalues are computed as the roots of $q_{j}^{*}P(\lambda)q_{j}$ for $j=1,\ldots,n$.
+			\end{block}
+		
+			\begin{block}{Computing the Laguerre Correction Term}
+ How it do it 
+			\end{block}
+		
+
+		\end{column}
+		\begin{column}{.48\linewidth}
+			\begin{block}{Stability}
+		Why it kicks ass
+			\end{block}
+					\begin{block}{Eigenvectors}
+			
+		\end{block}
+		
+		\begin{block}{Tridiagonal}
+			
+		\end{block}
+		\end{column}
+		\end{columns}
+	\begin{block}{Numerical Results}
+\begin{figure}
+	\centering
+	\begin{subfigure}{.3\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{../figures/iepoly2spring.pdf}
+		\caption{Spring}
+		\label{fig:sub1}
+	\end{subfigure}%
+	\begin{subfigure}{.3\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{../figures/iepoly2cd_player.pdf}
+		\caption{CD Player}
+		\label{fig:sub2}
+	\end{subfigure}
+	\begin{subfigure}{.3\textwidth}
+	\centering
+		\includegraphics[width=\linewidth]{../figures/iepoly2butterfly.pdf}
+	\caption{Butterfly}
+	\label{fig:sub2}
+\end{subfigure}
+	\caption{Initial Estimates and Approximated Eigenvalues for Selected NLEVP~\cite{Betcke2013 Problems}}
+	\label{fig:test}
+\end{figure}
+	\end{block}
+	\begin{block}{The Code}
+	All source and test code can be found online at our LMPEP GitHub page: https://github.com/Nick314159/LMPEP
+    \end{block}
+\end{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-PDF-mode: t
+%%% End:

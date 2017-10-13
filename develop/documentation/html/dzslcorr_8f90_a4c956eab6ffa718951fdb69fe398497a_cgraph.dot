@@ -1,0 +1,15 @@
+digraph "dzslcorr"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="dzslcorr",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="dzseval",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dzseval_8f90.html#a0a4b5759876c235cfa7e96a904e0aefd",tooltip=" DZSEVAL evaluates real scalar polynomial at complex number.  "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="dzrevseval",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dzrevseval_8f90.html#a6ac1bc6b4e40077104de50d3e7113870",tooltip=" DZREVSEVAL evaluates the reversal of a real scalar polynomial at a complex number.  "];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node4 [label="drevseval",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$drevseval_8f90.html#a601888eaec65a235fb6417473947aa37",tooltip=" DREVSEVAL evaluates the reversal of a real scalar polynomial at a real number.  "];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node5 [label="dseval",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dseval_8f90.html#a59299c96f28205c90ee80f6fd7a76f11",tooltip=" DSEVAL evaluates a real scalar polynomial at a real number.  "];
+}

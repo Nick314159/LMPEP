@@ -1,10 +1,10 @@
 !>\author Thomas R. Cameron, Davidson College
 !>\author Nikolas I. Steckley, Portland State University
 !>\date 2017
-!>\brief <b> DSLM computes the roots of a real polynomial. </b>
+!>\brief <b> DSLM simultaneously computes the roots of a real polynomial. </b>
 !>\par Purpose:
 !>\verbatim
-!> DSLM computes the roots of a real polynomial using Laguerre's method. 
+!> DSLM computes the roots of a real polynomial simultaneously using a modified Laguerre's method. 
 !>\endverbatim
 !>\param[in] p
 !>\verbatim Double precision array of dimension (deg+1), contains polynomial coefficients, ordered from constant to leading. \endverbatim

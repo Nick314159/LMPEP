@@ -5,7 +5,7 @@
 !   #Dept. DiscoverOrg LLC.
 !       
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!   Last modified 14 October 2017
+!   Last modified 15 October 2017
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !   Test Program for random polynomials of degree start to end
 !   
@@ -17,7 +17,7 @@
 !   iterates are implemented in a Gauss-Seidel fashion.
 !   
 !   The first modified Laguerre's method computes the roots one
-!   at a time and deflates previously computed roots.
+!   at a time and deflates on previously computed roots.
 !   
 !   The second modified Laguerre's method computes all roots
 !   simultaneously, iterates are implemented in a Gauss-Seidel
@@ -28,7 +28,7 @@
 !   
 !   1) Start Degree, default 100
 !   
-!   2) End Degree, default 12800
+!   2) End Degree, default 6400
 !   
 !   3) Iterations, default 10
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -57,7 +57,7 @@ EXTERNAL :: daruv, dslm, dslm1, dsam
     IF(flag==0) THEN
         READ(arg, '(I10)') endDegree
     ELSE
-        endDegree=12800
+        endDegree=6400
     ENDIF
     CALL GET_COMMAND_ARGUMENT(3,arg,status=flag)
     IF(flag==0) THEN
@@ -68,7 +68,7 @@ EXTERNAL :: daruv, dslm, dslm1, dsam
 
 !   Open Results File
 OPEN(UNIT=1,FILE="results/testMethods.csv")
-WRITE(1,'(A)') 'Degree, DSLM_Simul Time, DSLM_Simul Berr, DSLM_Seque Time, DSLM_Seque Berr, DSAM Time, DSAM Berr'
+WRITE(1,'(A)') 'Degree, DSLM Time, DSLM Berr, DSLM1 Time, DSLM1 Berr, DSAM Time, DSAM Berr'
 !   Allocate Backward Error and Elapsed Time storage arrays
 ALLOCATE(berrMethods(iter,3), timeMethods(iter,3))
 !   Main Loop

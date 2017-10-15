@@ -32,7 +32,7 @@ DO i=1,deg
 ENDDO
 !initial estimates
 CALL dsstart(alpha, deg, er, ei)
-!Laguerre's Method
+!Aberth's Method
 DO it=1,itmax
     DO i=1,deg
         IF(check(i)) THEN

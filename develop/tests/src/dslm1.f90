@@ -28,7 +28,7 @@ DO i=1,deg+1
 ENDDO
 !initial estimates
 CALL dsstart(alpha, deg, er, ei)
-!Laguerre's Method
+!Laguerre's Method (sequential: 1 root at a time)
 DO i=1,deg
     check=.False.
     DO it=1,itmax

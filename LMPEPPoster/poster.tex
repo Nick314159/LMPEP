@@ -45,9 +45,7 @@
 			\end{equation}
 			and the $\pm$ is chosen to maximize the magnitude of the denominator. 
 			}
-\block{Psuedocode}{
-	\begin{algorithm}[H]
-		\caption{Modified Laguerre's Method}
+		\block{Modified Laguerre's Method}{
 		\begin{algorithmic}[1]
 		\For {$k=1 \textrm{ to } itmax$}
 		\For {$j=1 \textrm{ to } m$}
@@ -56,16 +54,12 @@
 		\EndIf
 		\EndFor
 	    \EndFor
-		%\Let{$amax$}{$\max\{|a_{j,j}|,|a_{j+1,j}|,\ldots,|a_{m,j}|\}$}
-		%\If{$amax=0$}
-		%\State{Stop Algorithm, Free Variable}
-		%\EndIf
 		\end{algorithmic}
-	\end{algorithm}
 }	
-		\block{The Code}{	All source and test code can be found online at our LMPEP GitHub page: https://github.com/Nick314159/LMPEP}
 		\column{0.333}
-		\block{Comparisions}{Blocktext}
+		\block{Comparisions}{
+			\includegraphics[width=\linewidth]{../develop/tests/diagrams/testMethods}
+		}
 
 		\column{0.333}
 		\block{Aberth}{Blocktext}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.9.16)  14 OCT 2017 17:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.9.16)  17 OCT 2017 11:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -908,33 +908,31 @@ LaTeX Font Warning: Font shape `U/lasy/m/n' in size <43> not available
 LaTeX Font Warning: Font shape `U/lasy/m/n' in size <29.86> not available
 (Font)              size <24.88> substituted on input line 27.
 
+<../develop/tests/diagrams/testMethods.pdf, id=29, 578.16pt x 433.62pt>
+File: ../develop/tests/diagrams/testMethods.pdf Graphic file (type pdf)
 
-Overfull \hbox (2438.99953pt too wide) in paragraph at lines 65--65
-[][][][][]  
- []
+<use ../develop/tests/diagrams/testMethods.pdf>
+Package pdftex.def Info: ../develop/tests/diagrams/testMethods.pdf used on inpu
+t line 62.
+(pdftex.def)             Requested size: 1029.96046pt x 772.50945pt.
+ [1
 
-
-Underfull \hbox (badness 1173) in paragraph at lines 66--66
-[]\T1/aer/m/n/29.86 All source and test code can be found on-line at our LM-PEP
- GitHub page:
- []
-
-[1
-
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./poster.aux)
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <../develop/tests/diagrams/
+testMethods.pdf>]
+(./poster.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 37.04pt have occurred.
 
  ) 
 Here is how much of TeX's memory you used:
- 18344 strings out of 493029
- 385987 string characters out of 6136234
- 486575 words of memory out of 5000000
- 21429 multiletter control sequences out of 15000+600000
- 56132 words of font info for 131 fonts, out of 8000000 for 9000
+ 18348 strings out of 493029
+ 386210 string characters out of 6136234
+ 484983 words of memory out of 5000000
+ 21433 multiletter control sequences out of 15000+600000
+ 56689 words of font info for 129 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,24n,84p,836b,938s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,24n,84p,836b,869s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/sha
 re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/tex
@@ -942,10 +940,10 @@ live/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/t
 exmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-di
 st/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on poster.pdf (1 page, 87061 bytes).
+Output written on poster.pdf (1 page, 102102 bytes).
 PDF statistics:
- 63 PDF objects out of 1000 (max. 8388607)
- 36 compressed objects within 1 object stream
+ 118 PDF objects out of 1000 (max. 8388607)
+ 42 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 109 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 114 words of extra memory for PDF output out of 10000 (max. 10000000)
 

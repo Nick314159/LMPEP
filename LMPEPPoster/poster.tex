@@ -70,7 +70,7 @@
 		\block{Aberth}{
 			Let $p(\lambda)$ be a polynomial of degree $m$. Let $(z_{1}^{(k)},\ldots,z_{m}^{(k)})$ be approximations to the roots, $r_{1},\ldots,r_{m}$, of $p(\lambda)$.. For $1\leq j\leq m$, we define
 			\begin{equation}
-		    A(z_{j})= -\frac{\frac{p(z_{j}^{(k)})}{p^{'}(z_{j}^{(k)})}}{1-\frac{p(z_{j}^{(k)})}{p^{'}(z_{j}^{(k)})} \cdot \sum\limits_{\substack{i=1\\i\neq j}}^{m}\frac{1}{z_{j}^{(k)}-z_{i}^{(k)}}}
+		    A(z_{j}^{(k)})= -\frac{\frac{p(z_{j}^{(k)})}{p^{'}(z_{j}^{(k)})}}{1-\frac{p(z_{j}^{(k)})}{p^{'}(z_{j}^{(k)})} \cdot \sum\limits_{\substack{i=1\\i\neq j}}^{m}\frac{1}{z_{j}^{(k)}-z_{i}^{(k)}}}
 			\end{equation}
 			The next approximation is then defined by
 			\begin{equation}
@@ -85,7 +85,7 @@
 			H_{j}(z_{j}^{(k)})&=G^{2}_{j}(z_{j}^{(k)})-\frac{p^{''}(z_{j}^{(k)})}{p(z_{j}^{(k)})}.
 			\end{split}
 			\end{equation}
-			Then our next approximation is defined by
+			Then the next approximation is defined by
 			\begin{equation}\label{eq:lag2}
 			z_{j}^{(k+1)}=z_{j}^{(k)}-L(z_{j}^{(k)})
 			\end{equation}

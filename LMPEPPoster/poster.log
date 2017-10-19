@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.9.16)  18 OCT 2017 17:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.9.16)  18 OCT 2017 17:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -771,11 +771,7 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 LaTeX Warning: Unused global option(s):
     [orientation=landscape].
 
-(./poster.aux
-
-LaTeX Warning: Label `eq:lag2' multiply defined.
-
-)
+(./poster.aux)
 \openout1 = `poster.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
@@ -944,30 +940,26 @@ ge group included in a single page
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 37.04pt have occurred.
 
-
-LaTeX Warning: There were multiply-defined labels.
-
  ) 
 Here is how much of TeX's memory you used:
- 18355 strings out of 493029
- 386644 string characters out of 6136234
- 489582 words of memory out of 5000000
- 21438 multiletter control sequences out of 15000+600000
+ 18354 strings out of 493029
+ 386624 string characters out of 6136234
+ 486343 words of memory out of 5000000
+ 21437 multiletter control sequences out of 15000+600000
  56689 words of font info for 129 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,24n,84p,836b,871s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,24n,84p,836b,873s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/sha
 re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/tex
 live/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/font
-s/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmti12.pfb>
-Output written on poster.pdf (1 page, 124013 bytes).
+exmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on poster.pdf (1 page, 115982 bytes).
 PDF statistics:
- 173 PDF objects out of 1000 (max. 8388607)
- 50 compressed objects within 1 object stream
+ 168 PDF objects out of 1000 (max. 8388607)
+ 47 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  119 words of extra memory for PDF output out of 10000 (max. 10000000)
 

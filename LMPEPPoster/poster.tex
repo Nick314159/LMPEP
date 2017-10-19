@@ -58,42 +58,18 @@
 }	
 		\column{0.333}
 		\block{Comparisions}{
+
 			\includegraphics[width=\linewidth]{../develop/tests/diagrams/testMethods}
-			\label{Method Comparision}
+			\centering *Avgerage of max backward error
 			
 			\includegraphics[width=\linewidth]{../develop/research/comparision_test/diagrams/poly_test_Deg_20_Wilkins_Poly.pdf}
-
 
 		}
 
 		\column{0.333}
-		\block{Aberth}{
-			Let $p(\lambda)$ be a polynomial of degree $m$. Let $(z_{1}^{(k)},\ldots,z_{m}^{(k)})$ be approximations to the roots, $r_{1},\ldots,r_{m}$, of $p(\lambda)$.. For $1\leq j\leq m$, we define
-			\begin{equation}
-		    A(z_{j}^{(k)})= -\frac{\frac{p(z_{j}^{(k)})}{p^{'}(z_{j}^{(k)})}}{1-\frac{p(z_{j}^{(k)})}{p^{'}(z_{j}^{(k)})} \cdot \sum\limits_{\substack{i=1\\i\neq j}}^{m}\frac{1}{z_{j}^{(k)}-z_{i}^{(k)}}}
-			\end{equation}
-			The next approximation is then defined by
-			\begin{equation}
-			z_{j}^{(k+1)}=z_{j}^{(k)}-A(z_{j}^{(k)})
-			\end{equation}
-		}
-		\block{Classical Laguerre}{
-			Let $p(\lambda)$ be a polynomial of degree $m$. Let $(z_{1}^{(k)},\ldots,z_{m}^{(k)})$ be approximations to the roots, $r_{1},\ldots,r_{m}$, of $p(\lambda)$. For $1\leq j\leq m$, we define
-			\begin{equation}
-			\begin{split}
-			G_{j}(z_{j}^{(k)})&=\frac{p^{'}(z_{j}^{(k)})}{p(z_{j}^{(k)})}, \\
-			H_{j}(z_{j}^{(k)})&=G^{2}_{j}(z_{j}^{(k)})-\frac{p^{''}(z_{j}^{(k)})}{p(z_{j}^{(k)})}.
-			\end{split}
-			\end{equation}
-			Then the next approximation is defined by
-			\begin{equation}\label{eq:lag2}
-			z_{j}^{(k+1)}=z_{j}^{(k)}-L(z_{j}^{(k)})
-			\end{equation}
-			where
-			\begin{equation}
-			L(z_{j}^{(k)})=\frac{m}{G_{j}^{(k)}(z_{j}^{(k)})\pm\sqrt{(m-1)(mH_{j}(z_{j}^{(k)})-G_{j}^{2}(z_{j}^{(k)}))}}
-			\end{equation}
-			and the $\pm$ is chosen to maximize the magnitude of the denominator. }
+		\block{Initial Estimates}{}
+		\block{Stopping Criteria}{}
+		\block{Order of Convergence}{}
 		%\note{Notetext} % See Section 4.3
 	\end{columns}
 \end{document}

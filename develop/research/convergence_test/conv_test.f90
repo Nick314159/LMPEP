@@ -6,7 +6,8 @@ DOUBLE PRECISION, PARAMETER                     :: pi = 3.1415926535897932d0
 
 !intrinsic subroutines
 INTRINSIC                                       :: cos, dcmplx
- OPEN(UNIT=1,FILE="results/dslm_conv_test_results.txt")
+
+OPEN(UNIT=1,FILE="results/dslm_conv_test_results.txt")
 
 !Chebysehv Deg 20 Polynomial
 deg=20
@@ -155,7 +156,6 @@ CALL daruv(deg+1,p)
 WRITE(1, '(A)') "Deg 20 Random Poly"
 CALL test(deg, p)
 DEALLOCATE(p)
-
 
  CLOSE(UNIT=1)
 

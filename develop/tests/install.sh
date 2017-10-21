@@ -7,8 +7,11 @@ gfortran -c -O3 src/*
 ar crv liblmpeptest.a *.o
 cp liblmpeptest.a /usr/local/lib
 
-#compile test.f90 file and create executable output testMethods
+#compile testMethods.f90 file and create executable output testMethods
 gfortran -O3 testMethods.f90 -L/usr/local/lib -llmpep -llmpeptest -o testMethods
+
+#compile testConvergence.f90 file and create executable output testConvergence
+gfortran -O3 testConvergence.f90 -L/usr/local/lib -llmpep -llmpeptest -o testConvergence
 
 rm *.o
 rm *.a

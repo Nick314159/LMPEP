@@ -34,19 +34,19 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 PROGRAM testMethods
 IMPLICIT NONE
-!   Input Variables
+! Input Variables
 INTEGER :: startDegree, endDegree, iter, flag
 CHARACTER(len=32) :: arg
 
-!   Compute Variables
+! Compute Variables
 INTEGER :: clock, clock_rate, clock_start, clock_stop, deg, it
 DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE :: berr, er, ei, p
 DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE :: berrMethods, timeMethods
 
-!   External Subroutines
+! External Subroutines
 EXTERNAL :: daruv, dslm, dslm1, dsam
 
-!   Set Start and End Degree, and Iterations
+! Set Start and End Degree, and Iterations
     CALL GET_COMMAND_ARGUMENT(1,arg,status=flag)
     IF(flag==0) THEN
         READ(arg, '(I10)') startDegree
@@ -66,22 +66,22 @@ EXTERNAL :: daruv, dslm, dslm1, dsam
         iter=10
     ENDIF
 
-!   Open Results File
+! Open Results File
 OPEN(UNIT=1,FILE="results/testMethods.csv")
 WRITE(1,'(A)') 'Degree, DSLM Time, DSLM Berr, DSLM1 Time, DSLM1 Berr, DSAM Time, DSAM Berr'
-!   Allocate Backward Error and Elapsed Time storage arrays
+! Allocate Backward Error and Elapsed Time storage arrays
 ALLOCATE(berrMethods(iter,3), timeMethods(iter,3))
-!   Main Loop
+! Main Loop
 deg=startDegree
 DO WHILE(deg<=endDegree)
     WRITE(1,'(I10)',advance='no') deg
     WRITE(1,'(A)',advance='no') ','
     
     DO it=1,iter
-        !   Random polynomial of degree deg
+        ! Random polynomial of degree deg
         ALLOCATE(p(deg+1))
         CALL daruv(deg+1,p)
-        !   DSLM: DSLM_Simul
+        ! DSLM: DSLM_Simul
         ALLOCATE(berr(deg), er(deg), ei(deg))
         CALL SYSTEM_CLOCK(count_rate=clock_rate)
         CALL SYSTEM_CLOCK(count=clock_start)
@@ -90,7 +90,7 @@ DO WHILE(deg<=endDegree)
         timeMethods(it,1)=DBLE(clock_stop-clock_start)/DBLE(clock_rate)
         berrMethods(it,1)=MAXVAL(berr)
         DEALLOCATE(berr, er, ei)
-        !   DSLM1: DSLM_Seque
+        ! DSLM1: DSLM_Seque
         ALLOCATE(berr(deg), er(deg), ei(deg))
         CALL SYSTEM_CLOCK(count_rate=clock_rate)
         CALL SYSTEM_CLOCK(count=clock_start)
@@ -99,7 +99,7 @@ DO WHILE(deg<=endDegree)
         timeMethods(it,2)=DBLE(clock_stop-clock_start)/DBLE(clock_rate)
         berrMethods(it,2)=MAXVAL(berr)
         DEALLOCATE(berr, er, ei)
-        !   DSAM
+        ! DSAM: Aberth
         ALLOCATE(berr(deg), er(deg), ei(deg))
         CALL SYSTEM_CLOCK(count_rate=clock_rate)
         CALL SYSTEM_CLOCK(count=clock_start)
@@ -126,11 +126,11 @@ DO WHILE(deg<=endDegree)
     
     deg=2*deg
 ENDDO
-!   Deallocate Backward Error and Elapsed Time storage arrays
+! Deallocate Backward Error and Elapsed Time storage arrays
 DEALLOCATE(berrMethods, timeMethods)
-!   Close Results File
-CLOSE(1)
-!   Call testMethods.py to display results
+! Close Results File
+ CLOSE(1)
+! Call testMethods.py to display results
 CALL EXECUTE_COMMAND_LINE('python testMethods.py')
 
 END PROGRAM testMethods

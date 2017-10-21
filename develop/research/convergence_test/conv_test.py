@@ -16,11 +16,15 @@ with open('results/dslm_conv_test_results.txt') as f:
  
   data.append(error)
   data = zip(*data[::-1])
-  fig = plt.figure()
+  nrows, ncols = len(data)+1, len(cols)
+  hcell, wcell = 0.175, 0.75 # tweak as per your requirements
+  hpad, wpad = 0.5, 0.5    
+  fig=plt.figure(figsize=(ncols*wcell+wpad, nrows*hcell+hpad))
   ax = fig.add_subplot(111)
   ax.axis('tight')
   ax.axis('off')
   the_table = ax.table(cellText=data,colLabels=cols,loc='center', rowLabels=rows)
-  plt.title("Convergence Test DSLM" )
+  the_table.auto_set_font_size(False)
+  the_table.set_fontsize(5.5)
   plt.savefig("diagrams/dslm_conv_test_.pdf", format='pdf')
 

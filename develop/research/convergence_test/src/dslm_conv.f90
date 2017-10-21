@@ -4,7 +4,8 @@ IMPLICIT NONE
 INTEGER, INTENT(IN)                 :: deg
 !array arguments
 DOUBLE PRECISION, INTENT(IN)        :: p(*)
-DOUBLE PRECISION, INTENT(OUT)       :: berr(*), er(*), ei(*) , error(*)
+DOUBLE PRECISION, INTENT(OUT)       :: berr(*), er(*), ei(*)
+DOUBLE PRECISION, INTENT(INOUT)     ::  error(*)
 DOUBLE COMPLEX, DIMENSION(deg), INTENT(IN)          :: exacteigs(*)
 !local scalars
 LOGICAL, DIMENSION(deg)             :: check

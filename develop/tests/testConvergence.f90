@@ -82,10 +82,10 @@ DEALLOCATE(p)
 
 
 !Test 3: Create random polynomial
-deg=20
+deg=100
 ALLOCATE(p(deg+1))
 CALL daruv(deg+1,p)
-WRITE(1, '(A)') "Deg 20 Random"
+WRITE(1, '(A)') "Deg 100 Random"
 CALL test(deg, p, error(:,3))
 DEALLOCATE(p)
 
@@ -105,6 +105,8 @@ DEALLOCATE(error)
 
 ! Close results file
  CLOSE(1)
+
+CALL EXECUTE_COMMAND_LINE('python testConvergence.py')
 
 CONTAINS
 

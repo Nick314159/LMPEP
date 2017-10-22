@@ -7,14 +7,13 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !   Last modified 22 October 2017
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!   Test Convergence on several famous polynomials and one random
-!   polynomial of degree 100. 
+!   Test Convergence on several famous polynomials 
 !   
 !   The root approximations are computed using DSLM and then
 !   an error vector is computed using DSLM_CONV.
 !   
-!   The error vector for all polynomials is written to a the
-!   file: "".
+!   The error vector for all polynomials is written to the
+!   file: "results/testConvergence.csv".
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 PROGRAM testConvergence
 IMPLICIT NONE
@@ -45,7 +44,7 @@ p(8)=-84095D0/36288D0
 p(9)=177133D0/50400D0
 p(10)=-7381D0/2520D0
 p(11)=1D0
-WRITE(1, '(A)', advance='no')  "Deg 10 Wilkins"
+WRITE(1, '(A)', advance='no')  'Test 1'
 WRITE(1,'(A)', advance='no') ','
 CALL test(deg, p, error(:,1))
 DEALLOCATE(p)
@@ -69,6 +68,8 @@ p(13)=-218400D0
 p(14)=6580D0
 p(15)=-120D0
 p(16)=1D0
+WRITE(1, '(A)', advance='no')  'Test 2'
+WRITE(1,'(A)', advance='no') ','
 CALL test(deg, p, error(:,2))
 DEALLOCATE(p)
 
@@ -96,6 +97,8 @@ p(18)=-1256850D0
 p(19)=20615D0
 p(20)=-210D0
 p(21)=1D0
+WRITE(1, '(A)', advance='no')  'Test 3'
+WRITE(1,'(A)', advance='no') ','
 CALL test(deg, p, error(:,3))
 DEALLOCATE(p)
 
@@ -123,6 +126,8 @@ p(4)=11456073304317D0/20000000000000D0
 p(3)=2280736816325919D0/4000000000000000D0
 p(2)=-1899923154129D0/400000000000000D0
 p(1)=-758069338497471D0/160000000000000000D0
+WRITE(1, '(A)', advance='no')  'Test 4'
+WRITE(1,'(A)', advance='no') ','
 CALL test(deg, p, error(:,4))
 DEALLOCATE(p)
 
@@ -141,6 +146,8 @@ p(4)=-121D0/24192D0
 p(3)=11D0/30240D0
 p(2)=-11D0/725760D0
 p(1)=1D0/3628800D0
+WRITE(1, '(A)', advance='no')  'Test 5'
+WRITE(1,'(A)', advance='no') ','
 CALL test(deg, p, error(:,5))
 DEALLOCATE(p)
 
@@ -163,6 +170,8 @@ p(4)=1D0/5987520D0
 p(3)=-47D0/9340531200D0
 p(2)=1D0/10897286400D0
 p(1)=-1D0/1307674368000D0
+WRITE(1, '(A)', advance='no')  'Test 6'
+WRITE(1,'(A)', advance='no') ','
 CALL test(deg, p, error(:,6))
 DEALLOCATE(p)
 
@@ -190,6 +199,8 @@ p(4)=-1D0/1935713894400D0
 p(3)=31D0/3658499260416000D0
 p(2)=-1D0/11585247657984000D0
 p(1)=1D0/2432902008176640000D0
+WRITE(1, '(A)', advance='no')  'Test 7'
+WRITE(1,'(A)', advance='no') ','
 CALL test(deg, p, error(:,7))
 DEALLOCATE(p)
 
@@ -217,6 +228,8 @@ p(4)=-6862582190715075D0/17179869184D0
 p(3)=183251413675D0/134217728D0
 p(2)=-1048575D0/524288D0
 p(1)=1D0/1024D0
+WRITE(1, '(A)', advance='no')  'Test 8'
+WRITE(1,'(A)', advance='no') ','
 CALL test(deg, p, error(:,8))
 DEALLOCATE(p)
 
@@ -244,6 +257,8 @@ p(4)=4809495595975287378276611244229875D0/18014398509481984D0
 p(3)=26504589049384252861409184537893125D0/36028797018963968D0
 p(2)=20003336218539558834627071739613125D0/36028797018963968D0
 p(1)=2765140455576880316286330097421875D0/18014398509481984D0
+WRITE(1, '(A)', advance='no')  'Test 9'
+WRITE(1,'(A)', advance='no') ','
 CALL test(deg, p, error(:,9))
 DEALLOCATE(p)
 
@@ -271,7 +286,7 @@ p(4)= 0D0
 p(3)=-200D0/524288D0
 p(2)= 0D0
 p(1)= 1D0/524288D0
-WRITE(1, '(A)', advance='no') "Deg 20 Chebyshev"
+WRITE(1, '(A)', advance='no')  'Test 10'
 WRITE(1,'(A)', advance='no') ','
 CALL test(deg, p, error(:,10))
 DEALLOCATE(p)
@@ -280,9 +295,11 @@ DEALLOCATE(p)
 deg=20
 ALLOCATE(p(deg+1))
 p(1:deg+1)=1D0
+WRITE(1, '(A)')  'Test 11'
 CALL test(deg, p, error(:,11))
+DEALLOCATE(p)
 
-DO i=1,10
+DO i=1,13
   DO j=1,ntest
     WRITE(1,'(ES15.2)', advance='no') error(i,j)
     IF (j.NE.ntest) THEN

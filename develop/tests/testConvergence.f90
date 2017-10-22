@@ -72,6 +72,7 @@ p(16)=1D0
 CALL test(deg, p, error(:,2))
 DEALLOCATE(p)
 
+<<<<<<< HEAD
 ! Test 3: Wilkinson Deg 20 Polynomial
 deg=20
 ALLOCATE(p(deg+1))
@@ -96,6 +97,13 @@ p(18)=-1256850D0
 p(19)=20615D0
 p(20)=-210D0
 p(21)=1D0
+=======
+!Test 3: Create random polynomial
+deg=100
+ALLOCATE(p(deg+1))
+CALL daruv(deg+1,p)
+WRITE(1, '(A)') "Deg 100 Random"
+>>>>>>> cbab5a7c48c366920cf431a0b6009b3ea30f86ad
 CALL test(deg, p, error(:,3))
 DEALLOCATE(p)
 
@@ -298,6 +306,8 @@ DEALLOCATE(error)
 
 ! Close results file
  CLOSE(1)
+
+CALL EXECUTE_COMMAND_LINE('python testConvergence.py')
 
 CONTAINS
 

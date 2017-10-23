@@ -205,14 +205,14 @@ exacteigs(8)=dcmplx(8D0,0D0)
 exacteigs(9)=dcmplx(9D0,0D0)
 exacteigs(10)=dcmplx(10D0,0D0)
 WRITE(1, '(A)', advance='no')  'Test 1'
-WRITE(1,'(A)', advance='no') ','
+WRITE(1,'(A)') ''
 CALL test(deg, p, exacteigs)
 
 DEALLOCATE(exacteigs, p)
 
 ! Test 2: Wilkinson Deg 15 Polynomial
 deg=15
-ALLOCATE(p(deg+1))
+ALLOCATE(exacteigs(deg),p(deg+1))
 p(1)=-1307674368000D0
 p(2)=4339163001600D0
 p(3)=-6165817614720D0
@@ -229,14 +229,29 @@ p(13)=-218400D0
 p(14)=6580D0
 p(15)=-120D0
 p(16)=1D0
+exacteigs(1)=dcmplx(1D0,0D0)
+exacteigs(2)=dcmplx(2D0,0D0)
+exacteigs(3)=dcmplx(3D0,0D0)
+exacteigs(4)=dcmplx(4D0,0D0)
+exacteigs(5)=dcmplx(5D0,0D0)
+exacteigs(6)=dcmplx(6D0,0D0)
+exacteigs(7)=dcmplx(7D0,0D0)
+exacteigs(8)=dcmplx(8D0,0D0)
+exacteigs(9)=dcmplx(9D0,0D0)
+exacteigs(10)=dcmplx(10D0,0D0)
+exacteigs(11)=dcmplx(11D0,0D0)
+exacteigs(12)=dcmplx(12D0,0D0)
+exacteigs(13)=dcmplx(13D0,0D0)
+exacteigs(14)=dcmplx(14D0,0D0)
+exacteigs(15)=dcmplx(15D0,0D0)
 WRITE(1, '(A)', advance='no')  'Test 2'
-WRITE(1,'(A)', advance='no') ','
-
-DEALLOCATE(p)
+WRITE(1,'(A)') ''
+CALL test(deg, p, exacteigs)
+DEALLOCATE(exacteigs, p)
 
 ! Test 3: Wilkinson Deg 20 Polynomial
 deg=20
-ALLOCATE(p(deg+1))
+ALLOCATE(exacteigs(deg),p(deg+1))
 p(1)=2432902008176640000D0
 p(2)=-8752948036761600000D0
 p(3)=13803759753640704000D0
@@ -258,10 +273,30 @@ p(18)=-1256850D0
 p(19)=20615D0
 p(20)=-210D0
 p(21)=1D0
+exacteigs(1)=dcmplx(1D0,0D0)
+exacteigs(2)=dcmplx(2D0,0D0)
+exacteigs(3)=dcmplx(3D0,0D0)
+exacteigs(4)=dcmplx(4D0,0D0)
+exacteigs(5)=dcmplx(5D0,0D0)
+exacteigs(6)=dcmplx(6D0,0D0)
+exacteigs(7)=dcmplx(7D0,0D0)
+exacteigs(8)=dcmplx(8D0,0D0)
+exacteigs(9)=dcmplx(9D0,0D0)
+exacteigs(10)=dcmplx(10D0,0D0)
+exacteigs(11)=dcmplx(11D0,0D0)
+exacteigs(12)=dcmplx(12D0,0D0)
+exacteigs(13)=dcmplx(13D0,0D0)
+exacteigs(14)=dcmplx(14D0,0D0)
+exacteigs(15)=dcmplx(15D0,0D0)
+exacteigs(16)=dcmplx(16D0,0D0)
+exacteigs(17)=dcmplx(17D0,0D0)
+exacteigs(18)=dcmplx(18D0,0D0)
+exacteigs(19)=dcmplx(19D0,0D0)
+exacteigs(20)=dcmplx(20D0,0D0)
 WRITE(1, '(A)', advance='no')  'Test 3'
-WRITE(1,'(A)', advance='no') ','
-
-DEALLOCATE(p)
+WRITE(1,'(A)') ','
+CALL test(deg, p, exacteigs)
+DEALLOCATE(exacteigs, p)
 
 ! Test 4: scaled and shifted Wilkinson Deg 20 Polynomial
 deg=20
@@ -506,7 +541,6 @@ WRITE(1, '(A)') 'LMPEP Absolute Error:'
 DO i=1,deg
    WRITE(1, *) dzmod(dble(exacteigs(i))-er(i),dimag(exacteigs(i))-ei(i))
 ENDDO
-PRINT*, ''
 
 !POLZEROS
 nitmax=60
@@ -519,7 +553,6 @@ WRITE(1, '(A)') 'POLZEROS Absolute Error:'
 DO i=1,deg
     WRITE(1, *) dzmod(dble(exacteigs(i))-dble(root(i)),dimag(exacteigs(i))-dimag(root(i)))
 ENDDO
-PRINT*, ''
 
 !AMVW
 FLAG=1
@@ -532,7 +565,6 @@ WRITE(1, '(A)') 'AMVW Absolute Error:'
 DO i=1,deg
     WRITE(1, *) dzmod(dble(exacteigs(i))-REIGS(i),dimag(exacteigs(i))-IEIGS(i))
 ENDDO
-PRINT*, ''
 
 END SUBROUTINE test
 

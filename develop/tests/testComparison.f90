@@ -36,7 +36,7 @@ IMPLICIT NONE
 INTEGER                                         :: clock, clock_rate, clock_start, clock_stop
 INTEGER                                         :: i, j, nitmax, iter
 DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE     :: radius
-DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE   :: time, backward_error
+DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE   :: time, error
 DOUBLE PRECISION                                :: eps, big, small
 DOUBLE COMPLEX, DIMENSION(:), ALLOCATABLE       :: root, poly, exacteigs
 LOGICAL, DIMENSION(:), ALLOCATABLE              :: err
@@ -48,6 +48,11 @@ DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE     :: REIGS, IEIGS
 INTEGER, DIMENSION(:), ALLOCATABLE              :: ITS
 DOUBLE PRECISION                                :: t2
 DOUBLE COMPLEX                                  :: a, t
+! Parameters
+DOUBLE PRECISION, PARAMETER                     :: pi = 3.1415926535897932D0
+! External subroutines
+DOUBLE PRECISION                                :: dznrm2
+EXTERNAL                                        :: dznrm2
 
 CALL init_random_seed()
 
@@ -83,7 +88,7 @@ FLAG = 1
 deg=startDegree
 OPEN(UNIT=1,FILE="results/testComparison1.csv")
 WRITE(1,'(A)') 'Degree, DSLM Time, DSLM Berr, Pzeros Time, Pzeros Berr, AMVW Time, AMVW Berr'
-ALLOCATE(time(itmax, 3), backward_error(itmax, 3))
+ALLOCATE(time(itmax, 3), error(itmax, 3))
 DO WHILE(deg<=endDegree)
   WRITE(1,'(I10)', advance='no') deg
   WRITE(1,'(A)', advance='no') ','
@@ -100,13 +105,13 @@ DO WHILE(deg<=endDegree)
     CALL dslm(p, deg, er, ei, berr)
     CALL system_clock(count=clock_stop)
     time(it, 1)=(dble(clock_stop-clock_start)/dble(clock_rate))
-    backward_error(it, 1) = maxval(berr)
+    error(it, 1) = maxval(berr)
 
     !Pzeros
     ALLOCATE(poly(0:deg), radius(1:deg), root(1:deg), err(deg+1)) 
     DO i= 0, deg
-      poly(i)=dcmplx(p(i+1), 0.0D0)
-    END DO
+      poly(i)=dcmplx(p(i+1), 0D0)
+    ENDDO
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
     CALL polzeros(deg, poly, eps, big, small, nitmax, root, radius, err, iter)
@@ -126,7 +131,7 @@ DO WHILE(deg<=endDegree)
       END IF
       berr(j) = zabs(a)/berr(j)
     END DO
-    backward_error(it, 2) = maxval(berr)
+    error(it, 2) = maxval(berr)
     DEALLOCATE(er, ei)
     DEALLOCATE(poly, radius ,root, err)
 
@@ -154,24 +159,24 @@ DO WHILE(deg<=endDegree)
       END IF
       berr(j) = zabs(a)/berr(j)
     END DO
-    backward_error(it, 3) = maxval(berr)
+    error(it, 3) = maxval(berr)
     DEALLOCATE(p, p2, REIGS,IEIGS,ITS, alpha, berr)
   ENDDO
   
   WRITE(1,'(ES15.2)', advance='no') sum(time(:,1))/itmax
   WRITE(1,'(A)', advance='no') ','
-  WRITE(1,'(ES15.2)', advance='no') sum(backward_error(:,1))/itmax
+  WRITE(1,'(ES15.2)', advance='no') sum(error(:,1))/itmax
   WRITE(1,'(A)', advance='no') ','
   WRITE(1,'(ES15.2)', advance='no') sum(time(:,2))/itmax
   WRITE(1,'(A)', advance='no') ',' 
-  WRITE(1,'(ES15.2)', advance='no') sum(backward_error(:,2))/itmax
+  WRITE(1,'(ES15.2)', advance='no') sum(error(:,2))/itmax
   WRITE(1,'(A)', advance='no') ','
   WRITE(1,'(ES15.2)', advance='no') sum(time(:,3))/itmax
   WRITE(1,'(A)', advance='no') ','
-  WRITE(1,'(ES15.2)') sum(backward_error(:,3))/itmax
+  WRITE(1,'(ES15.2)') sum(error(:,3))/itmax
   deg=2*deg
 ENDDO
-DEALLOCATE(time, backward_error)
+DEALLOCATE(time, error)
     CLOSE(1)
 
 !****************************************************
@@ -179,6 +184,7 @@ DEALLOCATE(time, backward_error)
 !****************************************************
 ! Open results file
 OPEN(UNIT=1,FILE="results/testComparison2.csv")
+WRITE(1,'(A)') ' , DSLM, POLZEROS, AMVW'
 
 ! Test 1: Wilkinson Deg 10 Polynomial
 deg=10
@@ -204,10 +210,34 @@ exacteigs(7)=dcmplx(7D0,0D0)
 exacteigs(8)=dcmplx(8D0,0D0)
 exacteigs(9)=dcmplx(9D0,0D0)
 exacteigs(10)=dcmplx(10D0,0D0)
-WRITE(1, '(A)', advance='no')  'Test 1'
-WRITE(1,'(A)') ''
-CALL test(deg, p, exacteigs)
-
+WRITE(1, '(A)', advance='no')  'Test 1, '
+! DSLM
+ALLOCATE(er(deg),ei(deg),berr(deg))
+CALL dslm(p, deg, er, ei, berr)
+CALL dsort(er, ei, deg)
+WRITE(1, '(ES15.2)', advance='no') dznrm2(deg,dcmplx(er,ei)-exacteigs,1)/dznrm2(deg,exacteigs,1)
+WRITE(1,'(A)',advance='no') ','
+DEALLOCATE(er,ei,berr)
+! POLZEROS
+ALLOCATE(poly(0:deg), radius(1:deg), root(1:deg), err(deg+1)) 
+DO i= 0, deg
+  poly(i)=dcmplx(p(i+1), 0D0)
+ENDDO
+CALL polzeros(deg, poly, eps, big, small, nitmax, root, radius, err, iter)
+CALL zsort(root, deg)
+WRITE(1, '(ES15.2)', advance='no') dznrm2(deg,root-exacteigs,1)/dznrm2(deg,exacteigs,1)
+WRITE(1,'(A)', advance='no') ','
+DEALLOCATE(poly,radius,root,err)
+! AMVW
+ALLOCATE(REIGS(deg),IEIGS(deg),ITS(deg), p2(deg))
+DO i=1,deg
+    p2(deg-i+1)=p(i)
+ENDDO
+CALL damvw(deg, p2, REIGS, IEIGS, ITS, FLAG)
+CALL dsort(REIGS,IEIGS,deg)
+WRITE(1, '(ES15.2)') dznrm2(deg,dcmplx(REIGS,IEIGS)-exacteigs,1)/dznrm2(deg,exacteigs,1)
+DEALLOCATE(REIGS,IEIGS,ITS,p2)
+! End Test 1
 DEALLOCATE(exacteigs, p)
 
 ! Test 2: Wilkinson Deg 15 Polynomial
@@ -244,9 +274,34 @@ exacteigs(12)=dcmplx(12D0,0D0)
 exacteigs(13)=dcmplx(13D0,0D0)
 exacteigs(14)=dcmplx(14D0,0D0)
 exacteigs(15)=dcmplx(15D0,0D0)
-WRITE(1, '(A)', advance='no')  'Test 2'
-WRITE(1,'(A)') ''
-CALL test(deg, p, exacteigs)
+WRITE(1, '(A)', advance='no')  'Test 2, '
+! DSLM
+ALLOCATE(er(deg),ei(deg),berr(deg))
+CALL dslm(p, deg, er, ei, berr)
+CALL dsort(er, ei, deg)
+WRITE(1, '(ES15.2)', advance='no') dznrm2(deg,dcmplx(er,ei)-exacteigs,1)/dznrm2(deg,exacteigs,1)
+WRITE(1,'(A)',advance='no') ','
+DEALLOCATE(er,ei,berr)
+! POLZEROS
+ALLOCATE(poly(0:deg), radius(1:deg), root(1:deg), err(deg+1)) 
+DO i= 0, deg
+  poly(i)=dcmplx(p(i+1), 0D0)
+ENDDO
+CALL polzeros(deg, poly, eps, big, small, nitmax, root, radius, err, iter)
+CALL zsort(root, deg)
+WRITE(1, '(ES15.2)', advance='no') dznrm2(deg,root-exacteigs,1)/dznrm2(deg,exacteigs,1)
+WRITE(1,'(A)', advance='no') ','
+DEALLOCATE(poly,radius,root,err)
+! AMVW
+ALLOCATE(REIGS(deg),IEIGS(deg),ITS(deg), p2(deg))
+DO i=1,deg
+    p2(deg-i+1)=p(i)
+ENDDO
+CALL damvw(deg, p2, REIGS, IEIGS, ITS, FLAG)
+CALL dsort(REIGS,IEIGS,deg)
+WRITE(1, '(ES15.2)') dznrm2(deg,dcmplx(REIGS,IEIGS)-exacteigs,1)/dznrm2(deg,exacteigs,1)
+DEALLOCATE(REIGS,IEIGS,ITS,p2)
+! End Test 2
 DEALLOCATE(exacteigs, p)
 
 ! Test 3: Wilkinson Deg 20 Polynomial
@@ -293,9 +348,34 @@ exacteigs(17)=dcmplx(17D0,0D0)
 exacteigs(18)=dcmplx(18D0,0D0)
 exacteigs(19)=dcmplx(19D0,0D0)
 exacteigs(20)=dcmplx(20D0,0D0)
-WRITE(1, '(A)', advance='no')  'Test 3'
-WRITE(1,'(A)') ','
-CALL test(deg, p, exacteigs)
+WRITE(1, '(A)', advance='no')  'Test 3, '
+! DSLM
+ALLOCATE(er(deg),ei(deg),berr(deg))
+CALL dslm(p, deg, er, ei, berr)
+CALL dsort(er, ei, deg)
+WRITE(1, '(ES15.2)', advance='no') dznrm2(deg,dcmplx(er,ei)-exacteigs,1)/dznrm2(deg,exacteigs,1)
+WRITE(1,'(A)',advance='no') ','
+DEALLOCATE(er,ei,berr)
+! POLZEROS
+ALLOCATE(poly(0:deg), radius(1:deg), root(1:deg), err(deg+1)) 
+DO i= 0, deg
+  poly(i)=dcmplx(p(i+1), 0D0)
+ENDDO
+CALL polzeros(deg, poly, eps, big, small, nitmax, root, radius, err, iter)
+CALL zsort(root, deg)
+WRITE(1, '(ES15.2)', advance='no') dznrm2(deg,root-exacteigs,1)/dznrm2(deg,exacteigs,1)
+WRITE(1,'(A)', advance='no') ','
+DEALLOCATE(poly,radius,root,err)
+! AMVW
+ALLOCATE(REIGS(deg),IEIGS(deg),ITS(deg), p2(deg))
+DO i=1,deg
+    p2(deg-i+1)=p(i)
+ENDDO
+CALL damvw(deg, p2, REIGS, IEIGS, ITS, FLAG)
+CALL dsort(REIGS,IEIGS,deg)
+WRITE(1, '(ES15.2)') dznrm2(deg,dcmplx(REIGS,IEIGS)-exacteigs,1)/dznrm2(deg,exacteigs,1)
+DEALLOCATE(REIGS,IEIGS,ITS,p2)
+! End Test 3
 DEALLOCATE(exacteigs, p)
 
 ! Test 4: scaled and shifted Wilkinson Deg 20 Polynomial
@@ -322,15 +402,13 @@ p(4)=11456073304317D0/20000000000000D0
 p(3)=2280736816325919D0/4000000000000000D0
 p(2)=-1899923154129D0/400000000000000D0
 p(1)=-758069338497471D0/160000000000000000D0
-WRITE(1, '(A)', advance='no')  'Test 4'
-WRITE(1,'(A)', advance='no') ','
 
 DEALLOCATE(p)
 
 
 ! Test 5: reverse Wilkinson Deg 10 polynomial
 deg=10
-ALLOCATE(p(deg+1))
+ALLOCATE(exacteigs(deg),p(deg+1))
 p(11)=1D0
 p(10)=-7381D0/2520D0
 p(9)=177133D0/50400D0
@@ -342,14 +420,49 @@ p(4)=-121D0/24192D0
 p(3)=11D0/30240D0
 p(2)=-11D0/725760D0
 p(1)=1D0/3628800D0
-WRITE(1, '(A)', advance='no')  'Test 5'
+exacteigs(10)=dcmplx(1D0,0D0)
+exacteigs(9)=dcmplx(1D0/2D0,0D0)
+exacteigs(8)=dcmplx(1D0/3D0,0D0)
+exacteigs(7)=dcmplx(1D0/4D0,0D0)
+exacteigs(6)=dcmplx(1D0/5D0,0D0)
+exacteigs(5)=dcmplx(1D0/6D0,0D0)
+exacteigs(4)=dcmplx(1D0/7D0,0D0)
+exacteigs(3)=dcmplx(1D0/8D0,0D0)
+exacteigs(2)=dcmplx(1D0/9D0,0D0)
+exacteigs(1)=dcmplx(1D0/10D0,0D0)
+WRITE(1, '(A)', advance='no')  'Test 5, '
+! DSLM
+ALLOCATE(er(deg),ei(deg),berr(deg))
+CALL dslm(p, deg, er, ei, berr)
+CALL dsort(er, ei, deg)
+WRITE(1, '(ES15.2)', advance='no') dznrm2(deg,dcmplx(er,ei)-exacteigs,1)/dznrm2(deg,exacteigs,1)
+WRITE(1,'(A)',advance='no') ','
+DEALLOCATE(er,ei,berr)
+! POLZEROS
+ALLOCATE(poly(0:deg), radius(1:deg), root(1:deg), err(deg+1)) 
+DO i= 0, deg
+  poly(i)=dcmplx(p(i+1), 0D0)
+ENDDO
+CALL polzeros(deg, poly, eps, big, small, nitmax, root, radius, err, iter)
+CALL zsort(root, deg)
+WRITE(1, '(ES15.2)', advance='no') dznrm2(deg,root-exacteigs,1)/dznrm2(deg,exacteigs,1)
 WRITE(1,'(A)', advance='no') ','
-
-DEALLOCATE(p)
+DEALLOCATE(poly,radius,root,err)
+! AMVW
+ALLOCATE(REIGS(deg),IEIGS(deg),ITS(deg), p2(deg))
+DO i=1,deg
+    p2(deg-i+1)=p(i)
+ENDDO
+CALL damvw(deg, p2, REIGS, IEIGS, ITS, FLAG)
+CALL dsort(REIGS,IEIGS,deg)
+WRITE(1, '(ES15.2)') dznrm2(deg,dcmplx(REIGS,IEIGS)-exacteigs,1)/dznrm2(deg,exacteigs,1)
+DEALLOCATE(REIGS,IEIGS,ITS,p2)
+! End Test 5
+DEALLOCATE(exacteigs, p)
 
 ! Test 6: reverse Wilkinson Deg 15 polynomial
 deg=15
-ALLOCATE(p(deg+1))
+ALLOCATE(exacteigs(deg),p(deg+1))
 p(16)=1D0
 p(15)=-1195757D0/360360D0
 p(14)=13215487D0/2802800D0
@@ -366,14 +479,54 @@ p(4)=1D0/5987520D0
 p(3)=-47D0/9340531200D0
 p(2)=1D0/10897286400D0
 p(1)=-1D0/1307674368000D0
-WRITE(1, '(A)', advance='no')  'Test 6'
+exacteigs(15)=dcmplx(1D0,0D0)
+exacteigs(14)=dcmplx(1D0/2D0,0D0)
+exacteigs(13)=dcmplx(1D0/3D0,0D0)
+exacteigs(12)=dcmplx(1D0/4D0,0D0)
+exacteigs(11)=dcmplx(1D0/5D0,0D0)
+exacteigs(10)=dcmplx(1D0/6D0,0D0)
+exacteigs(9)=dcmplx(1D0/7D0,0D0)
+exacteigs(8)=dcmplx(1D0/8D0,0D0)
+exacteigs(7)=dcmplx(1D0/9D0,0D0)
+exacteigs(6)=dcmplx(1D0/10D0,0D0)
+exacteigs(5)=dcmplx(1D0/11D0,0D0)
+exacteigs(4)=dcmplx(1D0/12D0,0D0)
+exacteigs(3)=dcmplx(1D0/13D0,0D0)
+exacteigs(2)=dcmplx(1D0/14D0,0D0)
+exacteigs(1)=dcmplx(1D0/15D0,0D0)
+WRITE(1, '(A)', advance='no')  'Test 6, '
+! DSLM
+ALLOCATE(er(deg),ei(deg),berr(deg))
+CALL dslm(p, deg, er, ei, berr)
+CALL dsort(er, ei, deg)
+WRITE(1, '(ES15.2)', advance='no') dznrm2(deg,dcmplx(er,ei)-exacteigs,1)/dznrm2(deg,exacteigs,1)
+WRITE(1,'(A)',advance='no') ','
+DEALLOCATE(er,ei,berr)
+! POLZEROS
+ALLOCATE(poly(0:deg), radius(1:deg), root(1:deg), err(deg+1)) 
+DO i= 0, deg
+  poly(i)=dcmplx(p(i+1), 0D0)
+ENDDO
+CALL polzeros(deg, poly, eps, big, small, nitmax, root, radius, err, iter)
+CALL zsort(root, deg)
+WRITE(1, '(ES15.2)', advance='no') dznrm2(deg,root-exacteigs,1)/dznrm2(deg,exacteigs,1)
 WRITE(1,'(A)', advance='no') ','
-
-DEALLOCATE(p)
+DEALLOCATE(poly,radius,root,err)
+! AMVW
+ALLOCATE(REIGS(deg),IEIGS(deg),ITS(deg), p2(deg))
+DO i=1,deg
+    p2(deg-i+1)=p(i)
+ENDDO
+CALL damvw(deg, p2, REIGS, IEIGS, ITS, FLAG)
+CALL dsort(REIGS,IEIGS,deg)
+WRITE(1, '(ES15.2)') dznrm2(deg,dcmplx(REIGS,IEIGS)-exacteigs,1)/dznrm2(deg,exacteigs,1)
+DEALLOCATE(REIGS,IEIGS,ITS,p2)
+! End Test 6
+DEALLOCATE(exacteigs, p)
 
 ! Test 7: reverse Wilkinson Deg 20 polynomial
 deg=20
-ALLOCATE(p(deg+1))
+ALLOCATE(exacteigs(deg), p(deg+1))
 p(21)=1D0
 p(20)=-55835135D0/15519504D0
 p(19)=665690574539D0/117327450240D0
@@ -395,10 +548,55 @@ p(4)=-1D0/1935713894400D0
 p(3)=31D0/3658499260416000D0
 p(2)=-1D0/11585247657984000D0
 p(1)=1D0/2432902008176640000D0
-WRITE(1, '(A)', advance='no')  'Test 7'
+exacteigs(20)=dcmplx(1D0,0D0)
+exacteigs(19)=dcmplx(1D0/2D0,0D0)
+exacteigs(18)=dcmplx(1D0/3D0,0D0)
+exacteigs(17)=dcmplx(1D0/4D0,0D0)
+exacteigs(16)=dcmplx(1D0/5D0,0D0)
+exacteigs(15)=dcmplx(1D0/6D0,0D0)
+exacteigs(14)=dcmplx(1D0/7D0,0D0)
+exacteigs(13)=dcmplx(1D0/8D0,0D0)
+exacteigs(12)=dcmplx(1D0/9D0,0D0)
+exacteigs(11)=dcmplx(1D0/10D0,0D0)
+exacteigs(10)=dcmplx(1D0/11D0,0D0)
+exacteigs(9)=dcmplx(1D0/12D0,0D0)
+exacteigs(8)=dcmplx(1D0/13D0,0D0)
+exacteigs(7)=dcmplx(1D0/14D0,0D0)
+exacteigs(6)=dcmplx(1D0/15D0,0D0)
+exacteigs(5)=dcmplx(1D0/16D0,0D0)
+exacteigs(4)=dcmplx(1D0/17D0,0D0)
+exacteigs(3)=dcmplx(1D0/18D0,0D0)
+exacteigs(2)=dcmplx(1D0/19D0,0D0)
+exacteigs(1)=dcmplx(1D0/20D0,0D0)
+WRITE(1, '(A)', advance='no')  'Test 7, '
+! DSLM
+ALLOCATE(er(deg),ei(deg),berr(deg))
+CALL dslm(p, deg, er, ei, berr)
+CALL dsort(er, ei, deg)
+WRITE(1, '(ES15.2)', advance='no') dznrm2(deg,dcmplx(er,ei)-exacteigs,1)/dznrm2(deg,exacteigs,1)
+WRITE(1,'(A)',advance='no') ','
+DEALLOCATE(er,ei,berr)
+! POLZEROS
+ALLOCATE(poly(0:deg), radius(1:deg), root(1:deg), err(deg+1)) 
+DO i= 0, deg
+  poly(i)=dcmplx(p(i+1), 0D0)
+ENDDO
+CALL polzeros(deg, poly, eps, big, small, nitmax, root, radius, err, iter)
+CALL zsort(root, deg)
+WRITE(1, '(ES15.2)', advance='no') dznrm2(deg,root-exacteigs,1)/dznrm2(deg,exacteigs,1)
 WRITE(1,'(A)', advance='no') ','
-
-DEALLOCATE(p)
+DEALLOCATE(poly,radius,root,err)
+! AMVW
+ALLOCATE(REIGS(deg),IEIGS(deg),ITS(deg), p2(deg))
+DO i=1,deg
+    p2(deg-i+1)=p(i)
+ENDDO
+CALL damvw(deg, p2, REIGS, IEIGS, ITS, FLAG)
+CALL dsort(REIGS,IEIGS,deg)
+WRITE(1, '(ES15.2)') dznrm2(deg,dcmplx(REIGS,IEIGS)-exacteigs,1)/dznrm2(deg,exacteigs,1)
+DEALLOCATE(REIGS,IEIGS,ITS,p2)
+! End Test 7
+DEALLOCATE(exacteigs, p)
 
 ! Test 8: prescribed roots of varying scale
 deg=20
@@ -424,8 +622,6 @@ p(4)=-6862582190715075D0/17179869184D0
 p(3)=183251413675D0/134217728D0
 p(2)=-1048575D0/524288D0
 p(1)=1D0/1024D0
-WRITE(1, '(A)', advance='no')  'Test 8'
-WRITE(1,'(A)', advance='no') ','
 
 DEALLOCATE(p)
 
@@ -453,14 +649,12 @@ p(4)=4809495595975287378276611244229875D0/18014398509481984D0
 p(3)=26504589049384252861409184537893125D0/36028797018963968D0
 p(2)=20003336218539558834627071739613125D0/36028797018963968D0
 p(1)=2765140455576880316286330097421875D0/18014398509481984D0
-WRITE(1, '(A)', advance='no')  'Test 9'
-WRITE(1,'(A)', advance='no') ','
 
 DEALLOCATE(p)
 
 ! Test 10: Chebysehv Deg 20 Polynomial
 deg=20
-ALLOCATE(p(deg+1))
+ALLOCATE(exacteigs(deg), p(deg+1))
 p(21) = 1D0
 p(20) = 0D0
 p(19) =-2621440D0/524288D0
@@ -482,91 +676,66 @@ p(4)= 0D0
 p(3)=-200D0/524288D0
 p(2)= 0D0
 p(1)= 1D0/524288D0
-WRITE(1, '(A)', advance='no')  'Test 10'
+exacteigs(20)  = dcmplx(cos(1D0/40D0*pi),0D0)
+exacteigs(19)  = dcmplx(cos(3D0/40D0*pi),0D0)
+exacteigs(18)  = dcmplx(cos(5D0/40D0*pi),0D0)
+exacteigs(17)  = dcmplx(cos(7D0/40D0*pi),0D0)
+exacteigs(16)  = dcmplx(cos(9D0/40D0*pi),0D0)
+exacteigs(15)  = dcmplx(cos(11D0/40D0*pi),0D0)
+exacteigs(14)  = dcmplx(cos(13D0/40D0*pi),0D0)
+exacteigs(13)  = dcmplx(cos(15D0/40D0*pi),0D0)
+exacteigs(12)  = dcmplx(cos(17D0/40D0*pi),0D0)
+exacteigs(11)  = dcmplx(cos(19D0/40D0*pi),0D0)
+exacteigs(10)  = dcmplx(cos(21D0/40D0*pi),0D0)
+exacteigs(9)  = dcmplx(cos(23D0/40D0*pi),0D0)
+exacteigs(8)  = dcmplx(cos(25D0/40D0*pi),0D0)
+exacteigs(7)  = dcmplx(cos(27D0/40D0*pi),0D0)
+exacteigs(6)  = dcmplx(cos(29D0/40D0*pi),0D0)
+exacteigs(5)  = dcmplx(cos(31D0/40D0*pi),0D0)
+exacteigs(4)  = dcmplx(cos(33D0/40D0*pi),0D0)
+exacteigs(3)  = dcmplx(cos(35D0/40D0*pi),0D0)
+exacteigs(2)  = dcmplx(cos(37D0/40D0*pi),0D0)
+exacteigs(1)  = dcmplx(cos(39D0/40D0*pi),0D0)
+WRITE(1, '(A)', advance='no')  'Test 10, '
+! DSLM
+ALLOCATE(er(deg),ei(deg),berr(deg))
+CALL dslm(p, deg, er, ei, berr)
+CALL dsort(er, ei, deg)
+WRITE(1, '(ES15.2)', advance='no') dznrm2(deg,dcmplx(er,ei)-exacteigs,1)/dznrm2(deg,exacteigs,1)
+WRITE(1,'(A)',advance='no') ','
+DEALLOCATE(er,ei,berr)
+! POLZEROS
+ALLOCATE(poly(0:deg), radius(1:deg), root(1:deg), err(deg+1)) 
+DO i= 0, deg
+  poly(i)=dcmplx(p(i+1), 0D0)
+ENDDO
+CALL polzeros(deg, poly, eps, big, small, nitmax, root, radius, err, iter)
+CALL zsort(root, deg)
+WRITE(1, '(ES15.2)', advance='no') dznrm2(deg,root-exacteigs,1)/dznrm2(deg,exacteigs,1)
 WRITE(1,'(A)', advance='no') ','
-
-DEALLOCATE(p)
+DEALLOCATE(poly,radius,root,err)
+! AMVW
+ALLOCATE(REIGS(deg),IEIGS(deg),ITS(deg), p2(deg))
+DO i=1,deg
+    p2(deg-i+1)=p(i)
+ENDDO
+CALL damvw(deg, p2, REIGS, IEIGS, ITS, FLAG)
+CALL dsort(REIGS,IEIGS,deg)
+WRITE(1, '(ES15.2)') dznrm2(deg,dcmplx(REIGS,IEIGS)-exacteigs,1)/dznrm2(deg,exacteigs,1)
+DEALLOCATE(REIGS,IEIGS,ITS,p2)
+! End Test 10
+DEALLOCATE(exacteigs, p)
 
 ! Test 11: Deg 20 polynomial whose coefficients are all 1
 deg=20
 ALLOCATE(p(deg+1))
 p(1:deg+1)=1D0
-WRITE(1, '(A)')  'Test 11'
 
 DEALLOCATE(p)
 
  CLOSE(1)
 
 CONTAINS
-
-!********************************************************
-!                       TEST                            *
-!******************************************************** 
-SUBROUTINE test(deg, p, exacteigs)
-USE poly_zeroes
-IMPLICIT NONE
-!scalar arguments
-INTEGER, INTENT(IN)                             :: deg
-!array arguments
-DOUBLE PRECISION, INTENT(IN)                    :: p(*) 
-DOUBLE COMPLEX, INTENT(IN)                      :: exacteigs(*)
-!LMPEP variables
-DOUBLE PRECISION, DIMENSION(deg)                :: berr, er, ei
-!POLZEROS variables
-INTEGER                                         :: iter, nitmax
-LOGICAL, DIMENSION(deg+1)                       :: err
-REAL(KIND=dp), DIMENSION(1:deg)                 :: radius
-COMPLEX(KIND=dp), DIMENSION(0:deg)              :: poly
-COMPLEX(KIND=dp), DIMENSION(1:deg)              :: root
-REAL(KIND=dp), PARAMETER                        :: eps=epsilon(1.0D0), big=huge(1.0D0), small=tiny(1.0D0)
-!AMVW variables
-INTEGER                                         :: FLAG
-INTEGER, DIMENSION(deg)                         :: ITS
-DOUBLE PRECISION, DIMENSION(deg)                :: REIGS, IEIGS, P2
-!loop variables
-INTEGER                                         :: i
-!intrinsic subroutines
-INTRINSIC                                       :: dble, dcmplx, dimag, epsilon, tiny, huge
-!external subroutines
-EXTERNAL                                        :: dslm, damvw
-!external functions
-DOUBLE PRECISION                                :: dzmod
-EXTERNAL                                        :: dzmod
-
-
-!LMPEP
-CALL dslm(p, deg, er, ei, berr)
-CALL dsort(er, ei, deg)
-WRITE(1, '(A)') 'LMPEP Absolute Error:'
-DO i=1,deg
-   WRITE(1, *) dzmod(dble(exacteigs(i))-er(i),dimag(exacteigs(i))-ei(i))
-ENDDO
-
-!POLZEROS
-nitmax=60
-DO i=0,deg
-    poly(i)=dcmplx(p(i+1), 0.0D0)
-ENDDO
-CALL polzeros(deg, poly, eps, big, small, nitmax, root, radius, err, iter)
-CALL zsort(root, deg)
-WRITE(1, '(A)') 'POLZEROS Absolute Error:'
-DO i=1,deg
-    WRITE(1, *) dzmod(dble(exacteigs(i))-dble(root(i)),dimag(exacteigs(i))-dimag(root(i)))
-ENDDO
-
-!AMVW
-FLAG=1
-DO i=1,deg
-    p2(deg-i+1)=p(i)/p(deg+1)
-ENDDO
-CALL damvw(deg, P2, REIGS, IEIGS, ITS, FLAG)
-CALL dsort(REIGS, IEIGS, deg)
-WRITE(1, '(A)') 'AMVW Absolute Error:'
-DO i=1,deg
-    WRITE(1, *) dzmod(dble(exacteigs(i))-REIGS(i),dimag(exacteigs(i))-IEIGS(i))
-ENDDO
-
-END SUBROUTINE test
 
 !********************************************************
 !                       DSORT                           *

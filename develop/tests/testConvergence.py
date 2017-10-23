@@ -4,9 +4,11 @@ from matplotlib import pyplot as plt
 with open('results/testConvergence.csv') as f:
   data =[]
   reader = csv.reader(f)
+  chosenTests = [3,4,7,9,10]
   headers= next(reader)
+  headers = [headers[i] for i in chosenTests]
   for row in reader:
-    data.append([row[0].strip(),row[1].strip(),row[2].strip()])
+    data.append([row[i].strip() for i in chosenTests])
 
   nrows, ncols = len(data)+1, len(headers)
   hcell, wcell = 0.175, 0.8 # tweak as per your requirements

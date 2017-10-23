@@ -316,6 +316,9 @@ DEALLOCATE(error)
 ! Close results file
  CLOSE(1)
 
+CALL EXECUTE_COMMAND_LINE('python testConvergence.py')
+
+
 CONTAINS
 
 !********************************************************

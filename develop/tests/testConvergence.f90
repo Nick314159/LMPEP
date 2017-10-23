@@ -33,16 +33,16 @@ OPEN(UNIT=1,FILE="results/testConvergence.csv")
 ! Test 1: Wilkinson Deg 10 Polynomial
 deg=10
 ALLOCATE(p(deg+1))
-p(1)=1D0/3628800D0
-p(2)=-11D0/725760D0
-p(3)=11D0/30240D0
-p(4)=-121D0/24192D0
-p(5)=7513D0/172800D0
-p(6)=-8591D0/34560D0
-p(7)=341693D0/362880D0
-p(8)=-84095D0/36288D0
-p(9)=177133D0/50400D0
-p(10)=-7381D0/2520D0
+p(1)=3628800D0
+p(2)=-10628640D0
+p(3)=12753576D0
+p(4)=-8409500D0
+p(5)=3416930D0
+p(6)=-902055D0
+p(7)=157773D0
+p(8)=-18150D0
+p(9)=1320D0
+p(10)=-55D0
 p(11)=1D0
 WRITE(1, '(A)', advance='no')  'Test 1'
 WRITE(1,'(A)', advance='no') ','

@@ -13,5 +13,10 @@ gfortran -O3 testMethods.f90 -L/usr/local/lib -llmpep -llmpeptest -o testMethods
 #compile testConvergence.f90 file and create executable output testConvergence
 gfortran -O3 testConvergence.f90 -L/usr/local/lib -llmpep -llmpeptest -o testConvergence
 
+#compile testConvergence.f90 file and create executable output testConvergence
+gfortran -O3 testComparison.f90 -L/usr/local/lib -llmpep -llmpeptest -o testComparison
+
+#clean up
+rm *.mod
 rm *.o
 rm *.a

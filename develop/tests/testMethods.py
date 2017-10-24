@@ -21,9 +21,9 @@ with open('results/testMethods.csv') as f:
     axarr.loglog(degree, dslm_time, 'b-o',  label='Mod. Laguerre')
     axarr.loglog(degree, dslm1_time, 'k--', label='Laguerre ')
     axarr.loglog(degree, dsam_time, 'r-*', label='Aberth')
-    axarr.set_ylabel('Elapsed Time (s)')
+    axarr.set_ylabel('Elapsed Time')
     axarr.set_xlabel('Degree')
-    axarr.set_title('Time')
+
     legend = axarr.legend(loc=0, shadow=True)
     #axarr[1].loglog(degree, dslm_berr, 'b-o', label='Mod. Laguerre ')
     #axarr[1].loglog(degree, dslm1_berr, 'k--', label='Laguerre ')
@@ -34,5 +34,3 @@ with open('results/testMethods.csv') as f:
     #legend = axarr[1].legend(loc=0, shadow=True)
     #fig.subplots_adjust(hspace=.4)
     plt.savefig("diagrams/testMethods.pdf", format='pdf')
-
-    plt.show()

@@ -735,6 +735,8 @@ DEALLOCATE(p)
 
  CLOSE(1)
 
+CALL EXECUTE_COMMAND_LINE('python testComparison.py')
+
 CONTAINS
 
 !********************************************************

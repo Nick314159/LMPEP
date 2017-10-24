@@ -14,7 +14,7 @@ with open('results/testConvergence.csv') as f:
               ['white', 'grey', 'white', 'white'],\
               ['white', 'white', 'white', 'white']]   
   reader = csv.reader(f)
-  chosenTests = [3,9,11] #0 for row headers
+  chosenTests = [3,9,10] #0 for row headers
   headers= next(reader)
   headers = [""]+[headers[i] for i in chosenTests]
   it = 1

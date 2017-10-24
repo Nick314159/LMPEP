@@ -24,7 +24,7 @@ DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE :: error
 
 ! Allocate error vector
 itmax = 60 ! number of iterations allowed in dslm
-ntest = 12   ! number of tests
+ntest = 11   ! number of tests
 ALLOCATE(error(itmax+1,ntest))
 
 ! Open file
@@ -290,21 +290,12 @@ WRITE(1,'(A)', advance='no') ','
 CALL test(deg, p, error(:,10))
 DEALLOCATE(p)
 
-! Test 11: Deg 20 polynomial whose coefficients are all 1
-deg=20
-ALLOCATE(p(deg+1))
-p(1:deg+1)=1D0
-WRITE(1, '(A)', advance='no')  'Test 11'
-WRITE(1, '(A)', advance='no') ','
-CALL test(deg, p, error(:,11))
-DEALLOCATE(p)
-
-! Test 12: Deg 20 Random Polynomial
+! Test 11: Deg 20 Random Polynomial
 deg=20
 ALLOCATE(p(deg+1))
 CALL daruv(deg+1,p)
 WRITE(1, '(A)') 'Random Poly'
-CALL test(deg, p, error(:,12))
+CALL test(deg, p, error(:,11))
 DEALLOCATE(p)
 
 DO i=1,10

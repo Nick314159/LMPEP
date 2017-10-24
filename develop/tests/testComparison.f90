@@ -867,60 +867,6 @@ DEALLOCATE(REIGS,IEIGS,ITS,p2)
 ! End Test 10
 DEALLOCATE(exacteigs, p)
 
-! Test 11: Deg 20 polynomial whose coefficients are all 1
-deg=20
-ALLOCATE(exacteigs(deg), p(deg+1))
-p(1:deg+1)=1D0
-exacteigs(1)=cos(2*pi*10/21)
-exacteigs(2)=cos(2*pi*11/21)
-exacteigs(3)=cos(2*pi*9/21)
-exacteigs(4)=cos(2*pi*12/21)
-exacteigs(5)=cos(2*pi*8/21)
-exacteigs(6)=cos(2*pi*13/21)
-exacteigs(7)=cos(2*pi*7/21)
-exacteigs(8)=cos(2*pi*14/21)
-exacteigs(9)=cos(2*pi*6/21)
-exacteigs(10)=cos(2*pi*15/21)
-exacteigs(11)=cos(2*pi*5/21)
-exacteigs(12)=cos(2*pi*16/21)
-exacteigs(13)=cos(2*pi*4/21)
-exacteigs(14)=cos(2*pi*17/21)
-exacteigs(15)=cos(2*pi*3/21)
-exacteigs(16)=cos(2*pi*18/21)
-exacteigs(17)=cos(2*pi*2/21)
-exacteigs(18)=cos(2*pi*19/21)
-exacteigs(19)=cos(2*pi/21)
-exacteigs(20)=cos(2*pi*20/21)
-WRITE(1, '(A)', advance='no')  'Test 11, '
-! DSLM
-ALLOCATE(er(deg),ei(deg),berr(deg))
-CALL dslm(p, deg, er, ei, berr)
-CALL dsort(er, ei, deg)
-WRITE(1, '(ES15.2)', advance='no') dznrm2(deg,dcmplx(er,ei)-exacteigs,1)/dznrm2(deg,exacteigs,1)
-WRITE(1,'(A)',advance='no') ','
-DEALLOCATE(er,ei,berr)
-! POLZEROS
-ALLOCATE(poly(0:deg), radius(1:deg), root(1:deg), err(deg+1)) 
-DO i= 0, deg
-  poly(i)=dcmplx(p(i+1), 0D0)
-ENDDO
-CALL polzeros(deg, poly, eps, big, small, nitmax, root, radius, err, iter)
-CALL zsort(root, deg)
-WRITE(1, '(ES15.2)', advance='no') dznrm2(deg,root-exacteigs,1)/dznrm2(deg,exacteigs,1)
-WRITE(1,'(A)', advance='no') ','
-DEALLOCATE(poly,radius,root,err)
-! AMVW
-ALLOCATE(REIGS(deg),IEIGS(deg),ITS(deg), p2(deg))
-DO i=1,deg
-    p2(deg-i+1)=p(i)
-ENDDO
-CALL damvw(deg, p2, REIGS, IEIGS, ITS, FLAG)
-CALL dsort(REIGS,IEIGS,deg)
-WRITE(1, '(ES15.2)') dznrm2(deg,dcmplx(REIGS,IEIGS)-exacteigs,1)/dznrm2(deg,exacteigs,1)
-DEALLOCATE(REIGS,IEIGS,ITS,p2)
-! End Test 12
-DEALLOCATE(exacteigs, p)
-
  CLOSE(1)
 
 CALL EXECUTE_COMMAND_LINE('python testComparison.py')

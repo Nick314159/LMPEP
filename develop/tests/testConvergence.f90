@@ -29,7 +29,6 @@ ALLOCATE(error(itmax+1,ntest))
 
 ! Open file
 OPEN(UNIT=1,FILE="results/testConvergence.csv")
-
 ! Test 1: Wilkinson Deg 10 Polynomial
 deg=10
 ALLOCATE(p(deg+1))

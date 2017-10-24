@@ -3,6 +3,16 @@ import numpy as np
 from matplotlib import pyplot as plt
 with open('results/testConvergence.csv') as f:
   data =[]
+  highlights= [['white', 'white', 'white', 'white'],\
+              ['white', 'white', 'white', 'white'],\
+              ['white', 'white', 'white', 'grey'],\
+              ['white', 'white', 'white', 'grey'],\
+              ['white', 'white', 'white', 'grey'],\
+              ['white', 'white', 'grey', 'white'],\
+              ['white', 'grey', 'grey', 'white'],\
+              ['white', 'grey', 'grey', 'white'],\
+              ['white', 'grey', 'white', 'white'],\
+              ['white', 'white', 'white', 'white']]   
   reader = csv.reader(f)
   chosenTests = [3,9,11] #0 for row headers
   headers= next(reader)
@@ -19,7 +29,7 @@ with open('results/testConvergence.csv') as f:
   ax = fig.add_subplot(111)
   ax.axis('tight')
   ax.axis('off')
-  the_table = ax.table(cellText=data,colLabels=headers,loc='center')
+  the_table = ax.table(cellText=data,colLabels=headers,loc='center', cellColours = highlights)
   the_table.auto_set_font_size(False)
   the_table.set_fontsize(5.5)
   plt.savefig("diagrams/testConvergence.pdf", format='pdf')

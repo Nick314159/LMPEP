@@ -1,4 +1,7 @@
 \documentclass[orientation=landscape]{tikzposter}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
 
 \geometry{paperwidth=48in,paperheight=36in}
 \makeatletter
@@ -6,16 +9,12 @@
 \setlength{\TP@visibletextheight}{\textheight-2\TP@innermargin}
 \makeatother
 
-\usepackage{amsmath,amsthm, amssymb, latexsym}
-\usepackage{algpseudocode,algorithm,algorithmicx}
-
-\newcommand*\Let[2]{\State #1 $\gets$ #2}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%			Title and Authors			%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \title{\parbox{\linewidth}{\centering On Modifications to Laguerre's Method and the Polynomial Eigenvalue Problem}}
-\institute{Davidson College \& DiscoverOrg LLC.}
-\author{Thomas R. Cameron \& Nikolas I. Steckley}
+\author{Thomas R. Cameron* \& Nikolas I. Steckley**}
+\institute{Davidson College* \& DiscoverOrg LLC.**}
 \usetheme{Rays}
 \usebackgroundstyle{Default}
 \usetitlestyle{Default}
@@ -50,34 +49,52 @@
 			\begin{equation}
 			L_{m}(z_{j})=\frac{m}{G_{j}(z_{j})\pm\sqrt{(m-1)(mH_{j}(z_{j})-G_{j}^{2}(z_{j}))}},
 			\end{equation}
-			and the sign is chosen to maximize the magnitude of the denominator. Note that the modified Laguerre update is effectively the standard Laguerre update applied to $f_{j}(z_{j})$. 
+			and the sign is chosen to maximize the magnitude of the denominator. \\
+			The removal of previously computed roots is a well known modification of Laguerre's method and has been employed in~\cite{Lancaster1966,Parlett1964}. Here, we create poles at $z_{1},\ldots,z_{j-1},z_{j+1},\ldots,z_{m}$ in order to direct the Laguerre iteration away from other root approximations. A similar idea was used by Aberth to modify Newton's method~\cite{Aberth1973}.
 		}
-		%%%	Iteration Style and Convergence	%%%
-		\block{Modified Laguerre's Method}{
-		\begin{algorithmic}[1]
-		\For {$k=1 \textrm{ to } itmax$}
-		\For {$j=1 \textrm{ to } m$}
-		\If{$j$th approximation has not already converged}
-			\Let{$z_{j}$}{$z_{j}-L_{m}(z_{j})$}
-		\EndIf
-		\EndFor
-	    \EndFor
-		\end{algorithmic}
-}	
-		\column{0.333}
-		\block{Comparisions}{
-
-			\includegraphics[width=\linewidth]{../develop/tests/diagrams/testMethods}
-			\centering *Avgerage of max backward error
-			
-			\includegraphics[width=\linewidth]{../develop/research/comparision_test/diagrams/poly_test_Deg_20_Wilkins_Poly.pdf}
-
+		%%%	Iteration Style and Order of Convergence	%%%
+		\block{Iteration Style and Order of Convergence}{
+			For $j=1,\ldots,m$, the $jth$ root approximation is updated via (2), provided that it is not already close enough to the root $r_{j}$. Locally, if the root is simple, convergence is \emph{quartic}; otherwise it is linear. The iteration can be implemented in either a Jacobi style or a Gauss-Seidel style.\\
+			\textbf{Jacobi Iteration.}	The modified Laguerre update (3) is computed for all $j$ first, and the root approximations are updated afterwords. This iteration style can be parallelized. \\
+			\textbf{Gauss-Seidel Iteration.}	The $jth$ root approximation is updated as soon as possible. Therefore, the computation of (1) always makes use of the most recent approximations. For this iteration style, convergence is slightly faster.\\~\\
+			Our current algorithm (DSLM) uses a Gauss-Seidel iteration style. For future research, we are interested in writing a parallelized version of our algorithm that would employ a Jacobi iteration style.
 		}
-
+		%%%	Column 2	%%%	
 		\column{0.333}
-		\block{Initial Estimates}{}
-		\block{Stopping Criteria}{}
-		\block{Order of Convergence}{}
-		%\note{Notetext} % See Section 4.3
+		%%%	Initial Estimates		%%%
+		\block{Initial Estimates}{
+			Let $p(\lambda)=\sum_{i=0}^{m}a_{i}\lambda^{i}$, where $a_{0}a_{m}\neq 0$. The \emph{Newton polygon} associated with this polynomial is the upper convex hull of the discrete set $\{(i,\log|a_{i}|\colon~i=0,1,\ldots,m\}$. Let $0=k_{0}<k_{1}<\cdots<k_{q}=m$ denote the abscissas of the vertices of the Newton polygon, and define the radii
+			\[
+			\mu_{i}=\left|\frac{a_{k_{i-1}}}{a_{k_{i}}}\right|^{\frac{1}{k_{i}-k_{i-1}}},~(i=1,\ldots,q).
+			\]
+			Then, $(k_{i}-k_{i-1})$ evenly distributed points are placed on circles centered at $0$ with radius $\mu_{i}$. These points constitute our initial estimates to the roots of $p(\lambda)$. Furthermore, these points are guaranteed to lie within the Pellet bounds for the polynomial $p(\lambda)$, and the cost complexity is $O(m\log m)$~\cite{Bini1996}.
+		}
+		%%%	Stopping Criteria	%%%
+		\block{Stopping Criteria}{
+			It follows from~\cite{Tisseur2000}[Lemma 3] that the backward error in the root approximation $z_{j}$ is bounded above by
+			\[
+				b(z_{j})=\frac{|p(z_{j})|}{\sum\limits_{i=0}^{m}|a_{i}||z_{j}|^{i}}.
+			\]
+			If $b(z_{j})<\epsilon$, where $\epsilon$ denotes double precision unit roundoff, then we say that the approximation $z_{j}$ has converged. This constitutes our first stopping criterion. Otherwise, we compute the modified Laguerre update (3). If $|L_{m}(z_{j})|<\epsilon|z_{j}|$, then no relatively significant contribution will be made by $L_{m}(z_{j})$ and we say that the approximation $z_{j}$ has converges. This constitutes our second stopping criterion. Otherwise, we update $z_{j}$ via (2). 
+		}
+		%%%	Comparison to Aberth and Laguerre	%%%
+		\block{Comparison to Aberth and Laguerre}{
+			\centering
+			\includegraphics[scale=1.0]{../develop/tests/diagrams/testMethods.pdf}
+		}
+		%%%	Column 3	%%%
+		\column{0.333}
+		%%%	Comparison to POLZEROS and AMVW	%%%
+		\block{Comparison to POLZEROS and AMVW}{
+			\centering
+			\includegraphics[scale=1.0]{../develop/tests/diagrams/testComparison1.pdf}\\
+			\includegraphics[scale=2.0]{../develop/tests/diagrams/testComparison2.pdf}
+		}
+		\block{Conclusion}{
+			Future research includes applying this modified Laguerre method to the polynomial eigenvalue problem. 
+			%%%	References	%%%
+			\bibliographystyle{siam}
+			\bibliography{Bibliography}		
+		}
 	\end{columns}
 \end{document}

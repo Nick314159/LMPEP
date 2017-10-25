@@ -1,0 +1,24 @@
+\begin{thebibliography}{1}
+
+\bibitem{Aberth1973}
+{\sc O.~Aberth}, {\em Iteration methods for finding all zeros of a polynomial
+  simultaneously}, Mathematics of Computation, 27 (1973), pp.~339--344.
+
+\bibitem{Bini1996}
+{\sc D.~Bini}, {\em Numerical computation of polynomial zeros by means of
+  aberth's method}, Numer Algor, 13 (1996), pp.~179--200.
+
+\bibitem{Lancaster1966}
+{\sc P.~Lancaster}, {\em Lambda-Matrices and Vibrating Systems}, vol.~94 of
+  International Series of Monographs on Pure and Applied Mathematics, Pergamon,
+  1966.
+
+\bibitem{Parlett1964}
+{\sc B.~Parlett}, {\em Laguerre's method applied to the matrix eigenvalue
+  problem}, Mathematics of Computation, 18 (1964), pp.~464--485.
+
+\bibitem{Tisseur2000}
+{\sc F.~Tisseur}, {\em Backward error and condition of polynomial eigenvalue
+  problem}, Linear Algebra Appl., 309 (2000), pp.~339--361.
+
+\end{thebibliography}

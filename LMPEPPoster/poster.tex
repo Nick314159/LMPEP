@@ -25,7 +25,7 @@
 \begin{document}
 	\maketitle
 	%%%	Abstract	%%%
-	\block{Abstract}{Laguerre's method has long been recognized for its strong virtues when computing the roots of a polynomial. Over the years, many modifications to Laguerre's method have been suggested in an attempt to improve its convergence rate and to avoid multiple convergence to a simple root. Now, we present a modification to Laguerre's method for the simultaneous convergence of all roots of a polynomial. Multiple numerical experiments verify both the accuracy and efficiency of this algorithm, and we provide comparisons to other root finding methods, such as POLZEROS and AMVW. Furthermore, we are able to apply this method to the polynomial eigenvalue problem, where it is effective for large degree problems, and the Tridiagonal problem.}
+	\block{Abstract}{Laguerre's method has long been recognized for its strong virtues when computing the roots of a polynomial. Over the years, many modifications to Laguerre's method have been suggested in an attempt to improve its convergence rate and to avoid multiple convergence to a simple root. Now, we present a modification to Laguerre's method for the simultaneous convergence of all roots of a polynomial. Multiple numerical experiments verify both the accuracy and efficiency of this algorithm, and we provide comparisons to other root finding methods, such as PZEROS and AMVW. Immediate future research includes applying this method to the polynomial eigenvalue problem, where it is effective for both large degree problems and the Tridiagonal problem.}
 	%%%	Column 1	%%%
 	\begin{columns}
 		\column{0.333}
@@ -83,27 +83,62 @@
 		}
 		%%%	Comparison to Aberth and Laguerre	%%%
 		\block{Comparison to Aberth and Laguerre}{
-			\begin{minipage}{0.4\linewidth}
-			Random polynomials are created for Degree=1
-			We provide a fair comparison between our modified Laguerre method, the standard Laguerre method, and the Aberth method. 
+			\begin{minipage}{0.45\linewidth}
+			Elapsed time comparisons are made between our modified Laguerre method, the standard Laguerre method, and the Aberth method. The initial conditions and stopping criteria are the same for all methods. For each Degree, there are $25$ different random polynomials created and the average elapsed time to compute the roots of each polynomial is recorded. 
 			\end{minipage}\hfill
 			\begin{adjustbox}{valign=t}
 			\begin{minipage}[t]{0.55\linewidth}
 			\centering
-			\includegraphics[scale=1.0]{../develop/tests/diagrams/testMethods.pdf}
+			\vspace*{-6.5em}
+			\includegraphics[scale=1]{../develop/tests/diagrams/testMethods.pdf}
 			\end{minipage}
 			\end{adjustbox}
 		}
 		%%%	Column 3	%%%
 		\column{0.333}
-		%%%	Comparison to POLZEROS and AMVW	%%%
-		\block{Comparison to POLZEROS and AMVW}{
+		%%%	Comparison to PZEROS and AMVW	%%%
+		\block{Comparison to PZEROS  and AMVW}{
+			%%%	Test 1	%%%
+			\begin{minipage}{0.45\linewidth}
+			\textbf{Random Polynomial Tests.} Elapsed time and backward error comparisons are made between our method (DSLM), PZEROS~\cite{Bini1996}, and AMVW~\cite{Aurentz2015}. For each degree, there are $25$ different random polynomials created and the average elapsed time to compute the roots of each polynomial is recorded. In addition, the average of the maximum backward error for the roots of each polynomial is recorded.
+			\end{minipage}\hfill
+			\begin{adjustbox}{valign=t}
+			\begin{minipage}[t]{0.55\linewidth}
 			\centering
-			\includegraphics[scale=1.0]{../develop/tests/diagrams/testComparison1.pdf}\\
-			\includegraphics[scale=2.0]{../develop/tests/diagrams/testComparison2.pdf}
+			\vspace*{-7em}
+			\includegraphics[scale=1.0]{../develop/tests/diagrams/testComparison1.pdf}
+			\end{minipage}
+			\end{adjustbox}
+			%%%	Test 2	%%%
+			\begin{minipage}{0.45\linewidth}
+			\textbf{Select Polynomial Tests.}
+			Relative forward error comparisons are made for the roots of the following polynomials.
+			\scalebox{0.5}{
+			\begin{tabular}{c | c | c | c}
+			Test No. & Description & Deg. & Roots\\
+			\hline
+			1 & Wilkinson & 10 & $1,2,\ldots,10$\\
+			2 & Wilkinson & 15 & $1,2,\ldots,15$\\
+			3 & Wilkinson & 20 & $1,2,\ldots,20$\\
+			4 & scaled and shifted Wilkinson & 20 & $-2.1,-1.9,\ldots,1.7$\\
+			5 & reverse Wilkinson & 10 & $1,1/2,\ldots,1/10$\\
+			6 & reverse Wilkinson & 15 & $1,1/2,\ldots,1/15$\\
+			7 & reverse Wilkinson & 20 & $1,1/2,\ldots,1/20$\\
+			8 & prescribed roots of varying scale & 20 & $2^{-10},2^{-9},\ldots,2^{9}$\\
+			9 & prescribed roots of varying scale - 3 & 20 & $(2^{-10}-3),(2^{-9}-3),\ldots,(2^{9}-3)$\\
+			10 & Chebyshev polynomial & 20 & $\cos(\frac{2j-1}{40}\pi)$\\
+			\end{tabular}}
+			\end{minipage}\hfill
+			\begin{adjustbox}{valign=t}
+			\begin{minipage}[t]{0.55\linewidth}
+			\centering
+			\vspace*{-4em}
+			\includegraphics[scale=1.7]{../develop/tests/diagrams/testComparison2.pdf}
+			\end{minipage}
+			\end{adjustbox}
 		}
 		\block{Conclusion}{
-			Future research includes applying this modified Laguerre method to the polynomial eigenvalue problem. 
+			Future research includes applying this modified Laguerre method to the polynomial eigenvalue problem, as was done in~\cite{Lancaster1966,Parlett1964}. In addition, we are interested in developing a parallelized version of DSLM using the Jacobi style iteration. 
 			%%%	References	%%%
 			\bibliographystyle{siam}
 			\bibliography{Bibliography}		

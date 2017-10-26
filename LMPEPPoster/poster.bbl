@@ -4,9 +4,14 @@
 {\sc O.~Aberth}, {\em Iteration methods for finding all zeros of a polynomial
   simultaneously}, Mathematics of Computation, 27 (1973), pp.~339--344.
 
+\bibitem{Aurentz2015}
+{\sc J.~L. Aurentz, T.~Mach, R.~Vandebril, and D.~S. Watkins}, {\em Fast and
+  backward stable computation of roots of polynomials}, SIAM Journal on Matrix
+  Analysis and Applications, 36 (2015), pp.~942--973.
+
 \bibitem{Bini1996}
 {\sc D.~Bini}, {\em Numerical computation of polynomial zeros by means of
-  aberth's method}, Numer Algor, 13 (1996), pp.~179--200.
+  aberth's method}, Numerical Algorithms, 13 (1996), pp.~179--200.
 
 \bibitem{Lancaster1966}
 {\sc P.~Lancaster}, {\em Lambda-Matrices and Vibrating Systems}, vol.~94 of
@@ -19,6 +24,6 @@
 
 \bibitem{Tisseur2000}
 {\sc F.~Tisseur}, {\em Backward error and condition of polynomial eigenvalue
-  problem}, Linear Algebra Appl., 309 (2000), pp.~339--361.
+  problem}, Linear Algebra and its Applications, 309 (2000), pp.~339--361.
 
 \end{thebibliography}

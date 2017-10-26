@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  25 OCT 2017 23:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  26 OCT 2017 12:24
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -916,21 +916,46 @@ Overfull \hbox (11.6772pt too wide) in paragraph at lines 96--96
  [][] 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 139--139
+[]\T1/aer/bx/n/29.86 Random Poly-no-mial Tests.
+ []
+
+
+Underfull \hbox (badness 4479) in paragraph at lines 139--139
+\T1/aer/m/n/29.86 Elapsed time and back-ward er-ror
+ []
+
+
+Underfull \hbox (badness 1400) in paragraph at lines 139--139
+\T1/aer/m/n/29.86 com-par-isons are made be-tween our
+ []
+
 <../develop/tests/diagrams/testComparison1.pdf, id=30, 578.16pt x 433.62pt>
 File: ../develop/tests/diagrams/testComparison1.pdf Graphic file (type pdf)
 
 <use ../develop/tests/diagrams/testComparison1.pdf>
 Package pdftex.def Info: ../develop/tests/diagrams/testComparison1.pdf used on 
-input line 104.
+input line 139.
 (pdftex.def)             Requested size: 578.15858pt x 433.61894pt.
+
+Overfull \hbox (11.6772pt too wide) in paragraph at lines 139--139
+ [][] 
+ []
+
+
+Overfull \hbox (58.11865pt too wide) in paragraph at lines 139--139
+[] 
+ []
+
 
 <../develop/tests/diagrams/testComparison2.pdf, id=31, 267.39899pt x 175.25476p
 t>
 File: ../develop/tests/diagrams/testComparison2.pdf Graphic file (type pdf)
  <use ../develop/tests/diagrams/testComparison2.pdf>
 Package pdftex.def Info: ../develop/tests/diagrams/testComparison2.pdf used on 
-input line 104.
-(pdftex.def)             Requested size: 534.79666pt x 350.50864pt.
+input line 139.
+(pdftex.def)             Requested size: 454.57634pt x 297.9318pt.
  (./poster.bbl) [1
 
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <../deve
@@ -947,13 +972,13 @@ stComparison2.pdf): PDF inclusion: multiple pdfs with page group included in a
 single page
 >] (./poster.aux) ) 
 Here is how much of TeX's memory you used:
- 18310 strings out of 492995
- 388888 string characters out of 6132704
- 499920 words of memory out of 5000000
- 21392 multiletter control sequences out of 15000+600000
+ 18311 strings out of 492995
+ 388901 string characters out of 6132704
+ 507458 words of memory out of 5000000
+ 21393 multiletter control sequences out of 15000+600000
  63216 words of font info for 136 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,24n,84p,818b,946s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,24n,84p,830b,948s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfo
 nts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfon
 ts/cm/cmcsc10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfon
@@ -963,7 +988,7 @@ s/cm/cmmi12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts
 m/cmr17.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/
 cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/c
 mti12.pfb>
-Output written on poster.pdf (1 page, 149164 bytes).
+Output written on poster.pdf (1 page, 153647 bytes).
 PDF statistics:
  185 PDF objects out of 1000 (max. 8388607)
  55 compressed objects within 1 object stream

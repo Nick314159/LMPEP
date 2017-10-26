@@ -3,44 +3,44 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: poster.aux
 The style file: siam.bst
 Database file #1: Bibliography.bib
-You've used 5 entries,
+You've used 6 entries,
             2030 wiz_defined-function locations,
-            539 strings with 4406 characters,
-and the built_in function-call counts, 1645 in all, are:
-= -- 163
-> -- 35
+            547 strings with 4644 characters,
+and the built_in function-call counts, 2097 in all, are:
+= -- 207
+> -- 58
 < -- 0
-+ -- 15
-- -- 10
-* -- 114
-:= -- 245
-add.period$ -- 5
-call.type$ -- 5
-change.case$ -- 19
++ -- 24
+- -- 18
+* -- 151
+:= -- 313
+add.period$ -- 6
+call.type$ -- 6
+change.case$ -- 26
 chr.to.int$ -- 0
-cite$ -- 5
-duplicate$ -- 88
-empty$ -- 140
-format.name$ -- 10
-if$ -- 372
+cite$ -- 6
+duplicate$ -- 107
+empty$ -- 169
+format.name$ -- 18
+if$ -- 471
 int.to.chr$ -- 0
-int.to.str$ -- 5
-missing$ -- 6
-newline$ -- 18
-num.names$ -- 10
-pop$ -- 15
+int.to.str$ -- 6
+missing$ -- 7
+newline$ -- 21
+num.names$ -- 12
+pop$ -- 20
 preamble$ -- 1
-purify$ -- 15
+purify$ -- 21
 quote$ -- 0
-skip$ -- 81
+skip$ -- 100
 stack$ -- 0
-substring$ -- 137
-swap$ -- 42
+substring$ -- 170
+swap$ -- 52
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 18
+type$ -- 22
 warning$ -- 0
-while$ -- 18
-width$ -- 6
-write$ -- 47
+while$ -- 22
+width$ -- 7
+write$ -- 56

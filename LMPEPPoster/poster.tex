@@ -50,14 +50,13 @@
 			L_{m}(z_{j})=\frac{m}{G_{j}(z_{j})\pm\sqrt{(m-1)(mH_{j}(z_{j})-G_{j}^{2}(z_{j}))}},
 			\end{equation}
 			and the sign is chosen to maximize the magnitude of the denominator. \\
-			The removal of previously computed roots is a well known modification of Laguerre's method and has been employed in~\cite{Lancaster1966,Parlett1964}. Here, we create poles at $z_{1},\ldots,z_{j-1},z_{j+1},\ldots,z_{m}$ in order to direct the Laguerre iteration away from other root approximations. A similar idea was used by Aberth to modify Newton's method~\cite{Aberth1973}.
+			The removal of previously computed roots is a well known modification of Laguerre's method and has been employed in~\cite{Lancaster1966,Parlett1964}. Here, we create poles at $z_{1},\ldots,z_{j-1},z_{j+1},\ldots,z_{m}$ in order to direct the Laguerre iteration away from other root approximations. A similar idea was used by Aberth to modify Newton's method~\cite{Aberth1973}. This makes for an algorithm that simultaneously approximates all roots of a polynomial. 
 		}
-		%%%	Iteration Style and Order of Convergence	%%%
-		\block{Iteration Style and Order of Convergence}{
-			For $j=1,\ldots,m$, the $jth$ root approximation is updated via (2), provided that it is not already close enough to the root $r_{j}$. Locally, if the root is simple, convergence is \emph{quartic}; otherwise it is linear. The iteration can be implemented in either a Jacobi style or a Gauss-Seidel style.\\
-			\textbf{Jacobi Iteration.}	The modified Laguerre update (3) is computed for all $j$ first, and the root approximations are updated afterwords. This iteration style can be parallelized. \\
-			\textbf{Gauss-Seidel Iteration.}	The $jth$ root approximation is updated as soon as possible. Therefore, the computation of (1) always makes use of the most recent approximations. For this iteration style, convergence is slightly faster.\\~\\
-			Our current algorithm (DSLM) uses a Gauss-Seidel iteration style. For future research, we are interested in writing a parallelized version of our algorithm that would employ a Jacobi iteration style.
+		%%%	Algorithm Outline	%%%
+		\block{Algorithm Outline}{
+			For $j=1,\ldots,m$, the $jth$ root approximation is updated via (2), provided that it is not already close enough to the root $r_{j}$. The iteration can be implemented in either a Jacobi style (can be parallelized) or in a Gauss-Seidel style (experiences slightly faster convergence). Our current algorithm (DSLM) uses a Gauss-Seidel iteration style and has the following attributes.\\
+			\textbf{Order of Convergence.}	Locally, if the root is simple, convergence is quartic; otherwise it is linear. \\
+			\textbf{Cost Complexity.}	The computation of both expressions in (1) requires the evaluation of $p(\lambda)$, $p^{'}(\lambda)$, and $p^{''}(\lambda)$, along with the evaluation of two sums; this can be done in $O(m)$ time. The convergence of all roots requires $O(m)$ iterations, it follows that DSLM can compute all root approximations in $O(m^{2})$ time. 
 		}
 		%%%	Column 2	%%%	
 		\column{0.333}
@@ -67,7 +66,7 @@
 			\[
 			\mu_{i}=\left|\frac{a_{k_{i-1}}}{a_{k_{i}}}\right|^{\frac{1}{k_{i}-k_{i-1}}},~(i=1,\ldots,q).
 			\]
-			Then, $(k_{i}-k_{i-1})$ evenly distributed points are placed on circles centered at $0$ with radius $\mu_{i}$. These points constitute our initial estimates to the roots of $p(\lambda)$. Furthermore, these points are guaranteed to lie within the Pellet bounds for the polynomial $p(\lambda)$, and the cost complexity is $O(m\log m)$~\cite{Bini1996}.
+			Then, $(k_{i}-k_{i-1})$ evenly distributed points are placed on circles centered at $0$ with radius $\mu_{i}$. These points constitute our initial estimates to the roots of $p(\lambda)$. Furthermore, these points are guaranteed to lie within the Pellet bounds for the polynomial $p(\lambda)$, and can be computed in $O(m\log m)$ time~\cite{Bini1996}.
 		}
 		%%%	Stopping Criteria	%%%
 		\block{Stopping Criteria}{

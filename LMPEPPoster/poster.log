@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  25 OCT 2017 23:18
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  25 OCT 2017 23:53
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -739,6 +739,45 @@ Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 ))
+(/usr/local/texlive/2017/texmf-dist/tex/latex/adjustbox/adjustbox.sty
+Package: adjustbox 2012/05/21 v1.0 Adjusting TeX boxes (trim, clip, ...)
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/adjustbox/adjcalc.sty
+Package: adjcalc 2012/05/16 v1.1 Provides advanced setlength with multiple back
+-ends (calc, etex, pgfmath)
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/adjustbox/trimclip.sty
+Package: trimclip 2012/05/16 v1.0 Trim and clip general TeX material
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/collectbox/collectbox.sty
+Package: collectbox 2012/05/17 v0.4b Collect macro arguments as boxes
+\collectedbox=\box72
+)
+\tc@llx=\dimen310
+\tc@lly=\dimen311
+\tc@urx=\dimen312
+\tc@ury=\dimen313
+Package trimclip Info: Using driver 'tc-pdftex.def'.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/adjustbox/tc-pdftex.def
+File: tc-pdftex.def 2012/05/13 v1.0 Clipping driver for pdftex
+))
+\adjbox@Width=\dimen314
+\adjbox@Height=\dimen315
+\adjbox@Depth=\dimen316
+\adjbox@Totalheight=\dimen317
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty
+Package: ifoddpage 2016/04/23 v1.1 Conditionals for odd/even page detection
+\c@checkoddpage=\count131
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/varwidth/varwidth.sty
+Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
+\@vwid@box=\box73
+\sift@deathcycles=\count132
+\@vwid@loff=\dimen318
+\@vwid@roff=\dimen319
+))
 
 LaTeX Warning: Unused global option(s):
     [orientation=landscape].
@@ -746,31 +785,31 @@ LaTeX Warning: Unused global option(s):
 (./poster.aux)
 \openout1 = `poster.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
  ABD: EveryShipout initializing macros
 (/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count131
-\scratchdimen=\dimen310
-\scratchbox=\box72
-\nofMPsegments=\count132
-\nofMParguments=\count133
+\scratchcounter=\count133
+\scratchdimen=\dimen320
+\scratchbox=\box74
+\nofMPsegments=\count134
+\nofMParguments=\count135
 \everyMPshowfont=\toks40
-\MPscratchCnt=\count134
-\MPscratchDim=\dimen311
-\MPnumerator=\count135
-\makeMPintoPDFobject=\count136
+\MPscratchCnt=\count136
+\MPscratchDim=\dimen321
+\MPnumerator=\count137
+\makeMPintoPDFobject=\count138
 \everyMPtoPDFconversion=\toks41
 ) (/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
@@ -852,11 +891,11 @@ e
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 24.
+LaTeX Font Info:    Try loading font information for U+msa on input line 25.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 24.
+LaTeX Font Info:    Try loading font information for U+msb on input line 25.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -870,15 +909,19 @@ File: ../develop/tests/diagrams/testMethods.pdf Graphic file (type pdf)
 
 <use ../develop/tests/diagrams/testMethods.pdf>
 Package pdftex.def Info: ../develop/tests/diagrams/testMethods.pdf used on inpu
-t line 83.
+t line 96.
 (pdftex.def)             Requested size: 578.15858pt x 433.61894pt.
+
+Overfull \hbox (11.6772pt too wide) in paragraph at lines 96--96
+ [][] 
+ []
 
 <../develop/tests/diagrams/testComparison1.pdf, id=30, 578.16pt x 433.62pt>
 File: ../develop/tests/diagrams/testComparison1.pdf Graphic file (type pdf)
 
 <use ../develop/tests/diagrams/testComparison1.pdf>
 Package pdftex.def Info: ../develop/tests/diagrams/testComparison1.pdf used on 
-input line 91.
+input line 104.
 (pdftex.def)             Requested size: 578.15858pt x 433.61894pt.
 
 <../develop/tests/diagrams/testComparison2.pdf, id=31, 267.39899pt x 175.25476p
@@ -886,7 +929,7 @@ t>
 File: ../develop/tests/diagrams/testComparison2.pdf Graphic file (type pdf)
  <use ../develop/tests/diagrams/testComparison2.pdf>
 Package pdftex.def Info: ../develop/tests/diagrams/testComparison2.pdf used on 
-input line 91.
+input line 104.
 (pdftex.def)             Requested size: 534.79666pt x 350.50864pt.
  (./poster.bbl) [1
 
@@ -904,13 +947,13 @@ stComparison2.pdf): PDF inclusion: multiple pdfs with page group included in a
 single page
 >] (./poster.aux) ) 
 Here is how much of TeX's memory you used:
- 17794 strings out of 492995
- 380022 string characters out of 6132704
- 490752 words of memory out of 5000000
- 20901 multiletter control sequences out of 15000+600000
+ 18310 strings out of 492995
+ 388888 string characters out of 6132704
+ 499920 words of memory out of 5000000
+ 21392 multiletter control sequences out of 15000+600000
  63216 words of font info for 136 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,24n,84p,818b,875s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,24n,84p,818b,946s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfo
 nts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfon
 ts/cm/cmcsc10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfon
@@ -920,7 +963,7 @@ s/cm/cmmi12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts
 m/cmr17.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/
 cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/c
 mti12.pfb>
-Output written on poster.pdf (1 page, 147442 bytes).
+Output written on poster.pdf (1 page, 149164 bytes).
 PDF statistics:
  185 PDF objects out of 1000 (max. 8388607)
  55 compressed objects within 1 object stream

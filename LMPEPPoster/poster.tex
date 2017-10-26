@@ -2,6 +2,7 @@
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{amssymb}
+\usepackage{adjustbox}
 
 \geometry{paperwidth=48in,paperheight=36in}
 \makeatletter
@@ -56,7 +57,8 @@
 		\block{Algorithm Outline}{
 			For $j=1,\ldots,m$, the $jth$ root approximation is updated via (2), provided that it is not already close enough to the root $r_{j}$. The iteration can be implemented in either a Jacobi style (can be parallelized) or in a Gauss-Seidel style (experiences slightly faster convergence). Our current algorithm (DSLM) uses a Gauss-Seidel iteration style and has the following attributes.\\
 			\textbf{Order of Convergence.}	Locally, if the root is simple, convergence is quartic; otherwise it is linear. \\
-			\textbf{Cost Complexity.}	The computation of both expressions in (1) requires the evaluation of $p(\lambda)$, $p^{'}(\lambda)$, and $p^{''}(\lambda)$, along with the evaluation of two sums; this can be done in $O(m)$ time. The convergence of all roots requires $O(m)$ iterations, it follows that DSLM can compute all root approximations in $O(m^{2})$ time. 
+			\textbf{Cost Complexity.}	The computation of both expressions in (1) requires the evaluation of $p(\lambda)$, $p^{'}(\lambda)$, and $p^{''}(\lambda)$, along with the evaluation of two sums; this can be done using Horner's rule in $O(m)$ time. The convergence of all roots requires $O(m)$ iterations, it follows that DSLM can compute all root approximations in $O(m^{2})$ time. \\
+			\textbf{Avoiding Overflow.}	If $|z_{j}|>1$, then the computation of both expressions in (1) is slightly modified using the reversal polynomial of $p(\lambda)$ in order to avoid the potential overflow in Horner's rule.
 		}
 		%%%	Column 2	%%%	
 		\column{0.333}
@@ -74,12 +76,23 @@
 			\[
 				b(z_{j})=\frac{|p(z_{j})|}{\sum\limits_{i=0}^{m}|a_{i}||z_{j}|^{i}}.
 			\]
-			If $b(z_{j})<\epsilon$, where $\epsilon$ denotes double precision unit roundoff, then we say that the approximation $z_{j}$ has converged. This constitutes our first stopping criterion. Otherwise, we compute the modified Laguerre update (3). If $|L_{m}(z_{j})|<\epsilon|z_{j}|$, then no relatively significant contribution will be made by $L_{m}(z_{j})$ and we say that the approximation $z_{j}$ has converges. This constitutes our second stopping criterion. Otherwise, we update $z_{j}$ via (2). 
+			\textbf{Criterion 1:}	If $b(z_{j})<\epsilon$, where $\epsilon$ denotes double precision unit roundoff, then we say that the approximation $z_{j}$ has converged.\\
+			If Criterion 1 does not hold, then we compute the modified Laguerre update (3).\\
+			\textbf{Criterion 2:}	If $|L_{m}(z_{j})|<\epsilon|z_{j}|$, then no relatively significant contribution will be made by $L_{m}(z_{j})$ and we say that the approximation $z_{j}$ has converged.\\
+			 If Criterion 2 does not hold, then we update $z_{j}$ via (2). 
 		}
 		%%%	Comparison to Aberth and Laguerre	%%%
 		\block{Comparison to Aberth and Laguerre}{
+			\begin{minipage}{0.4\linewidth}
+			Random polynomials are created for Degree=1
+			We provide a fair comparison between our modified Laguerre method, the standard Laguerre method, and the Aberth method. 
+			\end{minipage}\hfill
+			\begin{adjustbox}{valign=t}
+			\begin{minipage}[t]{0.55\linewidth}
 			\centering
 			\includegraphics[scale=1.0]{../develop/tests/diagrams/testMethods.pdf}
+			\end{minipage}
+			\end{adjustbox}
 		}
 		%%%	Column 3	%%%
 		\column{0.333}

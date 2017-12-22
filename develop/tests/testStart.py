@@ -17,8 +17,8 @@ with open('results/testStart.csv') as f:
   
 
   fig, axarr = plt.subplots()
-  axarr.loglog(degree, cStartTime, 'b-o',  label='Cameron Start Time')
-  axarr.loglog(degree, bStartTime, 'r-o', label='Bini Start Time')
+  axarr.plot(degree, cStartTime, 'b-o',  label='Cameron Start Time')
+  axarr.plot(degree, bStartTime, 'r-o', label='Bini Start Time')
   axarr.set_ylabel('Elapsed Time')
   axarr.set_xlabel('Degree')
   legend = axarr.legend(loc=0, shadow=True)

@@ -100,6 +100,7 @@ DEALLOCATE(timeMethods)
 ! Close Results File
 CLOSE(1)
 
+ CALL EXECUTE_COMMAND_LINE('python testStart.py')
 CONTAINS
 
 SUBROUTINE start(alpha, deg, er, ei)

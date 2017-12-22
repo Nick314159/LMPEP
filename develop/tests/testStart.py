@@ -21,6 +21,7 @@ with open('results/testStart.csv') as f:
   axarr.loglog(degree, bStartTime, 'r-o', label='Bini Start Time')
   axarr.set_ylabel('Elapsed Time')
   axarr.set_xlabel('Degree')
+  legend = axarr.legend(loc=0, shadow=True)
 
   fig.subplots_adjust(hspace=.4)
   plt.savefig("diagrams/testStart.pdf", format='pdf')

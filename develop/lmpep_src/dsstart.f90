@@ -48,6 +48,7 @@ DO i=1,deg+1
 ENDDO
 !compute upper convex hull
 CALL cnvex(deg+1,a,h)
+print*, h
 !compute initial estimates
 iold=1; c=0; th=pi2/deg
 DO i=2,deg+1

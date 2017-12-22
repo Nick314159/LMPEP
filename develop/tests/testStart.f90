@@ -55,6 +55,36 @@ ELSE
     iter=10
 ENDIF
 
+! Static Test
+deg = 10
+ALLOCATE(p(deg+1),alpha(deg+1),er(deg),ei(deg))
+p(1)=dexp(1.0D0)
+p(2)=dexp(2.0D0)
+p(3)=dexp(3.0D0)
+p(4)=dexp(2.0D0)
+p(5)=dexp(4.0D0)
+p(6)=dexp(3.0D0)
+p(7)=dexp(6.0D0)
+p(8)=dexp(5.0D0)
+p(9)=dexp(10.0D0)
+p(10)=dexp(9.0D0)
+p(11)=dexp(0.0D0)
+alpha=dabs(p)
+! call Cameron start
+CALL start(alpha,deg,er,ei)
+DO it=1,deg
+	PRINT*, dsqrt(er(it)**2 + ei(it)**2)
+END DO
+PRINT*, 
+!call Bini start
+CALL dsstart(alpha,deg,er,ei)
+DO it=1,deg
+	PRINT*, dsqrt(er(it)**2 + ei(it)**2)
+END DO
+! Deallocate
+DEALLOCATE(p,alpha,er,ei)
+STOP
+
 ! Open Results File
 OPEN(UNIT=1,FILE="results/testStart.csv")
 WRITE(1,'(A)') 'Degree, Cameron Start Time, Bini Start Time'
@@ -132,6 +162,7 @@ DO i=1,deg+1
 ENDDO
 ! compute upper convex hull
 CALL conv_hull(deg+1,a,h,c)
+print*, h(1:c)
 ! compute initial estimates
 k=0; th=pi2/deg
 DO i=c-1,1,-1
@@ -157,12 +188,12 @@ DOUBLE PRECISION, INTENT(IN) :: a(*)
 ! local scalars
 INTEGER :: i
 !parameters
-DOUBLE PRECISION, PARAMETER :: zero=0.0D0
+DOUBLE PRECISION, PARAMETER :: toler=0.0D0
 
 ! build upper envelop of convex hull
  c=0
 DO i=n,1,-1
-	DO WHILE(c>=2 .and. cross(h,a,c,i)<=zero)
+	DO WHILE(c>=2 .and. cross(h,a,c,i)<toler)
 		c = c-1
 	END DO
 	c = c+1
@@ -178,7 +209,7 @@ INTEGER, INTENT(IN) :: c, i
 INTEGER, INTENT(IN) :: h(*)
 DOUBLE PRECISION, INTENT(IN) :: a(*)
 
-cross = (a(i)-a(h(c-1)))*(h(c)-h(c-1))-(a(h(c))-a(h(c-1)))*(i-h(c-1))
+cross = (a(i)-a(h(c-1)))*(h(c)-h(c-1)) - (a(h(c))-a(h(c-1)))*(i-h(c-1))
 RETURN
 END FUNCTION cross
 	

@@ -47,24 +47,24 @@ DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE :: berrMethods, timeMethods
 EXTERNAL :: daruv, dslm, dslm1, dsam
 
 ! Set Start and End Degree, and Iterations
-    CALL GET_COMMAND_ARGUMENT(1,arg,status=flag)
-    IF(flag==0) THEN
-        READ(arg, '(I10)') startDegree
-    ELSE
-        startDegree=100
-    ENDIF
-    CALL GET_COMMAND_ARGUMENT(2,arg,status=flag)
-    IF(flag==0) THEN
-        READ(arg, '(I10)') endDegree
-    ELSE
-        endDegree=6400
-    ENDIF
-    CALL GET_COMMAND_ARGUMENT(3,arg,status=flag)
-    IF(flag==0) THEN
-        READ(arg, '(I10)') iter
-    ELSE
-        iter=10
-    ENDIF
+CALL GET_COMMAND_ARGUMENT(1,arg,status=flag)
+IF(flag==0) THEN
+    READ(arg, '(I10)') startDegree
+ELSE
+	startDegree=100
+ENDIF
+CALL GET_COMMAND_ARGUMENT(2,arg,status=flag)
+IF(flag==0) THEN
+    READ(arg, '(I10)') endDegree
+ELSE
+    endDegree=6400
+ENDIF
+CALL GET_COMMAND_ARGUMENT(3,arg,status=flag)
+IF(flag==0) THEN
+    READ(arg, '(I10)') iter
+ELSE
+    iter=10
+ENDIF
 
 ! Open Results File
 OPEN(UNIT=1,FILE="results/testMethods.csv")

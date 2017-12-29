@@ -1,7 +1,3 @@
 <map id="dsstart" name="dsstart">
-<area shape="rect" id="node2" href="$cnvex_8f90.html#adbba31f33811d4b7401a3ca2d373ce82" title=" Compute the upper convex hull of the set &#160;" alt="" coords="115,56,170,83"/>
-<area shape="rect" id="node3" href="$cmerge_8f90.html#a80622a48065c4191517c1a7a3953f2f3" title="Given the upper convex hulls of two consecutive sets of pairs (j,A(j)), compute the upper convex hull..." alt="" coords="219,56,285,83"/>
-<area shape="rect" id="node4" href="$left_8f90.html#a4589c8ebb44369af2e6a9ae4c6c3f25b" title=" Given as input the integer I and the vector H of logical, compute the the maximum integer IL such th..." alt="" coords="339,5,379,32"/>
-<area shape="rect" id="node5" href="$right_8f90.html#ab8cfb81c27c1ad6d58dd2895f3986628" title=" Given as input the integer I and the vector H of logical, compute the the minimum integer IR such th..." alt="" coords="335,56,382,83"/>
-<area shape="rect" id="node6" href="$ctest_8f90.html#a81caaf5e4feed9d8dcefd0cb10f4e453" title="Test the convexity of the angle formed by (IL,A(IL)), (I,A(I)), (IR,A(IR)) at the vertex (I..." alt="" coords="333,107,384,133"/>
+<area shape="rect" id="node2" href="$conv__hull_8f90.html#ad94e8187d00c3df70a8b125293cfba1c" title=" CONV_HULL computes the upper envelope of the convex hull of a set. &#160;" alt="" coords="115,5,192,31"/>
 </map>

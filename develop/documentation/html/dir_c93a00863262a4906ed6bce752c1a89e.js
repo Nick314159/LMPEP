@@ -1,8 +1,7 @@
 var dir_c93a00863262a4906ed6bce752c1a89e =
 [
-    [ "cmerge.f90", "cmerge_8f90.html", "cmerge_8f90" ],
-    [ "cnvex.f90", "cnvex_8f90.html", "cnvex_8f90" ],
-    [ "ctest.f90", "ctest_8f90.html", "ctest_8f90" ],
+    [ "conv_hull.f90", "conv__hull_8f90.html", "conv__hull_8f90" ],
+    [ "cross.f90", "cross_8f90.html", "cross_8f90" ],
     [ "daruv.f90", "daruv_8f90.html", "daruv_8f90" ],
     [ "drevseval.f90", "drevseval_8f90.html", "drevseval_8f90" ],
     [ "dseval.f90", "dseval_8f90.html", "dseval_8f90" ],
@@ -13,7 +12,5 @@ var dir_c93a00863262a4906ed6bce752c1a89e =
     [ "dzrevseval.f90", "dzrevseval_8f90.html", "dzrevseval_8f90" ],
     [ "dzseval.f90", "dzseval_8f90.html", "dzseval_8f90" ],
     [ "dzslcorr.f90", "dzslcorr_8f90.html", "dzslcorr_8f90" ],
-    [ "init_random_seed.f90", "init__random__seed_8f90.html", "init__random__seed_8f90" ],
-    [ "left.f90", "left_8f90.html", "left_8f90" ],
-    [ "right.f90", "right_8f90.html", "right_8f90" ]
+    [ "init_random_seed.f90", "init__random__seed_8f90.html", "init__random__seed_8f90" ]
 ];

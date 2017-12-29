@@ -12,19 +12,19 @@
 !>\verbatim Double precision array to write random numbers to\endverbatim
 !***********************************************************************
 SUBROUTINE daruv(n,x)
-!scalar arguments
+! scalar arguments
 INTEGER, INTENT(IN)             :: n
-!array arguments
+! array arguments
 DOUBLE PRECISION, INTENT(OUT)   :: x(*)
-!local scalars
+! local scalars
 INTEGER                         :: k
 DOUBLE PRECISION                :: r
-!intrinsic functions
+! intrinsic functions
 INTRINSIC                       :: random_number
 
 DO k=1,n
     CALL random_number(r)
-    x(k)=-1+2*r
+    x(k) = -1+2*r
 ENDDO
 RETURN
 END SUBROUTINE

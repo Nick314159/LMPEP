@@ -16,43 +16,42 @@
 !>\verbatim  Double precision array of dimension deg, imaginary part of eigenvalue approximations.\endverbatim
 !>\param[out] berr
 !>\verbatim  Double precision array of dimension deg, backward error of each eigenvalue approximation.\endverbatim
-!>\note MEMORY: O(deg), FLOPS: O(deg^2)
 !************************************************************************
 SUBROUTINE dslm(p, deg, er, ei, berr)
 IMPLICIT NONE
-!scalar arguments
+! scalar arguments
 INTEGER, INTENT(IN)                 :: deg
-!array arguments
+! array arguments
 DOUBLE PRECISION, INTENT(IN)        :: p(*)
 DOUBLE PRECISION, INTENT(OUT)       :: berr(*), er(*), ei(*)
-!local scalars
+! local scalars
 LOGICAL, DIMENSION(deg)             :: check
 INTEGER                             :: i, it
 DOUBLE PRECISION                    :: tol
-!local arrays
+! local arrays
 DOUBLE PRECISION, DIMENSION(deg+1)  :: alpha
-!intrinsic procedures
+! intrinsic functions
 INTRINSIC                           :: dabs, epsilon
-!parameters
-INTEGER, PARAMETER                  :: itmax=60
-DOUBLE PRECISION, PARAMETER         :: eps=epsilon(0.0D0)
-!external subroutines
+! parameters
+INTEGER, PARAMETER                  :: itmax = 50
+DOUBLE PRECISION, PARAMETER         :: eps = epsilon(0.0D0)
+! external subroutines
 EXTERNAL                            :: dsstart, dslcorr, dzslcorr
-!external functions
+! external functions
 DOUBLE PRECISION                    :: dzmod
 EXTERNAL                            :: dzmod
 
-!alpha
+! alpha
 DO i=1,deg+1
     alpha(i)=dabs(p(i))
 ENDDO
-!check
+! check
 DO i=1,deg
     check(i)=.TRUE.
 ENDDO
-!initial estimates
+! initial estimates
 CALL dsstart(alpha, deg, er, ei)
-!Laguerre's Method
+! Laguerre's Method
 DO it=1,itmax
     DO i=1,deg
         IF(check(i)) THEN

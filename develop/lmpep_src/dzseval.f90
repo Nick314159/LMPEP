@@ -21,29 +21,29 @@
 !************************************************************************
 SUBROUTINE dzseval(p, t, deg, der, a)
 IMPLICIT NONE
-!scalar arguments
+! scalar arguments
 INTEGER, INTENT(IN)             :: der, deg
 DOUBLE COMPLEX, INTENT(IN)      :: t
 DOUBLE COMPLEX, INTENT(OUT)     :: a
-!array arguments
+! array arguments
 DOUBLE PRECISION, INTENT(IN)    :: p(*)
-!local scalars
+! local scalars
 INTEGER                         :: k
 
 IF(der==0) THEN
-!no derivative
+! no derivative
   a=p(deg+1)
   DO k=deg,1,-1
     a=t*a+p(k)
   ENDDO
 ELSEIF(der==1) THEN
-!1st derivative
+! 1st derivative
   a=deg*p(deg+1)
   DO k=deg,2,-1
     a=t*a+(k-1)*p(k)
   ENDDO
 ELSE
-!2nd derivative
+! 2nd derivative
   a=deg*(deg-1)*p(deg+1)
   DO k=deg,3,-1
     a=t*a+(k-1)*(k-2)*p(k)

@@ -16,9 +16,6 @@ gfortran -O3 testConvergence.f90 -L/usr/local/lib -llmpep -llmpeptest -o testCon
 #compile testComparison.f90 file and create executable output testComparison
 gfortran -O3 testComparison.f90 -L/usr/local/lib -llmpep -llmpeptest -lblas -o testComparison
 
-#compile testStart.f90 file and create executable output testStart
-gfortran -O3 testStart.f90 -L/usr/local/lib -llmpep -llmpeptest -lblas -o testStart
-
 #clean up
 rm *.mod
 rm *.o

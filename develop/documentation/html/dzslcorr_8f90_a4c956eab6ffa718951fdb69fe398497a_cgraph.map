@@ -1,7 +1,6 @@
 <map id="dzslcorr" name="dzslcorr">
-<area shape="rect" id="node2" href="$dzseval_8f90.html#a0a4b5759876c235cfa7e96a904e0aefd" title=" DZSEVAL evaluates real scalar polynomial at complex number. &#160;" alt="" coords="129,5,193,32"/>
-<area shape="rect" id="node3" href="$dzrevseval_8f90.html#a6ac1bc6b4e40077104de50d3e7113870" title=" DZREVSEVAL evaluates the reversal of a real scalar polynomial at a complex number. &#160;" alt="" coords="121,56,202,83"/>
-<area shape="rect" id="node4" href="$dzmod_8f90.html#a61c7ef7637ccd8305c744fa7ecc067f4" title=" DZMOD returns moduli of complex number. &#160;" alt="" coords="131,107,191,133"/>
-<area shape="rect" id="node5" href="$drevseval_8f90.html#a601888eaec65a235fb6417473947aa37" title=" DREVSEVAL evaluates the reversal of a real scalar polynomial at a real number. &#160;" alt="" coords="124,157,199,184"/>
-<area shape="rect" id="node6" href="$dseval_8f90.html#a59299c96f28205c90ee80f6fd7a76f11" title=" DSEVAL evaluates a real scalar polynomial at a real number. &#160;" alt="" coords="132,208,191,235"/>
+<area shape="rect" id="node2" href="$dzseval_8f90.html#a0a4b5759876c235cfa7e96a904e0aefd" title=" DZSEVAL evaluates real scalar polynomial at complex number. &#160;" alt="" coords="131,5,197,31"/>
+<area shape="rect" id="node3" href="$dzrevseval_8f90.html#a6ac1bc6b4e40077104de50d3e7113870" title=" DZREVSEVAL evaluates the reversal of a real scalar polynomial at a complex number. &#160;" alt="" coords="121,55,206,80"/>
+<area shape="rect" id="node4" href="$drevseval_8f90.html#a601888eaec65a235fb6417473947aa37" title=" DREVSEVAL evaluates the reversal of a real scalar polynomial at a real number. &#160;" alt="" coords="125,104,203,129"/>
+<area shape="rect" id="node5" href="$dseval_8f90.html#a59299c96f28205c90ee80f6fd7a76f11" title=" DSEVAL evaluates a real scalar polynomial at a real number. &#160;" alt="" coords="134,153,194,179"/>
 </map>

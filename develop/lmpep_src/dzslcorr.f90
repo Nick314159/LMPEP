@@ -44,10 +44,11 @@ INTEGER                         :: k
 DOUBLE PRECISION                :: t2
 DOUBLE COMPLEX                  :: a, b, c, t, x1, x2, y1, y2
 !intrinsic procedures
-INTRINSIC                       :: dabs, dble, dcmplx, dimag, epsilon, zabs, zsqrt
+INTRINSIC                       :: dabs, dble, cmplx, aimag, epsilon, zabs, zsqrt
 !parameters
-DOUBLE PRECISION, PARAMETER     :: eps=epsilon(0.0D0)
-DOUBLE COMPLEX, PARAMETER       :: czero=dcmplx(0.0D0,0.0D0)
+INTEGER, PARAMETER				:: dp = KIND(0.0D0)
+DOUBLE PRECISION, PARAMETER     :: eps = epsilon(0.0D0)
+DOUBLE COMPLEX, PARAMETER       :: czero = cmplx(0.0D0,0.0D0,dp)
 !external subroutines
 EXTERNAL                        :: dzseval, dzrevseval
 !external functions
@@ -57,16 +58,16 @@ EXTERNAL                        :: dzmod
 !initiate variables
 x1=czero; x2=czero
 DO k=1,ind-1
-  y1=dcmplx(er(ind)-er(k),ei(ind)-ei(k))**(-1)
+  y1=cmplx(er(ind)-er(k),ei(ind)-ei(k),dp)**(-1)
   x1=x1+y1
   x2=x2+y1**2
 ENDDO
 DO k=ind+1,deg
-  y1=dcmplx(er(ind)-er(k),ei(ind)-ei(k))**(-1)
+  y1=cmplx(er(ind)-er(k),ei(ind)-ei(k),dp)**(-1)
   x1=x1+y1
   x2=x2+y1**2
 ENDDO
-t=dcmplx(er(ind),ei(ind))
+t=cmplx(er(ind),ei(ind),dp)
 t2=dzmod(er(ind),ei(ind))
 !split into 2 cases
 IF(t2>1) THEN
@@ -120,7 +121,7 @@ IF(zabs(y1)>zabs(y2)) THEN
     check=.FALSE.
   ELSE
     er(ind)=er(ind)-dble(y1)
-    ei(ind)=ei(ind)-dimag(y1)
+    ei(ind)=ei(ind)-aimag(y1)
   ENDIF
 ELSE
   y2=deg*y2**(-1)
@@ -128,7 +129,7 @@ ELSE
     check=.FALSE.
   ELSE
     er(ind)=er(ind)-dble(y2)
-    ei(ind)=ei(ind)-dimag(y2)
+    ei(ind)=ei(ind)-aimag(y2)
   ENDIF
 ENDIF
 RETURN

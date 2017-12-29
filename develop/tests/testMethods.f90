@@ -44,7 +44,7 @@ DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE :: berr, er, ei, p
 DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE :: berrMethods, timeMethods
 
 ! External Subroutines
-EXTERNAL :: daruv, dslm, dslm1, dsam
+EXTERNAL :: daruv, dslm, dslm_seq, dsam
 
 ! Set Start and End Degree, and Iterations
 CALL GET_COMMAND_ARGUMENT(1,arg,status=flag)
@@ -81,7 +81,7 @@ DO WHILE(deg<=endDegree)
         ! Random polynomial of degree deg
         ALLOCATE(p(deg+1))
         CALL daruv(deg+1,p)
-        ! DSLM: DSLM_Simul
+        ! DSLM: Simultaneous Laguerre
         ALLOCATE(berr(deg), er(deg), ei(deg))
         CALL SYSTEM_CLOCK(count_rate=clock_rate)
         CALL SYSTEM_CLOCK(count=clock_start)
@@ -90,11 +90,11 @@ DO WHILE(deg<=endDegree)
         timeMethods(it,1)=DBLE(clock_stop-clock_start)/DBLE(clock_rate)
         berrMethods(it,1)=MAXVAL(berr)
         DEALLOCATE(berr, er, ei)
-        ! DSLM1: DSLM_Seque
+        ! DSLM_SEQ: Sequential Laguerre
         ALLOCATE(berr(deg), er(deg), ei(deg))
         CALL SYSTEM_CLOCK(count_rate=clock_rate)
         CALL SYSTEM_CLOCK(count=clock_start)
-        CALL dslm1(p, deg, er, ei, berr)
+        CALL dslm_seq(p, deg, er, ei, berr)
         CALL SYSTEM_CLOCK(count=clock_stop)
         timeMethods(it,2)=DBLE(clock_stop-clock_start)/DBLE(clock_rate)
         berrMethods(it,2)=MAXVAL(berr)

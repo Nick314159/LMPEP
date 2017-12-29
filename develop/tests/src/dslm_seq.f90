@@ -1,4 +1,4 @@
-SUBROUTINE dslm1(p, deg, er, ei, berr)
+SUBROUTINE dslm_seq(p, deg, er, ei, berr)
 IMPLICIT NONE
 !scalar arguments
 INTEGER, INTENT(IN)                 :: deg
@@ -44,4 +44,4 @@ DO i=1,deg
     ENDDO
 ENDDO
 RETURN
-END SUBROUTINE dslm1
+END SUBROUTINE dslm_seq

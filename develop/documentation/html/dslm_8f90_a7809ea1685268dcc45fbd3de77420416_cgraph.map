@@ -1,5 +1,5 @@
 <map id="dslm" name="dslm">
-<area shape="rect" id="node2" href="$dsstart_8f90.html#a1b2ae9b811a1b8c505c7cda133598d18" title=" DSSTART2 computes initial estimates to the roots of a polynomial. &#160;" alt="" coords="106,5,167,31"/>
+<area shape="rect" id="node2" href="$dsstart_8f90.html#a1b2ae9b811a1b8c505c7cda133598d18" title=" DSSTART computes initial estimates to the roots of a polynomial. &#160;" alt="" coords="106,5,167,31"/>
 <area shape="rect" id="node4" href="$dslcorr_8f90.html#ad03cab90ee9581318be8a06a3000facf" title=" DSLCORR computes the Lagueree correction term of real polynomial with real root approximation, while `‘dividing out’&#39; previously computed roots. &#160;" alt="" coords="106,55,167,80"/>
 <area shape="rect" id="node7" href="$dzslcorr_8f90.html#a4c956eab6ffa718951fdb69fe398497a" title=" DZSLCORR computes the Lagueree correction term of a real polynomial with complex root approximation..." alt="" coords="103,104,171,129"/>
 <area shape="rect" id="node3" href="$conv__hull_8f90.html#ad94e8187d00c3df70a8b125293cfba1c" title=" CONV_HULL computes the upper envelope of the convex hull of a set. &#160;" alt="" coords="223,5,300,31"/>

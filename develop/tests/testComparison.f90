@@ -5,7 +5,7 @@
 !   #Dept. DiscoverOrg LLC.
 !       
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!   Last modified 22 October 2017
+!   Last modified 1 January 2018
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !   Test Comparison of DSLM against POLZEROS and AMVW
 !   
@@ -48,8 +48,8 @@ DOUBLE PRECISION, DIMENSION(:), ALLOCATABLE     :: REIGS, IEIGS
 INTEGER, DIMENSION(:), ALLOCATABLE              :: ITS
 DOUBLE PRECISION                                :: t2
 DOUBLE COMPLEX                                  :: a, t
-! Parameters
-DOUBLE PRECISION, PARAMETER                     :: pi = 3.1415926535897932D0
+! Parameter
+DOUBLE PRECISION, PARAMETER         						:: pi = 3.141592653589793
 ! External subroutines
 DOUBLE PRECISION                                :: dznrm2
 EXTERNAL                                        :: dznrm2
@@ -60,7 +60,7 @@ eps    = epsilon(1.0D0)
 small  = tiny(1.0D0)
 big    = huge(1.0D0)
 nitmax = 60
-FLAG = 1
+FLAG 	 = 1
 
 !****************************************************
 !                   Test 1                          *
@@ -92,25 +92,29 @@ ALLOCATE(time(itmax, 3), error(itmax, 3))
 DO WHILE(deg<=endDegree)
   WRITE(1,'(I10)', advance='no') deg
   WRITE(1,'(A)', advance='no') ','
-
+  
   DO it = 1, itmax
-    !LMPEP
-    ALLOCATE(p(deg+1), er(deg), ei(deg), berr(deg), alpha(deg+1))
+		!Poly, coeff moduli, and berr
+		ALLOCATE(p(deg+1), berr(deg), alpha(deg+1))
     CALL daruv(deg+1,p)
     DO j = 1, deg
        alpha(j)=dabs(p(j))
     END DO
+    !LMPEP
+    ALLOCATE(er(deg), ei(deg))
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
     CALL dslm(p, deg, er, ei, berr)
     CALL system_clock(count=clock_stop)
     time(it, 1)=(dble(clock_stop-clock_start)/dble(clock_rate))
     error(it, 1) = maxval(berr)
+		!Deallocate LMPEP
+		DEALLOCATE(er, ei)
 
     !Pzeros
     ALLOCATE(poly(0:deg), radius(1:deg), root(1:deg), err(deg+1)) 
     DO i= 0, deg
-      poly(i)=dcmplx(p(i+1), 0D0)
+      poly(i)=cmplx(p(i+1), 0.0D0, dp)
     ENDDO
     CALL system_clock(count_rate=clock_rate)
     CALL system_clock(count=clock_start)
@@ -132,7 +136,7 @@ DO WHILE(deg<=endDegree)
       berr(j) = zabs(a)/berr(j)
     END DO
     error(it, 2) = maxval(berr)
-    DEALLOCATE(er, ei)
+		!Deallocate Pzeros
     DEALLOCATE(poly, radius ,root, err)
 
     !AMVW
@@ -146,7 +150,7 @@ DO WHILE(deg<=endDegree)
     CALL system_clock(count=clock_stop)  
     time(it, 3) = dble(clock_stop-clock_start)/dble(clock_rate)
     DO j = 1, deg
-      t =  dcmplx(REIGS(j), IEIGS(j))
+      t =  cmplx(REIGS(j), IEIGS(j),dp)
       t2 = zabs(t)
       IF (t2>1) THEN
         t = t**(-1)
@@ -160,7 +164,10 @@ DO WHILE(deg<=endDegree)
       berr(j) = zabs(a)/berr(j)
     END DO
     error(it, 3) = maxval(berr)
-    DEALLOCATE(p, p2, REIGS,IEIGS,ITS, alpha, berr)
+		!Deallocate AMVW
+    DEALLOCATE(REIGS, IEIGS, ITS, p2)
+		!Deallocate poly
+		DEALLOCATE(p, berr, alpha)
   ENDDO
   
   WRITE(1,'(ES15.2)', advance='no') sum(time(:,1))/itmax
@@ -200,28 +207,28 @@ p(8)=-18150D0
 p(9)=1320D0
 p(10)=-55D0
 p(11)=1D0
-exacteigs(1)=dcmplx(1D0,0D0)
-exacteigs(2)=dcmplx(2D0,0D0)
-exacteigs(3)=dcmplx(3D0,0D0)
-exacteigs(4)=dcmplx(4D0,0D0)
-exacteigs(5)=dcmplx(5D0,0D0)
-exacteigs(6)=dcmplx(6D0,0D0)
-exacteigs(7)=dcmplx(7D0,0D0)
-exacteigs(8)=dcmplx(8D0,0D0)
-exacteigs(9)=dcmplx(9D0,0D0)
-exacteigs(10)=dcmplx(10D0,0D0)
+exacteigs(1)=cmplx(1D0,0D0,dp)
+exacteigs(2)=cmplx(2D0,0D0,dp)
+exacteigs(3)=cmplx(3D0,0D0,dp)
+exacteigs(4)=cmplx(4D0,0D0,dp)
+exacteigs(5)=cmplx(5D0,0D0,dp)
+exacteigs(6)=cmplx(6D0,0D0,dp)
+exacteigs(7)=cmplx(7D0,0D0,dp)
+exacteigs(8)=cmplx(8D0,0D0,dp)
+exacteigs(9)=cmplx(9D0,0D0,dp)
+exacteigs(10)=cmplx(10D0,0D0,dp)
 WRITE(1, '(A)', advance='no')  'Test 1, '
 ! DSLM
 ALLOCATE(er(deg),ei(deg),berr(deg))
 CALL dslm(p, deg, er, ei, berr)
 CALL dsort(er, ei, deg)
-WRITE(1, '(ES15.2)', advance='no') dznrm2(deg,dcmplx(er,ei)-exacteigs,1)/dznrm2(deg,exacteigs,1)
+WRITE(1, '(ES15.2)', advance='no') dznrm2(deg,cmplx(er,ei,dp)-exacteigs,1)/dznrm2(deg,exacteigs,1)
 WRITE(1,'(A)',advance='no') ','
 DEALLOCATE(er,ei,berr)
 ! POLZEROS
 ALLOCATE(poly(0:deg), radius(1:deg), root(1:deg), err(deg+1)) 
 DO i= 0, deg
-  poly(i)=dcmplx(p(i+1), 0D0)
+  poly(i)=cmplx(p(i+1), 0.0D0, dp)
 ENDDO
 CALL polzeros(deg, poly, eps, big, small, nitmax, root, radius, err, iter)
 CALL zsort(root, deg)
@@ -235,7 +242,7 @@ DO i=1,deg
 ENDDO
 CALL damvw(deg, p2, REIGS, IEIGS, ITS, FLAG)
 CALL dsort(REIGS,IEIGS,deg)
-WRITE(1, '(ES15.2)') dznrm2(deg,dcmplx(REIGS,IEIGS)-exacteigs,1)/dznrm2(deg,exacteigs,1)
+WRITE(1, '(ES15.2)') dznrm2(deg,cmplx(REIGS,IEIGS,dp)-exacteigs,1)/dznrm2(deg,exacteigs,1)
 DEALLOCATE(REIGS,IEIGS,ITS,p2)
 ! End Test 1
 DEALLOCATE(exacteigs, p)

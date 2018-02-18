@@ -46,7 +46,7 @@ DOUBLE COMPLEX                  :: x1, x2, y1, y2
 ! intrinsic functions
 INTRINSIC                       :: dabs, dble, cmplx, aimag, epsilon, zabs, zsqrt
 ! parameters
-INTEGER, PARAMETER				:: dp = KIND(0.0D0)
+INTEGER, PARAMETER							:: dp = KIND(0.0D0)
 DOUBLE PRECISION, PARAMETER     :: zero = 0.0D0
 DOUBLE PRECISION, PARAMETER     :: eps = epsilon(zero)
 DOUBLE COMPLEX, PARAMETER       :: czero = cmplx(zero,zero,dp)

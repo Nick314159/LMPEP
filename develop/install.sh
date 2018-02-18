@@ -12,4 +12,4 @@ rm *.o
 rm *.a
 
 #Generate documentation
-#doxygen Doxygen/config
+doxygen Doxygen/config

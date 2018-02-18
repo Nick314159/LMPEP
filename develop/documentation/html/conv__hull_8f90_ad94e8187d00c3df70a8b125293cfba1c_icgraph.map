@@ -1,4 +1,4 @@
 <map id="conv_hull" name="conv_hull">
-<area shape="rect" id="node2" href="$dsstart_8f90.html#a1b2ae9b811a1b8c505c7cda133598d18" title=" DSSTART2 computes initial estimates to the roots of a polynomial. &#160;" alt="" coords="131,5,192,31"/>
+<area shape="rect" id="node2" href="$dsstart_8f90.html#a1b2ae9b811a1b8c505c7cda133598d18" title=" DSSTART computes initial estimates to the roots of a polynomial. &#160;" alt="" coords="131,5,192,31"/>
 <area shape="rect" id="node3" href="$dslm_8f90.html#a7809ea1685268dcc45fbd3de77420416" title=" DSLM simultaneously computes the roots of a real polynomial. &#160;" alt="" coords="240,5,290,31"/>
 </map>

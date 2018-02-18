@@ -51,6 +51,10 @@ DO i=1,deg
 ENDDO
 ! initial estimates
 CALL dsstart(alpha, deg, er, ei)
+! update alpha for error bound
+DO i=1,deg+1
+    alpha(i)=dabs(p(i))*(4*i-3)
+ENDDO
 ! Laguerre's Method
 DO it=1,itmax
     DO i=1,deg

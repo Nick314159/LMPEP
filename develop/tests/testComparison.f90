@@ -49,7 +49,7 @@ INTEGER, DIMENSION(:), ALLOCATABLE              :: ITS
 DOUBLE PRECISION                                :: t2
 DOUBLE COMPLEX                                  :: a, t
 ! Parameter
-DOUBLE PRECISION, PARAMETER         						:: pi = 3.141592653589793
+DOUBLE PRECISION, PARAMETER         						:: pi = 3.141592653589793D0
 ! External subroutines
 DOUBLE PRECISION                                :: dznrm2
 EXTERNAL                                        :: dznrm2
@@ -97,8 +97,8 @@ DO WHILE(deg<=endDegree)
 		!Poly, coeff moduli, and berr
 		ALLOCATE(p(deg+1), berr(deg), alpha(deg+1))
     CALL daruv(deg+1,p)
-    DO j = 1, deg
-       alpha(j)=dabs(p(j))
+    DO j = 1, deg+1
+       alpha(j)=dabs(p(j))*(4*j-3)
     END DO
     !LMPEP
     ALLOCATE(er(deg), ei(deg))

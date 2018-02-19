@@ -51,20 +51,20 @@ DO i=1,deg
 ENDDO
 ! initial estimates
 CALL dsstart(alpha, deg, er, ei)
-! update alpha for error bound
+! update alpha for backward error
 DO i=1,deg+1
-    alpha(i)=dabs(p(i))*(4*i-3)
+    alpha(i)=alpha(i)*(4*i-3)
 ENDDO
 ! Laguerre's Method
 DO it=1,itmax
     DO i=1,deg
         IF(check(i)) THEN
             tol=eps*dzmod(er(i),ei(i))
-            IF(dabs(ei(i))<tol) THEN
-                CALL dslcorr(p, alpha, tol, deg, i, check(i), er, ei, berr(i))
-            ELSE
+           ! IF(dabs(ei(i))<tol) THEN
+           !     CALL dslcorr(p, alpha, tol, deg, i, check(i), er, ei, berr(i))
+           ! ELSE
                 CALL dzslcorr(p, alpha, tol, deg, i, check(i), er, ei, berr(i))
-            ENDIF
+           ! ENDIF
         ENDIF
     ENDDO
 ENDDO
